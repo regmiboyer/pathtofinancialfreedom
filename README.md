@@ -1,1 +1,1 @@
-# pathtofinancialfreedom
+# path-to-financial-freedom

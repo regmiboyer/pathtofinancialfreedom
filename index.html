@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Path To Financial Freedom</title>
@@ -185,115 +186,146 @@ tr:hover td{background:#f8fafc;}
 .no-results{text-align:center;padding:28px;color:var(--tx3);font-size:26px;}
 
 input[type="range"], .range-in { display: none !important; }
+
+/* ── Collapsible section wrappers ── */
+.sec-collapse-hdr{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;padding:14px 18px;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.05);transition:background .15s;}
+.sec-collapse-hdr:hover{background:#f8fafc;}
+.sec-collapse-hdr .sec-col-left{display:flex;align-items:center;gap:12px;}
+.sec-col-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.sec-col-title{font-size:15px;font-weight:700;color:var(--tx);}
+.sec-col-sub{font-size:11px;color:var(--tx3);margin-top:2px;}
+.sec-col-arrow{font-size:16px;color:var(--tx3);transition:transform .25s;flex-shrink:0;}
+.sec-col-arrow.open{transform:rotate(180deg);}
+.sec-col-body{overflow:hidden;transition:max-height .35s ease,opacity .25s ease;max-height:0;opacity:0;}
+.sec-col-body.open{max-height:9999px;opacity:1;}
+.sec-wrap{display:flex;flex-direction:column;gap:0;}
+/* ── Mortgage section colours ── */
+.mort-sec-title{font-size:16px;font-weight:800;color:#b45309;letter-spacing:-.2px;}
+.mort-layout{display:grid;grid-template-columns:320px 1fr;gap:14px;}
+@media(max-width:860px){.mort-layout{grid-template-columns:1fr;}}
+.mort-sidebar{display:flex;flex-direction:column;gap:10px;}
+.mort-group{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 12px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+.mort-group-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px;color:#b45309;}
+.mort-main{display:flex;flex-direction:column;gap:14px;}
+.mort-phase-bar{display:flex;border-radius:8px;overflow:hidden;height:34px;border:1px solid var(--border);}
+.mort-ph1{background:#fef9c3;flex:1;display:flex;align-items:center;justify-content:center;gap:6px;}
+.mort-ph2{background:#eef2ff;flex:1;display:flex;align-items:center;justify-content:center;gap:6px;}
+.mort-ph-lbl{font-size:10px;text-transform:uppercase;color:var(--tx3);}
+.mort-ph-val{font-size:13px;font-weight:700;}
+
+
+/* Clean collapsible headers */
+.sec-collapse-hdr{background:#fff;border:1px solid var(--border);border-left:3px solid #4f46e5;border-radius:10px !important;padding:14px 18px !important;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.sec-collapse-hdr:hover{background:#f5f7ff !important;}
+.sec-col-title{color:var(--tx) !important;font-size:15px !important;font-weight:600 !important;}
+.sec-col-sub{color:var(--tx2) !important;}
+.sec-col-arrow{color:#4f46e5 !important;}
+.sec-col-dot{display:inline-block;}
+
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════════════════════
-     WELCOME / DISCLAIMER SPLASH SCREEN
-     ══════════════════════════════════════════════════════════════ -->
-<div id="splashOverlay" style="
-  position:fixed;inset:0;z-index:9999;
-  background:linear-gradient(135deg,#1e1b4b 0%,#312e81 40%,#065f46 100%);
-  display:flex;align-items:center;justify-content:center;
-  padding:20px;overflow-y:auto;
-">
-  <div style="
-    background:#fff;border-radius:20px;max-width:680px;width:100%;
-    padding:40px 44px;box-shadow:0 32px 80px rgba(0,0,0,.45);
-    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-    position:relative;
-  ">
+<!-- ══ GRADIENT SPLASH — PAGE 1 ══ -->
+<div id="splashOverlay" style="position:fixed;inset:0;z-index:9999;overflow-y:auto;font-family:'Inter',sans-serif;">
 
-    <!-- Top badge -->
-    <div style="display:flex;justify-content:center;margin-bottom:20px;">
-      <span style="background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe;border-radius:20px;padding:5px 16px;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;">Personal Finance Tool · For Educational Use Only</span>
-    </div>
+  <!-- ── Fixed gradient background ── -->
+  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;">
+    <div style="position:absolute;inset:0;background:#04000e;"></div>
+    <div style="position:absolute;left:-10%;top:5%;width:65%;height:75%;background:radial-gradient(ellipse at center,#7b1fa2 0%,#4a0080 35%,transparent 70%);filter:blur(48px);opacity:.85;"></div>
+    <div style="position:absolute;left:-5%;bottom:-10%;width:50%;height:60%;background:radial-gradient(ellipse at center,#d946ef 0%,#9c14c0 40%,transparent 70%);filter:blur(56px);opacity:.7;"></div>
+    <div style="position:absolute;right:-5%;bottom:-5%;width:55%;height:55%;background:radial-gradient(ellipse at center,#06d6c0 0%,#0891b2 40%,transparent 70%);filter:blur(52px);opacity:.75;"></div>
+    <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.18;" xmlns="http://www.w3.org/2000/svg">
+      <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+      <rect width="100%" height="100%" filter="url(#grain)"/>
+    </svg>
+  </div>
 
-    <!-- Heading -->
-    <h1 style="font-size:26px;font-weight:800;color:#0f172a;text-align:center;letter-spacing:-.4px;line-height:1.2;margin-bottom:8px;">
-      Welcome to<br><span style="color:#4f46e5;">Path To Financial Freedom</span>
-    </h1>
-    <p style="text-align:center;font-size:13px;color:#64748b;margin-bottom:28px;line-height:1.6;">
-      A personal wealth modelling tool built to explore and compare different investment strategies over time.
-    </p>
+  <!-- ── Two-column content ── -->
+  <div style="position:relative;z-index:1;min-height:100vh;display:flex;align-items:stretch;flex-wrap:wrap;">
 
-    <!-- What this is -->
-    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;margin-bottom:18px;">
-      <p style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;">What this tool does</p>
-      <p style="font-size:13px;color:#475569;line-height:1.7;margin-bottom:10px;">
-        Hi! I built this tool to help myself think through a question I kept coming back to:
-        <strong style="color:#0f172a;">"Should I invest in ETFs, buy a rental property, or build a property portfolio — and how do these strategies actually compare over 30–50 years?"</strong>
-      </p>
-      <p style="font-size:13px;color:#475569;line-height:1.7;">
-        This planner lets you model all three side by side using your own numbers. You input things like
-        how much you can invest, your property budget, expected growth rates, rent, mortgage terms, and
-        how long you want to stay invested — and the tool projects the outcomes in real time across four sections:
-      </p>
-      <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
-        <div style="display:flex;align-items:flex-start;gap:10px;">
-          <span style="background:#4f46e5;color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;margin-top:1px;">1</span>
-          <span style="font-size:13px;color:#374151;line-height:1.6;"><strong>ETF Portfolio</strong> — Model Vanguard ETF investing with DCA, lump sums, and multiple funds</span>
+    <!-- LEFT — Philosophy text, fully visible -->
+    <div style="flex:1 1 52%;min-width:300px;display:flex;flex-direction:column;justify-content:center;padding:60px 4% 60px 6%;">
+
+      <!-- Eyebrow -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:36px;">
+        <div style="width:26px;height:26px;border:1.5px solid #c9a84c;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <span style="font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#c9a84c;">P</span>
         </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;">
-          <span style="background:#059669;color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;margin-top:1px;">2</span>
-          <span style="font-size:13px;color:#374151;line-height:1.6;"><strong>Single Rental Property</strong> — Model buying and renting a Sydney property, with real cash flow (rent minus costs minus mortgage)</span>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;">
-          <span style="background:#7c3aed;color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;margin-top:1px;">3</span>
-          <span style="font-size:13px;color:#374151;line-height:1.6;"><strong>Property Portfolio</strong> — Buy one property every 5 years and grow a portfolio over 30 years</span>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;">
-          <span style="background:#b45309;color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;margin-top:1px;">4</span>
-          <span style="font-size:13px;color:#374151;line-height:1.6;"><strong>Like-for-Like Comparison</strong> — Same capital, both strategies, head to head</span>
-        </div>
+        <span style="font-size:9px;font-weight:500;color:#c9a84c;letter-spacing:3px;text-transform:uppercase;">Path to Financial Freedom</span>
       </div>
-      <p style="font-size:13px;color:#475569;line-height:1.7;margin-top:12px;">
-        All you need to do is <strong style="color:#0f172a;">enter your numbers in the left panel</strong> and the charts and projections update instantly.
+
+      <!-- Main philosophy headline -->
+      <div style="font-family:'Playfair Display',serif;font-weight:700;color:#f8f4ed;line-height:1.08;letter-spacing:-1.5px;">
+        <div style="font-size:clamp(32px,5.5vw,72px);">Planning your wealth</div>
+        <div style="font-size:clamp(32px,5.5vw,72px);">is not <em style="color:#c9a84c;font-style:italic;">greed</em> —</div>
+        <div style="font-size:clamp(32px,5.5vw,72px);">it is <em style="color:#c9a84c;font-style:italic;">wisdom.</em></div>
+      </div>
+
+      <!-- Sub-quote -->
+      <p style="margin-top:28px;font-family:'Playfair Display',serif;font-size:clamp(14px,1.6vw,19px);font-style:italic;color:#b8a8d8;line-height:1.85;max-width:500px;font-weight:400;">
+        Those who understand money do not chase it. They build systems, make intentional choices, and live fully — knowing that security tomorrow begins with awareness today.
       </p>
+
+      <!-- Tag line -->
+      <div style="margin-top:32px;font-size:11px;letter-spacing:5px;color:#c9a84c;text-transform:uppercase;font-weight:400;opacity:.8;">
+        Live &nbsp;·&nbsp; Save &nbsp;·&nbsp; Invest &nbsp;·&nbsp; Retire Early
+      </div>
+
     </div>
 
-    <!-- Disclaimer -->
-    <div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:12px;padding:18px 20px;margin-bottom:24px;">
-      <p style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">Important Disclaimer — Please Read</p>
-      <p style="font-size:12.5px;color:#78350f;line-height:1.75;margin-bottom:8px;">
-        I am <strong>not a financial adviser, financial planner, or investment professional</strong> of any kind.
-        I built this tool purely as a <strong>personal hobby project</strong> to satisfy my own curiosity about long-term wealth building strategies in Australia.
-      </p>
-      <p style="font-size:12.5px;color:#78350f;line-height:1.75;margin-bottom:8px;">
-        Everything in this tool is based on assumptions and historical averages that <strong>may not reflect future outcomes</strong>.
-        Property values, share market returns, interest rates, rental yields, and inflation can all move in ways this model does not predict.
-      </p>
-      <p style="font-size:12.5px;color:#78350f;line-height:1.75;margin-bottom:8px;">
-        Before investing in any ETF, please <strong>read the Product Disclosure Statement (PDS)</strong> for that fund carefully.
-        Before making any property or investment decision, please <strong>consult a licensed financial adviser</strong> who can assess your personal situation.
-      </p>
-      <p style="font-size:12.5px;color:#92400e;font-weight:600;line-height:1.75;">
-        This tool does not constitute financial advice. Use it to explore ideas, not to make decisions.
-      </p>
+    <!-- RIGHT — Disclosure card -->
+    <div style="flex:1 1 42%;min-width:300px;display:flex;align-items:center;justify-content:center;padding:40px 5%;">
+      <div style="
+        max-width:460px;width:100%;
+        background:rgba(8,0,20,.62);
+        backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
+        border:1px solid rgba(255,255,255,.1);
+        border-top:2px solid rgba(201,168,76,.6);
+        border-radius:14px;
+        padding:36px 40px;
+        position:relative;overflow:hidden;
+      ">
+        <!-- Inner glow -->
+        <div style="position:absolute;top:-40px;left:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(180,100,255,.18) 0%,transparent 70%);pointer-events:none;"></div>
+
+        <p style="font-size:10px;font-weight:600;color:#c9a84c;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:18px;">Disclosure — Please Read</p>
+
+        <p style="font-size:14px;color:#d4c8e8;line-height:1.9;margin-bottom:13px;font-weight:300;">
+          I am <strong style="color:#f0ebfa;font-weight:500;">not a financial adviser</strong>. This is a <strong style="color:#f0ebfa;font-weight:500;">personal hobby project</strong> built to model and compare wealth strategies — not investment guidance.
+        </p>
+        <p style="font-size:14px;color:#d4c8e8;line-height:1.9;margin-bottom:13px;font-weight:300;">
+          All projections use <strong style="color:#f0ebfa;font-weight:500;">assumptions you control</strong>. Real returns, property prices, and rates will differ from any model.
+        </p>
+        <p style="font-size:14px;color:#d4c8e8;line-height:1.9;margin-bottom:22px;font-weight:300;">
+          Please <strong style="color:#f0ebfa;font-weight:500;">read the PDS of any ETF</strong> and <strong style="color:#f0ebfa;font-weight:500;">consult a licensed financial adviser</strong> before investing.
+        </p>
+
+        <div style="height:1px;background:linear-gradient(90deg,rgba(201,168,76,.4),transparent);margin-bottom:20px;"></div>
+
+        <p style="font-size:12px;color:#7a6e90;font-style:italic;margin-bottom:22px;line-height:1.7;">
+          "This tool is for thinking, not deciding."
+        </p>
+
+        <button id="splashEnterBtn" onclick="goToStrategyPage()" style="
+          width:100%;padding:15px 24px;border:1px solid rgba(201,168,76,.5);
+          background:rgba(201,168,76,.12);color:#f8f4ed;
+          font-family:'Inter',sans-serif;font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;
+          cursor:pointer;border-radius:8px;transition:background .25s,border-color .25s;
+          display:flex;align-items:center;justify-content:center;gap:12px;
+        "
+        onmouseover="this.style.background='rgba(201,168,76,.25)';this.style.borderColor='rgba(201,168,76,.9)'"
+        onmouseout="this.style.background='rgba(201,168,76,.12)';this.style.borderColor='rgba(201,168,76,.5)'"
+        >
+          I acknowledge — Choose my strategy
+          <span style="font-size:18px;color:#c9a84c;">→</span>
+        </button>
+
+        <p style="text-align:center;font-size:10px;color:#4a4060;margin-top:12px;letter-spacing:.3px;">
+          No data collected &nbsp;·&nbsp; Runs entirely in your browser
+        </p>
+      </div>
     </div>
-
-    <!-- Agree button -->
-    <button onclick="
-      document.getElementById('splashOverlay').style.opacity='0';
-      document.getElementById('splashOverlay').style.transition='opacity 0.4s ease';
-      setTimeout(function(){ document.getElementById('splashOverlay').style.display='none'; }, 400);
-    " style="
-      width:100%;padding:15px;border-radius:12px;border:none;
-      background:linear-gradient(135deg,#4f46e5,#7c3aed);
-      color:#fff;font-size:15px;font-weight:700;cursor:pointer;
-      letter-spacing:.2px;box-shadow:0 4px 16px rgba(79,70,229,.4);
-      transition:transform .1s,box-shadow .1s;
-    "
-    onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 6px 20px rgba(79,70,229,.5)'"
-    onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 16px rgba(79,70,229,.4)'"
-    >
-      I understand — Take me to the planner
-    </button>
-
-    <p style="text-align:center;font-size:11px;color:#94a3b8;margin-top:12px;">
-      By continuing you acknowledge this is a personal hobby project and not financial advice.
-    </p>
 
   </div>
 </div>
@@ -315,6 +347,172 @@ input[type="range"], .range-in { display: none !important; }
  </div>
 </div>
 
+
+<!-- ══ STRATEGY SELECTOR — PAGE 2 ══ -->
+<div id="strategyPage" style="display:none;position:fixed;inset:0;z-index:8000;overflow:hidden;font-family:'Inter',sans-serif;">
+
+  <!-- Background -->
+  <div style="position:absolute;inset:0;background:#04000e;"></div>
+  <div style="position:absolute;left:-10%;top:5%;width:65%;height:75%;background:radial-gradient(ellipse at center,#7b1fa2 0%,#4a0080 35%,transparent 70%);filter:blur(60px);opacity:.5;"></div>
+  <div style="position:absolute;right:-5%;bottom:-5%;width:55%;height:55%;background:radial-gradient(ellipse at center,#06d6c0 0%,#0891b2 40%,transparent 70%);filter:blur(60px);opacity:.4;"></div>
+  <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.12;pointer-events:none;" xmlns="http://www.w3.org/2000/svg">
+    <filter id="grain2"><feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+    <rect width="100%" height="100%" filter="url(#grain2)"/>
+  </svg>
+
+  <!-- Ghost BG text -->
+  <div style="position:absolute;inset:0;display:flex;align-items:flex-end;padding:4% 6%;pointer-events:none;overflow:hidden;">
+    <div style="font-family:'Playfair Display',serif;font-size:clamp(40px,9vw,120px);font-weight:700;color:#fff;opacity:.04;white-space:nowrap;letter-spacing:-2px;line-height:1;">
+      Live. Save. Invest. Retire.
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px;">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+      <div style="width:28px;height:1px;background:#c9a84c;opacity:.6;"></div>
+      <span style="font-size:10px;font-weight:500;color:#c9a84c;letter-spacing:2.5px;text-transform:uppercase;">Choose your strategy</span>
+      <div style="width:28px;height:1px;background:#c9a84c;opacity:.6;"></div>
+    </div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(20px,3vw,36px);font-weight:400;color:#f8f4ed;text-align:center;line-height:1.35;margin-bottom:8px;letter-spacing:-.3px;">
+      Which path leads to <em style="color:#c9a84c;">your</em> freedom?
+    </h2>
+    <p style="font-size:13px;font-weight:300;color:#8a9ab5;text-align:center;margin-bottom:44px;max-width:460px;line-height:1.75;">
+      Select a strategy to model. You can run multiple strategies and compare them side by side.
+    </p>
+
+    <!-- Strategy cards -->
+    <div style="display:flex;gap:18px;max-width:920px;width:100%;justify-content:center;flex-wrap:wrap;">
+
+      <!-- Strategy 1 -->
+      <div onclick="selectStrategy('s1','Invest in ETF','#4f46e5')" style="
+        flex:1;min-width:240px;max-width:272px;cursor:pointer;
+        background:rgba(255,255,255,.03);
+        border:1px solid rgba(79,70,229,.35);border-top:3px solid #4f46e5;border-radius:14px;
+        padding:30px 24px 26px;transition:all .2s;position:relative;overflow:hidden;
+      "
+      onmouseover="this.style.background='rgba(79,70,229,.14)';this.style.transform='translateY(-5px)';this.style.borderColor='rgba(79,70,229,.85)'"
+      onmouseout="this.style.background='rgba(255,255,255,.03)';this.style.transform='translateY(0)';this.style.borderColor='rgba(79,70,229,.35)'"
+      >
+        <div id="s1-snapshot-badge" style="display:none;position:absolute;top:12px;right:12px;background:rgba(79,70,229,.3);border:1px solid rgba(79,70,229,.6);border-radius:20px;padding:2px 8px;font-size:9px;color:#a5b4fc;letter-spacing:.5px;">SAVED</div>
+        <div style="font-size:26px;color:#818cf8;margin-bottom:14px;">◈</div>
+        <div style="font-size:9px;font-weight:600;color:#818cf8;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Strategy I</div>
+        <div style="font-family:'Playfair Display',serif;font-size:21px;font-weight:600;color:#f8f4ed;margin-bottom:12px;line-height:1.3;">Invest in ETF</div>
+        <p style="font-size:12px;color:#8a9ab5;line-height:1.75;margin-bottom:20px;">Dollar-cost average into Vanguard funds. Let compounding do the work — time is your greatest asset.</p>
+        <div style="font-size:11px;color:#818cf8;font-weight:500;display:flex;align-items:center;gap:6px;">Open &amp; model <span>→</span></div>
+      </div>
+
+      <!-- Strategy 2 -->
+      <div onclick="selectStrategy('s2m','Pay-off Mortgage & Invest','#b45309')" style="
+        flex:1;min-width:240px;max-width:272px;cursor:pointer;
+        background:rgba(255,255,255,.03);
+        border:1px solid rgba(180,83,9,.35);border-top:3px solid #b45309;border-radius:14px;
+        padding:30px 24px 26px;transition:all .2s;position:relative;overflow:hidden;
+      "
+      onmouseover="this.style.background='rgba(180,83,9,.14)';this.style.transform='translateY(-5px)';this.style.borderColor='rgba(180,83,9,.85)'"
+      onmouseout="this.style.background='rgba(255,255,255,.03)';this.style.transform='translateY(0)';this.style.borderColor='rgba(180,83,9,.35)'"
+      >
+        <div id="s2m-snapshot-badge" style="display:none;position:absolute;top:12px;right:12px;background:rgba(180,83,9,.3);border:1px solid rgba(180,83,9,.6);border-radius:20px;padding:2px 8px;font-size:9px;color:#fbbf24;letter-spacing:.5px;">SAVED</div>
+        <div style="font-size:26px;color:#f59e0b;margin-bottom:14px;">◈</div>
+        <div style="font-size:9px;font-weight:600;color:#f59e0b;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Strategy II</div>
+        <div style="font-family:'Playfair Display',serif;font-size:21px;font-weight:600;color:#f8f4ed;margin-bottom:12px;line-height:1.3;">Pay-off Mortgage &amp; Invest</div>
+        <p style="font-size:12px;color:#8a9ab5;line-height:1.75;margin-bottom:20px;">Clear your home loan faster, then redirect every dollar into markets. Security first — growth second.</p>
+        <div style="font-size:11px;color:#f59e0b;font-weight:500;display:flex;align-items:center;gap:6px;">Open &amp; model <span>→</span></div>
+      </div>
+
+      <!-- Strategy 3 -->
+      <div onclick="selectStrategy('s3','Develop a Property Portfolio','#059669')" style="
+        flex:1;min-width:240px;max-width:272px;cursor:pointer;
+        background:rgba(255,255,255,.03);
+        border:1px solid rgba(5,150,105,.35);border-top:3px solid #059669;border-radius:14px;
+        padding:30px 24px 26px;transition:all .2s;position:relative;overflow:hidden;
+      "
+      onmouseover="this.style.background='rgba(5,150,105,.14)';this.style.transform='translateY(-5px)';this.style.borderColor='rgba(5,150,105,.85)'"
+      onmouseout="this.style.background='rgba(255,255,255,.03)';this.style.transform='translateY(0)';this.style.borderColor='rgba(5,150,105,.35)'"
+      >
+        <div id="s3-snapshot-badge" style="display:none;position:absolute;top:12px;right:12px;background:rgba(5,150,105,.3);border:1px solid rgba(5,150,105,.6);border-radius:20px;padding:2px 8px;font-size:9px;color:#6ee7b7;letter-spacing:.5px;">SAVED</div>
+        <div style="font-size:26px;color:#34d399;margin-bottom:14px;">◈</div>
+        <div style="font-size:9px;font-weight:600;color:#34d399;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Strategy III</div>
+        <div style="font-family:'Playfair Display',serif;font-size:21px;font-weight:600;color:#f8f4ed;margin-bottom:12px;line-height:1.3;">Develop a Property Portfolio</div>
+        <p style="font-size:12px;color:#8a9ab5;line-height:1.75;margin-bottom:20px;">Buy one Sydney property every 5 years. Build equity, collect rent, and grow a portfolio that works for you.</p>
+        <div style="font-size:11px;color:#34d399;font-weight:500;display:flex;align-items:center;gap:6px;">Open &amp; model <span>→</span></div>
+      </div>
+
+    </div>
+
+    <!-- Comparison banner (shown when ≥1 strategy saved) -->
+    <div id="compareAvailableBanner" style="display:none;margin-top:28px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:10px;padding:12px 20px;text-align:center;max-width:600px;width:100%;">
+      <span style="font-size:12px;color:#c9a84c;">You have saved results from a previous strategy. Select another to compare side by side.</span>
+    </div>
+  </div>
+</div>
+
+<!-- STRATEGY CONTENT WRAPPER — PAGE 3 -->
+<div id="strategyContent" style="display:none;">
+
+  <!-- Floating toolbar -->
+  <div id="strategyToolbar" style="
+    position:fixed;top:0;left:0;right:0;z-index:7000;
+    background:rgba(4,0,14,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border-bottom:1px solid rgba(201,168,76,.2);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 20px;font-family:'Inter',sans-serif;
+  ">
+    <button onclick="goBackToStrategies()" style="
+      background:transparent;border:1px solid rgba(201,168,76,.4);color:#c9a84c;
+      font-size:12px;font-weight:500;letter-spacing:.5px;padding:7px 14px;border-radius:6px;
+      cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s;
+    "
+    onmouseover="this.style.background='rgba(201,168,76,.12)'"
+    onmouseout="this.style.background='transparent'"
+    >← Back to strategies</button>
+
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div id="toolbarDot" style="width:8px;height:8px;border-radius:50%;background:#4f46e5;"></div>
+      <span id="toolbarLabel" style="font-size:13px;font-weight:500;color:#f8f4ed;font-family:'Playfair Display',serif;"></span>
+    </div>
+
+    <button id="saveSnapshotBtn" onclick="saveSnapshot()" style="
+      background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.4);color:#c9a84c;
+      font-size:12px;font-weight:500;letter-spacing:.5px;padding:7px 14px;border-radius:6px;
+      cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s;
+    "
+    onmouseover="this.style.background='rgba(201,168,76,.25)'"
+    onmouseout="this.style.background='rgba(201,168,76,.12)'"
+    >Save results ✦</button>
+  </div>
+
+  <!-- Strategy sections (offset for toolbar) -->
+  <div id="strategyInner" style="padding-top:52px;min-height:100vh;background:var(--bg);">
+  </div>
+
+</div>
+
+<!-- COMPARISON DRAWER -->
+<div id="compareDrawer" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:7500;font-family:'Inter',sans-serif;">
+  <div style="background:rgba(4,0,14,.96);backdrop-filter:blur(20px);border-top:1px solid rgba(201,168,76,.3);padding:20px 24px;max-height:50vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <span style="font-family:'Playfair Display',serif;font-size:17px;color:#f8f4ed;font-weight:600;">Strategy Comparison</span>
+      <button onclick="document.getElementById('compareDrawer').style.display='none'" style="background:transparent;border:none;color:#8a9ab5;font-size:18px;cursor:pointer;">✕</button>
+    </div>
+    <div id="compareDrawerContent" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;"></div>
+  </div>
+</div>
+
+<div class="sec-wrap" style="margin-bottom:14px;">
+<div class="sec-collapse-hdr" onclick="toggleSection('s1')">
+  <div class="sec-col-left">
+    <div class="sec-col-dot" style="background:#4f46e5;"></div>
+    <div>
+      <div class="sec-col-title" style="font-family:'Playfair Display',serif;">Invest in ETF</div>
+      <div class="sec-col-sub">Dollar-cost average into Vanguard funds · multi-fund · lump sums · 50-year simulation</div>
+    </div>
+  </div>
+  <div class="sec-col-arrow open" id="s1-arrow">▼</div>
+</div>
+<div class="sec-col-body open" id="s1-body">
 <div class="layout">
 <aside class="sidebar">
  <div class="sidebar-header">
@@ -1182,6 +1380,139 @@ render();
 .prop-tscroll tr.neg-cf td:first-child{color:#dc2626;}
 </style>
 
+</div><!-- /s1-body -->
+</div><!-- /s1-wrap -->
+
+
+<!-- ══ SECTION 2: PAY OUT HOME MORTGAGE ══ -->
+<div class="sec-wrap" style="margin-bottom:14px;" id="mortWrap">
+<div class="sec-collapse-hdr" onclick="toggleSection('s2m')">
+  <div class="sec-col-left">
+    <div class="sec-col-dot" style="background:#b45309;"></div>
+    <div>
+      <div class="sec-col-title" style="font-family:'Playfair Display',serif;">Pay-off Mortgage &amp; Invest</div>
+      <div class="sec-col-sub">Clear your home loan faster · then redirect into VOO &amp; QQQM until your horizon</div>
+    </div>
+  </div>
+  <div class="sec-col-arrow" id="s2m-arrow">▼</div>
+</div>
+<div class="sec-col-body" id="s2m-body">
+<div style="background:#fff;border:1px solid var(--border);border-radius:0 0 12px 12px;padding:18px;margin-top:2px;">
+<div class="mort-layout">
+
+<!-- INPUTS -->
+<div class="mort-sidebar">
+  <div class="mort-group">
+    <div class="mort-group-title">Home Loan</div>
+    <div class="prop-item"><div class="prop-label">Outstanding balance</div>
+      <div class="ctrl-row"><div class="num-wrap"><span class="num-prefix">$</span>
+        <input class="num-in" type="number" id="m_balance" value="100000" min="10000" max="2000000" step="5000" oninput="mortDebounce()">
+      </div></div></div>
+    <div class="prop-item"><div class="prop-label">Interest rate</div>
+      <div class="ctrl-row"><div class="num-wrap">
+        <input class="num-in" type="number" id="m_rate" value="4.5" min="1" max="12" step="0.1" oninput="mortDebounce()">
+        <span class="num-suffix">%</span>
+      </div></div></div>
+    <div class="prop-item"><div class="prop-label">Monthly extra payment</div>
+      <div class="ctrl-row"><div class="num-wrap"><span class="num-prefix">$</span>
+        <input class="num-in" type="number" id="m_payment" value="2000" min="200" max="20000" step="100" oninput="mortDebounce()">
+      </div></div></div>
+  </div>
+  <div class="mort-group">
+    <div class="mort-group-title">After Payoff — ETF Phase</div>
+    <div class="prop-item"><div class="prop-label">Total horizon from today</div>
+      <div class="ctrl-row"><div class="num-wrap">
+        <input class="num-in" type="number" id="m_horizon" value="20" min="5" max="40" step="1" oninput="mortDebounce()">
+        <span class="num-suffix">yr</span>
+      </div></div></div>
+    <div class="prop-item"><div class="prop-label">VOO allocation</div>
+      <div class="ctrl-row"><div class="num-wrap">
+        <input class="num-in" type="number" id="m_voo" value="60" min="0" max="100" step="5" oninput="mortDebounce()">
+        <span class="num-suffix">%</span>
+      </div></div></div>
+    <div class="prop-item"><div class="prop-label">QQQM allocation</div>
+      <div class="ctrl-row"><div class="num-wrap">
+        <input class="num-in" type="number" id="m_qqq" value="40" min="0" max="100" step="5" oninput="mortDebounce()">
+        <span class="num-suffix">%</span>
+      </div></div></div>
+    <div class="prop-item"><div class="prop-label">VOO CAGR (historical ~13.8%)</div>
+      <div class="ctrl-row"><div class="num-wrap">
+        <input class="num-in" type="number" id="m_voo_cagr" value="13.8" min="4" max="20" step="0.1" oninput="mortDebounce()">
+        <span class="num-suffix">%</span>
+      </div></div></div>
+    <div class="prop-item"><div class="prop-label">QQQM CAGR (historical ~17.4%)</div>
+      <div class="ctrl-row"><div class="num-wrap">
+        <input class="num-in" type="number" id="m_qqq_cagr" value="17.4" min="4" max="20" step="0.1" oninput="mortDebounce()">
+        <span class="num-suffix">%</span>
+      </div></div></div>
+  </div>
+  <!-- Summary box -->
+  <div class="mort-group" id="mortSummaryBox" style="background:#fffbeb;border-color:#fde68a;">
+    <div class="mort-group-title" style="color:#92400e;">Quick Summary</div>
+    <div id="mortSummaryContent" style="font-size:12px;color:#78350f;line-height:1.8;">Loading…</div>
+  </div>
+</div>
+
+<!-- OUTPUTS -->
+<div class="mort-main">
+  <!-- Phase bar -->
+  <div class="mort-phase-bar">
+    <div class="mort-ph1"><span class="mort-ph-lbl">Phase 1 — Payoff</span><span class="mort-ph-val" id="mortPh1Label" style="color:#b45309;">…yrs</span></div>
+    <div class="mort-ph2"><span class="mort-ph-lbl">Phase 2 — ETF Invest</span><span class="mort-ph-val" id="mortPh2Label" style="color:#4f46e5;">…yrs</span></div>
+  </div>
+
+  <!-- Cards row -->
+  <div class="cards-row" id="mortCards"></div>
+
+  <!-- Charts -->
+  <div class="two-col">
+    <div class="chart-box">
+      <div class="ch-hdr"><div class="ch-ttl" style="font-size:14px;color:#b45309;">Phase 1 — Loan Payoff</div></div>
+      <canvas id="mortLoanChart" height="180"></canvas>
+    </div>
+    <div class="chart-box">
+      <div class="ch-hdr"><div class="ch-ttl" style="font-size:14px;color:#4f46e5;">Phase 2 — ETF Growth</div></div>
+      <canvas id="mortEtfChart" height="180"></canvas>
+    </div>
+  </div>
+
+  <!-- Detailed table -->
+  <div class="chart-box">
+    <div class="ch-hdr"><div class="ch-ttl" style="font-size:14px;">Year-by-Year Breakdown</div></div>
+    <div style="overflow-x:auto;max-height:320px;overflow-y:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:11px;" id="mortTable">
+        <thead style="position:sticky;top:0;background:#fff;">
+          <tr style="border-bottom:1.5px solid var(--border);">
+            <th style="padding:6px 8px;text-align:left;color:var(--tx3);font-weight:600;">Year</th>
+            <th style="padding:6px 8px;text-align:right;color:var(--tx3);font-weight:600;">Phase</th>
+            <th style="padding:6px 8px;text-align:right;color:var(--tx3);font-weight:600;">Loan Balance</th>
+            <th style="padding:6px 8px;text-align:right;color:var(--tx3);font-weight:600;">Interest Paid</th>
+            <th style="padding:6px 8px;text-align:right;color:var(--tx3);font-weight:600;">ETF Value</th>
+            <th style="padding:6px 8px;text-align:right;color:var(--tx3);font-weight:600;">Monthly Into ETF</th>
+          </tr>
+        </thead>
+        <tbody id="mortTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- /mort-main -->
+</div><!-- /mort-layout -->
+</div>
+</div><!-- /s2m-body -->
+</div><!-- /s2m-wrap -->
+
+<div class="sec-wrap" style="margin-bottom:14px;">
+<div class="sec-collapse-hdr" onclick="toggleSection('s3')">
+  <div class="sec-col-left">
+    <div class="sec-col-dot" style="background:#059669;"></div>
+    <div>
+      <div class="sec-col-title" style="font-family:'Playfair Display',serif;">Develop a Property Portfolio</div>
+      <div class="sec-col-sub">Sydney rental property · real cash flow · rent vs mortgage · 30-year horizon</div>
+    </div>
+  </div>
+  <div class="sec-col-arrow" id="s3-arrow">▼</div>
+</div>
+<div class="sec-col-body" id="s3-body">
 <section class="prop-wrap" id="propSection">
  <!-- Header -->
  <div class="prop-sec-hdr">
@@ -1750,6 +2081,18 @@ renderProperty();
 .pf-tscroll tr.neg-yr td{color:#dc2626;}
 </style>
 
+<div class="sec-wrap" style="margin-bottom:14px;">
+<div class="sec-collapse-hdr" onclick="toggleSection('s4')">
+  <div class="sec-col-left">
+    <div class="sec-col-dot" style="background:#7c3aed;"></div>
+    <div>
+      <div class="sec-col-title" style="font-family:'Playfair Display',serif;">Property Portfolio — Buy Every 5 Years</div>
+      <div class="sec-col-sub">Buy one property every 5 years — grow a portfolio over 30 years</div>
+    </div>
+  </div>
+  <div class="sec-col-arrow" id="s4-arrow">▼</div>
+</div>
+<div class="sec-col-body" id="s4-body">
 <section class="pf-wrap" id="pfSection">
  <div class="pf-sec-hdr">
  <div class="pf-sec-title">Section 3: Property Portfolio Strategy — Buy Every 5 Years</div>
@@ -3125,6 +3468,419 @@ renderProperty = function(){
 // ── Kick everything once to sync all sections on load ────────────
 setTimeout(function(){ renderComparison(); renderLikeForLike(); }, 700);
 
+</script>
+
+
+<script>
+// ── Collapsible toggle ────────────────────────────────────────
+function toggleSection(id){
+  var body  = document.getElementById(id+'-body');
+  var arrow = document.getElementById(id+'-arrow');
+  if(!body) return;
+  var isOpen = body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  if(arrow) arrow.classList.toggle('open',!isOpen);
+}
+
+// ── Mortgage payoff + ETF simulation ─────────────────────────
+var mortDebTimer;
+function mortDebounce(){
+  clearTimeout(mortDebTimer);
+  mortDebTimer = setTimeout(renderMortgage, 120);
+}
+
+var _mortLoanChart, _mortEtfChart;
+
+function fmtM(v){ return '$'+Math.round(v).toLocaleString(); }
+function fmtK(v){ return '$'+(v/1000).toFixed(1)+'k'; }
+
+function renderMortgage(){
+  var balance  = +document.getElementById('m_balance').value  || 100000;
+  var annRate  = +document.getElementById('m_rate').value     || 4.5;
+  var monthly  = +document.getElementById('m_payment').value  || 2000;
+  var horizon  = +document.getElementById('m_horizon').value  || 20;
+  var vooPct   = +document.getElementById('m_voo').value      || 60;
+  var qqqPct   = +document.getElementById('m_qqq').value      || 40;
+  var vooCagr  = +document.getElementById('m_voo_cagr').value || 13.8;
+  var qqqCagr  = +document.getElementById('m_qqq_cagr').value || 17.4;
+
+  var mRate = (annRate/100)/12;
+
+  // ── Phase 1: amortize month by month ──
+  var loanBal     = balance;
+  var totalInterest = 0;
+  var loanMonths  = 0;
+  var loanYearlyBal   = [];
+  var loanYearlyInt   = [];
+  var yearBal = balance, yearInt = 0;
+
+  while(loanBal > 0.01 && loanMonths < horizon*12){
+    var interest = loanBal * mRate;
+    var principal = Math.min(monthly - interest, loanBal);
+    if(monthly <= interest){ // can't pay off
+      loanMonths = 9999; break;
+    }
+    loanBal -= principal;
+    totalInterest += interest;
+    yearInt += interest;
+    loanMonths++;
+    if(loanMonths % 12 === 0 || loanBal <= 0.01){
+      loanYearlyBal.push(Math.max(loanBal,0));
+      loanYearlyInt.push(yearInt);
+      yearInt = 0;
+    }
+  }
+
+  var payoffYrs = loanMonths / 12;
+  var etfYrs = Math.max(0, horizon - payoffYrs);
+
+  // ── Phase 2: invest monthly into VOO + QQQM ──
+  var vooMonthly  = monthly * (vooPct/100);
+  var qqqMonthly  = monthly * (qqqPct/100);
+  var vooMRate    = Math.pow(1 + vooCagr/100, 1/12) - 1;
+  var qqqMRate    = Math.pow(1 + qqqCagr/100, 1/12) - 1;
+  var etfMonths   = Math.round(etfYrs * 12);
+
+  var vooVal = 0, qqqVal = 0;
+  var etfYearlyVoo = [], etfYearlyQqq = [];
+  for(var m=1; m<=etfMonths; m++){
+    vooVal = (vooVal + vooMonthly) * (1 + vooMRate);
+    qqqVal = (qqqVal + qqqMonthly) * (1 + qqqMRate);
+    if(m % 12 === 0){
+      etfYearlyVoo.push(vooVal);
+      etfYearlyQqq.push(qqqVal);
+    }
+  }
+  var totalEtf = vooVal + qqqVal;
+  var totalContrib = monthly * etfMonths;
+
+  // ── Phase bar ──
+  var ph1El = document.getElementById('mortPh1Label');
+  var ph2El = document.getElementById('mortPh2Label');
+  if(loanMonths >= 9999){
+    ph1El.textContent = 'Never (pay ↑)';
+    ph2El.textContent = '0 yrs';
+  } else {
+    ph1El.textContent = payoffYrs.toFixed(1)+' yrs';
+    ph2El.textContent = etfYrs.toFixed(1)+' yrs';
+  }
+
+  // ── Summary box ──
+  var sb = document.getElementById('mortSummaryContent');
+  if(loanMonths >= 9999){
+    sb.innerHTML = '<b style="color:#dc2626">Monthly payment too low to cover interest.</b> Increase monthly payment above '+fmtM(balance*mRate)+'/mo.';
+  } else {
+    sb.innerHTML =
+      '<b>Loan cleared in:</b> '+(Math.floor(payoffYrs))+' yrs '+(Math.round((payoffYrs%1)*12))+' mo<br>'+
+      '<b>Total interest paid:</b> '+fmtM(totalInterest)+'<br>'+
+      '<b>ETF investing phase:</b> '+etfYrs.toFixed(1)+' years<br>'+
+      '<b>Monthly into ETFs:</b> '+fmtM(monthly)+'/mo<br>'+
+      '<b>VOO ('+vooPct+'%) final:</b> '+fmtM(vooVal)+'<br>'+
+      '<b>QQQM ('+qqqPct+'%) final:</b> '+fmtM(qqqVal)+'<br>'+
+      '<b>Total ETF portfolio:</b> <span style="color:#4f46e5;font-size:13px;font-weight:700;">'+fmtM(totalEtf)+'</span><br>'+
+      '<b>Total contributed:</b> '+fmtM(totalContrib);
+  }
+
+  // ── Cards ──
+  var cardsEl = document.getElementById('mortCards');
+  cardsEl.innerHTML = [
+    {l:'Payoff time',         v: loanMonths>=9999?'N/A':payoffYrs.toFixed(1)+' yrs',     c:'a'},
+    {l:'Interest paid',       v: fmtK(totalInterest),   c:'r'},
+    {l:'ETF phase',           v: etfYrs.toFixed(1)+' yrs', c:'i'},
+    {l:'VOO final',           v: fmtK(vooVal),          c:'g'},
+    {l:'QQQM final',          v: fmtK(qqqVal),          c:'p'},
+    {l:'Total portfolio',     v: fmtK(totalEtf),        c:'i'},
+  ].map(function(x){
+    return '<div class="card"><div class="c-lbl">'+x.l+'</div><div class="c-val '+x.c+'">'+x.v+'</div></div>';
+  }).join('');
+
+  // ── Loan chart ──
+  var loanLabels = loanYearlyBal.map(function(_,i){return 'Yr '+(i+1);});
+  if(_mortLoanChart) _mortLoanChart.destroy();
+  var lctx = document.getElementById('mortLoanChart');
+  if(lctx && loanYearlyBal.length){
+    _mortLoanChart = new Chart(lctx.getContext('2d'),{
+      type:'bar',
+      data:{
+        labels:loanLabels,
+        datasets:[
+          {label:'Remaining Balance',data:loanYearlyBal,backgroundColor:'rgba(180,83,9,.2)',borderColor:'#b45309',borderWidth:2,yAxisID:'y'},
+          {label:'Cumulative Interest',data:(function(){var c=0;return loanYearlyInt.map(function(v){c+=v;return c;});}()),type:'line',borderColor:'#dc2626',borderWidth:2,pointRadius:0,fill:false,tension:.3,yAxisID:'y'}
+        ]
+      },
+      options:{responsive:true,plugins:{legend:{labels:{font:{size:10}}}},scales:{y:{ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'k';}},grid:{color:'rgba(0,0,0,.04)'}},x:{ticks:{font:{size:10}}}}}
+    });
+  }
+
+  // ── ETF chart ──
+  var etfLabels = etfYearlyVoo.map(function(_,i){return 'Yr '+Math.round(payoffYrs+i+1);});
+  if(_mortEtfChart) _mortEtfChart.destroy();
+  var ectx = document.getElementById('mortEtfChart');
+  if(ectx && etfYearlyVoo.length){
+    _mortEtfChart = new Chart(ectx.getContext('2d'),{
+      type:'line',
+      data:{
+        labels:etfLabels,
+        datasets:[
+          {label:'VOO',data:etfYearlyVoo,borderColor:'#4f46e5',backgroundColor:'rgba(79,70,229,.08)',fill:true,tension:.3,pointRadius:0,borderWidth:2},
+          {label:'QQQM',data:etfYearlyQqq,borderColor:'#7c3aed',backgroundColor:'rgba(124,58,237,.06)',fill:true,tension:.3,pointRadius:0,borderWidth:2},
+          {label:'Combined',data:etfYearlyVoo.map(function(v,i){return v+(etfYearlyQqq[i]||0);}),borderColor:'#059669',borderWidth:2.5,pointRadius:0,tension:.3,fill:false}
+        ]
+      },
+      options:{responsive:true,plugins:{legend:{labels:{font:{size:10}}}},scales:{y:{ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'k';}},grid:{color:'rgba(0,0,0,.04)'}},x:{ticks:{font:{size:10},maxTicksLimit:8}}}}
+    });
+  }
+
+  // ── Table ──
+  var tbody = document.getElementById('mortTableBody');
+  if(!tbody) return;
+  var rows = '';
+  var totalYrs = Math.ceil(payoffYrs) + Math.ceil(etfYrs);
+  var cumInt = 0;
+  for(var yr=1; yr<=totalYrs; yr++){
+    var isPayoff = (yr <= Math.ceil(payoffYrs));
+    var lbal = isPayoff ? (loanYearlyBal[yr-1]||0) : 0;
+    var yint = isPayoff ? (loanYearlyInt[yr-1]||0) : 0;
+    cumInt += yint;
+    var etfIdx = yr - Math.ceil(payoffYrs) - 1;
+    var etfVal = (!isPayoff && etfIdx >= 0) ? (etfYearlyVoo[etfIdx]||0)+(etfYearlyQqq[etfIdx]||0) : 0;
+    var intoEtf = isPayoff ? 0 : monthly;
+    rows += '<tr style="border-bottom:.5px solid var(--border);">'+
+      '<td style="padding:5px 8px;">'+yr+'</td>'+
+      '<td style="padding:5px 8px;text-align:right;"><span style="background:'+(isPayoff?'#fef9c3':'#eef2ff')+';color:'+(isPayoff?'#92400e':'#4f46e5')+';border-radius:4px;padding:1px 6px;font-size:10px;">'+(isPayoff?'Payoff':'ETF')+'</span></td>'+
+      '<td style="padding:5px 8px;text-align:right;color:'+(isPayoff?'#b45309':'var(--tx3)')+';">'+(isPayoff?fmtM(lbal):'—')+'</td>'+
+      '<td style="padding:5px 8px;text-align:right;color:#dc2626;">'+(isPayoff?fmtM(yint):'—')+'</td>'+
+      '<td style="padding:5px 8px;text-align:right;color:#4f46e5;">'+(etfVal?fmtM(etfVal):'—')+'</td>'+
+      '<td style="padding:5px 8px;text-align:right;color:#059669;">'+(intoEtf?fmtM(intoEtf):'—')+'</td>'+
+    '</tr>';
+  }
+  tbody.innerHTML = rows;
+}
+
+// Run on load
+document.addEventListener('DOMContentLoaded', function(){
+  renderMortgage();
+});
+</script>
+
+
+<script>
+// ── SPA State ─────────────────────────────────────────────────
+var _currentStrategy = null;
+var _sessionSnapshots = {}; // { strategyId: { label, color, metrics } }
+
+var STRATEGY_SECTIONS = {
+  's1':  { secIds: ['s1-body'], label: 'Invest in ETF',               color: '#4f46e5', dot: '#4f46e5' },
+  's2m': { secIds: ['s2m-body'], label: 'Pay-off Mortgage & Invest',  color: '#b45309', dot: '#f59e0b' },
+  's3':  { secIds: ['s3-body'], label: 'Develop a Property Portfolio', color: '#059669', dot: '#34d399' },
+};
+
+// Page 1 → Page 2
+function goToStrategyPage(){
+  var splash = document.getElementById('splashOverlay');
+  splash.style.transition = 'opacity 0.5s ease';
+  splash.style.opacity = '0';
+  setTimeout(function(){
+    splash.style.display = 'none';
+    document.getElementById('strategyPage').style.display = 'block';
+  }, 500);
+}
+
+// Page 2 → Page 3
+function selectStrategy(id, label, color){
+  _currentStrategy = id;
+  var cfg = STRATEGY_SECTIONS[id];
+
+  // Move target section into strategyInner
+  var inner = document.getElementById('strategyInner');
+  inner.innerHTML = '';
+
+  // Find the matching sec-wrap and clone it into the inner div
+  var allWraps = document.querySelectorAll('.sec-wrap');
+  allWraps.forEach(function(wrap){
+    var bodyId = id + '-body';
+    if(wrap.querySelector('#' + bodyId)){
+      var clone = wrap.cloneNode(true);
+      // Make it open
+      var body = clone.querySelector('#' + bodyId);
+      if(body){ body.classList.add('open'); body.style.maxHeight = '9999px'; body.style.opacity = '1'; }
+      var arrow = clone.querySelector('#' + id + '-arrow');
+      if(arrow){ arrow.classList.add('open'); }
+      // Remove the collapse header (we have toolbar instead)
+      var hdr = clone.querySelector('.sec-collapse-hdr');
+      if(hdr) hdr.style.display = 'none';
+      // Reset display — DOMContentLoaded hides all sec-wraps (inline style),
+      // cloneNode copies that inline style, so we must clear it on the clone.
+      clone.style.display = '';
+      inner.appendChild(clone);
+    }
+  });
+
+  // Add compare button if snapshots exist from other strategies
+  updateCompareButton();
+
+  // Update toolbar
+  document.getElementById('toolbarLabel').textContent = cfg.label;
+  document.getElementById('toolbarDot').style.background = cfg.dot;
+
+  // Switch pages
+  document.getElementById('strategyPage').style.display = 'none';
+  document.getElementById('strategyContent').style.display = 'block';
+
+  // Trigger renders for the section
+  setTimeout(function(){
+    if(id === 's1'  && typeof render === 'function') render();
+    if(id === 's2m' && typeof renderMortgage === 'function') renderMortgage();
+    if(id === 's3'  && typeof renderProperty === 'function') renderProperty();
+  }, 200);
+
+  window.scrollTo(0,0);
+}
+
+// Page 3 → Page 2
+function goBackToStrategies(){
+  document.getElementById('strategyContent').style.display = 'none';
+  document.getElementById('strategyPage').style.display = 'block';
+  document.getElementById('compareDrawer').style.display = 'none';
+  updateSnapshotBadges();
+  updateCompareBanner();
+  window.scrollTo(0,0);
+}
+
+// Save current strategy results as a snapshot
+function saveSnapshot(){
+  if(!_currentStrategy) return;
+  var cfg = STRATEGY_SECTIONS[_currentStrategy];
+  var metrics = gatherMetrics(_currentStrategy);
+  _sessionSnapshots[_currentStrategy] = {
+    label:   cfg.label,
+    color:   cfg.color,
+    dot:     cfg.dot,
+    metrics: metrics,
+    savedAt: new Date().toLocaleTimeString()
+  };
+
+  // Flash the button
+  var btn = document.getElementById('saveSnapshotBtn');
+  var orig = btn.textContent;
+  btn.textContent = 'Saved ✓';
+  btn.style.background = 'rgba(5,150,105,.3)';
+  btn.style.borderColor = 'rgba(5,150,105,.6)';
+  btn.style.color = '#34d399';
+  setTimeout(function(){
+    btn.textContent = orig;
+    btn.style.background = 'rgba(201,168,76,.12)';
+    btn.style.borderColor = 'rgba(201,168,76,.4)';
+    btn.style.color = '#c9a84c';
+  }, 1800);
+
+  updateSnapshotBadges();
+  updateCompareBanner();
+  updateCompareButton();
+}
+
+// Pull key metrics from each strategy
+function gatherMetrics(id){
+  var m = {};
+  try {
+    if(id === 's1'){
+      // Pull from mainChart or DOM summary tiles
+      var el = document.querySelector('#mainChart');
+      var cards = document.querySelectorAll('.card .c-val');
+      if(cards.length){ m['Final Value'] = cards[0] ? cards[0].textContent : '—'; }
+      m['Strategy'] = 'Invest in ETF';
+    }
+    if(id === 's2m'){
+      var ph1 = document.getElementById('mortPh1Label');
+      var ph2 = document.getElementById('mortPh2Label');
+      var mortCards = document.querySelectorAll('#mortCards .c-val');
+      if(ph1) m['Payoff Time']   = ph1.textContent;
+      if(ph2) m['ETF Phase']     = ph2.textContent;
+      if(mortCards[5]) m['Total Portfolio'] = mortCards[5].textContent;
+      m['Strategy'] = 'Pay-off Mortgage & Invest';
+    }
+    if(id === 's3'){
+      var propCards = document.querySelectorAll('.prop-wrap .c-val');
+      if(propCards.length) m['Final Value'] = propCards[0].textContent;
+      m['Strategy'] = 'Develop a Property Portfolio';
+    }
+  } catch(e){}
+  return m;
+}
+
+function updateSnapshotBadges(){
+  Object.keys(STRATEGY_SECTIONS).forEach(function(id){
+    var badge = document.getElementById(id + '-snapshot-badge');
+    if(badge) badge.style.display = _sessionSnapshots[id] ? 'block' : 'none';
+  });
+}
+
+function updateCompareBanner(){
+  var count = Object.keys(_sessionSnapshots).length;
+  var banner = document.getElementById('compareAvailableBanner');
+  if(banner) banner.style.display = count >= 1 ? 'block' : 'none';
+}
+
+function updateCompareButton(){
+  var others = Object.keys(_sessionSnapshots).filter(function(k){ return k !== _currentStrategy; });
+  var existing = document.getElementById('compareBtn');
+  if(existing) existing.remove();
+
+  if(others.length === 0) return;
+
+  var toolbar = document.getElementById('strategyToolbar');
+  if(!toolbar) return;
+
+  var btn = document.createElement('button');
+  btn.id = 'compareBtn';
+  btn.textContent = 'Compare with saved ⇄';
+  btn.onclick = openCompareDrawer;
+  btn.style.cssText = 'background:rgba(79,70,229,.15);border:1px solid rgba(79,70,229,.5);color:#a5b4fc;font-size:12px;font-weight:500;letter-spacing:.5px;padding:7px 14px;border-radius:6px;cursor:pointer;margin-left:8px;';
+  toolbar.appendChild(btn);
+}
+
+function openCompareDrawer(){
+  var drawer = document.getElementById('compareDrawer');
+  var content = document.getElementById('compareDrawerContent');
+  content.innerHTML = '';
+
+  // Current strategy card
+  if(_currentStrategy){
+    var cfg = STRATEGY_SECTIONS[_currentStrategy];
+    var metrics = gatherMetrics(_currentStrategy);
+    content.innerHTML += buildCompareCard('Current: ' + cfg.label, cfg.dot, metrics, true);
+  }
+
+  // Saved snapshots
+  Object.keys(_sessionSnapshots).forEach(function(id){
+    if(id === _currentStrategy) return;
+    var snap = _sessionSnapshots[id];
+    content.innerHTML += buildCompareCard('Saved: ' + snap.label + ' (' + snap.savedAt + ')', snap.dot, snap.metrics, false);
+  });
+
+  drawer.style.display = 'block';
+}
+
+function buildCompareCard(title, color, metrics, isCurrent){
+  var rows = Object.entries(metrics).map(function(kv){
+    return '<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);"><span style="font-size:11px;color:#8a9ab5;">'+kv[0]+'</span><span style="font-size:11px;color:#f8f4ed;font-weight:500;">'+kv[1]+'</span></div>';
+  }).join('');
+  return '<div style="background:rgba(255,255,255,.04);border:1px solid '+color+'44;border-top:2px solid '+color+';border-radius:10px;padding:14px 16px;">'
+    + '<div style="font-size:10px;color:'+color+';letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600;">'
+    + (isCurrent ? '▶ ' : '') + title + '</div>'
+    + (rows || '<div style="font-size:11px;color:#5a6a7e;">Save results to see metrics here</div>')
+    + '</div>';
+}
+
+// Start on load — show splash
+document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('strategyPage').style.display    = 'none';
+  document.getElementById('strategyContent').style.display = 'none';
+  // Hide all standalone sec-wraps (they live in strategyInner when selected)
+  document.querySelectorAll('.sec-wrap').forEach(function(el){
+    el.style.display = 'none';
+  });
+});
 </script>
 
 </body>

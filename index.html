@@ -236,6 +236,52 @@ input[type="range"], .range-in { display: none !important; }
   50%    { transform:translateY(-8px) scaleY(1.015); }
 }
 
+/* ═══════════════════════════════
+   MOBILE RESPONSIVE — ≤ 768px
+   ═══════════════════════════════ */
+@media (max-width: 768px) {
+  .app-wrap { flex-direction: column !important; }
+  .sidebar  { width: 100% !important; min-width: unset !important; max-width: unset !important;
+              border-right: none !important; border-bottom: 1px solid var(--border) !important; }
+  .main-panel { padding: 12px !important; }
+  .cards-row { flex-direction: column !important; }
+  .card-big { flex-direction: column !important; }
+  .two-col { flex-direction: column !important; }
+  .chart-box { padding: 12px !important; }
+  canvas { max-height: 220px !important; }
+  #mainChart { max-height: 260px !important; }
+  .tbl-hdr { flex-direction: column !important; gap: 8px !important; }
+  .tscroll { overflow-x: auto !important; }
+  table { font-size: 11px !important; }
+  .fund-row-hdr { flex-wrap: wrap !important; }
+  .ctrl-row { flex-wrap: wrap !important; gap: 6px !important; }
+  .num-wrap { max-width: 140px !important; }
+  .range-in { width: 100% !important; }
+  .section-label { font-size: 11px !important; }
+  .phase-bar { height: 28px !important; font-size: 10px !important; }
+  .mort-wrap { flex-direction: column !important; }
+  .mort-side { width: 100% !important; min-width: unset !important; border-right: none !important;
+               border-bottom: 1px solid var(--border) !important; }
+  .mort-main { padding: 12px !important; }
+  .mort-phase-bar { flex-direction: column !important; }
+  #card-s1, #card-s2m, #card-s3, #card-s4 {
+    min-width: unset !important; max-width: 100% !important;
+    padding: 28px 20px 24px !important;
+  }
+  #strategyToolbar { padding: 8px 12px !important; gap: 6px !important; }
+  #strategyToolbar button { font-size: 11px !important; padding: 5px 10px !important; }
+  .sus-grid { grid-template-columns: 1fr 1fr !important; }
+}
+@media (max-width: 480px) {
+  .main-panel, .mort-main { padding: 8px !important; }
+  .sidebar, .mort-side { padding: 10px !important; }
+  .card { padding: 12px 10px !important; }
+  .c-val { font-size: 20px !important; }
+  .tg { padding: 4px 8px !important; font-size: 11px !important; }
+  .fb { padding: 3px 7px !important; font-size: 10px !important; }
+  .splash-content { padding: 24px 16px !important; }
+}
+
 
 </style>
 </head>
@@ -503,6 +549,31 @@ input[type="range"], .range-in { display: none !important; }
       </div>
 
       <!-- ── Strategy II ── -->
+      <div id="card-s4" onclick="selectStrategy('s4','Invest in ASX ETFs','#0ea5e9')" style="
+        flex:1;min-width:300px;max-width:400px;cursor:pointer;
+        background:#040f1a;border:1px solid rgba(14,165,233,.3);
+        border-top:4px solid #38bdf8;border-radius:20px;
+        padding:48px 40px 44px;transition:all .25s;position:relative;overflow:hidden;
+      "
+      onmouseover="this.style.background='#061827';this.style.borderColor='rgba(14,165,233,.8)';this.style.transform='translateY(-8px)';this.style.boxShadow='0 24px 48px rgba(14,165,233,.18)'"
+      onmouseout="this.style.background='#040f1a';this.style.borderColor='rgba(14,165,233,.3)';this.style.transform='translateY(0)';this.style.boxShadow='none'"
+      >
+        <div id="s4-snapshot-badge" style="display:none;position:absolute;top:16px;right:16px;background:rgba(14,165,233,.25);border:1px solid rgba(14,165,233,.6);border-radius:20px;padding:4px 12px;font-size:12px;color:#7dd3fc;letter-spacing:.5px;font-weight:600;">✓ SAVED</div>
+        <div id="s4-compare-zone" style="display:none;margin-bottom:16px;"></div>
+        <div style="font-family:'Playfair Display',serif;font-size:96px;font-weight:700;color:rgba(56,189,248,.08);line-height:1;margin-bottom:10px;letter-spacing:-4px;">II</div>
+        <div style="font-size:13px;font-weight:600;color:#38bdf8;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:16px;">Strategy Two</div>
+        <div style="font-family:'Playfair Display',serif;font-size:38px;font-weight:600;color:#f4f0e8;margin-bottom:20px;line-height:1.2;">Invest in ASX ETFs</div>
+        <div style="height:1px;background:linear-gradient(90deg,rgba(56,189,248,.4),transparent);margin-bottom:22px;"></div>
+        <p style="font-size:17px;color:#8a9ab5;line-height:1.85;margin-bottom:26px;">Build wealth through the Australian Stock Exchange. Mix local shares (VAS, A200) with international exposure (VGS, NDQ) — up to 6 ASX funds in AUD.</p>
+        <ul style="list-style:none;padding:0;margin-bottom:32px;display:flex;flex-direction:column;gap:10px;">
+          <li style="font-size:15px;color:#7a8ba8;display:flex;align-items:center;gap:10px;"><span style="color:#38bdf8;font-size:18px;">—</span> Up to 6 ASX ETFs simultaneously</li>
+          <li style="font-size:15px;color:#7a8ba8;display:flex;align-items:center;gap:10px;"><span style="color:#38bdf8;font-size:18px;">—</span> AUD-based DCA with lump sum support</li>
+          <li style="font-size:15px;color:#7a8ba8;display:flex;align-items:center;gap:10px;"><span style="color:#38bdf8;font-size:18px;">—</span> 30-year withdrawal phase + Wd+20/Wd+30 milestones</li>
+        </ul>
+        <div style="font-size:16px;color:#38bdf8;font-weight:500;display:flex;align-items:center;gap:10px;letter-spacing:.5px;">Explore strategy <span style="font-size:22px;">→</span></div>
+      </div>
+
+      <!-- ── Strategy III ── -->
       <div id="card-s2m" onclick="selectStrategy('s2m','Pay-off Mortgage & Invest','#b45309')" style="
         flex:1;min-width:300px;max-width:400px;cursor:pointer;
         background:#1a0f06;border:1px solid rgba(180,83,9,.3);
@@ -514,8 +585,8 @@ input[type="range"], .range-in { display: none !important; }
       >
         <div id="s2m-snapshot-badge" style="display:none;position:absolute;top:16px;right:16px;background:rgba(180,83,9,.25);border:1px solid rgba(180,83,9,.6);border-radius:20px;padding:4px 12px;font-size:12px;color:#fbbf24;letter-spacing:.5px;font-weight:600;">✓ SAVED</div>
         <div id="s2m-compare-zone" style="display:none;margin-bottom:16px;"></div>
-        <div style="font-family:'Playfair Display',serif;font-size:96px;font-weight:700;color:rgba(245,158,11,.08);line-height:1;margin-bottom:10px;letter-spacing:-4px;">II</div>
-        <div style="font-size:13px;font-weight:600;color:#f59e0b;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:16px;">Strategy Two</div>
+        <div style="font-family:'Playfair Display',serif;font-size:96px;font-weight:700;color:rgba(245,158,11,.08);line-height:1;margin-bottom:10px;letter-spacing:-4px;">III</div>
+        <div style="font-size:13px;font-weight:600;color:#f59e0b;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:16px;">Strategy Three</div>
         <div style="font-family:'Playfair Display',serif;font-size:38px;font-weight:600;color:#f4f0e8;margin-bottom:20px;line-height:1.2;">Pay-off Mortgage &amp; Invest</div>
         <div style="height:1px;background:linear-gradient(90deg,rgba(245,158,11,.4),transparent);margin-bottom:22px;"></div>
         <p style="font-size:17px;color:#8a9ab5;line-height:1.85;margin-bottom:26px;">Clear your home loan using your monthly surplus, then redirect every dollar into markets once the mortgage is gone. Security first — growth second.</p>
@@ -527,7 +598,7 @@ input[type="range"], .range-in { display: none !important; }
         <div style="font-size:16px;color:#f59e0b;font-weight:500;display:flex;align-items:center;gap:10px;letter-spacing:.5px;">Explore strategy <span style="font-size:22px;">→</span></div>
       </div>
 
-      <!-- ── Strategy III ── -->
+      <!-- ── Strategy IV ── -->
       <div id="card-s3" onclick="selectStrategy('s3','Develop a Property Portfolio','#059669')" style="
         flex:1;min-width:300px;max-width:400px;cursor:pointer;
         background:#061a12;border:1px solid rgba(5,150,105,.3);
@@ -539,8 +610,8 @@ input[type="range"], .range-in { display: none !important; }
       >
         <div id="s3-snapshot-badge" style="display:none;position:absolute;top:16px;right:16px;background:rgba(5,150,105,.25);border:1px solid rgba(5,150,105,.6);border-radius:20px;padding:4px 12px;font-size:12px;color:#6ee7b7;letter-spacing:.5px;font-weight:600;">✓ SAVED</div>
         <div id="s3-compare-zone" style="display:none;margin-bottom:16px;"></div>
-        <div style="font-family:'Playfair Display',serif;font-size:96px;font-weight:700;color:rgba(52,211,153,.08);line-height:1;margin-bottom:10px;letter-spacing:-4px;">III</div>
-        <div style="font-size:13px;font-weight:600;color:#34d399;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:16px;">Strategy Three</div>
+        <div style="font-family:'Playfair Display',serif;font-size:96px;font-weight:700;color:rgba(52,211,153,.08);line-height:1;margin-bottom:10px;letter-spacing:-4px;">IV</div>
+        <div style="font-size:13px;font-weight:600;color:#34d399;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:16px;">Strategy Four</div>
         <div style="font-family:'Playfair Display',serif;font-size:38px;font-weight:600;color:#f4f0e8;margin-bottom:20px;line-height:1.2;">Develop a Property Portfolio</div>
         <div style="height:1px;background:linear-gradient(90deg,rgba(52,211,153,.4),transparent);margin-bottom:22px;"></div>
         <p style="font-size:17px;color:#8a9ab5;line-height:1.85;margin-bottom:26px;">Buy one Sydney property every 5 years. Build equity, collect rental income, and grow a portfolio of assets that appreciates and generates passive cash flow.</p>
@@ -551,6 +622,7 @@ input[type="range"], .range-in { display: none !important; }
         </ul>
         <div style="font-size:16px;color:#34d399;font-weight:500;display:flex;align-items:center;gap:10px;letter-spacing:.5px;">Explore strategy <span style="font-size:22px;">→</span></div>
       </div>
+
 
     </div>
 
@@ -1041,7 +1113,7 @@ function simulate(){
 // CHARTS
 // ═══════════════════════════════════════
 let mainChart,flowChart,cumChart;
-function makePhasePlugin(dcaYrs,coast){
+function makePhasePlugin(dcaYrs,coast,wYrs){
  return {id:'phase',
  beforeDraw(chart){
  const {ctx,chartArea:{left,right,top,bottom},scales:{x}}=chart; if(!x) return;
@@ -1059,6 +1131,13 @@ function makePhasePlugin(dcaYrs,coast){
  const x2=px(+i);ctx.strokeStyle='rgba(202,138,4,.4)';ctx.lineWidth=1;ctx.setLineDash([3,3]);
  ctx.beginPath();ctx.moveTo(x2,top);ctx.lineTo(x2,bottom);ctx.stroke();
  });
+ // Wd+20 and Wd+30 withdrawal milestone lines
+ const wd20Idx=dcaYrs+coast+20-1; const wd30Idx=dcaYrs+coast+30-1;
+ [[wd20Idx,'rgba(190,24,93,.5)'],[wd30Idx,'rgba(220,38,38,.65)']].forEach(([xi,col])=>{
+  if(xi<0||xi>=chart.data.labels.length) return;
+  const x2=px(xi);ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.setLineDash([6,3]);
+  ctx.beginPath();ctx.moveTo(x2,top);ctx.lineTo(x2,bottom);ctx.stroke();
+ });
  ctx.restore();
  },
  afterDraw(chart){
@@ -1066,6 +1145,10 @@ function makePhasePlugin(dcaYrs,coast){
  ctx.save();ctx.setLineDash([]);ctx.font='bold 10px system-ui';
  ctx.fillStyle='rgba(99,102,241,.9)';ctx.fillText('⏸',x.getPixelForValue(dcaYrs-1)+3,top+12);
  ctx.fillStyle='rgba(236,72,153,.9)';ctx.fillText('',x.getPixelForValue(dcaYrs+coast-1)+3,top+12);
+ // Wd+20 / Wd+30 labels
+ const wd20i=dcaYrs+coast+20-1, wd30i=dcaYrs+coast+30-1;
+ if(wd20i<chart.data.labels.length){ctx.fillStyle='rgba(190,24,93,.8)';ctx.fillText('Wd+20',x.getPixelForValue(wd20i)+3,top+24);}
+ if(wd30i<chart.data.labels.length){ctx.fillStyle='rgba(220,38,38,.8)';ctx.fillText('Wd+30',x.getPixelForValue(wd30i)+3,top+24);}
  ctx.restore();
  }
  };
@@ -1090,7 +1173,7 @@ let currentMode='combined';
 function initCharts(sim){
  const {data,dcaYrs,coast} = sim;
  const labels=data.map(r=>`Yr ${r.yr}`);
- const plugin=makePhasePlugin(dcaYrs,coast);
+ const plugin=makePhasePlugin(dcaYrs,coast,wYrs);
  const opts=baseOpts(dcaYrs,coast);
 
  const lumpScatter={id:'lumps',label:'Lump-Sum',type:'scatter',
@@ -1311,6 +1394,9 @@ function render(){
 
  // cards
  const at20 = data.find(r=>r.yr===20)||null;
+ const wdStart = dcaYrs + coast;
+ const atWd20  = data.find(r=>r.yr===wdStart+20)||null;
+ const atWd30  = data.find(r=>r.yr===wdStart+30)||null;
  const regularWd = fin.cumWd - totalLumps;
 
  // 1. Big tile — Total Invested with per-fund breakdown
@@ -1334,7 +1420,9 @@ function render(){
  // 2-7. Individual stat tiles
  const tiles = [
  {lbl:'Portfolio at Year 20', val:at20?fmtM(at20.comb):'—', sub: at20?`Real: ${fmtM(at20.real)}`:'Beyond timeline', cls:'i'},
- {lbl:'Portfolio at End (Nominal)', val:fmtM(fin.comb), sub:`After all ${TOTAL} years`, cls:'g', hi:'hi-g'},
+ {lbl:'Portfolio at End (Nominal)', val:fmtM(fin.comb), sub:`After ${TOTAL} yrs incl. withdrawal`, cls:'g', hi:'hi-g'},
+ {lbl:'20 Yrs Into Withdrawal', val:atWd20?fmtM(atWd20.comb):'—', sub:atWd20?`Yr ${wdStart+20} · Real: ${fmtM(atWd20.real)}`:'Extend wYrs', cls:'i'},
+ {lbl:'30 Yrs Into Withdrawal', val:atWd30?fmtM(atWd30.comb):'—', sub:atWd30?`Yr ${wdStart+30} · Real: ${fmtM(atWd30.real)}`:'Extend wYrs', cls:'p'},
  {lbl:'Portfolio at End (Real)', val:fmtM(fin.real), sub:"In today's dollars", cls:'s'},
  {lbl:'Total Lump Sum Withdrawals', val:fmt(totalLumps), sub:`${lumpSums.length} events`,cls:'y', hi:'hi-y'},
  {lbl:'Regular Monthly Withdrawals (Total)', val:fmtM(regularWd), sub:`${wYrs}yr cumulative`, cls:'p'},
@@ -1548,18 +1636,33 @@ render();
         <input class="num-in" type="number" id="m_rate" value="4.5" min="1" max="12" step="0.1" oninput="mortDebounce()">
         <span class="num-suffix">%</span>
       </div></div></div>
-    <div class="prop-item"><div class="prop-label">Monthly extra payment</div>
+    <!-- Minimum payment (auto-calculated, read-only) -->
+    <div class="prop-item">
+      <div class="prop-label">Minimum payment <span style="font-size:10px;font-weight:400;opacity:.65;">(interest only, auto)</span></div>
+      <div class="ctrl-row">
+        <div id="mortMinDisplay" style="font-size:15px;font-weight:700;color:#b45309;letter-spacing:-.3px;padding:3px 0;">—</div>
+      </div>
+    </div>
+    <!-- Additional payment (editable) -->
+    <div class="prop-item"><div class="prop-label">Additional monthly payment</div>
       <div class="ctrl-row"><div class="num-wrap"><span class="num-prefix">$</span>
-        <input class="num-in" type="number" id="m_payment" value="2000" min="200" max="20000" step="100" oninput="mortDebounce()">
-      </div></div></div>
+        <input class="num-in" type="number" id="m_extra" value="2000" min="0" max="20000" step="100" oninput="mortDebounce()">
+      </div></div>
+    </div>
+    <!-- Total payment (auto-calculated, read-only) -->
+    <div class="prop-item">
+      <div class="prop-label">Total monthly payment <span style="font-size:10px;font-weight:400;opacity:.65;">(min + additional)</span></div>
+      <div class="ctrl-row">
+        <div id="mortTotalDisplay" style="font-size:15px;font-weight:700;color:#92400e;letter-spacing:-.3px;padding:3px 0;">—</div>
+      </div>
+    </div>
   </div>
   <div class="mort-group">
     <div class="mort-group-title">After Payoff — ETF Phase</div>
-    <div class="prop-item"><div class="prop-label">Total horizon from today</div>
-      <div class="ctrl-row"><div class="num-wrap">
-        <input class="num-in" type="number" id="m_horizon" value="20" min="5" max="40" step="1" oninput="mortDebounce()">
-        <span class="num-suffix">yr</span>
-      </div></div></div>
+    <div class="prop-item">
+      <div class="prop-label">ETF investment window <span style="font-size:10px;font-weight:400;opacity:.65;">(auto · 20yr horizon − payoff)</span></div>
+      <div class="ctrl-row"><div id="mortEtfDurDisplay" style="font-size:15px;font-weight:700;color:#4f46e5;padding:3px 0;">—</div></div>
+    </div>
     <div class="prop-item"><div class="prop-label">VOO allocation</div>
       <div class="ctrl-row"><div class="num-wrap">
         <input class="num-in" type="number" id="m_voo" value="60" min="0" max="100" step="5" oninput="mortDebounce()">
@@ -1581,6 +1684,37 @@ render();
         <span class="num-suffix">%</span>
       </div></div></div>
   </div>
+  <!-- Withdrawal Phase inputs -->
+  <div class="mort-group">
+    <div class="mort-group-title" style="color:#9f1239;">Withdrawal Phase</div>
+    <div class="prop-item"><div class="prop-label">Monthly withdrawal</div>
+      <div class="ctrl-row"><div class="num-wrap"><span class="num-prefix">$</span>
+        <input class="num-in" type="number" id="m_wdraw" value="12000" min="1000" max="50000" step="500" oninput="mortDebounce()">
+      </div></div></div>
+    <div class="prop-item"><div class="prop-label">Withdrawal growth / yr</div>
+      <div class="ctrl-row"><div class="num-wrap">
+        <input class="num-in" type="number" id="m_wdgrow" value="3" min="0" max="10" step="0.5" oninput="mortDebounce()">
+        <span class="num-suffix">%</span>
+      </div></div></div>
+    <div class="prop-item"><div class="prop-label">Withdrawal years</div>
+      <div class="ctrl-row"><div class="num-wrap">
+        <input class="num-in" type="number" id="m_wdyrs" value="30" min="5" max="50" step="1" oninput="mortDebounce()">
+        <span class="num-suffix">yr</span>
+      </div></div></div>
+    <div class="prop-item"><div class="prop-label">Inflation rate</div>
+      <div class="ctrl-row"><div class="num-wrap">
+        <input class="num-in" type="number" id="m_inf" value="3" min="0" max="10" step="0.5" oninput="mortDebounce()">
+        <span class="num-suffix">%</span>
+      </div></div></div>
+  </div>
+
+  <!-- Lump-Sum Events -->
+  <div class="mort-group">
+    <div class="mort-group-title" style="color:#92400e;">Lump-Sum Withdrawals</div>
+    <div class="lump-list" id="mortLumpList"></div>
+    <button class="add-lump" id="mortAddLump">＋ Add lump-sum event</button>
+  </div>
+
   <!-- Summary box -->
   <div class="mort-group" id="mortSummaryBox" style="background:#fffbeb;border-color:#fde68a;">
     <div class="mort-group-title" style="color:#92400e;">Quick Summary</div>
@@ -1591,9 +1725,13 @@ render();
 <!-- OUTPUTS -->
 <div class="mort-main">
   <!-- Phase bar -->
-  <div class="mort-phase-bar">
-    <div class="mort-ph1"><span class="mort-ph-lbl">Phase 1 — Payoff</span><span class="mort-ph-val" id="mortPh1Label" style="color:#b45309;">…yrs</span></div>
-    <div class="mort-ph2"><span class="mort-ph-lbl">Phase 2 — ETF Invest</span><span class="mort-ph-val" id="mortPh2Label" style="color:#4f46e5;">…yrs</span></div>
+  <div class="mort-phase-bar" style="display:flex;">
+    <div class="mort-ph1" style="flex:1;min-width:50px;"><span class="mort-ph-lbl">Phase 1 — Payoff</span><span class="mort-ph-val" id="mortPh1Label" style="color:#b45309;">…yrs</span></div>
+    <div class="mort-ph2" style="flex:1;min-width:50px;"><span class="mort-ph-lbl">Phase 2 — ETF Invest</span><span class="mort-ph-val" id="mortPh2Label" style="color:#4f46e5;">…yrs</span></div>
+    <div style="flex:2;min-width:80px;background:linear-gradient(90deg,#be185d,#9f1239);border-radius:0 6px 6px 0;padding:5px 10px;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:10px;font-weight:500;color:#fce7f3;letter-spacing:.3px;">Phase 3 — Withdrawal</span>
+      <span id="mortPh3Label" style="font-size:11px;font-weight:700;color:#fff;">…yrs</span>
+    </div>
   </div>
 
   <!-- Cards row -->
@@ -1611,19 +1749,54 @@ render();
     </div>
   </div>
 
+  <!-- Full timeline chart -->
+  <div class="chart-box" style="margin-top:12px;">
+    <div class="ch-hdr"><div class="ch-ttl" style="font-size:14px;">Full Timeline — All 3 Phases (Nominal)</div></div>
+    <canvas id="mortTimelineChart" height="180"></canvas>
+  </div>
+
+  <!-- Withdrawal chart -->
+  <div class="chart-box" style="margin-top:12px;">
+    <div class="ch-hdr"><div class="ch-ttl" style="font-size:14px;color:#be185d;">Phase 3 — Withdrawal Portfolio (Nominal vs Real)</div></div>
+    <canvas id="mortWdChart" height="180"></canvas>
+  </div>
+
+  <!-- Sustainability panel (matches ETF section) -->
+  <div class="chart-box" style="margin-top:12px;">
+    <div class="ch-hdr"><div class="ch-ttl" style="font-size:14px;">Portfolio Sustainability</div></div>
+    <div id="mortSusContent"></div>
+  </div>
+
+  <!-- Lump-Sum chart -->
+  <div class="chart-box" style="margin-top:12px;">
+    <div class="ch-hdr"><div class="ch-ttl" style="font-size:14px;color:#92400e;">Lump-Sum Withdrawal Events</div></div>
+    <canvas id="mortLumpChart" height="140"></canvas>
+  </div>
+
   <!-- Detailed table -->
-  <div class="chart-box">
-    <div class="ch-hdr"><div class="ch-ttl" style="font-size:14px;">Year-by-Year Breakdown</div></div>
+  <div class="chart-box" style="margin-top:12px;">
+    <div class="ch-hdr">
+      <div class="ch-ttl" style="font-size:14px;">Year-by-Year Breakdown</div>
+      <div class="fb-row" id="mortFbRow">
+        <button class="fb on" onclick="mortTF='all';mortFbRow(this);" data-f="all">All</button>
+        <button class="fb" onclick="mortTF='1';mortFbRow(this);" data-f="1">Payoff</button>
+        <button class="fb" onclick="mortTF='2';mortFbRow(this);" data-f="2">ETF</button>
+        <button class="fb" onclick="mortTF='3';mortFbRow(this);" data-f="3">Withdraw</button>
+        <button class="fb" onclick="mortTF='L';mortFbRow(this);" data-f="L">Lump yrs</button>
+      </div>
+    </div>
     <div style="overflow-x:auto;max-height:320px;overflow-y:auto;">
       <table style="width:100%;border-collapse:collapse;font-size:11px;" id="mortTable">
         <thead style="position:sticky;top:0;background:#fff;">
           <tr style="border-bottom:1.5px solid var(--border);">
-            <th style="padding:6px 8px;text-align:left;color:var(--tx3);font-weight:600;">Year</th>
+            <th style="padding:6px 8px;text-align:left;color:var(--tx3);font-weight:600;">Yr</th>
+            <th style="padding:6px 8px;text-align:right;color:var(--tx3);font-weight:600;">Cal</th>
             <th style="padding:6px 8px;text-align:right;color:var(--tx3);font-weight:600;">Phase</th>
-            <th style="padding:6px 8px;text-align:right;color:var(--tx3);font-weight:600;">Loan Balance</th>
-            <th style="padding:6px 8px;text-align:right;color:var(--tx3);font-weight:600;">Interest Paid</th>
-            <th style="padding:6px 8px;text-align:right;color:var(--tx3);font-weight:600;">ETF Value</th>
-            <th style="padding:6px 8px;text-align:right;color:var(--tx3);font-weight:600;">Monthly Into ETF</th>
+            <th style="padding:6px 8px;text-align:right;color:var(--tx3);font-weight:600;">Loan Bal</th>
+            <th style="padding:6px 8px;text-align:right;color:var(--tx3);font-weight:600;">Portfolio</th>
+            <th style="padding:6px 8px;text-align:right;color:var(--tx3);font-weight:600;">Real Value</th>
+            <th style="padding:6px 8px;text-align:right;color:var(--tx3);font-weight:600;">Monthly</th>
+            <th style="padding:6px 8px;text-align:right;color:var(--tx3);font-weight:600;">Lump Sum</th>
           </tr>
         </thead>
         <tbody id="mortTableBody"></tbody>
@@ -3624,7 +3797,46 @@ function mortDebounce(){
   mortDebTimer = setTimeout(renderMortgage, 120);
 }
 
-var _mortLoanChart, _mortEtfChart;
+var _mortLoanChart, _mortEtfChart, _mortTimelineChart, _mortWdChart, _mortLumpChart;
+var mortLumps = [{yr:22,amt:100000},{yr:28,amt:200000},{yr:35,amt:150000}];
+var mortTF = 'all';
+function mortFbRow(btn){
+  document.querySelectorAll('#mortFbRow .fb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  mortRenderTable();
+}
+function mortRenderLumps(){
+  var ll=document.getElementById('mortLumpList'); if(!ll) return;
+  ll.innerHTML=mortLumps.map(function(l,i){
+    return '<div class="lump-entry">'+
+      '<span style="font-size:9px;color:#94a3b8">Yr</span>'+
+      '<div class="num-wrap" style="flex:0 0 auto"><input class="num-in" style="width:38px" type="number" data-li="'+i+'" data-field="yr" value="'+l.yr+'" min="1" max="80" step="1"></div>'+
+      '<span class="lump-sep">→</span>'+
+      '<div class="num-wrap" style="flex:1"><span class="num-prefix">$</span><input class="num-in" style="width:66px" type="number" data-li="'+i+'" data-field="amt" value="'+l.amt+'" min="0" max="10000000" step="10000"></div>'+
+      '<button class="lump-del" data-li="'+i+'">✕</button>'+
+    '</div>';
+  }).join('');
+  ll.querySelectorAll('.num-in').forEach(function(inp){
+    inp.addEventListener('input',function(){mortLumps[+inp.dataset.li][inp.dataset.field]=+inp.value;mortDebounce();});
+  });
+  ll.querySelectorAll('.lump-del').forEach(function(btn){
+    btn.addEventListener('click',function(){mortLumps.splice(+btn.dataset.li,1);mortRenderLumps();mortDebounce();});
+  });
+}
+var _mortTableData=[];
+function mortRenderTable(){
+  var tbody=document.getElementById('mortTableBody'); if(!tbody) return;
+  var f=mortTF;
+  var rows='';
+  _mortTableData.forEach(function(r){
+    if(f==='1'&&r.phase!==1) return;
+    if(f==='2'&&r.phase!==2) return;
+    if(f==='3'&&r.phase!==3) return;
+    if(f==='L'&&!r.isLump) return;
+    rows+=r.html;
+  });
+  tbody.innerHTML=rows;
+}
 
 function mortFmt(v){ return '$'+Math.round(v).toLocaleString(); }
 function mortFmtK(v){ return '$'+(v/1000).toFixed(1)+'k'; }
@@ -3632,14 +3844,27 @@ function mortFmtK(v){ return '$'+(v/1000).toFixed(1)+'k'; }
 function renderMortgage(){
   var balance  = +document.getElementById('m_balance').value  || 100000;
   var annRate  = +document.getElementById('m_rate').value     || 4.5;
-  var monthly  = +document.getElementById('m_payment').value  || 2000;
-  var horizon  = +document.getElementById('m_horizon').value  || 20;
+  var extra    = +(document.getElementById('m_extra')||{value:2000}).value||2000;
+  var horizon  = 20;  // fixed 20-year horizon from today
   var vooPct   = +document.getElementById('m_voo').value      || 60;
   var qqqPct   = +document.getElementById('m_qqq').value      || 40;
   var vooCagr  = +document.getElementById('m_voo_cagr').value || 13.8;
   var qqqCagr  = +document.getElementById('m_qqq_cagr').value || 17.4;
 
-  var mRate = (annRate/100)/12;
+  var mRate   = (annRate/100)/12;
+  // Proper P&I minimum for a 25-year term (affects payoff speed with rate changes)
+  var n300    = Math.pow(1+mRate,300);
+  var minInt  = mRate>0 ? balance*mRate*n300/(n300-1) : balance/300;
+  var monthly = minInt + extra;
+
+  // ── Live display: update Minimum and Total tiles ──
+  (function(){
+    function mfmt(v){ return '$'+Math.round(v).toLocaleString()+'/mo'; }
+    var minEl = document.getElementById('mortMinDisplay');
+    var totEl = document.getElementById('mortTotalDisplay');
+    if(minEl) minEl.textContent = mfmt(minInt);
+    if(totEl) totEl.textContent = mfmt(monthly);
+  }());
 
   // ── Phase 1: amortize month by month ──
   var loanBal     = balance;
@@ -3686,19 +3911,73 @@ function renderMortgage(){
       etfYearlyQqq.push(qqqVal);
     }
   }
-  var totalEtf = vooVal + qqqVal;
+  var totalEtf    = vooVal + qqqVal;
   var totalContrib = monthly * etfMonths;
 
+  // ── Phase 3: Withdrawal simulation ───────────────────────────
+  var wdrawAmt  = +(document.getElementById('m_wdraw') ||{value:12000}).value||12000;
+  var wdGrowPct = +(document.getElementById('m_wdgrow')||{value:3}).value||3;
+  var wdYrs     = +(document.getElementById('m_wdyrs') ||{value:30}).value||30;
+  var infPct    = +(document.getElementById('m_inf')   ||{value:3}).value||3;
+
+  var wMRate    = Math.pow(1+(vooCagr*(vooPct/100)+qqqCagr*(qqqPct/100))/100, 1/12)-1;
+  var wPortfolio= totalEtf;
+  var wMonthly  = wdrawAmt;
+  var wCumWd    = 0;
+  var wCumLumps = 0;
+  var inflAccum = 1;
+  var wYearlyPort=[],wYearlyReal=[],wYearlyCumWd=[],wYearlyPmt=[],wYearlyLump=[],wDepleted=false,wDepletedYr=0;
+  // Build lump map (absolute year from start of sim = payoff + etf + withdrawal year)
+  var p2TotalYrsForLump = Math.ceil(payoffYrs)+Math.ceil(etfYrs);
+  var mortLumpMap={};
+  mortLumps.forEach(function(l){ if(l.yr>=1&&l.amt>0){ mortLumpMap[l.yr]=(mortLumpMap[l.yr]||0)+l.amt; } });
+
+  for(var wy=1;wy<=wdYrs;wy++){
+    var absYrForLump = p2TotalYrsForLump + wy;
+    var lumpAmt = mortLumpMap[absYrForLump]||0;
+    // Apply lump sum withdrawal at start of year
+    if(lumpAmt>0){
+      var actualLump=Math.min(lumpAmt,wPortfolio);
+      wPortfolio-=actualLump; wCumWd+=actualLump; wCumLumps+=actualLump; lumpAmt=actualLump;
+    }
+    for(var wm=1;wm<=12;wm++){
+      wPortfolio = wPortfolio*(1+wMRate) - wMonthly;
+      if(wPortfolio<0){wPortfolio=0;}
+      wCumWd += wMonthly;
+    }
+    inflAccum *= (1+infPct/100);
+    wYearlyPort.push(wPortfolio);
+    wYearlyReal.push(wPortfolio/inflAccum);
+    wYearlyCumWd.push(wCumWd);
+    wYearlyPmt.push(wMonthly);
+    wYearlyLump.push(lumpAmt);
+    if(wPortfolio<=0 && !wDepleted){wDepleted=true;wDepletedYr=wy;}
+    wMonthly *= (1+wdGrowPct/100);
+  }
+  var finalWdPort = wYearlyPort[wYearlyPort.length-1]||0;
+  var finalWdReal = wYearlyReal[wYearlyReal.length-1]||0;
+  var wdPortAtStart = totalEtf;
+
   // ── Phase bar ──
+  // ── Phase bar + ETF duration display ──
   var ph1El = document.getElementById('mortPh1Label');
   var ph2El = document.getElementById('mortPh2Label');
+  var ph3El = document.getElementById('mortPh3Label');
+  var etfDurEl = document.getElementById('mortEtfDurDisplay');
   if(loanMonths >= 9999){
-    ph1El.textContent = 'Never (pay ↑)';
-    ph2El.textContent = '0 yrs';
+    if(ph1El) ph1El.textContent = 'Never (pay ↑)';
+    if(ph2El) ph2El.textContent = '0 yrs';
+    if(etfDurEl){ etfDurEl.textContent='⚠ Payment too low'; etfDurEl.style.color='#dc2626'; }
+  } else if(etfYrs <= 0){
+    if(ph1El) ph1El.textContent = payoffYrs.toFixed(1)+' yrs';
+    if(ph2El) ph2El.textContent = '0 yrs';
+    if(etfDurEl){ etfDurEl.innerHTML='<span style="color:#dc2626;font-size:12px;font-weight:600;">You are still paying the mortgage beyond the 20-yr horizon</span>'; }
   } else {
-    ph1El.textContent = payoffYrs.toFixed(1)+' yrs';
-    ph2El.textContent = etfYrs.toFixed(1)+' yrs';
+    if(ph1El) ph1El.textContent = payoffYrs.toFixed(1)+' yrs';
+    if(ph2El) ph2El.textContent = etfYrs.toFixed(1)+' yrs';
+    if(etfDurEl){ etfDurEl.textContent=etfYrs.toFixed(1)+' yrs'; etfDurEl.style.color='#4f46e5'; }
   }
+  if(ph3El) ph3El.textContent = wdYrs+' yrs';
 
   // ── Summary box ──
   var sb = document.getElementById('mortSummaryContent');
@@ -3708,98 +3987,593 @@ function renderMortgage(){
     sb.innerHTML =
       '<b>Loan cleared in:</b> '+(Math.floor(payoffYrs))+' yrs '+(Math.round((payoffYrs%1)*12))+' mo<br>'+
       '<b>Total interest paid:</b> '+mortFmt(totalInterest)+'<br>'+
-      '<b>ETF investing phase:</b> '+etfYrs.toFixed(1)+' years<br>'+
-      '<b>Monthly into ETFs:</b> '+mortFmt(monthly)+'/mo<br>'+
-      '<b>VOO ('+vooPct+'%) final:</b> '+mortFmt(vooVal)+'<br>'+
-      '<b>QQQM ('+qqqPct+'%) final:</b> '+mortFmt(qqqVal)+'<br>'+
-      '<b>Total ETF portfolio:</b> <span style="color:#4f46e5;font-size:13px;font-weight:700;">'+mortFmt(totalEtf)+'</span><br>'+
-      '<b>Total contributed:</b> '+mortFmt(totalContrib);
+      '<b>ETF investing phase:</b> '+etfYrs.toFixed(1)+' yrs · <b>monthly:</b> '+mortFmt(monthly)+'/mo<br>'+
+      '<b>Portfolio at withdrawal start:</b> <span style="color:#4f46e5;font-weight:700;">'+mortFmt(totalEtf)+'</span><br>'+
+      '<b>Initial withdrawal:</b> '+mortFmt(wdrawAmt)+'/mo → grows '+wdGrowPct+'%/yr<br>'+
+      '<b>Portfolio after '+wdYrs+' yr withdrawal:</b> <span style="color:'+(finalWdPort>0?'#059669':'#dc2626')+';font-weight:700;">'+mortFmt(finalWdPort)+'</span><br>'+
+      '<b>Real value ('+infPct+'% inflation):</b> '+mortFmt(finalWdReal)+'<br>'+
+      '<b>Total regular withdrawn:</b> <span style="color:#be185d;font-weight:700;">'+mortFmt(wCumWd-wCumLumps)+'</span><br>'+
+      '<b>Total lump sums:</b> <span style="color:#92400e;font-weight:700;">'+mortFmt(wCumLumps)+'</span><br>'+
+      '<b>Grand total withdrawn:</b> <span style="color:#e11d48;font-weight:700;">'+mortFmt(wCumWd)+'</span>'+
+      (wDepleted?'<br><b style="color:#dc2626">⚠ Portfolio depleted at withdrawal yr '+wDepletedYr+'</b>':'');
   }
 
   // ── Cards ──
   var cardsEl = document.getElementById('mortCards');
   cardsEl.innerHTML = [
-    {l:'Payoff time',         v: loanMonths>=9999?'N/A':payoffYrs.toFixed(1)+' yrs',     c:'a'},
-    {l:'Interest paid',       v: mortFmtK(totalInterest),   c:'r'},
-    {l:'ETF phase',           v: etfYrs.toFixed(1)+' yrs', c:'i'},
-    {l:'VOO final',           v: mortFmtK(vooVal),          c:'g'},
-    {l:'QQQM final',          v: mortFmtK(qqqVal),          c:'p'},
-    {l:'Total portfolio',     v: mortFmtK(totalEtf),        c:'i'},
+    {l:'Payoff time',              v: loanMonths>=9999?'N/A':payoffYrs.toFixed(1)+' yrs', c:'a'},
+    {l:'Interest paid',            v: mortFmtK(totalInterest),        c:'r'},
+    {l:'ETF phase',                v: etfYrs.toFixed(1)+' yrs',       c:'i'},
+    {l:'Portfolio at Withdrawal',  v: mortFmtK(totalEtf),             c:'g', sub:'Start of Phase 3'},
+    {l:'After '+wdYrs+'yr Withdrawal', v: mortFmtK(finalWdPort),      c: finalWdPort>0?'g':'r', sub: wDepleted?'Depleted yr '+wDepletedYr:'Sustained'},
+    {l:'Real Value ('+infPct+'% inf)',  v: mortFmtK(finalWdReal),     c:'p', sub:'Inflation adjusted'},
+    {l:'Total Withdrawn',          v: mortFmtK(wCumWd),               c:'y', sub: 'incl. '+mortFmtK(wCumLumps)+' lumps'},
   ].map(function(x){
-    return '<div class="card"><div class="c-lbl">'+x.l+'</div><div class="c-val '+x.c+'">'+x.v+'</div></div>';
+    return '<div class="card"><div class="c-lbl">'+x.l+'</div><div class="c-val '+(x.c||'')+'">'+x.v+'</div>'+(x.sub?'<div class="c-sub">'+x.sub+'</div>':'')+'</div>';
   }).join('');
 
   // ── Loan chart ──
   var loanLabels = loanYearlyBal.map(function(_,i){return 'Yr '+(i+1);});
-  if(_mortLoanChart) _mortLoanChart.destroy();
+  if(_mortLoanChart){ _mortLoanChart.destroy(); _mortLoanChart = null; }
   var lctx = document.getElementById('mortLoanChart');
-  if(lctx && loanYearlyBal.length){
+  // Show placeholder if payment can't cover interest
+  var lcanWrap = lctx ? lctx.parentElement : null;
+  if(lcanWrap){
+    var existErr = lcanWrap.querySelector('.mort-err-msg');
+    if(existErr) existErr.remove();
+  }
+  if(loanMonths >= 9999){
+    // Show the canvas placeholder with an error overlay
+    if(lcanWrap){
+      var errDiv = document.createElement('div');
+      errDiv.className = 'mort-err-msg';
+      errDiv.style.cssText = 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,.9);border-radius:8px;text-align:center;padding:20px;';
+      errDiv.innerHTML = '<div style="font-size:28px;margin-bottom:8px;">⚠️</div>'
+        + '<div style="font-size:14px;font-weight:600;color:#b45309;margin-bottom:6px;">Payment too low to cover interest</div>'
+        + '<div style="font-size:13px;color:#6b7280;">Minimum monthly payment:<br><strong style="font-size:18px;color:#1d4ed8;">' + mortFmt(balance * mRate) + '/mo</strong></div>';
+      lcanWrap.style.position = 'relative';
+      lcanWrap.appendChild(errDiv);
+    }
+  } else if(lctx && loanYearlyBal.length){
     _mortLoanChart = new Chart(lctx.getContext('2d'),{
       type:'bar',
       data:{
         labels:loanLabels,
         datasets:[
-          {label:'Remaining Balance',data:loanYearlyBal,backgroundColor:'rgba(180,83,9,.2)',borderColor:'#b45309',borderWidth:2,yAxisID:'y'},
-          {label:'Cumulative Interest',data:(function(){var c=0;return loanYearlyInt.map(function(v){c+=v;return c;});}()),type:'line',borderColor:'#dc2626',borderWidth:2,pointRadius:0,fill:false,tension:.3,yAxisID:'y'}
+          {label:'Remaining Balance',data:loanYearlyBal,backgroundColor:'rgba(59,130,246,.25)',borderColor:'#3b82f6',borderWidth:2,yAxisID:'y'},
+          {label:'Cumulative Interest',data:(function(){var c=0;return loanYearlyInt.map(function(v){c+=v;return c;});}()),type:'line',borderColor:'#f59e0b',borderWidth:2.5,pointRadius:0,fill:false,tension:.3,yAxisID:'y'}
         ]
       },
-      options:{responsive:true,plugins:{legend:{labels:{font:{size:10}}}},scales:{y:{ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'k';}},grid:{color:'rgba(0,0,0,.04)'}},x:{ticks:{font:{size:10}}}}}
+      options:{responsive:true,plugins:{legend:{labels:{font:{size:11},color:'#374151'}}},scales:{y:{ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'k';},color:'#6b7280'},grid:{color:'rgba(0,0,0,.06)'}},x:{ticks:{font:{size:10},color:'#6b7280'}}}}
     });
   }
 
   // ── ETF chart ──
   var etfLabels = etfYearlyVoo.map(function(_,i){return 'Yr '+Math.round(payoffYrs+i+1);});
-  if(_mortEtfChart) _mortEtfChart.destroy();
+  if(_mortEtfChart){ _mortEtfChart.destroy(); _mortEtfChart = null; }
   var ectx = document.getElementById('mortEtfChart');
-  if(ectx && etfYearlyVoo.length){
+  var ecanWrap = ectx ? ectx.parentElement : null;
+  if(ecanWrap){ var ee = ecanWrap.querySelector('.mort-err-msg'); if(ee) ee.remove(); }
+  if(loanMonths >= 9999){
+    if(ecanWrap){
+      var errDiv2 = document.createElement('div');
+      errDiv2.className = 'mort-err-msg';
+      errDiv2.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.9);border-radius:8px;';
+      errDiv2.innerHTML = '<div style="font-size:13px;color:#9ca3af;">ETF phase begins after loan is paid off</div>';
+      ecanWrap.style.position = 'relative';
+      ecanWrap.appendChild(errDiv2);
+    }
+  } else if(ectx && etfYearlyVoo.length){
     _mortEtfChart = new Chart(ectx.getContext('2d'),{
       type:'line',
       data:{
         labels:etfLabels,
         datasets:[
-          {label:'VOO',data:etfYearlyVoo,borderColor:'#4f46e5',backgroundColor:'rgba(79,70,229,.08)',fill:true,tension:.3,pointRadius:0,borderWidth:2},
-          {label:'QQQM',data:etfYearlyQqq,borderColor:'#7c3aed',backgroundColor:'rgba(124,58,237,.06)',fill:true,tension:.3,pointRadius:0,borderWidth:2},
-          {label:'Combined',data:etfYearlyVoo.map(function(v,i){return v+(etfYearlyQqq[i]||0);}),borderColor:'#059669',borderWidth:2.5,pointRadius:0,tension:.3,fill:false}
+          {label:'VOO',data:etfYearlyVoo,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.1)',fill:true,tension:.3,pointRadius:0,borderWidth:2},
+          {label:'QQQM',data:etfYearlyQqq,borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.08)',fill:true,tension:.3,pointRadius:0,borderWidth:2},
+          {label:'Combined',data:etfYearlyVoo.map(function(v,i){return v+(etfYearlyQqq[i]||0);}),borderColor:'#6366f1',borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#6366f1',tension:.3,fill:false}
         ]
       },
-      options:{responsive:true,plugins:{legend:{labels:{font:{size:10}}}},scales:{y:{ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'k';}},grid:{color:'rgba(0,0,0,.04)'}},x:{ticks:{font:{size:10},maxTicksLimit:8}}}}
+      options:{responsive:true,plugins:{legend:{labels:{font:{size:11},color:'#374151'}}},scales:{y:{ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'k';},color:'#6b7280'},grid:{color:'rgba(0,0,0,.06)'}},x:{ticks:{font:{size:10},color:'#6b7280',maxTicksLimit:8}}}}
+    });
+  } else if(ectx && etfYrs <= 0){
+    if(ecanWrap){
+      var errDiv3 = document.createElement('div');
+      errDiv3.className = 'mort-err-msg';
+      errDiv3.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.9);border-radius:8px;';
+      errDiv3.innerHTML = '<div style="font-size:13px;color:#9ca3af;text-align:center;">Loan payoff takes longer than the '+ horizon +'-yr horizon.<br>Increase payment or extend horizon to see ETF phase.</div>';
+      ecanWrap.style.position = 'relative';
+      ecanWrap.appendChild(errDiv3);
+    }
+  }
+
+  // ── Sustainability panel (matches ETF section) ──
+  (function(){
+    var susEl=document.getElementById('mortSusContent'); if(!susEl) return;
+    var grew=finalWdPort>wdPortAtStart;
+    var regularWd=wCumWd-wCumLumps;
+    var pairs=[
+      ['At withdrawal start', mortFmt(wdPortAtStart), '#059669'],
+      ['Final portfolio',     mortFmt(finalWdPort),   finalWdPort>0?'#059669':'#dc2626'],
+      ['Real final value',    mortFmt(finalWdReal),   '#64748b'],
+      ['Regular withdrawn',   mortFmt(regularWd),     '#be185d'],
+      ['Lump sums withdrawn', mortFmt(wCumLumps),     '#92400e'],
+      ['Grand total drawn',   mortFmt(wCumWd),        '#e11d48'],
+    ];
+    var grid=pairs.map(function(p){
+      return '<div class="sus-stat"><div class="sus-lbl">'+p[0]+'</div><div class="sus-val" style="color:'+p[2]+'">'+p[1]+'</div></div>';
+    }).join('');
+    var pct=wdPortAtStart>0?Math.min((finalWdPort/wdPortAtStart)*100,100):0;
+    var barCol=finalWdPort>0?'#059669':'#dc2626';
+    var noteHtml=finalWdPort>0
+      ?'<strong style="color:#059669">Portfolio sustained</strong> all withdrawals. Ending: <strong style="color:#059669">'+mortFmt(finalWdPort)+'</strong>. Total received: <strong style="color:#be185d">'+mortFmt(wCumWd)+'</strong>.'
+      :'<strong style="color:#dc2626">Portfolio depleted</strong> at withdrawal year '+wDepletedYr+'. Consider reducing withdrawal or lump-sum amounts.';
+    susEl.innerHTML='<div class="sus-grid">'+grid+'</div>'+
+      '<div class="sus-bar-bg"><div class="sus-bar" style="width:'+pct+'%;background:'+barCol+'"></div></div>'+
+      '<div class="sus-note">'+noteHtml+'</div>';
+  }());
+
+  // ── Full timeline chart ──
+  if(_mortTimelineChart){_mortTimelineChart.destroy();_mortTimelineChart=null;}
+  var tlctx=document.getElementById('mortTimelineChart');
+  if(tlctx){
+    var calBase=new Date().getFullYear();
+    var tlLabels=[];
+    var tlLoan=[],tlEtf=[],tlWd=[],tlWdReal=[];
+    // Phase 1: loan payoff years
+    for(var i=0;i<loanYearlyBal.length;i++){
+      tlLabels.push(calBase+i+1);
+      tlLoan.push(loanYearlyBal[i]);
+      tlEtf.push(null);tlWd.push(null);tlWdReal.push(null);
+    }
+    // Phase 2: ETF growth years
+    var p2Start=loanYearlyBal.length;
+    for(var i=0;i<etfYearlyVoo.length;i++){
+      tlLabels.push(calBase+p2Start+i+1);
+      tlLoan.push(null);
+      tlEtf.push(etfYearlyVoo[i]+(etfYearlyQqq[i]||0));
+      tlWd.push(null);tlWdReal.push(null);
+    }
+    // Phase 3: withdrawal years
+    var p3Start=p2Start+etfYearlyVoo.length;
+    for(var i=0;i<wYearlyPort.length;i++){
+      tlLabels.push(calBase+p3Start+i+1);
+      tlLoan.push(null);tlEtf.push(null);
+      tlWd.push(wYearlyPort[i]);
+      tlWdReal.push(wYearlyReal[i]);
+    }
+    _mortTimelineChart=new Chart(tlctx.getContext('2d'),{type:'line',
+      data:{labels:tlLabels,datasets:[
+        {label:'Loan Balance',data:tlLoan,borderColor:'#f59e0b',borderWidth:2,tension:.3,pointRadius:0,spanGaps:false},
+        {label:'ETF Portfolio',data:tlEtf,borderColor:'#4f46e5',backgroundColor:'rgba(79,70,229,.08)',fill:true,borderWidth:2,tension:.3,pointRadius:0,spanGaps:false},
+        {label:'Withdrawal Portfolio',data:tlWd,borderColor:'#be185d',backgroundColor:'rgba(190,24,93,.07)',fill:true,borderWidth:2,tension:.3,pointRadius:0,spanGaps:false},
+        {label:'Real (inflation adj.)',data:tlWdReal,borderColor:'#64748b',borderWidth:1.5,borderDash:[4,3],tension:.3,pointRadius:0,spanGaps:false},
+      ]},
+      options:{responsive:true,plugins:{legend:{labels:{font:{size:10},color:'#374151',padding:8,boxWidth:10}}},
+        scales:{x:{ticks:{color:'#94a3b8',font:{size:9},maxTicksLimit:14},grid:{color:'rgba(0,0,0,.04)'}},
+                y:{ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'k';},color:'#6b7280'},grid:{color:'rgba(0,0,0,.06)'}}}}
+    });
+  }
+
+  // ── Withdrawal chart ──
+  if(_mortWdChart){_mortWdChart.destroy();_mortWdChart=null;}
+  var wdctx=document.getElementById('mortWdChart');
+  if(wdctx && wYearlyPort.length){
+    var wdBase=calBase+(loanYearlyBal.length+etfYearlyVoo.length);
+    var wdLabels=wYearlyPort.map(function(_,i){return wdBase+i+1;});
+    _mortWdChart=new Chart(wdctx.getContext('2d'),{type:'line',
+      data:{labels:wdLabels,datasets:[
+        {label:'Portfolio (Nominal)',data:wYearlyPort,borderColor:'#be185d',backgroundColor:'rgba(190,24,93,.08)',fill:true,borderWidth:2,tension:.3,pointRadius:0},
+        {label:'Portfolio (Real)',   data:wYearlyReal,borderColor:'#64748b',borderDash:[5,3],borderWidth:1.5,tension:.3,pointRadius:0,fill:false},
+        {label:'Cum. Withdrawn',    data:wYearlyCumWd,borderColor:'#f59e0b',borderWidth:1.5,tension:.3,pointRadius:0,fill:false,yAxisID:'y2'},
+      ]},
+      options:{responsive:true,plugins:{legend:{labels:{font:{size:10},color:'#374151',padding:8,boxWidth:10}}},
+        scales:{x:{ticks:{color:'#94a3b8',font:{size:9},maxTicksLimit:12},grid:{color:'rgba(0,0,0,.04)'}},
+                y:{ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'k';},color:'#6b7280'},grid:{color:'rgba(0,0,0,.06)'}},
+                y2:{position:'right',ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'k';},color:'#f59e0b'},grid:{drawOnChartArea:false}}}}
+    });
+  }
+
+  // ── Lump-Sum chart ──
+  if(_mortLumpChart){_mortLumpChart.destroy();_mortLumpChart=null;}
+  var lumpCtx=document.getElementById('mortLumpChart');
+  if(lumpCtx && wYearlyLump.some(function(v){return v>0;})){
+    var lumpCalBase2=calBase+(loanYearlyBal.length+etfYearlyVoo.length);
+    var lumpLabels2=wYearlyLump.map(function(_,i){return lumpCalBase2+i+1;});
+    _mortLumpChart=new Chart(lumpCtx.getContext('2d'),{type:'bar',
+      data:{labels:lumpLabels2,datasets:[
+        {label:'Lump-Sum Withdrawal',data:wYearlyLump.map(function(v){return v||null;}),backgroundColor:'rgba(202,138,4,.75)',borderColor:'#ca8a04',borderWidth:1,borderRadius:4},
+      ]},
+      options:{responsive:true,plugins:{legend:{labels:{font:{size:10},color:'#374151'}}},
+        scales:{x:{ticks:{color:'#94a3b8',font:{size:9}},grid:{color:'rgba(0,0,0,.04)'}},
+                y:{ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'k';},color:'#6b7280'},grid:{color:'rgba(0,0,0,.06)'}}}}
     });
   }
 
   // ── Table ──
   var tbody = document.getElementById('mortTableBody');
   if(!tbody) return;
-  var rows = '';
-  var totalYrs = Math.ceil(payoffYrs) + Math.ceil(etfYrs);
+  _mortTableData=[];
+  var totalYrs2 = Math.ceil(payoffYrs) + Math.ceil(etfYrs);
   var cumInt = 0;
-  for(var yr=1; yr<=totalYrs; yr++){
-    var isPayoff = (yr <= Math.ceil(payoffYrs));
-    var lbal = isPayoff ? (loanYearlyBal[yr-1]||0) : 0;
-    var yint = isPayoff ? (loanYearlyInt[yr-1]||0) : 0;
+  var calYrBase = new Date().getFullYear();
+  var infAccTbl = 1;
+  for(var yr=1; yr<=totalYrs2; yr++){
+    var isPayoff2 = (yr <= Math.ceil(payoffYrs));
+    var lbal = isPayoff2 ? (loanYearlyBal[yr-1]||0) : 0;
+    var yint = isPayoff2 ? (loanYearlyInt[yr-1]||0) : 0;
     cumInt += yint;
-    var etfIdx = yr - Math.ceil(payoffYrs) - 1;
-    var etfVal = (!isPayoff && etfIdx >= 0) ? (etfYearlyVoo[etfIdx]||0)+(etfYearlyQqq[etfIdx]||0) : 0;
-    var intoEtf = isPayoff ? 0 : monthly;
-    rows += '<tr style="border-bottom:.5px solid var(--border);">'+
+    var etfIdx2 = yr - Math.ceil(payoffYrs) - 1;
+    var etfVal = (!isPayoff2 && etfIdx2 >= 0) ? (etfYearlyVoo[etfIdx2]||0)+(etfYearlyQqq[etfIdx2]||0) : 0;
+    var intoEtf = isPayoff2 ? 0 : monthly;
+    infAccTbl *= (1+infPct/100);
+    var realEtf = etfVal ? (etfVal/infAccTbl) : 0;
+    var calYr = calYrBase + yr;
+    var ph = isPayoff2 ? 1 : 2;
+    var rowHtml = '<tr style="border-bottom:.5px solid var(--border);">'+
       '<td style="padding:5px 8px;">'+yr+'</td>'+
-      '<td style="padding:5px 8px;text-align:right;"><span style="background:'+(isPayoff?'#fef9c3':'#eef2ff')+';color:'+(isPayoff?'#92400e':'#4f46e5')+';border-radius:4px;padding:1px 6px;font-size:10px;">'+(isPayoff?'Payoff':'ETF')+'</span></td>'+
-      '<td style="padding:5px 8px;text-align:right;color:'+(isPayoff?'#b45309':'var(--tx3)')+';">'+(isPayoff?mortFmt(lbal):'—')+'</td>'+
-      '<td style="padding:5px 8px;text-align:right;color:#dc2626;">'+(isPayoff?mortFmt(yint):'—')+'</td>'+
+      '<td style="padding:5px 8px;text-align:right;color:#94a3b8;font-size:10px;">'+calYr+'</td>'+
+      '<td style="padding:5px 8px;text-align:right;"><span style="background:'+(isPayoff2?'#fef9c3':'#eef2ff')+';color:'+(isPayoff2?'#92400e':'#4f46e5')+';border-radius:4px;padding:1px 6px;font-size:10px;">'+(isPayoff2?'Payoff':'ETF')+'</span></td>'+
+      '<td style="padding:5px 8px;text-align:right;color:'+(isPayoff2?'#b45309':'var(--tx3)')+';">'+(isPayoff2?mortFmt(lbal):'—')+'</td>'+
       '<td style="padding:5px 8px;text-align:right;color:#4f46e5;">'+(etfVal?mortFmt(etfVal):'—')+'</td>'+
+      '<td style="padding:5px 8px;text-align:right;color:#64748b;">'+(realEtf?mortFmt(realEtf):'—')+'</td>'+
       '<td style="padding:5px 8px;text-align:right;color:#059669;">'+(intoEtf?mortFmt(intoEtf):'—')+'</td>'+
+      '<td style="padding:5px 8px;text-align:right;color:#94a3b8;">—</td>'+
     '</tr>';
+    _mortTableData.push({phase:ph,isLump:false,html:rowHtml});
   }
-  tbody.innerHTML = rows;
+
+  // Phase 3 table rows
+  var p3CalBase2=calYrBase+loanYearlyBal.length+etfYearlyVoo.length;
+  var p2TotalYrsT=Math.ceil(payoffYrs)+Math.ceil(etfYrs);
+  for(var wy2=0;wy2<wYearlyPort.length;wy2++){
+    var wRelYr2=wy2+1;
+    var wAbsYr2=p2TotalYrsT+wRelYr2;
+    var wCalYr2=p3CalBase2+wRelYr2;
+    var wPortVal=wYearlyPort[wy2]||0;
+    var wRealVal2=wYearlyReal[wy2]||0;
+    var wPmt2=wYearlyPmt[wy2]||0;
+    var wLumpAmt=wYearlyLump[wy2]||0;
+    var isWdLump=wLumpAmt>0;
+    var bg2=wPortVal<=0?'#fef2f2':'#fdf2f8';
+    var wRowHtml='<tr style="border-bottom:.5px solid var(--border);background:'+bg2+';">'+
+      '<td style="padding:5px 8px;">'+wAbsYr2+'</td>'+
+      '<td style="padding:5px 8px;text-align:right;color:#94a3b8;font-size:10px;">'+wCalYr2+'</td>'+
+      '<td style="padding:5px 8px;text-align:right;"><span style="background:#fce7f3;color:#9f1239;border-radius:4px;padding:1px 6px;font-size:10px;">Wdraw</span></td>'+
+      '<td style="padding:5px 8px;text-align:right;color:var(--tx3);">—</td>'+
+      '<td style="padding:5px 8px;text-align:right;color:'+(wPortVal<=0?'#dc2626':'#be185d')+';">'+mortFmt(wPortVal)+'</td>'+
+      '<td style="padding:5px 8px;text-align:right;color:#64748b;">'+mortFmt(wRealVal2)+'</td>'+
+      '<td style="padding:5px 8px;text-align:right;color:#be185d;">-'+mortFmt(wPmt2)+'</td>'+
+      '<td style="padding:5px 8px;text-align:right;color:#ca8a04;">'+(wLumpAmt?('-'+mortFmt(wLumpAmt)):'—')+'</td>'+
+    '</tr>';
+    _mortTableData.push({phase:3,isLump:isWdLump,html:wRowHtml});
+  }
+  mortRenderTable();
 }
 
 // Run on load
 document.addEventListener('DOMContentLoaded', function(){
+  mortRenderLumps();
+  var addLumpBtn=document.getElementById('mortAddLump');
+  if(addLumpBtn) addLumpBtn.addEventListener('click',function(){
+    mortLumps.push({yr:25,amt:100000});
+    mortRenderLumps();
+    mortDebounce();
+  });
   renderMortgage();
 });
 </script>
 
 
 <script>
+
+// ═══════════════════════════════════════════════════════════
+// ASX ETF DATABASE
+// ═══════════════════════════════════════════════════════════
+const ASX_ETF_DB = [
+  {sym:'VAS',  name:'Vanguard Australian Shares Index ETF',        cat:'Australian Shares', cagr:8.5,  yr:2009},
+  {sym:'A200', name:'BetaShares Australia 200 ETF',                cat:'Australian Shares', cagr:8.5,  yr:2018},
+  {sym:'IOZ',  name:'iShares Core S&P/ASX 200 ETF',               cat:'Australian Shares', cagr:8.3,  yr:2010},
+  {sym:'STW',  name:'SPDR S&P/ASX 200 ETF',                       cat:'Australian Shares', cagr:8.2,  yr:2001},
+  {sym:'VHY',  name:'Vanguard Australian High Yield ETF',          cat:'Australian Shares', cagr:7.5,  yr:2011},
+  {sym:'MVW',  name:'VanEck Australian Equal Weight ETF',          cat:'Australian Shares', cagr:9.0,  yr:2014},
+  {sym:'HVST', name:'BetaShares Dividend Harvester ETF',           cat:'Australian Shares', cagr:6.0,  yr:2014},
+  {sym:'SFY',  name:'SPDR S&P/ASX 50 ETF',                        cat:'Australian Shares', cagr:7.8,  yr:2001},
+  {sym:'VGS',  name:'Vanguard MSCI Intl Shares ETF',              cat:'International',     cagr:12.5, yr:2014},
+  {sym:'BGBL', name:'BetaShares Global Shares ETF',               cat:'International',     cagr:12.0, yr:2019},
+  {sym:'IVV',  name:'iShares S&P 500 ETF (ASX listed)',           cat:'International',     cagr:13.8, yr:2000},
+  {sym:'NDQ',  name:'BetaShares NASDAQ 100 ETF',                  cat:'International',     cagr:18.0, yr:2015},
+  {sym:'QUAL', name:'VanEck MSCI Intl Quality ETF',               cat:'International',     cagr:14.5, yr:2014},
+  {sym:'MOAT', name:'VanEck Morningstar Wide Moat ETF',           cat:'International',     cagr:14.0, yr:2015},
+  {sym:'HQLT', name:'BetaShares Global Quality Leaders ETF',      cat:'International',     cagr:13.0, yr:2018},
+  {sym:'GRNV', name:'VanEck MSCI Intl Sustainable ETF',           cat:'International',     cagr:11.5, yr:2018},
+  {sym:'ETHI', name:'BetaShares Global Sustainability ETF',       cat:'International',     cagr:12.0, yr:2017},
+  {sym:'VEU',  name:'Vanguard All-World ex-US Shares ETF',        cat:'International',     cagr:8.5,  yr:2004},
+  {sym:'VDHG', name:'Vanguard Diversified High Growth ETF',       cat:'Diversified',       cagr:10.5, yr:2017},
+  {sym:'DHHF', name:'BetaShares Diversified All Growth ETF',      cat:'Diversified',       cagr:10.8, yr:2020},
+  {sym:'VDCO', name:'Vanguard Diversified Conservative ETF',      cat:'Diversified',       cagr:6.5,  yr:2017},
+  {sym:'IEM',  name:'iShares MSCI Emerging Markets ETF (ASX)',    cat:'Emerging Markets',  cagr:7.0,  yr:2007},
+  {sym:'VGE',  name:'Vanguard FTSE Emerging Markets ETF',         cat:'Emerging Markets',  cagr:7.0,  yr:2013},
+  {sym:'VBLD', name:'Vanguard Global Infrastructure ETF',         cat:'Infrastructure',    cagr:9.0,  yr:2018},
+  {sym:'ATEC', name:'BetaShares S&P/ASX Technology ETF',          cat:'Thematic',          cagr:12.0, yr:2020},
+  {sym:'ACDC', name:'Global X Battery Tech & Lithium ETF',        cat:'Thematic',          cagr:8.5,  yr:2018},
+  {sym:'ROBO', name:'BetaShares Global Robotics & AI ETF',        cat:'Thematic',          cagr:10.0, yr:2017},
+  {sym:'VAF',  name:'Vanguard Australian Fixed Interest ETF',     cat:'Fixed Income',      cagr:4.0,  yr:2012},
+  {sym:'VIF',  name:'Vanguard Intl Fixed Interest ETF',           cat:'Fixed Income',      cagr:4.5,  yr:2014},
+  {sym:'CRED', name:'BetaShares Aust. Investment Grade Corp Bond', cat:'Fixed Income',     cagr:4.2,  yr:2016},
+];
+const ASX_MAX_FUNDS=6, ASX_MIN_FUNDS=1;
+const ASX_DEFAULT_FUNDS=[
+  {sym:'VAS', name:'Vanguard Australian Shares Index ETF', cat:'Australian Shares', cagr:8.5,  yr:2009, rate:8.5,  dca:800},
+  {sym:'VGS', name:'Vanguard MSCI Intl Shares ETF',        cat:'International',     cagr:12.5, yr:2014, rate:12.5, dca:700},
+  {sym:'NDQ', name:'BetaShares NASDAQ 100 ETF',            cat:'International',     cagr:18.0, yr:2015, rate:18.0, dca:500},
+];
+let asxFunds=ASX_DEFAULT_FUNDS.map(f=>({...f}));
+let asxLumps=[{yr:22,amt:300000},{yr:25,amt:300000},{yr:30,amt:500000},{yr:35,amt:200000},{yr:40,amt:200000},{yr:45,amt:200000},{yr:50,amt:200000}];
+let asxActivePicker=null, asxCatFilter='All';
+
+function simulateASX(){
+  const dcaYrs=+(document.getElementById('ax_dcaYrs')||{value:20}).value||20;
+  const coast= +(document.getElementById('ax_coast') ||{value:0}).value||0;
+  const inf=   (+(document.getElementById('ax_inf')   ||{value:3}).value||3)/100;
+  const wdraw= +(document.getElementById('ax_wdraw') ||{value:12000}).value||12000;
+  const winc=  (+(document.getElementById('ax_winc')  ||{value:3}).value||3)/100;
+  const wYrs=  +(document.getElementById('ax_wYrs')  ||{value:30}).value||30;
+  const N=asxFunds.length, TOTAL=dcaYrs+coast+wYrs;
+  const mRates=asxFunds.map(f=>(f.rate/100)/12);
+  const dcas=asxFunds.map(f=>f.dca||0);
+  const totalDCApm=dcas.reduce((s,v)=>s+v,0);
+  const lumpMap={};
+  asxLumps.forEach(l=>{ if(l.yr>=1&&l.yr<=TOTAL&&l.amt>0) lumpMap[l.yr]=(lumpMap[l.yr]||0)+l.amt; });
+  let vals=new Array(N).fill(0), cumInv=0, cumWd=0;
+  const data=[];
+  for(let m=1;m<=TOTAL*12;m++){
+    const yr=Math.ceil(m/12);
+    const phase=yr<=dcaYrs?1:yr<=(dcaYrs+coast)?2:3;
+    const dYr=yr-dcaYrs-coast;
+    if(phase===1){ vals=vals.map((v,i)=>v+dcas[i]); cumInv+=totalDCApm; }
+    else if(phase===3){
+      const mW=wdraw*Math.pow(1+winc,dYr-1);
+      const tot=vals.reduce((s,v)=>s+v,0);
+      if(tot>0){ const w=Math.min(mW,tot); vals=vals.map(v=>v-w*(v/tot)); cumWd+=w; }
+    }
+    vals=vals.map((v,i)=>v*(1+mRates[i]));
+    if(m%12===0){
+      let lump=0; const la=lumpMap[yr]||0;
+      if(la>0){ const t2=vals.reduce((s,v)=>s+v,0); if(t2>0){ lump=Math.min(la,t2); vals=vals.map(v=>v-lump*(v/t2)); cumWd+=lump; } }
+      const comb=vals.reduce((s,v)=>s+v,0);
+      const real=comb/Math.pow(1+inf,yr);
+      const regFlow=phase===1?totalDCApm*12:phase===3?-(wdraw*Math.pow(1+winc,dYr-1)*12):0;
+      data.push({yr,phase,vals:[...vals],comb,real,cumInv,cumWd,regFlow,lump,isLump:lump>0});
+    }
+  }
+  window._asxLastData=data;
+  return {data,dcaYrs,coast,wYrs,TOTAL,totalDCApm,N};
+}
+
+let asxMainChart=null,axFlowCh=null,axCumCh=null;
+let axTF='all';
+function axFbRow(btn){ document.querySelectorAll('#axFbRow .fb').forEach(b=>b.classList.toggle('on',b===btn)); }
+function renderASX(){
+  if(!document.getElementById('axCards')) return;
+  const sim=simulateASX();
+  const {data,dcaYrs,coast,wYrs,TOTAL,totalDCApm}=sim;
+  if(!data.length) return;
+  const fin=data[data.length-1];
+  const atDraw=data[dcaYrs+coast-1]||data[0];
+  const wdStart=dcaYrs+coast;
+  const atWd20=data.find(r=>r.yr===wdStart+20)||null;
+  const atWd30=data.find(r=>r.yr===wdStart+30)||null;
+  const totalLumps=asxLumps.reduce((s,l)=>s+l.amt,0);
+  const totalInv=dcaYrs*12*totalDCApm;
+  const hdr=document.getElementById('axAppSub');
+  if(hdr) hdr.textContent=asxFunds.map(f=>f.sym).join(' · ')+' · '+TOTAL+'-year sim (AUD)';
+  const pb1v=document.getElementById('axPb1v'),pb2v=document.getElementById('axPb2v'),pb3v=document.getElementById('axPb3v');
+  const pb1=document.getElementById('axPb1'),pb2=document.getElementById('axPb2'),pb3=document.getElementById('axPb3');
+  const ttl=document.getElementById('axTotalYrs');
+  if(ttl) ttl.textContent=TOTAL;
+  if(pb1v) pb1v.textContent=dcaYrs+'yr'; if(pb1) pb1.style.flex=dcaYrs;
+  if(pb2v) pb2v.textContent=coast+'yr';  if(pb2) pb2.style.flex=Math.max(coast,.5);
+  if(pb3v) pb3v.textContent=wYrs+'yr';   if(pb3) pb3.style.flex=wYrs;
+  const grew=fin.comb>atDraw.comb;
+  const tiles=[
+    {lbl:'Total Invested (AUD)',    val:fmtM(totalInv),                                                       cls:'i'},
+    {lbl:'Portfolio at Withdrawal', val:fmtM(atDraw.comb), sub:'Yr '+wdStart,                                 cls:'g'},
+    {lbl:'20 Yrs Into Withdrawal',  val:atWd20?fmtM(atWd20.comb):'—', sub:atWd20?'Yr '+(wdStart+20):'Extend wYrs', cls:'p'},
+    {lbl:'30 Yrs Into Withdrawal',  val:atWd30?fmtM(atWd30.comb):'—', sub:atWd30?'Yr '+(wdStart+30):'Extend wYrs', cls:atWd30&&atWd30.comb>1?'g':'r'},
+    {lbl:'Total Lump Sums',         val:fmtM(totalLumps),                                                     cls:'y'},
+    {lbl:'Final Portfolio (Nominal)',val:fmtM(fin.comb), sub:'After '+TOTAL+' yrs',                           cls:grew?'g':'r'},
+  ];
+  const ce=document.getElementById('axCards');
+  if(ce) ce.innerHTML=tiles.map(c=>'<div class="card"><div class="c-lbl">'+c.lbl+'</div><div class="c-val '+c.cls+'">'+c.val+'</div>'+(c.sub?'<div class="c-sub">'+c.sub+'</div>':'')+'</div>').join('');
+  const labels=data.map(r=>'Yr '+r.yr);
+  const cctx=document.getElementById('axMainChart');
+  if(!cctx) return;
+  if(asxMainChart){asxMainChart.destroy();asxMainChart=null;}
+  if(axFlowCh){axFlowCh.destroy();axFlowCh=null;}
+  if(axCumCh){axCumCh.destroy();axCumCh=null;}
+  const FC2=['#10b981','#f59e0b','#6366f1','#f43f5e','#a855f7','#0ea5e9'];
+  const aOpts={responsive:true,maintainAspectRatio:true,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{labels:{color:'#64748b',font:{size:11},padding:10,boxWidth:12}},
+      tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',borderColor:'#e2e8f0',borderWidth:1,padding:10,
+        callbacks:{label:c=>' '+c.dataset.label+': '+fmtM(c.parsed.y)}}},
+    scales:{x:{ticks:{color:c=>{const i=c.index;return i>=(dcaYrs+coast)?'#be185d':i>=dcaYrs?'#059669':'#64748b';},font:{size:10},maxTicksLimit:26},grid:{color:'#f1f5f9'}},
+      y:{ticks:{color:'#94a3b8',font:{size:11},callback:v=>fmtM(v)},grid:{color:'#f8fafc'}}}};
+  const fundDs=asxFunds.map((f,fi)=>({label:f.sym,data:data.map(r=>r.vals[fi]),borderColor:FC2[fi],backgroundColor:FC2[fi]+'18',borderWidth:2,fill:false,tension:.35,pointRadius:1}));
+  const combDs={label:'Combined (AUD)',data:data.map(r=>r.comb),borderColor:'#059669',backgroundColor:'rgba(5,150,105,.07)',borderWidth:2.5,fill:true,tension:.35,pointRadius:2};
+  const lumpSc={label:'Lump-Sum',type:'scatter',data:data.map((r,i)=>r.isLump?{x:i,y:r.comb}:null).filter(Boolean),pointStyle:'triangle',pointRadius:9,backgroundColor:'rgba(202,138,4,.9)',borderColor:'#ca8a04',showLine:false};
+  asxMainChart=new Chart(cctx.getContext('2d'),{type:'line',data:{labels,datasets:[...fundDs,combDs,lumpSc]},options:aOpts,plugins:[makePhasePlugin(dcaYrs,coast,wYrs)]});
+
+  // ── Annual cash flows ──
+  const fctx=document.getElementById('axFlowChart');
+  if(fctx) axFlowCh=new Chart(fctx.getContext('2d'),{type:'bar',
+    data:{labels,datasets:[
+      {label:'Regular Flow',data:data.map(r=>r.regFlow),backgroundColor:data.map(r=>r.phase===1?'rgba(79,70,229,.7)':r.phase===2?'rgba(5,150,105,.4)':'rgba(190,24,93,.6)'),borderRadius:3},
+      {label:'Lump Sum',data:data.map(r=>r.lump?-r.lump:null),backgroundColor:'rgba(202,138,4,.8)',borderRadius:3},
+    ]},
+    options:{responsive:true,maintainAspectRatio:true,
+      plugins:{legend:{labels:{color:'#64748b',font:{size:10},padding:8,boxWidth:10}},
+        tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',borderColor:'#e2e8f0',borderWidth:1,padding:8,
+          callbacks:{label:c=>{const v=c.parsed.y;return v>0?' +'+fmtM(v)+' in':' −'+fmtM(-v)+' out';}}}},
+      scales:{x:{stacked:true,ticks:{color:'#94a3b8',font:{size:9},maxTicksLimit:18},grid:{color:'#f8fafc'}},
+        y:{stacked:true,ticks:{color:'#94a3b8',font:{size:10},callback:v=>fmtM(Math.abs(v))},grid:{color:'#f8fafc'}}}}});
+
+  // ── Cumulative invested vs withdrawn ──
+  const cuctx=document.getElementById('axCumChart');
+  if(cuctx) axCumCh=new Chart(cuctx.getContext('2d'),{type:'line',
+    data:{labels,datasets:[
+      {label:'Cumulative Invested',data:data.map(r=>r.cumInv),borderColor:'#4f46e5',backgroundColor:'rgba(79,70,229,.08)',borderWidth:2,fill:true,tension:.3,pointRadius:1},
+      {label:'Cumulative Withdrawn',data:data.map(r=>r.cumWd),borderColor:'#be185d',backgroundColor:'rgba(190,24,93,.08)',borderWidth:2,fill:true,tension:.3,pointRadius:1},
+    ]},
+    options:{responsive:true,maintainAspectRatio:true,
+      plugins:{legend:{labels:{color:'#64748b',font:{size:10},padding:8,boxWidth:10}},
+        tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',borderColor:'#e2e8f0',borderWidth:1,padding:8,callbacks:{label:c=>' '+c.dataset.label+': '+fmtM(c.parsed.y)}}},
+      scales:{x:{ticks:{color:'#94a3b8',font:{size:9},maxTicksLimit:18},grid:{color:'#f8fafc'}},
+        y:{ticks:{color:'#94a3b8',font:{size:10},callback:v=>fmtM(v)},grid:{color:'#f8fafc'}}}}});
+
+  // ── Sustainability ──
+  const totalLumpsAmt=asxLumps.reduce((s,l)=>s+l.amt,0);
+  const susEl=document.getElementById('axSusContent');
+  if(susEl) susEl.innerHTML=`<div class="sus-grid">
+    ${[['Withdrawal start',fmtM(atDraw.comb),'#059669'],['Final portfolio',fmtM(fin.comb),grew?'#059669':'#dc2626'],
+       ['Real final value',fmtM(fin.real),'#64748b'],['Regular drawn',fmtM(fin.cumWd-totalLumpsAmt),'#be185d'],
+       ['Lump sum drawn',fmtM(totalLumpsAmt),'#92400e'],['Grand total drawn',fmtM(fin.cumWd),'#e11d48'],
+    ].map(([l,v,c])=>`<div class="sus-stat"><div class="sus-lbl">${l}</div><div class="sus-val" style="color:${c}">${v}</div></div>`).join('')}
+    </div>
+    <div class="sus-bar-bg"><div class="sus-bar" style="width:${Math.min((fin.comb/atDraw.comb)*100,100)}%;background:${grew?'#059669':'#dc2626'}"></div></div>
+    <div class="sus-note">${grew
+      ?`<strong style="color:#059669">Portfolio grew</strong> through all withdrawals. Ending: <strong style="color:#059669">${fmtM(fin.comb)}</strong>. Cash received: <strong style="color:#be185d">${fmtM(fin.cumWd)}</strong>.`
+      :`Portfolio declined during withdrawals. Remaining: <strong>${fmtM(fin.comb)}</strong>. Consider reducing withdrawals.`
+    }</div>`;
+
+  renderAsxLumps();
+  renderAsxTable();
+}
+
+function renderAsxTable(){
+  const data=window._asxLastData||[];
+  const thEl=document.getElementById('axTHead');
+  const tbEl=document.getElementById('axTBody');
+  if(!thEl||!tbEl) return;
+  const FC2=['#10b981','#f59e0b','#6366f1','#f43f5e','#a855f7','#0ea5e9'];
+  thEl.innerHTML='<tr><th>Year</th><th>Phase</th><th>Invested</th>'+
+    asxFunds.map((fd,fi)=>`<th style="color:${FC2[fi]}">${fd.sym}</th>`).join('')+
+    '<th>Combined</th><th>Real</th><th>Cash Flow</th><th>Lump Sum</th><th>Total Out</th></tr>';
+  const filtered=axTF==='all'?data:axTF==='L'?data.filter(r=>r.isLump):data.filter(r=>r.phase===+axTF);
+  tbEl.innerHTML=filtered.map(r=>{
+    const ph=['','Build','Coast','Withdraw'][r.phase];
+    const cls=['','p1','p2','p3'][r.phase];
+    return `<tr class="${r.isLump?'lyr':cls}">
+      <td>Yr ${r.yr}${r.isLump?' ⬦':''}</td>
+      <td><span class="phase-tag ${cls}">${ph}</span></td>
+      <td>${fmtM(r.cumInv)}</td>
+      ${r.vals.map(v=>`<td>${fmtM(v)}</td>`).join('')}
+      <td><strong>${fmtM(r.comb)}</strong></td>
+      <td>${fmtM(r.real)}</td>
+      <td style="color:${r.phase===1?'#4f46e5':r.phase===3?'#be185d':'#64748b'}">${r.regFlow?fmtM(Math.abs(r.regFlow)):'-'}</td>
+      <td style="color:#ca8a04">${r.lump?fmtM(r.lump):'-'}</td>
+      <td>${fmtM(r.cumWd)}</td>
+    </tr>`;
+  }).join('');
+}
+function axDebounce(){ clearTimeout(window._axTimer); window._axTimer=setTimeout(renderASX,200); }
+function openAsxPicker(fi){ asxActivePicker=fi; renderAsxETFList(); document.getElementById('asxPickerOverlay').style.display='flex'; }
+function closeAsxPicker(){ document.getElementById('asxPickerOverlay').style.display='none'; asxActivePicker=null; }
+function renderAsxETFList(){
+  const q=(document.getElementById('asxEtfSearch').value||'').toLowerCase();
+  const cat=asxCatFilter;
+  const list=ASX_ETF_DB.filter(e=>(cat==='All'||e.cat===cat)&&(!q||e.sym.toLowerCase().includes(q)||e.name.toLowerCase().includes(q)||e.cat.toLowerCase().includes(q)));
+  const cats=['All',...new Set(ASX_ETF_DB.map(e=>e.cat))];
+  document.getElementById('asxCatTabs').innerHTML=cats.map(c=>'<button class="tg'+(c===cat?' on':'')+'" onclick="asxCatFilter=\''+c+'\';renderAsxETFList()">'+c+'</button>').join('');
+  const cur=asxActivePicker!=null?asxFunds[asxActivePicker]:{sym:''};
+  document.getElementById('asxEtfList').innerHTML=list.map(etf=>{
+    const cc=etf.cagr>=12?'#059669':etf.cagr>=7?'#d97706':'#dc2626';
+    const isSel=cur.sym===etf.sym;
+    return '<div class="etf-item'+(isSel?' sel':'')+'" onclick="selectAsxETF(\''+etf.sym+'\')"><div class="ei-sym">'+etf.sym+'</div><div class="ei-info"><div class="ei-name">'+etf.name+'</div><div class="ei-cat">'+etf.cat+'</div></div><div class="ei-cagr" style="color:'+cc+'">'+etf.cagr+'%</div></div>';
+  }).join('');
+}
+function selectAsxETF(sym){
+  if(asxActivePicker==null) return;
+  const etf=ASX_ETF_DB.find(e=>e.sym===sym); if(!etf) return;
+  asxFunds[asxActivePicker]={...etf,rate:etf.cagr,dca:asxFunds[asxActivePicker].dca||500};
+  closeAsxPicker(); renderAsxFunds(); axDebounce();
+}
+function removeAsxFund(fi){ if(asxFunds.length<=ASX_MIN_FUNDS) return; asxFunds.splice(fi,1); renderAsxFunds(); axDebounce(); }
+function addAsxFund(){
+  if(asxFunds.length>=ASX_MAX_FUNDS) return;
+  const used=asxFunds.map(f=>f.sym);
+  const unused=ASX_ETF_DB.find(e=>!used.includes(e.sym))||ASX_ETF_DB[0];
+  asxFunds.push({...unused,rate:unused.cagr,dca:500});
+  renderAsxFunds(); axDebounce();
+}
+function renderAsxFunds(){
+  const N=asxFunds.length;
+  const addBtn=document.getElementById('axAddFundBtn');
+  if(addBtn){ addBtn.textContent='️ Add Fund ('+N+'/'+ASX_MAX_FUNDS+')'; addBtn.disabled=N>=ASX_MAX_FUNDS; }
+  const fl=document.getElementById('axFundsList'); if(!fl) return;
+  const FC2=['#10b981','#f59e0b','#6366f1','#f43f5e','#a855f7','#0ea5e9'];
+  const LTRS='ABCDEF';
+  fl.innerHTML=asxFunds.map((f,fi)=>{
+    const col=FC2[fi],ltr=LTRS[fi];
+    return '<div class="fund-row">'+
+      '<div class="fund-row-hdr">'+
+        '<div class="fund-badge" style="background:'+col+'">'+ltr+'</div>'+
+        '<div style="flex:1;min-width:0"><div class="fund-sym">'+f.sym+'</div><div class="fund-name">'+f.name+'</div><div class="fund-cat">'+f.cat+'</div></div>'+
+        '<div class="fund-btns"><button class="change-btn" onclick="openAsxPicker('+fi+')">Change ETF</button>'+
+        '<button class="remove-btn" '+(N<=ASX_MIN_FUNDS?'disabled':'')+' onclick="removeAsxFund('+fi+')">×</button></div>'+
+      '</div>'+
+      '<div class="fund-input-group"><div class="fund-input-label">Monthly (AUD)</div>'+
+        '<div class="ctrl-row"><div class="num-wrap"><span class="num-prefix">$</span>'+
+          '<input class="num-in" type="number" id="ax_dca_'+fi+'" value="'+(f.dca||500)+'" min="0" max="50000" step="100">'+
+        '</div><input class="range-in" type="range" id="axr_dca_'+fi+'" min="0" max="20000" step="100" value="'+(f.dca||500)+'"></div>'+
+      '</div>'+
+      '<div class="fund-input-group"><div class="fund-input-label">Return est. <span style="font-size:10px;color:var(--tx3)">(hist: '+f.cagr+'%)</span></div>'+
+        '<div class="ctrl-row"><div class="num-wrap">'+
+          '<input class="num-in" type="number" id="ax_rate_'+fi+'" value="'+f.rate+'" min="-5" max="40" step="0.1">'+
+          '<span class="num-suffix">%</span>'+
+        '</div><input class="range-in" type="range" id="axr_rate_'+fi+'" min="-5" max="40" step="0.1" value="'+f.rate+'"></div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+  asxFunds.forEach((_,fi)=>{
+    ['dca','rate'].forEach(field=>{
+      const num=document.getElementById('ax_'+field+'_'+fi);
+      const rng=document.getElementById('axr_'+field+'_'+fi);
+      if(num&&rng){
+        num.addEventListener('input',()=>{ asxFunds[fi][field]=+num.value; rng.value=num.value; axDebounce(); });
+        rng.addEventListener('input',()=>{ asxFunds[fi][field]=+rng.value; num.value=rng.value; axDebounce(); });
+      }
+    });
+  });
+}
+function renderAsxLumps(){
+  const el=document.getElementById('axLumpList'); if(!el) return;
+  el.innerHTML=asxLumps.map((l,i)=>'<div class="lump-row">'+
+    '<div class="lump-lbl">Withdrawal event '+(i+1)+'</div>'+
+    '<div class="ctrl-row" style="gap:8px;flex-wrap:wrap;">'+
+      '<div class="num-wrap" style="max-width:80px;"><span class="num-prefix" style="font-size:10px;">Yr</span>'+
+        '<input class="num-in" style="font-size:12px;" type="number" value="'+l.yr+'" min="1" max="80" step="1" data-li="'+i+'" data-field="yr"></div>'+
+      '<div class="num-wrap"><span class="num-prefix">$</span>'+
+        '<input class="num-in" style="font-size:12px;" type="number" value="'+l.amt+'" min="0" max="10000000" step="10000" data-li="'+i+'" data-field="amt"></div>'+
+      '<button class="remove-btn" data-li="'+i+'" style="font-size:16px;padding:0 8px;">×</button>'+
+    '</div></div>').join('');
+  el.querySelectorAll('input').forEach(inp=>{
+    inp.addEventListener('input',()=>{ asxLumps[+inp.dataset.li][inp.dataset.field]=+inp.value; axDebounce(); });
+  });
+  el.querySelectorAll('.remove-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{ asxLumps.splice(+btn.dataset.li,1); renderAsxLumps(); axDebounce(); });
+  });
+}
+function addAsxLump(){ asxLumps.push({yr:30,amt:200000}); renderAsxLumps(); axDebounce(); }
+function bindAsxSliders(){
+  ['dcaYrs','coast','inf','wdraw','winc','wYrs'].forEach(id=>{
+    const num=document.getElementById('ax_'+id), rng=document.getElementById('axr_'+id);
+    if(num&&rng){
+      num.addEventListener('input',()=>{ rng.value=num.value; axDebounce(); });
+      rng.addEventListener('input',()=>{ num.value=rng.value; axDebounce(); });
+    }
+  });
+}
 // ── SPA State ─────────────────────────────────────────────────
 
 
@@ -3812,6 +4586,7 @@ var STRATEGY_SECTIONS = {
   's1':  { secIds: ['s1-body'], label: 'Invest in ETF',               color: '#4f46e5', dot: '#4f46e5' },
   's2m': { secIds: ['s2m-body'], label: 'Pay-off Mortgage & Invest',  color: '#b45309', dot: '#f59e0b' },
   's3':  { secIds: ['s3-body'], label: 'Develop a Property Portfolio', color: '#059669', dot: '#34d399' },
+  's4':  { secIds: ['asxWrap'],  label: 'Invest in ASX ETFs',             color: '#0ea5e9', dot: '#38bdf8' },
 };
 
 // Page 1 → Page 2
@@ -3833,6 +4608,9 @@ function selectStrategy(id, label, color){
   // Move target section into strategyInner
   var inner = document.getElementById('strategyInner');
   inner.innerHTML = '';
+
+  // Init ASX if needed
+  if(id==='s4'){ setTimeout(function(){ renderAsxFunds(); renderAsxLumps(); bindAsxSliders(); renderASX(); },50); }
 
   // MOVE (not clone) the real sec-wrap into strategyInner so that
   // addEventListener bindings are preserved and IDs remain unique.
@@ -4087,6 +4865,94 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
 
+
+
+<!-- ══ ASX ETF SECTION (Strategy IV) ══ -->
+<div class="sec-wrap" style="margin-bottom:14px;" id="asxWrap">
+<div class="app-wrap" id="asxAppWrap">
+<aside class="sidebar">
+  <div class="logo-row">
+    <div class="logo-icon">◈</div>
+    <div>
+      <div class="logo-main">ASX ETF <span class="logo-accent">Strategy</span></div>
+      <div id="axAppSub" class="logo-sub">VAS · VGS · NDQ · AUD simulation</div>
+    </div>
+  </div>
+  <div class="section-label">Investment Phases</div>
+  <div class="ctrl-label">DCA years</div>
+  <div class="ctrl-row"><div class="num-wrap"><input class="num-in" type="number" id="ax_dcaYrs" value="20" min="1" max="40" step="1" oninput="axDebounce()"><span class="num-suffix">yr</span></div><input class="range-in" type="range" id="axr_dcaYrs" min="1" max="40" step="1" value="20"></div>
+  <div class="ctrl-label">Coast years</div>
+  <div class="ctrl-row"><div class="num-wrap"><input class="num-in" type="number" id="ax_coast" value="0" min="0" max="20" step="1" oninput="axDebounce()"><span class="num-suffix">yr</span></div><input class="range-in" type="range" id="axr_coast" min="0" max="20" step="1" value="0"></div>
+  <div class="ctrl-label">Inflation est.</div>
+  <div class="ctrl-row"><div class="num-wrap"><input class="num-in" type="number" id="ax_inf" value="3" min="0" max="10" step="0.5" oninput="axDebounce()"><span class="num-suffix">%</span></div><input class="range-in" type="range" id="axr_inf" min="0" max="10" step="0.5" value="3"></div>
+  <div class="ctrl-label">Base monthly withdrawal (AUD)</div>
+  <div class="ctrl-row"><div class="num-wrap"><span class="num-prefix">$</span><input class="num-in" type="number" id="ax_wdraw" value="12000" min="0" max="100000" step="500" oninput="axDebounce()"></div><input class="range-in" type="range" id="axr_wdraw" min="0" max="80000" step="500" value="12000"></div>
+  <div class="ctrl-label">Annual withdrawal increase</div>
+  <div class="ctrl-row"><div class="num-wrap"><input class="num-in" type="number" id="ax_winc" value="3" min="0" max="10" step="0.5" oninput="axDebounce()"><span class="num-suffix">%</span></div><input class="range-in" type="range" id="axr_winc" min="0" max="10" step="0.5" value="3"></div>
+  <div class="ctrl-label">Withdrawal years</div>
+  <div class="ctrl-row"><div class="num-wrap"><input class="num-in" type="number" id="ax_wYrs" value="30" min="5" max="40" step="1" oninput="axDebounce()"><span class="num-suffix">yr</span></div><input class="range-in" type="range" id="axr_wYrs" min="5" max="40" step="1" value="30"></div>
+  <div style="height:1px;background:var(--border);margin:12px 0;"></div>
+  <div class="section-label" style="margin-bottom:8px;">ASX ETF Funds (up to 6)</div>
+  <button id="axAddFundBtn" class="add-fund-btn" onclick="addAsxFund()">＋ Add Fund (3/6)</button>
+  <div id="axFundsList" class="funds-list"></div>
+  <div style="margin-top:12px;font-size:10.5px;color:var(--tx3);line-height:1.6;">★ AUD returns estimated from historical data. Franking credits &amp; tax not modelled. Not financial advice.</div>
+</aside>
+<main class="main-panel">
+  <div class="section-label">Timeline — <span id="axTotalYrs"></span> years total</div>
+  <div class="phase-bar">
+    <div class="pb-phase pb1" id="axPb1"><div class="pb-lbl">Build</div><div class="pb-val" id="axPb1v"></div></div>
+    <div class="pb-phase pb2" id="axPb2"><div class="pb-lbl">Coast</div><div class="pb-val" id="axPb2v"></div></div>
+    <div class="pb-phase pb3" id="axPb3"><div class="pb-lbl">Withdraw</div><div class="pb-val" id="axPb3v"></div></div>
+  </div>
+  <div class="cards cards-row" id="axCards" style="flex-wrap:wrap;"></div>
+  <div class="chart-box" style="margin-top:12px;">
+    <div class="ch-hdr"><div class="ch-ttl">ASX Portfolio Value Over Time (AUD)</div></div>
+    <canvas id="axMainChart" style="max-height:340px"></canvas>
+  </div>
+  <div class="two-col" style="margin-top:12px;">
+    <div class="chart-box"><div class="ch-ttl" style="margin-bottom:10px;">Annual Cash Flows</div>
+      <canvas id="axFlowChart" style="max-height:195px"></canvas></div>
+    <div class="chart-box"><div class="ch-ttl" style="margin-bottom:10px;">Cumulative Invested vs Withdrawn</div>
+      <canvas id="axCumChart" style="max-height:195px"></canvas></div>
+  </div>
+  <div class="chart-box" style="margin-top:12px;">
+    <div class="ch-ttl" style="margin-bottom:10px;">Portfolio Sustainability</div>
+    <div id="axSusContent"></div>
+  </div>
+  <div class="chart-box" style="margin-top:12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:16px 18px;">
+    <div class="ch-ttl" style="margin-bottom:10px;color:#065f46;">Lump-Sum Withdrawal Events</div>
+    <div id="axLumpList"></div>
+    <button class="add-fund-btn" style="margin-top:8px;" onclick="addAsxLump()">＋ Add Lump Sum</button>
+  </div>
+  <div class="tbl-box" style="margin-top:12px;">
+    <div class="tbl-hdr">
+      <div class="tbl-ttl">Year-by-Year Breakdown (AUD)</div>
+      <div class="fb-row" id="axFbRow">
+        <button class="fb on" data-f="all" onclick="axTF='all';axFbRow(this);renderAsxTable()">All</button>
+        <button class="fb" data-f="1" onclick="axTF='1';axFbRow(this);renderAsxTable()">Build</button>
+        <button class="fb" data-f="2" onclick="axTF='2';axFbRow(this);renderAsxTable()">Coast</button>
+        <button class="fb" data-f="3" onclick="axTF='3';axFbRow(this);renderAsxTable()">Withdraw</button>
+        <button class="fb" data-f="L" onclick="axTF='L';axFbRow(this);renderAsxTable()">Lump yrs</button>
+      </div>
+    </div>
+    <div class="tscroll"><table><thead id="axTHead"></thead><tbody id="axTBody"></tbody></table></div>
+  </div>
+  <div class="disc" style="margin-top:12px;">AUD returns only. Franking credits, CGT, and currency effects not modelled. Not financial advice.</div>
+</main>
+</div>
+</div>
+<!-- ASX ETF Picker Modal -->
+<div id="asxPickerOverlay" class="etf-overlay" style="display:none;">
+  <div class="etf-panel">
+    <div class="etf-panel-hdr">
+      <div class="etf-panel-title">Select ASX ETF</div>
+      <button class="etf-close" onclick="closeAsxPicker()">×</button>
+    </div>
+    <div class="etf-search-row"><input id="asxEtfSearch" class="etf-search" placeholder="Search ticker or name…" oninput="renderAsxETFList()"></div>
+    <div id="asxCatTabs" class="tg-row" style="flex-wrap:wrap;gap:4px;padding:8px 16px 4px;"></div>
+    <div id="asxEtfList" class="etf-list"></div>
+  </div>
+</div>
 
 </body>
 </html>

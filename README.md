@@ -1,4 +1,3 @@
-# path-to-financial-freedom
 # Path To Financial Freedom
 
 A self-contained, interactive financial planning tool built as a single HTML file. No backend, no sign-up, no data leaves your browser. Open `index.html` and start modelling your path to financial independence.

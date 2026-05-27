@@ -1,0 +1,3023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Path To Financial Freedom</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<style>
+:root{color-scheme:light;--bg:#f8fafc;--bg2:#fff;--bg3:#f1f5f9;--border:#e2e8f0;--tx:#0f172a;--tx2:#475569;--tx3:#94a3b8;--acc:#4f46e5;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:26px;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;}
+.layout{display:grid;grid-template-columns:300px 1fr;min-height:100vh;}
+@media(max-width:860px){.layout{grid-template-columns:1fr;}}
+
+/* Sidebar */
+.sidebar{background:#f0f4ff;border-right:1px solid var(--border);position:sticky;top:0;height:100vh;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;}
+.sidebar::-webkit-scrollbar{width:4px;}.sidebar::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:2px;}
+.sidebar-header h2{font-size:17px;font-weight:700;color:var(--tx);}
+.sidebar-header p{font-size:11px;color:var(--tx3);margin-top:2px;}
+.ctrl-group{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+.ctrl-group-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px;}
+.ctrl-item{margin-bottom:8px;}.ctrl-item:last-child{margin-bottom:0;}
+.ctrl-label{font-size:11px;color:var(--tx2);margin-bottom:2px;}
+/* ── Tooltips ── */
+.tip-wrap{position:relative;display:inline-flex;align-items:center;gap:4px;}
+.tip-icon{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:#e0e7ff;color:#4f46e5;font-size:12.5px;font-weight:700;cursor:pointer;flex-shrink:0;line-height:1;border:none;padding:0;}
+.tip-icon:hover+.tip-box,.tip-icon:focus+.tip-box{display:block;}
+.tip-box{display:none;position:absolute;left:0;top:calc(100% + 5px);z-index:500;background:#1e293b;color:#f8fafc;border-radius:8px;padding:8px 11px;font-size:15px;line-height:1.55;width:220px;box-shadow:0 8px 24px rgba(0,0,0,.22);pointer-events:none;}
+.tip-box::before{content:'';position:absolute;top:-5px;left:10px;border:5px solid transparent;border-bottom-color:#1e293b;border-top:none;}
+
+.ctrl-row{display:flex;align-items:center;gap:5px;}
+.num-wrap{display:flex;align-items:center;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:0 5px;flex:0 0 auto;min-width:70px;}
+.num-prefix,.num-suffix{font-size:11px;color:var(--tx3);}
+.num-in{background:transparent;border:none;outline:none;color:var(--tx);font-size:12px;font-weight:600;width:88px;padding:3px 3px;text-align:right;}
+.num-in::-webkit-inner-spin-button,.num-in::-webkit-outer-spin-button{opacity:.4;}
+.range-in{flex:1;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:#cbd5e1;outline:none;cursor:pointer;}
+.range-in::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:#4f46e5;border:2px solid #a5b4fc;cursor:pointer;}
+
+/* Fund rows */
+.funds-list{display:flex;flex-direction:column;gap:7px;}
+.fund-row{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:8px 9px;}
+.fund-row-hdr{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+.fund-badge{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;flex-shrink:0;}
+.fund-sym{font-size:10px;font-weight:700;font-family:monospace;color:var(--tx2);}
+.fund-name{font-size:13px;font-weight:600;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px;}
+.fund-cat{font-size:8px;color:var(--tx3);}
+.fund-cagr-badge{font-size:9px;font-weight:700;margin-left:auto;color:var(--tx3);}
+.fund-btns{display:flex;gap:4px;flex-shrink:0;}
+.change-btn{background:#eef2ff;border:1px solid #c7d2fe;border-radius:4px;padding:2px 6px;font-size:9px;font-weight:600;color:#4f46e5;cursor:pointer;}
+.change-btn:hover{background:#e0e7ff;}
+.remove-btn{background:#fef2f2;border:1px solid #fecaca;border-radius:4px;padding:2px 5px;font-size:9px;color:#dc2626;cursor:pointer;}
+.remove-btn:hover{background:#fee2e2;}
+.remove-btn:disabled{opacity:.35;cursor:not-allowed;}
+
+/* ── Big summary tile ── */
+.card-big{background:#fff;border:1.5px solid #c7d2fe;border-radius:12px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,.06);grid-column:1/-1;}
+.card-big-hdr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+.card-big-lbl{font-size:16.2px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--tx3);}
+.card-big-val{font-size:27.5px;font-weight:800;color:#4f46e5;letter-spacing:-.5px;}
+.fund-subtiles{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.fund-subtile{flex:1;min-width:90px;background:var(--bg3);border-radius:8px;padding:7px 9px;border:1px solid var(--border);}
+.fst-badge{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;color:#fff;font-size:12.5px;font-weight:800;margin-right:4px;vertical-align:middle;}
+.fst-lbl{font-size:13.8px;color:var(--tx2);font-weight:500;}
+.fst-val{font-size:17.5px;font-weight:700;margin-top:2px;}
+.fst-sub{font-size:12.5px;color:var(--tx3);margin-top:1px;}
+
+.cards-row{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;grid-column:1/-1;width:100%;}
+@media(max-width:900px){.cards-row{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:540px){.cards-row{grid-template-columns:repeat(2,1fr);}}
+.cards-row .card{padding:8px 10px;}
+.cards-row .c-lbl{font-size:12.5px;}
+.cards-row .c-val{font-size:18.8px;letter-spacing:-.3px;}
+.cards-row .c-sub{font-size:11.9px;}
+.fund-input-group{margin-top:7px;}
+.fund-input-label{font-size:9px;color:var(--tx2);margin-bottom:2px;font-weight:500;}
+.lev-warn{background:#fffbeb;border:1px solid #fde68a;border-radius:5px;padding:3px 7px;font-size:17.1px;color:#92400e;margin-top:4px;display:none;}
+.lev-warn.show{display:block;}
+.add-fund-btn{width:100%;padding:5px;border-radius:8px;font-size:10px;font-weight:600;background:#eef2ff;border:1px solid #c7d2fe;color:#4f46e5;cursor:pointer;margin-top:2px;}
+.add-fund-btn:hover:not(:disabled){background:#e0e7ff;}
+.add-fund-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* Lump sums */
+.lump-list{display:flex;flex-direction:column;gap:5px;}
+.lump-entry{display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid #fde68a;border-radius:7px;padding:5px 7px;}
+.lump-entry .num-in{width:48px;}
+.lump-sep{font-size:11px;color:var(--tx3);}
+.lump-del{background:#fef2f2;border:1px solid #fecaca;color:#dc2626;border-radius:4px;padding:2px 6px;font-size:10px;cursor:pointer;}
+.lump-del:hover{background:#fee2e2;}
+.add-lump{width:100%;padding:5px;border-radius:7px;font-size:21.1px;background:#fefce8;border:1px solid #fde68a;color:#92400e;cursor:pointer;margin-top:3px;}
+.add-lump:hover{background:#fef9c3;}
+.reset-btn{width:100%;padding:6px;border-radius:7px;font-size:21.1px;font-weight:600;background:#ede9fe;border:1px solid #c4b5fd;color:#4f46e5;cursor:pointer;}
+.reset-btn:hover{background:#ddd6fe;}
+.disc{font-size:17.9px;color:#94a3b8;line-height:1.6;}
+
+/* Main */
+.main{padding:16px;display:flex;flex-direction:column;gap:14px;}
+.app-header{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.app-title{font-size:20px;font-weight:800;color:var(--tx);letter-spacing:-.2px;}
+.app-sub{font-size:13px;color:var(--tx3);margin-top:2px;}
+.pill{display:inline-flex;align-items:center;background:#ede9fe;color:#4f46e5;border-radius:20px;padding:4px 10px;font-size:19.5px;font-weight:600;white-space:nowrap;}
+.section-label{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--tx3);margin-bottom:4px;}
+
+/* Phase bar */
+.phase-bar{display:flex;border-radius:8px;overflow:hidden;height:38px;border:1px solid var(--border);}
+.pb-phase{display:flex;align-items:center;justify-content:center;flex-direction:row;gap:5px;padding:0 10px;min-width:0;}
+.pb1{background:#eef2ff;}.pb2{background:#f0fdf4;}.pb3{background:#fdf2f8;}
+.pb-lbl{font-size:17.9px;text-transform:uppercase;color:var(--tx3);white-space:nowrap;}
+.pb-val{font-size:21.1px;font-weight:700;white-space:nowrap;}
+.pb1 .pb-val{color:#4f46e5;}.pb2 .pb-val{color:#059669;}.pb3 .pb-val{color:#be185d;}
+
+/* Cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:8px;}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 12px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+.card.hi-g{border-color:#6ee7b7;background:#f0fdf4;}.card.hi-y{border-color:#fde68a;background:#fefce8;}.card.hi-p{border-color:#fbcfe8;background:#fdf2f8;}
+.c-lbl{font-size:17.9px;text-transform:uppercase;letter-spacing:.5px;color:var(--tx3);}
+.c-val{font-size:30.9px;font-weight:700;margin-top:2px;letter-spacing:-.4px;}
+.c-sub{font-size:17.9px;color:var(--tx3);margin-top:2px;}
+.g{color:#059669}.i{color:#4f46e5}.a{color:#d97706}.s{color:#64748b}.p{color:#be185d}.r{color:#e11d48}.y{color:#92400e}
+
+/* Charts */
+.chart-box{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+.ch-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px;}
+.ch-ttl{font-size:24.4px;font-weight:600;}
+.tg-row{display:flex;gap:4px;flex-wrap:wrap;}
+.tg{padding:3px 9px;border-radius:5px;font-size:20.2px;border:1px solid var(--border);background:var(--bg3);color:var(--tx2);cursor:pointer;}
+.tg.on{background:#4f46e5;color:#fff;border-color:#4f46e5;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:640px){.two-col{grid-template-columns:1fr;}}
+
+/* Sustainability */
+.sus-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:7px;margin-bottom:10px;}
+.sus-stat{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 10px;}
+.sus-lbl{font-size:17.9px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;}
+.sus-val{font-size:27.6px;font-weight:700;margin-top:2px;}
+.sus-bar-bg{background:#e2e8f0;border-radius:5px;overflow:hidden;height:8px;margin-top:8px;}
+.sus-bar{height:100%;border-radius:5px;transition:width .4s;}
+.sus-note{font-size:21.1px;color:var(--tx2);line-height:1.65;margin-top:8px;}
+
+/* Table */
+.tbl-box{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+.tbl-hdr{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;}
+.tbl-ttl{font-size:24.4px;font-weight:600;}
+.fb-row{display:flex;gap:4px;flex-wrap:wrap;}
+.fb{padding:3px 9px;border-radius:5px;font-size:20.2px;border:1px solid var(--border);background:var(--bg3);color:var(--tx2);cursor:pointer;}
+.fb.on{background:#4f46e5;color:#fff;border-color:#4f46e5;}
+.tscroll{overflow-x:auto;max-height:380px;overflow-y:auto;}
+table{width:100%;border-collapse:collapse;}
+thead th{position:sticky;top:0;z-index:2;}
+th{padding:7px 10px;font-size:18.8px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--tx3);text-align:right;background:var(--bg3);white-space:nowrap;border-bottom:1px solid var(--border);}
+th:first-child,th:nth-child(2){text-align:left;}
+td{padding:6px 10px;font-size:21.1px;text-align:right;border-top:1px solid #f1f5f9;color:#334155;white-space:nowrap;}
+td:first-child{text-align:left;font-weight:600;color:#1e293b;}td:nth-child(2){text-align:left;font-size:19.5px;}
+tr.p1 td:first-child{color:#4f46e5;}tr.p2 td:first-child{color:#059669;}tr.p3 td:first-child{color:#be185d;}tr.lyr td:first-child{color:#92400e;}
+tr:hover td{background:#f8fafc;}
+
+/* ══ ETF PICKER MODAL ══ */
+.etf-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:999;display:none;align-items:center;justify-content:center;padding:16px;}
+.etf-overlay.open{display:flex;}
+.etf-modal{background:#fff;border-radius:14px;width:600px;max-width:100%;max-height:82vh;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.2);overflow:hidden;}
+.etf-mhdr{display:flex;justify-content:space-between;align-items:center;padding:13px 18px;border-bottom:1px solid var(--border);}
+.etf-mhdr-title{font-size:26px;font-weight:700;color:var(--tx);}
+.etf-mhdr-sub{font-size:19.5px;color:var(--tx3);margin-top:1px;}
+.etf-close{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:22.8px;cursor:pointer;color:var(--tx2);}
+.etf-close:hover{background:#e2e8f0;}
+.etf-searchbar{padding:10px 16px;border-bottom:1px solid #f1f5f9;}
+.etf-searchbar input{width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:24.4px;color:var(--tx);outline:none;background:var(--bg3);}
+.etf-searchbar input:focus{border-color:#4f46e5;background:#fff;}
+.etf-cats{display:flex;gap:5px;padding:8px 16px;overflow-x:auto;border-bottom:1px solid #f1f5f9;scrollbar-width:none;}
+.etf-cats::-webkit-scrollbar{display:none;}
+.cat-chip{flex-shrink:0;padding:4px 10px;border-radius:20px;font-size:19.5px;font-weight:500;border:1px solid var(--border);background:var(--bg3);color:#64748b;cursor:pointer;white-space:nowrap;}
+.cat-chip.on{background:#4f46e5;color:#fff;border-color:#4f46e5;}
+.cat-chip:hover:not(.on){background:#eef2ff;border-color:#c7d2fe;}
+.etf-list{flex:1;overflow-y:auto;}
+.etf-item{display:flex;align-items:center;gap:9px;padding:8px 16px;cursor:pointer;border-bottom:1px solid #f8fafc;}
+.etf-item:hover{background:#f8fafc;}.etf-item.sel{background:#eef2ff;}.etf-item.lev{border-left:3px solid #f59e0b;padding-left:13px;}
+.ei-sym{font-size:24.4px;font-weight:800;color:var(--tx);min-width:52px;font-family:monospace;}
+.etf-item.sel .ei-sym{color:#4f46e5;}
+.ei-info{flex:1;min-width:0;}
+.ei-name{font-size:21.1px;color:#334155;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ei-cat{font-size:18.8px;color:var(--tx3);margin-top:1px;}
+.ei-cagr{font-size:24.4px;font-weight:700;min-width:44px;text-align:right;}
+.hist-tag{font-size:17.1px;color:var(--tx3);background:var(--bg3);border-radius:3px;padding:1px 4px;margin-left:4px;vertical-align:middle;}
+.etf-mfooter{padding:7px 16px;font-size:17.9px;color:var(--tx3);border-top:1px solid #f1f5f9;text-align:center;background:var(--bg3);}
+.no-results{text-align:center;padding:28px;color:var(--tx3);font-size:26px;}
+
+input[type="range"], .range-in { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- ETF PICKER MODAL -->
+<div class="etf-overlay" id="etfOverlay">
+ <div class="etf-modal">
+ <div class="etf-mhdr">
+ <div>
+ <div class="etf-mhdr-title" id="modalTitle">Select ETF</div>
+ <div class="etf-mhdr-sub">15-yr avg CAGR auto-filled · still editable after selection</div>
+ </div>
+ <button class="etf-close" id="etfClose">Close</button>
+ </div>
+ <div class="etf-searchbar"><input type="text" id="etfSearch" placeholder="Search ticker or name (e.g. QQQ, semiconductor, dividend…)"></div>
+ <div class="etf-cats" id="catChips"></div>
+ <div class="etf-list" id="etfList"></div>
+ <div class="etf-mfooter">15-yr CAGR estimates through 2025 · * = shorter history · Leveraged ETFs not suitable for long-term DCA · Not financial advice</div>
+ </div>
+</div>
+
+<div class="layout">
+<aside class="sidebar">
+ <div class="sidebar-header">
+ <h2>Path To Financial Freedom</h2>
+ <p>Adjust any value — charts update live</p>
+ </div>
+
+ <!-- Fund Selection -->
+ <div class="ctrl-group">
+ <div class="ctrl-group-title" style="color:#d97706">Funds &amp; Returns <span id="fundCountLabel" style="color:var(--tx3);font-weight:400;font-size:9px;text-transform:none;letter-spacing:0"></span></div>
+ <div class="funds-list" id="fundsList"></div>
+ <button class="add-fund-btn" id="addFundBtn">＋ Add Fund (2/6)</button>
+ </div>
+
+ <!-- Phase 1 -->
+ <div class="ctrl-group">
+ <div class="ctrl-group-title" style="color:#4f46e5">Phase 1 — Build (DCA)</div>
+
+ <div class="ctrl-item">
+ <div class="ctrl-label"><span class="tip-wrap">DCA duration <button class="tip-icon" tabindex="-1">ℹ</button><div class="tip-box">How many years you keep making monthly contributions. DCA = "Dollar-Cost Averaging" — investing a fixed amount regularly regardless of market ups and downs.</div></span></div>
+ <div class="ctrl-row">
+ <div class="num-wrap"><input class="num-in" type="number" id="v_dcaYrs" value="17" min="1" max="40" step="1"><span class="num-suffix">yr</span></div>
+ <input class="range-in" type="range" id="r_dcaYrs" min="1" max="40" step="1" value="17">
+ </div>
+ </div>
+ <div class="ctrl-item">
+ <div class="ctrl-label"><span class="tip-wrap">Coast duration <button class="tip-icon" tabindex="-1">ℹ</button><div class="tip-box">Years between stopping contributions and starting withdrawals. You stop adding money but leave it invested — the portfolio "coasts" and keeps growing on its own.</div></span></div>
+ <div class="ctrl-row">
+ <div class="num-wrap"><input class="num-in" type="number" id="v_coast" value="3" min="0" max="20" step="1"><span class="num-suffix">yr</span></div>
+ <input class="range-in" type="range" id="r_coast" min="0" max="20" step="1" value="3">
+ </div>
+ </div>
+ <div class="ctrl-item">
+ <div class="ctrl-label"><span class="tip-wrap">Inflation rate <button class="tip-icon" tabindex="-1">ℹ</button><div class="tip-box">The expected annual rise in prices (historically ~3%). Used to show you the "real" purchasing power of your portfolio — $1M in 20 years buys less than $1M today.</div></span></div>
+ <div class="ctrl-row">
+ <div class="num-wrap"><input class="num-in" type="number" id="v_inf" value="3.0" min="0" max="15" step="0.1"><span class="num-suffix">%</span></div>
+ <input class="range-in" type="range" id="r_inf" min="0" max="15" step="0.1" value="3.0">
+ </div>
+ </div>
+ </div>
+
+ <!-- Phase 3 -->
+ <div class="ctrl-group">
+ <div class="ctrl-group-title" style="color:#be185d">Phase 3 — Withdrawal</div>
+ <div class="ctrl-item">
+ <div class="ctrl-label"><span class="tip-wrap">Base monthly withdrawal <button class="tip-icon" tabindex="-1">ℹ</button><div class="tip-box">How much money you plan to take out of your portfolio each month in retirement. This is your starting amount — it increases each year by the withdrawal increase % below.</div></span></div>
+ <div class="ctrl-row">
+ <div class="num-wrap"><span class="num-prefix">$</span><input class="num-in" type="number" id="v_wdraw" value="12000" min="500" max="100000" step="500"></div>
+ <input class="range-in" type="range" id="r_wdraw" min="500" max="100000" step="500" value="12000">
+ </div>
+ </div>
+ <div class="ctrl-item">
+ <div class="ctrl-label"><span class="tip-wrap">Annual withdrawal increase <button class="tip-icon" tabindex="-1">ℹ</button><div class="tip-box">How much your monthly withdrawal grows each year, typically to keep pace with inflation. At 3%, a $12,000/month withdrawal becomes ~$12,360 in year 2, and so on.</div></span></div>
+ <div class="ctrl-row">
+ <div class="num-wrap"><input class="num-in" type="number" id="v_winc" value="3.0" min="0" max="10" step="0.1"><span class="num-suffix">%</span></div>
+ <input class="range-in" type="range" id="r_winc" min="0" max="10" step="0.1" value="3.0">
+ </div>
+ </div>
+ <div class="ctrl-item">
+ <div class="ctrl-label"><span class="tip-wrap">Withdrawal duration <button class="tip-icon" tabindex="-1">ℹ</button><div class="tip-box">How many years you plan to draw from your portfolio in retirement. The simulation checks whether your money lasts this long — if not, it shows when funds run out.</div></span></div>
+ <div class="ctrl-row">
+ <div class="num-wrap"><input class="num-in" type="number" id="v_wYrs" value="30" min="5" max="50" step="1"><span class="num-suffix">yr</span></div>
+ <input class="range-in" type="range" id="r_wYrs" min="5" max="50" step="1" value="30">
+ </div>
+ </div>
+ </div>
+
+ <!-- Lump sums -->
+ <div class="ctrl-group">
+ <div class="ctrl-group-title" style="color:#92400e">Lump-Sum Events</div>
+ <div class="lump-list" id="lumpList"></div>
+ <button class="add-lump" id="addLump">＋ Add lump-sum event</button>
+ </div>
+
+ <button class="reset-btn" id="resetBtn">↺ Reset to defaults</button>
+ <div class="disc">Past performance ≠ future results. Not financial advice. Returns compound monthly. DCA &amp; withdrawals split equally across all active funds.</div>
+</aside>
+
+<main class="main">
+
+ <div class="app-header">
+ <div style="flex:1">
+ <div class="app-title">Section 1: Investment in VanGuard ETF's</div>
+ <div class="app-sub" id="appSub">50-year wealth simulation</div>
+ </div>
+ <span class="pill">Build → Coast → Withdraw</span>
+ </div>
+
+ <div>
+ <div class="section-label">Timeline — <span id="totalYrsLabel"></span> years total</div>
+ <div class="phase-bar">
+ <div class="pb-phase pb1" id="pb1"><div class="pb-lbl">Build</div><div class="pb-val" id="pb1v"></div></div>
+ <div class="pb-phase pb2" id="pb2"><div class="pb-lbl">Coast</div><div class="pb-val" id="pb2v"></div></div>
+ <div class="pb-phase pb3" id="pb3"><div class="pb-lbl">Withdraw</div><div class="pb-val" id="pb3v"></div></div>
+ </div>
+ </div>
+
+ <div class="cards" id="cards"></div>
+
+ <div class="chart-box">
+ <div class="ch-hdr">
+ <div class="ch-ttl">Portfolio Value Over Time</div>
+ <div class="tg-row" id="mainTg">
+ <button class="tg on" data-m="combined">Combined</button>
+ <button class="tg" data-m="individual">Each Fund</button>
+ <button class="tg" data-m="real">Real Value</button>
+ <button class="tg" data-m="all">All</button>
+ </div>
+ </div>
+ <canvas id="mainChart" style="max-height:340px"></canvas>
+ </div>
+
+ <div class="two-col">
+ <div class="chart-box">
+ <div class="ch-ttl" style="margin-bottom:10px">Annual Cash Flows</div>
+ <canvas id="flowChart" style="max-height:195px"></canvas>
+ </div>
+ <div class="chart-box">
+ <div class="ch-ttl" style="margin-bottom:10px">Cumulative Invested vs Withdrawn</div>
+ <canvas id="cumChart" style="max-height:195px"></canvas>
+ </div>
+ </div>
+
+ <div class="chart-box">
+ <div class="ch-ttl" style="margin-bottom:10px">Portfolio Sustainability</div>
+ <div id="susContent"></div>
+ </div>
+
+ <div class="tbl-box">
+ <div class="tbl-hdr">
+ <div class="tbl-ttl">Year-by-Year Breakdown</div>
+ <div class="fb-row" id="fbRow">
+ <button class="fb on" data-f="all">All</button>
+ <button class="fb" data-f="1">Build</button>
+ <button class="fb" data-f="2">Coast</button>
+ <button class="fb" data-f="3">Withdraw</button>
+ <button class="fb" data-f="L">Lump yrs</button>
+ </div>
+ </div>
+ <div class="tscroll">
+ <table>
+ <thead id="tableHead"></thead>
+ <tbody id="tbody"></tbody>
+ </table>
+ </div>
+ </div>
+
+</main>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// ETF DATABASE — 130 major US ETFs · 15-yr CAGR est. through 2025
+// ═══════════════════════════════════════════════════════════
+const ETF_DB = [
+ {sym:'SPY', name:'SPDR S&P 500 ETF', cat:'Broad Market', cagr:13.8, yr:1993},
+ {sym:'VOO', name:'Vanguard S&P 500 ETF', cat:'Broad Market', cagr:13.8, yr:2010},
+ {sym:'IVV', name:'iShares Core S&P 500', cat:'Broad Market', cagr:13.8, yr:2000},
+ {sym:'VTI', name:'Vanguard Total Market ETF', cat:'Broad Market', cagr:13.5, yr:2001},
+ {sym:'ITOT',name:'iShares Core S&P Total US', cat:'Broad Market', cagr:13.5, yr:2004},
+ {sym:'SCHB',name:'Schwab US Broad Market ETF', cat:'Broad Market', cagr:13.5, yr:2009},
+ {sym:'SCHX',name:'Schwab US Large-Cap ETF', cat:'Broad Market', cagr:13.7, yr:2009},
+ {sym:'SPTM',name:'SPDR Portfolio S&P 1500', cat:'Broad Market', cagr:13.4, yr:2000},
+ {sym:'IWB', name:'iShares Russell 1000 ETF', cat:'Broad Market', cagr:13.5, yr:2000},
+ {sym:'ONEQ',name:'Fidelity Nasdaq Composite ETF', cat:'Broad Market', cagr:16.5, yr:2003},
+ {sym:'QQQ', name:'Invesco Nasdaq-100 ETF', cat:'Large Cap Growth', cagr:18.5, yr:1999},
+ {sym:'QQQM',name:'Invesco Nasdaq-100 Mini ETF', cat:'Large Cap Growth', cagr:18.5, yr:2020},
+ {sym:'VUG', name:'Vanguard Growth ETF', cat:'Large Cap Growth', cagr:15.5, yr:2004},
+ {sym:'IWF', name:'iShares Russell 1000 Growth', cat:'Large Cap Growth', cagr:15.8, yr:2000},
+ {sym:'SCHG',name:'Schwab US Large-Cap Growth ETF', cat:'Large Cap Growth', cagr:16.2, yr:2009},
+ {sym:'MGK', name:'Vanguard Mega Cap Growth ETF', cat:'Large Cap Growth', cagr:16.8, yr:2007},
+ {sym:'SPYG',name:'SPDR Portfolio S&P 500 Growth', cat:'Large Cap Growth', cagr:15.9, yr:2000},
+ {sym:'IUSG',name:'iShares Core S&P US Growth', cat:'Large Cap Growth', cagr:15.8, yr:2000},
+ {sym:'VTV', name:'Vanguard Value ETF', cat:'Large Cap Value', cagr:11.8, yr:2004},
+ {sym:'IWD', name:'iShares Russell 1000 Value', cat:'Large Cap Value', cagr:11.0, yr:2000},
+ {sym:'SCHV',name:'Schwab US Large-Cap Value ETF', cat:'Large Cap Value', cagr:11.5, yr:2009},
+ {sym:'SPYV',name:'SPDR Portfolio S&P 500 Value', cat:'Large Cap Value', cagr:11.2, yr:2000},
+ {sym:'MGV', name:'Vanguard Mega Cap Value ETF', cat:'Large Cap Value', cagr:12.0, yr:2007},
+ {sym:'IUSV',name:'iShares Core S&P US Value', cat:'Large Cap Value', cagr:11.0, yr:2000},
+ {sym:'VO', name:'Vanguard Mid-Cap ETF', cat:'Mid Cap', cagr:12.8, yr:2004},
+ {sym:'IJH', name:'iShares Core S&P Mid-Cap', cat:'Mid Cap', cagr:13.2, yr:2000},
+ {sym:'SCHM',name:'Schwab US Mid-Cap ETF', cat:'Mid Cap', cagr:12.5, yr:2011},
+ {sym:'MDY', name:'SPDR S&P MidCap 400 ETF', cat:'Mid Cap', cagr:12.8, yr:1995},
+ {sym:'VOE', name:'Vanguard Mid-Cap Value ETF', cat:'Mid Cap', cagr:11.5, yr:2006},
+ {sym:'VOT', name:'Vanguard Mid-Cap Growth ETF', cat:'Mid Cap', cagr:13.5, yr:2006},
+ {sym:'VB', name:'Vanguard Small-Cap ETF', cat:'Small Cap', cagr:11.2, yr:2004},
+ {sym:'IJR', name:'iShares Core S&P Small-Cap', cat:'Small Cap', cagr:12.5, yr:2000},
+ {sym:'IWM', name:'iShares Russell 2000 ETF', cat:'Small Cap', cagr:10.5, yr:2000},
+ {sym:'SCHA',name:'Schwab US Small-Cap ETF', cat:'Small Cap', cagr:11.0, yr:2009},
+ {sym:'VBK', name:'Vanguard Small-Cap Growth ETF', cat:'Small Cap', cagr:12.5, yr:2004},
+ {sym:'VBR', name:'Vanguard Small-Cap Value ETF', cat:'Small Cap', cagr:10.5, yr:2004},
+ {sym:'VGT', name:'Vanguard Info Technology ETF', cat:'Technology', cagr:20.5, yr:2004},
+ {sym:'XLK', name:'Technology Select Sector SPDR', cat:'Technology', cagr:20.2, yr:1998},
+ {sym:'SOXX',name:'iShares Semiconductor ETF', cat:'Technology', cagr:22.5, yr:2001},
+ {sym:'SMH', name:'VanEck Semiconductor ETF', cat:'Technology', cagr:23.0, yr:2000},
+ {sym:'IGV', name:'iShares Expanded Tech-Software', cat:'Technology', cagr:18.8, yr:2001},
+ {sym:'IYW', name:'iShares US Technology ETF', cat:'Technology', cagr:20.0, yr:2000},
+ {sym:'FTEC',name:'Fidelity MSCI Info Technology', cat:'Technology', cagr:20.5, yr:2013},
+ {sym:'SKYY',name:'First Trust Cloud Computing ETF', cat:'Technology', cagr:14.5, yr:2011},
+ {sym:'HACK',name:'ETFMG Prime Cyber Security ETF', cat:'Technology', cagr:10.8, yr:2014},
+ {sym:'CIBR',name:'First Trust Nasdaq Cybersecurity', cat:'Technology', cagr:11.2, yr:2015},
+ {sym:'ROBO',name:'ROBO Global Robotics & AI ETF', cat:'Technology', cagr:9.5, yr:2013},
+ {sym:'BOTZ',name:'Global X Robotics & AI ETF', cat:'Technology', cagr:8.5, yr:2016},
+ {sym:'VHT', name:'Vanguard Health Care ETF', cat:'Healthcare', cagr:14.2, yr:2004},
+ {sym:'XLV', name:'Health Care Select Sector SPDR', cat:'Healthcare', cagr:14.2, yr:1998},
+ {sym:'IBB', name:'iShares Nasdaq Biotechnology', cat:'Healthcare', cagr:13.2, yr:2001},
+ {sym:'XBI', name:'SPDR S&P Biotech ETF', cat:'Healthcare', cagr:14.8, yr:2006},
+ {sym:'IHI', name:'iShares US Medical Devices ETF', cat:'Healthcare', cagr:17.5, yr:2006},
+ {sym:'ARKG',name:'ARK Genomic Revolution ETF', cat:'Healthcare', cagr:5.5, yr:2014},
+ {sym:'VFH', name:'Vanguard Financials ETF', cat:'Financials', cagr:13.5, yr:2004},
+ {sym:'XLF', name:'Financial Select Sector SPDR', cat:'Financials', cagr:13.5, yr:1998},
+ {sym:'KBE', name:'SPDR S&P Bank ETF', cat:'Financials', cagr:11.8, yr:2005},
+ {sym:'KBWB',name:'Invesco KBW Bank ETF', cat:'Financials', cagr:13.5, yr:2011},
+ {sym:'IAI', name:'iShares US Broker-Dealers ETF', cat:'Financials', cagr:14.8, yr:2006},
+ {sym:'XLE', name:'Energy Select Sector SPDR', cat:'Energy', cagr:6.5, yr:1998},
+ {sym:'VDE', name:'Vanguard Energy ETF', cat:'Energy', cagr:7.0, yr:2004},
+ {sym:'OIH', name:'VanEck Oil Services ETF', cat:'Energy', cagr:3.5, yr:2001},
+ {sym:'AMLP',name:'Alerian MLP ETF', cat:'Energy', cagr:4.5, yr:2010},
+ {sym:'XLY', name:'Consumer Discretionary SPDR', cat:'Consumer', cagr:16.8, yr:1998},
+ {sym:'XLP', name:'Consumer Staples Select SPDR', cat:'Consumer', cagr:10.5, yr:1998},
+ {sym:'VCR', name:'Vanguard Consumer Disc. ETF', cat:'Consumer', cagr:16.5, yr:2004},
+ {sym:'VDC', name:'Vanguard Consumer Staples ETF', cat:'Consumer', cagr:10.8, yr:2004},
+ {sym:'XLI', name:'Industrial Select Sector SPDR', cat:'Industrials', cagr:13.8, yr:1998},
+ {sym:'VIS', name:'Vanguard Industrials ETF', cat:'Industrials', cagr:14.0, yr:2004},
+ {sym:'ITA', name:'iShares US Aerospace & Defense', cat:'Industrials', cagr:14.5, yr:2006},
+ {sym:'XLB', name:'Materials Select Sector SPDR', cat:'Materials', cagr:11.5, yr:1998},
+ {sym:'VAW', name:'Vanguard Materials ETF', cat:'Materials', cagr:11.8, yr:2004},
+ {sym:'XLU', name:'Utilities Select Sector SPDR', cat:'Utilities', cagr:9.5, yr:1998},
+ {sym:'VPU', name:'Vanguard Utilities ETF', cat:'Utilities', cagr:9.8, yr:2004},
+ {sym:'VNQ', name:'Vanguard Real Estate ETF', cat:'Real Estate', cagr:9.2, yr:2004},
+ {sym:'XLRE',name:'Real Estate Select Sector SPDR', cat:'Real Estate', cagr:8.5, yr:2015},
+ {sym:'IYR', name:'iShares US Real Estate ETF', cat:'Real Estate', cagr:9.0, yr:2000},
+ {sym:'SCHH',name:'Schwab US REIT ETF', cat:'Real Estate', cagr:9.0, yr:2011},
+ {sym:'EFA', name:'iShares MSCI EAFE ETF', cat:'Intl Developed', cagr:7.8, yr:2001},
+ {sym:'VEA', name:'Vanguard FTSE Developed Mkts', cat:'Intl Developed', cagr:8.0, yr:2007},
+ {sym:'SPDW',name:'SPDR Portfolio Dev World ex-US', cat:'Intl Developed', cagr:7.8, yr:2007},
+ {sym:'SCHF',name:'Schwab International Equity ETF', cat:'Intl Developed', cagr:7.5, yr:2009},
+ {sym:'IEFA',name:'iShares Core MSCI EAFE ETF', cat:'Intl Developed', cagr:8.2, yr:2012},
+ {sym:'VXUS',name:'Vanguard Total Intl Stock ETF', cat:'Intl Developed', cagr:7.5, yr:2011},
+ {sym:'ACWI',name:'iShares MSCI ACWI ETF', cat:'Intl Developed', cagr:12.0, yr:2008},
+ {sym:'EEM', name:'iShares MSCI Emerging Markets', cat:'Emerging Mkts', cagr:4.0, yr:2003},
+ {sym:'VWO', name:'Vanguard FTSE Emerging Markets', cat:'Emerging Mkts', cagr:3.8, yr:2005},
+ {sym:'SPEM',name:'SPDR Portfolio Emerging Markets', cat:'Emerging Mkts', cagr:4.0, yr:2007},
+ {sym:'IEMG',name:'iShares Core MSCI Emerging Mkts', cat:'Emerging Mkts', cagr:4.5, yr:2012},
+ {sym:'VYM', name:'Vanguard High Dividend Yield ETF', cat:'Dividend', cagr:11.5, yr:2006},
+ {sym:'SCHD',name:'Schwab US Dividend Equity ETF', cat:'Dividend', cagr:12.5, yr:2011},
+ {sym:'VIG', name:'Vanguard Dividend Appreciation', cat:'Dividend', cagr:13.2, yr:2006},
+ {sym:'DVY', name:'iShares Select Dividend ETF', cat:'Dividend', cagr:10.2, yr:2003},
+ {sym:'DGRO',name:'iShares Core Dividend Growth ETF', cat:'Dividend', cagr:13.0, yr:2014},
+ {sym:'SDY', name:'SPDR S&P Dividend ETF', cat:'Dividend', cagr:11.0, yr:2005},
+ {sym:'HDV', name:'iShares Core High Dividend ETF', cat:'Dividend', cagr:9.8, yr:2011},
+ {sym:'DGRW',name:'WisdomTree US Quality Div Growth', cat:'Dividend', cagr:14.5, yr:2013},
+ {sym:'QUAL',name:'iShares MSCI USA Quality Factor', cat:'Factor', cagr:15.8, yr:2013},
+ {sym:'MTUM',name:'iShares MSCI USA Momentum Factor', cat:'Factor', cagr:16.5, yr:2013},
+ {sym:'VLUE',name:'iShares MSCI USA Value Factor', cat:'Factor', cagr:10.5, yr:2013},
+ {sym:'USMV',name:'iShares MSCI USA Min Volatility', cat:'Factor', cagr:13.2, yr:2011},
+ {sym:'MOAT',name:'VanEck Morningstar Wide Moat ETF', cat:'Factor', cagr:15.2, yr:2012},
+ {sym:'FNDX',name:'Schwab Fundamental US Large Co', cat:'Factor', cagr:12.5, yr:2013},
+ {sym:'BND', name:'Vanguard Total Bond Market ETF', cat:'Bond', cagr:2.5, yr:2007},
+ {sym:'AGG', name:'iShares Core US Aggregate Bond', cat:'Bond', cagr:2.3, yr:2003},
+ {sym:'TLT', name:'iShares 20+ Year Treasury Bond', cat:'Bond', cagr:2.8, yr:2002},
+ {sym:'IEF', name:'iShares 7-10 Year Treasury Bond', cat:'Bond', cagr:2.5, yr:2002},
+ {sym:'HYG', name:'iShares High Yield Corp Bond ETF', cat:'Bond', cagr:5.5, yr:2007},
+ {sym:'LQD', name:'iShares Inv Grade Corp Bond ETF', cat:'Bond', cagr:3.8, yr:2002},
+ {sym:'VCIT',name:'Vanguard Interm-Term Corp Bond', cat:'Bond', cagr:3.5, yr:2009},
+ {sym:'VCSH',name:'Vanguard Short-Term Corp Bond', cat:'Bond', cagr:2.5, yr:2009},
+ {sym:'VGLT',name:'Vanguard Long-Term Treasury ETF', cat:'Bond', cagr:3.2, yr:2009},
+ {sym:'BSV', name:'Vanguard Short-Term Bond ETF', cat:'Bond', cagr:2.0, yr:2007},
+ {sym:'BLV', name:'Vanguard Long-Term Bond ETF', cat:'Bond', cagr:4.5, yr:2007},
+ {sym:'BNDX',name:'Vanguard Total Intl Bond ETF', cat:'Bond', cagr:2.8, yr:2013},
+ {sym:'GLD', name:'SPDR Gold Shares ETF', cat:'Commodity', cagr:7.5, yr:2004},
+ {sym:'IAU', name:'iShares Gold Trust ETF', cat:'Commodity', cagr:7.6, yr:2005},
+ {sym:'SLV', name:'iShares Silver Trust ETF', cat:'Commodity', cagr:3.5, yr:2006},
+ {sym:'GDX', name:'VanEck Gold Miners ETF', cat:'Commodity', cagr:4.8, yr:2006},
+ {sym:'PDBC',name:'Invesco Diversified Commodity', cat:'Commodity', cagr:3.5, yr:2014},
+ {sym:'TQQQ',name:'ProShares UltraPro QQQ (3×)', cat:'Leveraged', cagr:45.2, yr:2010},
+ {sym:'UPRO',name:'ProShares UltraPro S&P500 (3×)', cat:'Leveraged', cagr:35.8, yr:2009},
+ {sym:'SPXL',name:'Direxion Daily S&P 500 Bull 3×', cat:'Leveraged', cagr:35.5, yr:2008},
+ {sym:'SOXL',name:'Direxion Daily Semis Bull 3×', cat:'Leveraged', cagr:50.0, yr:2010},
+ {sym:'QLD', name:'ProShares Ultra QQQ (2×)', cat:'Leveraged', cagr:32.5, yr:2006},
+ {sym:'SSO', name:'ProShares Ultra S&P500 (2×)', cat:'Leveraged', cagr:24.5, yr:2006},
+ {sym:'ARKK',name:'ARK Innovation ETF', cat:'Thematic', cagr:11.5, yr:2014},
+ {sym:'ARKW',name:'ARK Next Generation Internet ETF', cat:'Thematic', cagr:13.5, yr:2014},
+ {sym:'ICLN',name:'iShares Global Clean Energy ETF', cat:'Thematic', cagr:5.5, yr:2008},
+ {sym:'TAN', name:'Invesco Solar ETF', cat:'Thematic', cagr:10.5, yr:2008},
+ {sym:'ESGU',name:'iShares MSCI USA ESG Optimized', cat:'Thematic', cagr:14.5, yr:2016},
+ {sym:'FINX',name:'Global X FinTech ETF', cat:'Thematic', cagr:8.5, yr:2016},
+ {sym:'CLOU',name:'Global X Cloud Computing ETF', cat:'Thematic', cagr:7.5, yr:2019},
+];
+
+const CATS = ['All','Broad Market','Large Cap Growth','Large Cap Value','Mid Cap','Small Cap',
+ 'Technology','Healthcare','Financials','Energy','Consumer','Industrials','Materials',
+ 'Utilities','Real Estate','Intl Developed','Emerging Mkts','Dividend','Factor',
+ 'Bond','Commodity','Leveraged','Thematic'];
+
+const FUND_COLORS = ['#4f46e5','#d97706','#059669','#be185d','#7c3aed','#0891b2'];
+const FUND_BG = ['rgba(79,70,229,.07)','rgba(217,119,6,.07)','rgba(5,150,105,.07)','rgba(190,24,93,.07)','rgba(124,58,237,.07)','rgba(8,145,178,.07)'];
+const FUND_LETTERS = ['A','B','C','D','E','F'];
+const MAX_FUNDS = 6;
+const MIN_FUNDS = 2;
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+const DEFAULTS = {dcaYrs:17,coast:3,inf:3.0,wdraw:12000,winc:3.0,wYrs:30};
+const DEFAULT_LUMPS = [{yr:20,amt:300000},{yr:25,amt:300000},{yr:30,amt:500000},{yr:35,amt:200000},{yr:40,amt:200000},{yr:45,amt:200000},{yr:50,amt:200000}];
+const DEFAULT_FUNDS = [
+ {sym:'VOO', name:'Vanguard S&P 500 ETF', cat:'Broad Market', cagr:13.8, yr:2010, rate:13.8, dca:1000},
+ {sym:'QQQM',name:'Invesco Nasdaq-100 Mini ETF', cat:'Large Cap Growth',cagr:18.5, yr:2020, rate:18.5, dca:1000},
+];
+
+let funds = DEFAULT_FUNDS.map(f=>({...f}));
+let lumpSums = DEFAULT_LUMPS.map(l=>({...l}));
+let rows = [];
+let tableFilter = 'all';
+let activePicker = null; // fund index
+let currentCat = 'All';
+
+// ═══════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════
+const g = id => document.getElementById(id);
+const fmt = n => (!isFinite(n)||n<0)?'—':'$'+Math.abs(Math.round(n)).toLocaleString();
+const fmtM = n => {
+ if(!isFinite(n)||n<0) return '—';
+ if(n>=1e9) return '$'+(n/1e9).toFixed(2)+'B';
+ if(n>=1e6) return '$'+(n/1e6).toFixed(2)+'M';
+ if(n>=1e3) return '$'+Math.round(n/1e3)+'K';
+ return '$'+Math.round(n);
+};
+function getBase(){
+ return {
+ dcaYrs:+g('v_dcaYrs').value||17,
+ coast: +g('v_coast').value ||3,
+ inf: (+g('v_inf').value ||3.0)/100,
+ wdraw: +g('v_wdraw').value ||12000,
+ winc: (+g('v_winc').value ||3.0)/100,
+ wYrs: +g('v_wYrs').value ||30,
+ };
+}
+
+// ═══════════════════════════════════════
+// SIMULATION
+// ═══════════════════════════════════════
+function simulate(){
+ const {dcaYrs,coast,inf,wdraw,winc,wYrs} = getBase();
+ const N = funds.length;
+ const TOTAL = dcaYrs+coast+wYrs;
+ const mRates = funds.map(f=>(f.rate/100)/12);
+ const dcas = funds.map(f=>f.dca||0);
+ const totalDCApm = dcas.reduce((s,v)=>s+v,0);
+ const lumpMap = {};
+ lumpSums.forEach(l=>{ if(l.yr>=1&&l.yr<=TOTAL&&l.amt>0) lumpMap[l.yr]=(lumpMap[l.yr]||0)+l.amt; });
+
+ let vals = new Array(N).fill(0);
+ let cumInv=0, cumWd=0;
+ const data=[];
+
+ for(let m=1;m<=TOTAL*12;m++){
+ const yr = Math.ceil(m/12);
+ const phase = yr<=dcaYrs?1:yr<=(dcaYrs+coast)?2:3;
+ const dYr = yr-dcaYrs-coast;
+
+ if(phase===1){
+ vals = vals.map((v,i)=>v+dcas[i]);
+ cumInv += totalDCApm;
+ } else if(phase===3){
+ const mW = wdraw*Math.pow(1+winc,dYr-1);
+ const tot = vals.reduce((s,v)=>s+v,0);
+ if(tot>0){ const w=Math.min(mW,tot); vals=vals.map(v=>v-w*(v/tot)); cumWd+=w; }
+ }
+ vals = vals.map((v,i)=>v*(1+mRates[i]));
+
+ if(m%12===0){
+ let lump=0; const lumpAmt=lumpMap[yr]||0;
+ if(lumpAmt>0){
+ const tot2=vals.reduce((s,v)=>s+v,0);
+ if(tot2>0){ lump=Math.min(lumpAmt,tot2); vals=vals.map(v=>v-lump*(v/tot2)); cumWd+=lump; }
+ }
+ const comb=vals.reduce((s,v)=>s+v,0);
+ const real=comb/Math.pow(1+inf,yr);
+ const regFlow=phase===1?totalDCApm*12:phase===3?-(wdraw*Math.pow(1+winc,dYr-1)*12):0;
+ data.push({yr,phase,vals:[...vals],comb,real,cumInv,cumWd,regFlow,lump,isLump:lump>0});
+ }
+ }
+ rows=data;
+ return {data,dcaYrs,coast,wYrs,TOTAL,totalDCApm,wdraw,winc,N};
+}
+
+// ═══════════════════════════════════════
+// CHARTS
+// ═══════════════════════════════════════
+let mainChart,flowChart,cumChart;
+function makePhasePlugin(dcaYrs,coast){
+ return {id:'phase',
+ beforeDraw(chart){
+ const {ctx,chartArea:{left,right,top,bottom},scales:{x}}=chart; if(!x) return;
+ const px=i=>Math.max(left,Math.min(right,x.getPixelForValue(i)));
+ const p1=px(dcaYrs-1),p2=px(dcaYrs+coast-1);
+ ctx.save();
+ ctx.fillStyle='rgba(79,70,229,.05)'; ctx.fillRect(left,top,p1-left,bottom-top);
+ ctx.fillStyle='rgba(5,150,105,.04)'; ctx.fillRect(p1,top,p2-p1,bottom-top);
+ ctx.fillStyle='rgba(190,24,93,.03)'; ctx.fillRect(p2,top,right-p2,bottom-top);
+ [[p1,'rgba(99,102,241,.5)'],[p2,'rgba(236,72,153,.5)']].forEach(([x2,col])=>{
+ ctx.strokeStyle=col;ctx.lineWidth=1.2;ctx.setLineDash([5,4]);
+ ctx.beginPath();ctx.moveTo(x2,top);ctx.lineTo(x2,bottom);ctx.stroke();
+ });
+ Object.keys(rows.reduce((a,r)=>r.isLump?{...a,[r.yr-1]:1}:a,{})).forEach(i=>{
+ const x2=px(+i);ctx.strokeStyle='rgba(202,138,4,.4)';ctx.lineWidth=1;ctx.setLineDash([3,3]);
+ ctx.beginPath();ctx.moveTo(x2,top);ctx.lineTo(x2,bottom);ctx.stroke();
+ });
+ ctx.restore();
+ },
+ afterDraw(chart){
+ const {ctx,chartArea:{top},scales:{x}}=chart; if(!x) return;
+ ctx.save();ctx.setLineDash([]);ctx.font='bold 10px system-ui';
+ ctx.fillStyle='rgba(99,102,241,.9)';ctx.fillText('⏸',x.getPixelForValue(dcaYrs-1)+3,top+12);
+ ctx.fillStyle='rgba(236,72,153,.9)';ctx.fillText('',x.getPixelForValue(dcaYrs+coast-1)+3,top+12);
+ ctx.restore();
+ }
+ };
+}
+const baseOpts=(dcaYrs,coast)=>({
+ responsive:true,maintainAspectRatio:true,interaction:{mode:'index',intersect:false},
+ plugins:{
+ legend:{labels:{color:'#64748b',font:{size:11},padding:10,boxWidth:12}},
+ tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',borderColor:'#e2e8f0',borderWidth:1,padding:10,
+ callbacks:{label:c=>` ${c.dataset.label}: ${fmtM(c.parsed.y)}`}}
+ },
+ scales:{
+ x:{ticks:{color:c=>{const i=c.index;return i>=(dcaYrs+coast)?'#be185d':i>=dcaYrs?'#059669':'#64748b';},font:{size:10},maxTicksLimit:26},grid:{color:'#f1f5f9'}},
+ y:{ticks:{color:'#94a3b8',font:{size:11},callback:v=>fmtM(v)},grid:{color:'#f8fafc'}}
+ }
+});
+
+const visMap={combined:['comb','lumps'],individual:['lumps'],real:['comb','real','lumps'],all:['comb','real','lumps']};
+// individual and all also show fundX datasets
+let currentMode='combined';
+
+function initCharts(sim){
+ const {data,dcaYrs,coast} = sim;
+ const labels=data.map(r=>`Yr ${r.yr}`);
+ const plugin=makePhasePlugin(dcaYrs,coast);
+ const opts=baseOpts(dcaYrs,coast);
+
+ const lumpScatter={id:'lumps',label:'Lump-Sum',type:'scatter',
+ data:data.map((r,i)=>r.isLump?{x:i,y:r.comb}:null).filter(Boolean),
+ pointStyle:'triangle',pointRadius:9,pointHoverRadius:12,
+ backgroundColor:'rgba(202,138,4,.9)',borderColor:'#ca8a04',borderWidth:1.5,showLine:false};
+
+ const fundDs = funds.map((f,fi)=>({
+ id:'fund'+fi, label:f.sym,
+ data:data.map(r=>r.vals[fi]),
+ borderColor:FUND_COLORS[fi], backgroundColor:FUND_BG[fi],
+ borderWidth:2,fill:false,tension:.35,pointRadius:1,type:'line',
+ }));
+ const combDs={id:'comb',label:'Combined (Nom.)',data:data.map(r=>r.comb),borderColor:'#059669',backgroundColor:'rgba(5,150,105,.07)',borderWidth:2.5,fill:true,tension:.35,pointRadius:2,type:'line'};
+ const realDs={id:'real',label:'Combined (Real)',data:data.map(r=>r.real),borderColor:'#94a3b8',backgroundColor:'transparent',borderWidth:2,borderDash:[4,3],fill:false,tension:.35,pointRadius:1,type:'line'};
+ const mainDs=[...fundDs,combDs,realDs,lumpScatter];
+
+ // visibility
+ const showFund = currentMode==='individual'||currentMode==='all';
+ mainDs.forEach(ds=>{
+ if(ds.id.startsWith('fund')) ds.hidden=!showFund;
+ else ds.hidden=!visMap[currentMode].includes(ds.id);
+ });
+
+ if(mainChart) mainChart.destroy();
+ mainChart=new Chart(g('mainChart').getContext('2d'),{type:'line',data:{labels,datasets:mainDs},options:opts,plugins:[plugin]});
+
+ if(flowChart) flowChart.destroy();
+ flowChart=new Chart(g('flowChart').getContext('2d'),{type:'bar',
+ data:{labels,datasets:[
+ {label:'Regular Flow',data:data.map(r=>r.regFlow),
+ backgroundColor:data.map(r=>r.phase===1?'rgba(79,70,229,.7)':r.phase===2?'rgba(5,150,105,.4)':'rgba(190,24,93,.6)'),borderRadius:3},
+ {label:'Lump Sum',data:data.map(r=>r.lump?-r.lump:null),backgroundColor:'rgba(202,138,4,.8)',borderRadius:3},
+ ]},
+ options:{responsive:true,maintainAspectRatio:true,
+ plugins:{legend:{labels:{color:'#64748b',font:{size:10},padding:8,boxWidth:10}},
+ tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',borderColor:'#e2e8f0',borderWidth:1,padding:8,
+ callbacks:{label:c=>{const v=c.parsed.y;return v>0?` +${fmtM(v)} in`:` −${fmtM(-v)} out`;}}}},
+ scales:{x:{stacked:true,ticks:{color:'#94a3b8',font:{size:9},maxTicksLimit:18},grid:{color:'#f8fafc'}},
+ y:{stacked:true,ticks:{color:'#94a3b8',font:{size:10},callback:v=>fmtM(Math.abs(v))},grid:{color:'#f8fafc'},
+ title:{display:true,text:'In (+) / Out (−)',color:'#94a3b8',font:{size:10}}}}}});
+
+ if(cumChart) cumChart.destroy();
+ cumChart=new Chart(g('cumChart').getContext('2d'),{type:'line',
+ data:{labels,datasets:[
+ {label:'Cumulative Invested',data:data.map(r=>r.cumInv),borderColor:'#4f46e5',backgroundColor:'rgba(79,70,229,.08)',borderWidth:2,fill:true,tension:.3,pointRadius:1},
+ {label:'Cumulative Withdrawn',data:data.map(r=>r.cumWd),borderColor:'#be185d',backgroundColor:'rgba(190,24,93,.08)',borderWidth:2,fill:true,tension:.3,pointRadius:1},
+ ]},
+ options:{responsive:true,maintainAspectRatio:true,
+ plugins:{legend:{labels:{color:'#64748b',font:{size:10},padding:8,boxWidth:10}},
+ tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',borderColor:'#e2e8f0',borderWidth:1,padding:8,
+ callbacks:{label:c=>` ${c.dataset.label}: ${fmtM(c.parsed.y)}`}}},
+ scales:{x:{ticks:{color:'#94a3b8',font:{size:9},maxTicksLimit:18},grid:{color:'#f8fafc'}},
+ y:{ticks:{color:'#94a3b8',font:{size:10},callback:v=>fmtM(v)},grid:{color:'#f8fafc'}}}}});
+}
+
+// ═══════════════════════════════════════
+// FUND SIDEBAR RENDERING
+// ═══════════════════════════════════════
+function renderFunds(){
+ const N=funds.length;
+ g('addFundBtn').textContent=`＋ Add Fund (${N}/${MAX_FUNDS})`;
+ g('addFundBtn').disabled = N>=MAX_FUNDS;
+
+ g('fundsList').innerHTML = funds.map((f,fi)=>{
+ const col=FUND_COLORS[fi], letter=FUND_LETTERS[fi];
+ const yrs=2025-f.yr, note=yrs<15?` · ${yrs}-yr est.`:'';
+ const cc=f.rate>=15?'#059669':f.rate>=8?'#d97706':'#dc2626';
+ const dca=f.dca||1000;
+ return `
+ <div class="fund-row">
+ <div class="fund-row-hdr">
+ <div class="fund-badge" style="background:${col}">${letter}</div>
+ <div style="flex:1;min-width:0">
+ <div class="fund-sym">${f.sym}</div>
+ <div class="fund-name">${f.name}</div>
+ <div class="fund-cat">${f.cat}${note}</div>
+ </div>
+ <div class="fund-btns">
+ <button class="change-btn" onclick="openPicker(${fi})">Change ETF</button>
+ <button class="remove-btn" ${N<=MIN_FUNDS?'disabled':''} onclick="removeFund(${fi})">×</button>
+ </div>
+ </div>
+ <div class="fund-input-group">
+ <div class="fund-input-label">Monthly</div>
+ <div class="ctrl-row">
+ <div class="num-wrap"><span class="num-prefix">$</span>
+ <input class="num-in" type="number" id="v_dca_${fi}" value="${dca}" min="0" max="50000" step="100">
+ </div>
+ <input class="range-in" type="range" id="r_dca_${fi}" min="0" max="20000" step="100" value="${dca}">
+ </div>
+ </div>
+ <div class="fund-input-group">
+ <div class="fund-input-label">Return <span style="font-size:10px;color:var(--tx3)">(15-yr avg: ${f.cagr}%)</span></div>
+ <div class="ctrl-row">
+ <div class="num-wrap">
+ <input class="num-in" type="number" id="v_rate_${fi}" value="${f.rate}" min="-10" max="60" step="0.1">
+ <span class="num-suffix">%</span>
+ </div>
+ <input class="range-in" type="range" id="r_rate_${fi}" min="-10" max="60" step="0.1" value="${f.rate}">
+ </div>
+ </div>
+ ${f.cat==='Leveraged'?`<div class="lev-warn show">Leveraged ETF — high volatility, decay risk, not suitable for long-term DCA</div>`:''}
+ </div>`;
+ }).join('');
+
+ // Bind DCA + rate sliders for each fund
+ funds.forEach((f,fi)=>{
+ // DCA slider
+ const vd=g(`v_dca_${fi}`), rd=g(`r_dca_${fi}`);
+ if(vd&&rd){
+ const syncD=(fromV)=>{ const val=+(fromV?vd.value:rd.value); if(fromV) rd.value=val; else vd.value=val; funds[fi].dca=val; debounce(); };
+ vd.addEventListener('input',()=>syncD(true));
+ rd.addEventListener('input',()=>syncD(false));
+ }
+ // Rate slider
+ const vEl=g(`v_rate_${fi}`), rEl=g(`r_rate_${fi}`);
+ if(!vEl||!rEl) return;
+ const sync=(fromV)=>{
+ const val=+(fromV?vEl.value:rEl.value);
+ if(fromV) rEl.value=Math.min(val,60); else vEl.value=val;
+ funds[fi].rate=val;
+ debounce();
+ };
+ vEl.addEventListener('input',()=>sync(true));
+ rEl.addEventListener('input',()=>sync(false));
+ });
+}
+
+function removeFund(fi){
+ if(funds.length<=MIN_FUNDS) return;
+ funds.splice(fi,1);
+ renderFunds(); render();
+}
+
+g('addFundBtn').addEventListener('click',()=>{
+ if(funds.length>=MAX_FUNDS) return;
+ // Pick a default ETF not already in use
+ const used=new Set(funds.map(f=>f.sym));
+ const next=ETF_DB.find(e=>!used.has(e.sym)&&e.cat==='Broad Market')||ETF_DB.find(e=>!used.has(e.sym))||ETF_DB[0];
+ funds.push({...next,rate:next.cagr,dca:1000});
+ renderFunds(); render();
+});
+
+// ═══════════════════════════════════════
+// ETF PICKER MODAL
+// ═══════════════════════════════════════
+function openPicker(fi){
+ activePicker=fi;
+ const letter=FUND_LETTERS[fi];
+ g('modalTitle').textContent=`Select Fund ${letter}`;
+ g('etfSearch').value='';
+ currentCat='All';
+ renderCatChips(); renderETFList();
+ g('etfOverlay').classList.add('open');
+ setTimeout(()=>g('etfSearch').focus(),80);
+}
+function closePicker(){ g('etfOverlay').classList.remove('open'); activePicker=null; }
+
+function selectETF(sym){
+ const etf=ETF_DB.find(e=>e.sym===sym); if(!etf||activePicker===null) return;
+ const prevDca=funds[activePicker].dca||1000; funds[activePicker]={...etf,rate:etf.cagr,dca:prevDca};
+ closePicker(); renderFunds(); render();
+}
+
+function renderCatChips(){
+ g('catChips').innerHTML=CATS.map(c=>`<button class="cat-chip${c===currentCat?' on':''}" onclick="setCat('${c}')">${c}</button>`).join('');
+}
+function setCat(c){ currentCat=c; renderCatChips(); renderETFList(); }
+
+function renderETFList(){
+ const q=g('etfSearch').value.toLowerCase().trim();
+ let list=ETF_DB;
+ if(currentCat!=='All') list=list.filter(e=>e.cat===currentCat);
+ if(q) list=list.filter(e=>e.sym.toLowerCase().includes(q)||e.name.toLowerCase().includes(q)||e.cat.toLowerCase().includes(q));
+ const cur=(activePicker!==null&&funds[activePicker])||{};
+ if(!list.length){ g('etfList').innerHTML='<div class="no-results">No ETFs matched — try a ticker like "QQQ" or keyword like "semiconductor"</div>'; return; }
+ g('etfList').innerHTML=list.map(etf=>{
+ const yrs=2025-etf.yr, hist=yrs<15?`<span class="hist-tag">*${yrs}-yr</span>`:'';
+ const cc=etf.cagr>=15?'#059669':etf.cagr>=8?'#d97706':'#dc2626';
+ const isSel=cur.sym===etf.sym;
+ return `<div class="etf-item${isSel?' sel':''}${etf.cat==='Leveraged'?' lev':''}" onclick="selectETF('${etf.sym}')">
+ <div class="ei-sym">${etf.sym}</div>
+ <div class="ei-info">
+ <div class="ei-name">${etf.name}${hist}</div>
+ <div class="ei-cat">${etf.cat}${etf.cat==='Leveraged'?' ':''}</div>
+ </div>
+ <div class="ei-cagr" style="color:${cc}">${etf.cagr}%</div>
+ </div>`;
+ }).join('');
+}
+
+g('etfClose').addEventListener('click',closePicker);
+g('etfOverlay').addEventListener('click',e=>{ if(e.target===g('etfOverlay')) closePicker(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePicker(); });
+g('etfSearch').addEventListener('input',renderETFList);
+
+// ═══════════════════════════════════════
+// MAIN RENDER
+// ═══════════════════════════════════════
+function render(){
+ const sim=simulate();
+ const {data,dcaYrs,coast,wYrs,TOTAL,totalDCApm,wdraw,winc,N}=sim;
+ const fin=data[data.length-1];
+ const atDraw=data[dcaYrs+coast-1]||data[0];
+ const totalInv=dcaYrs*12*totalDCApm;
+ const totalLumps=lumpSums.reduce((s,l)=>s+l.amt,0);
+ const lastMW=wdraw*Math.pow(1+(+g('v_winc').value/100||.03),wYrs-1);
+
+ // header
+ g('appSub').textContent=`${funds.map(f=>f.sym).join(' · ')} · ${TOTAL}-year simulation`;
+
+ // phase bar
+ g('totalYrsLabel').textContent=TOTAL;
+ g('pb1v').textContent=dcaYrs+'yr'; g('pb1').style.flex=dcaYrs;
+ g('pb2v').textContent=coast+'yr'; g('pb2').style.flex=Math.max(coast,.5);
+ g('pb3v').textContent=wYrs+'yr'; g('pb3').style.flex=wYrs;
+
+ // cards
+ const at20 = data.find(r=>r.yr===20)||null;
+ const regularWd = fin.cumWd - totalLumps;
+
+ // 1. Big tile — Total Invested with per-fund breakdown
+ const fundSubtiles = funds.map((f,fi)=>{
+ const fInv = (f.dca||0)*dcaYrs*12;
+ return `<div class="fund-subtile">
+ <div class="fst-lbl"><span class="fst-badge" style="background:${FUND_COLORS[fi]}">${FUND_LETTERS[fi]}</span>${f.sym}</div>
+ <div class="fst-val" style="color:${FUND_COLORS[fi]}">${fmt(fInv)}</div>
+ <div class="fst-sub">$${(f.dca||0).toLocaleString()}/mo · ${dcaYrs}yr</div>
+ </div>`;
+ }).join('');
+
+ const bigTile = `<div class="card-big">
+ <div class="card-big-hdr">
+ <span class="card-big-lbl">Total Invested</span>
+ <span class="card-big-val">${fmt(totalInv)}</span>
+ </div>
+ <div class="fund-subtiles">${fundSubtiles}</div>
+ </div>`;
+
+ // 2-7. Individual stat tiles
+ const tiles = [
+ {lbl:'Portfolio at Year 20', val:at20?fmtM(at20.comb):'—', sub: at20?`Real: ${fmtM(at20.real)}`:'Beyond timeline', cls:'i'},
+ {lbl:'Portfolio at End (Nominal)', val:fmtM(fin.comb), sub:`After all ${TOTAL} years`, cls:'g', hi:'hi-g'},
+ {lbl:'Portfolio at End (Real)', val:fmtM(fin.real), sub:"In today's dollars", cls:'s'},
+ {lbl:'Total Lump Sum Withdrawals', val:fmt(totalLumps), sub:`${lumpSums.length} events`,cls:'y', hi:'hi-y'},
+ {lbl:'Regular Monthly Withdrawals (Total)', val:fmtM(regularWd), sub:`${wYrs}yr cumulative`, cls:'p'},
+ {lbl:'Total Withdrawn (Regular + Lumps)', val:fmtM(fin.cumWd), sub:'All outflows combined', cls:'r', hi:'hi-p'},
+ ].map(c=>`<div class="card ${c.hi||''}"><div class="c-lbl">${c.lbl}</div><div class="c-val ${c.cls}">${c.val}</div><div class="c-sub">${c.sub}</div></div>`).join('');
+
+ g('cards').innerHTML = bigTile + `<div class="cards-row">${tiles}</div>`;
+
+ initCharts(sim);
+
+ // sustainability
+ const grew=fin.comb>atDraw.comb;
+ g('susContent').innerHTML=`
+ <div class="sus-grid">
+ ${[['Withdrawal start',fmtM(atDraw.comb),'#059669'],['Final portfolio',fmtM(fin.comb),grew?'#059669':'#dc2626'],
+ ['Real final value',fmtM(fin.real),'#64748b'],['Regular drawn',fmtM(fin.cumWd-totalLumps),'#be185d'],
+ ['Lump sum drawn',fmt(totalLumps),'#92400e'],['Grand total drawn',fmtM(fin.cumWd),'#e11d48'],
+ ].map(([l,v,c])=>`<div class="sus-stat"><div class="sus-lbl">${l}</div><div class="sus-val" style="color:${c}">${v}</div></div>`).join('')}
+ </div>
+ <div class="sus-bar-bg"><div class="sus-bar" style="width:${Math.min((fin.comb/atDraw.comb)*100,100)}%;background:${grew?'#059669':'#dc2626'}"></div></div>
+ <div class="sus-note">${grew
+ ?`<strong style="color:#059669">Portfolio grew</strong> through all withdrawals. Ending: <strong style="color:#059669">${fmtM(fin.comb)}</strong>. Cash received: <strong style="color:#be185d">${fmtM(fin.cumWd)}</strong>. Net wealth on <strong style="color:#4f46e5">${fmt(totalInv)}</strong> invested: <strong style="color:#059669">${fmtM(fin.comb+fin.cumWd-totalInv)}</strong>.`
+ :`Portfolio declined during withdrawals. Remaining: <strong>${fmtM(fin.comb)}</strong>. Consider reducing withdrawals or lump-sum amounts.`
+ }</div>`;
+
+ buildTable(tableFilter);
+}
+
+// ═══════════════════════════════════════
+// TABLE
+// ═══════════════════════════════════════
+function buildTable(f){
+ tableFilter=f;
+ const N=funds.length;
+ // Header
+ g('tableHead').innerHTML=`<tr>
+ <th>Year</th><th>Phase</th><th>Invested</th>
+ ${funds.map((fd,fi)=>`<th style="color:${FUND_COLORS[fi]}">${fd.sym}</th>`).join('')}
+ <th>Combined (Nom.)</th><th>Combined (Real)</th>
+ <th>Regular Flow</th><th>Lump Sum</th><th>Withdrawn (Cum.)</th>
+ </tr>`;
+
+ const filtered=f==='all'?rows:f==='L'?rows.filter(r=>r.isLump):rows.filter(r=>r.phase===+f);
+ const pLbl={1:'Build',2:'Coast',3:'Withdraw'};
+ g('tbody').innerHTML=filtered.map(r=>`
+ <tr class="${r.isLump?'lyr':['','p1','p2','p3'][r.phase]}">
+ <td>Year ${r.yr}${r.isLump?' ⬦':''}</td>
+ <td style="color:${r.phase===1?'#4f46e5':r.phase===2?'#059669':'#be185d'}">${pLbl[r.phase]}</td>
+ <td>${r.cumInv>0?fmt(r.cumInv):'—'}</td>
+ ${r.vals.map((v,fi)=>`<td style="color:${FUND_COLORS[fi]}">${fmtM(v)}</td>`).join('')}
+ <td style="color:#059669;font-weight:600">${fmtM(r.comb)}</td>
+ <td style="color:#64748b">${fmtM(r.real)}</td>
+ <td style="color:${r.regFlow>=0?'#059669':'#be185d'}">${r.regFlow===0?'—':r.regFlow>0?'+'+fmtM(r.regFlow):'-'+fmtM(-r.regFlow)}</td>
+ <td style="color:#92400e;font-weight:600">${r.lump?'-'+fmt(r.lump):'—'}</td>
+ <td style="color:#e11d48">${r.cumWd>0?fmtM(r.cumWd):'—'}</td>
+ </tr>`).join('');
+}
+
+// ═══════════════════════════════════════
+// LUMP-SUM UI
+// ═══════════════════════════════════════
+function renderLumps(){
+ g('lumpList').innerHTML=lumpSums.map((l,i)=>`
+ <div class="lump-entry">
+ <span style="font-size:9px;color:#94a3b8">Yr</span>
+ <div class="num-wrap" style="flex:0 0 auto"><input class="num-in" style="width:38px" type="number" data-li="${i}" data-field="yr" value="${l.yr}" min="1" max="100" step="1"></div>
+ <span class="lump-sep">→</span>
+ <div class="num-wrap" style="flex:1"><span class="num-prefix">$</span><input class="num-in" style="width:66px" type="number" data-li="${i}" data-field="amt" value="${l.amt}" min="0" max="10000000" step="10000"></div>
+ <button class="lump-del" data-li="${i}"></button>
+ </div>`).join('');
+ g('lumpList').querySelectorAll('.num-in').forEach(inp=>{
+ inp.addEventListener('input',()=>{ lumpSums[+inp.dataset.li][inp.dataset.field]=+inp.value; debounce(); });
+ });
+ g('lumpList').querySelectorAll('.lump-del').forEach(btn=>{
+ btn.addEventListener('click',()=>{ lumpSums.splice(+btn.dataset.li,1); renderLumps(); debounce(); });
+ });
+}
+g('addLump').addEventListener('click',()=>{
+ const {dcaYrs,coast}=getBase();
+ lumpSums.push({yr:Math.min(dcaYrs+coast+(+g('v_wYrs').value||30),35),amt:100000});
+ renderLumps(); debounce();
+});
+
+// ═══════════════════════════════════════
+// INPUT BINDING
+// ═══════════════════════════════════════
+let debTimer;
+function debounce(){ clearTimeout(debTimer); debTimer=setTimeout(render,120); }
+function bindPair(vId,rId){
+ const vEl=g(vId),rEl=g(rId);
+ if(!vEl||!rEl) return;
+ vEl.addEventListener('input',()=>{ rEl.value=vEl.value; debounce(); });
+ rEl.addEventListener('input',()=>{ vEl.value=rEl.value; debounce(); });
+}
+['dcaYrs','coast','inf','wdraw','winc','wYrs'].forEach(k=>bindPair('v_'+k,'r_'+k));
+
+g('mainTg').addEventListener('click',e=>{
+ const btn=e.target.closest('.tg'); if(!btn) return;
+ document.querySelectorAll('#mainTg .tg').forEach(b=>b.classList.remove('on'));
+ btn.classList.add('on'); currentMode=btn.dataset.m;
+ if(mainChart){
+ const showFund=currentMode==='individual'||currentMode==='all';
+ mainChart.data.datasets.forEach(ds=>{
+ if(ds.id&&ds.id.startsWith('fund')) ds.hidden=!showFund;
+ else if(ds.id) ds.hidden=!visMap[currentMode].includes(ds.id);
+ });
+ mainChart.update();
+ }
+});
+g('fbRow').addEventListener('click',e=>{
+ const btn=e.target.closest('.fb'); if(!btn) return;
+ document.querySelectorAll('#fbRow .fb').forEach(b=>b.classList.remove('on'));
+ btn.classList.add('on'); buildTable(btn.dataset.f);
+});
+g('resetBtn').addEventListener('click',()=>{
+ Object.entries(DEFAULTS).forEach(([k,v])=>{ if(g('v_'+k)){ g('v_'+k).value=v; if(g('r_'+k)) g('r_'+k).value=v; }});
+ funds=DEFAULT_FUNDS.map(f=>({...f,dca:f.dca||1000}));
+ lumpSums=DEFAULT_LUMPS.map(l=>({...l}));
+ renderFunds(); renderLumps(); render();
+});
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+renderCatChips();
+renderFunds();
+renderLumps();
+render();
+</script>
+
+
+<!-- ═══════════════════════════════════════════════════════
+ PROPERTY INVESTMENT COMPARISON SECTION
+ ═══════════════════════════════════════════════════════ -->
+<style>
+/* ── Property section wrapper ── */
+.prop-wrap{background:var(--bg);border-top:3px solid #059669;padding:20px 16px;display:flex;flex-direction:column;gap:14px;}
+.prop-sec-hdr{background:#fff;border:1px solid #6ee7b7;border-radius:12px;padding:14px 18px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.prop-sec-title{font-size:16px;font-weight:800;color:#065f46;letter-spacing:-.2px;}
+.prop-sec-sub{font-size:13px;color:#6b7280;margin-top:3px;}
+.prop-layout{display:grid;grid-template-columns:320px 1fr;gap:14px;}
+@media(max-width:860px){.prop-layout{grid-template-columns:1fr;}}
+
+/* ── Property inputs ── */
+.prop-sidebar{display:flex;flex-direction:column;gap:10px;}
+.prop-group{background:#fff;border:1px solid var(--border);border-radius:10px;padding:11px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+.prop-group-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:9px;}
+.prop-item{margin-bottom:8px;}.prop-item:last-child{margin-bottom:0;}
+.prop-label{font-size:11px;color:var(--tx2);margin-bottom:2px;}
+
+/* ── Property result tiles ── */
+.prop-tiles{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;}
+@media(max-width:1100px){.prop-tiles{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:640px){.prop-tiles{grid-template-columns:repeat(2,1fr);}}
+.ptile{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 11px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+.ptile.hi-g{border-color:#6ee7b7;background:#f0fdf4;}
+.ptile.hi-r{border-color:#fca5a5;background:#fef2f2;}
+.ptile.hi-y{border-color:#fde68a;background:#fefce8;}
+.pt-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--tx3);}
+.pt-val{font-size:16px;font-weight:700;margin-top:3px;letter-spacing:-.3px;}
+.pt-sub{font-size:10px;color:var(--tx3);margin-top:2px;}
+
+/* ── Cash flow note ── */
+.cf-note{background:#fff;border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-size:13px;color:#374151;line-height:1.65;}
+.cf-note strong{color:#065f46;}
+
+/* ── Property table ── */
+.prop-tbl-box{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+.prop-tbl-hdr{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.prop-tbl-title{font-size:15px;font-weight:600;}
+.prop-tscroll{overflow-x:auto;max-height:420px;overflow-y:auto;}
+.prop-tscroll table{width:100%;border-collapse:collapse;}
+.prop-tscroll thead th{position:sticky;top:0;z-index:2;background:#f0fdf4;padding:7px 10px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#065f46;text-align:right;border-bottom:1px solid #6ee7b7;white-space:nowrap;}
+.prop-tscroll thead th:first-child{text-align:left;}
+.prop-tscroll td{padding:6px 10px;font-size:12px;text-align:right;border-top:1px solid #f1f5f9;white-space:nowrap;}
+.prop-tscroll td:first-child{text-align:left;font-weight:600;color:#065f46;}
+.prop-tscroll tr:hover td{background:#f0fdf4;}
+.prop-tscroll tr.neg-cf td:first-child{color:#dc2626;}
+</style>
+
+<section class="prop-wrap" id="propSection">
+ <!-- Header -->
+ <div class="prop-sec-hdr">
+ <div class="prop-sec-title">Section 2: Rental Property Investment — Sydney Comparison</div>
+ <div class="prop-sec-sub">120 Macdonald Rd Bardia baseline · Sydney investment property · Adjust any value to see live impact</div>
+ </div>
+
+ <div class="prop-layout">
+ <!-- ── INPUTS ── -->
+ <div class="prop-sidebar">
+
+ <div class="prop-group">
+ <div class="prop-group-title" style="color:#065f46">Property &amp; Loans</div>
+ <div class="prop-item"><div class="prop-label">Purchase price</div>
+ <div class="ctrl-row"><div class="num-wrap"><span class="num-prefix">$</span><input class="num-in" type="number" id="pp_price" value="1000000" min="200000" max="5000000" step="50000"></div>
+ <input class="range-in" type="range" id="rp_price" min="200000" max="5000000" step="50000" value="1000000"></div></div>
+ <div class="prop-item"><div class="prop-label">Equity withdrawal (deposit)</div>
+ <div class="ctrl-row"><div class="num-wrap"><span class="num-prefix">$</span><input class="num-in" type="number" id="pp_equity" value="200000" min="50000" max="1000000" step="10000"></div>
+ <input class="range-in" type="range" id="rp_equity" min="50000" max="1000000" step="10000" value="200000"></div></div>
+ <div class="prop-item"><div class="prop-label">Investment mortgage rate</div>
+ <div class="ctrl-row"><div class="num-wrap"><input class="num-in" type="number" id="pp_mrate" value="4.0" min="1" max="12" step="0.1"><span class="num-suffix">%</span></div>
+ <input class="range-in" type="range" id="rp_mrate" min="1" max="12" step="0.1" value="4.0"></div></div>
+ <div class="prop-item"><div class="prop-label">Equity loan rate (on $200K withdrawal)</div>
+ <div class="ctrl-row"><div class="num-wrap"><input class="num-in" type="number" id="pp_erate" value="4.0" min="1" max="12" step="0.1"><span class="num-suffix">%</span></div>
+ <input class="range-in" type="range" id="rp_erate" min="1" max="12" step="0.1" value="4.0"></div></div>
+ <div class="prop-item"><div class="prop-label">Loan term</div>
+ <div class="ctrl-row"><div class="num-wrap"><input class="num-in" type="number" id="pp_term" value="30" min="10" max="30" step="1"><span class="num-suffix">yr</span></div>
+ <input class="range-in" type="range" id="rp_term" min="10" max="30" step="1" value="30"></div></div>
+ </div>
+
+ <div class="prop-group">
+ <div class="prop-group-title" style="color:#4f46e5">Rental Income</div>
+ <div class="prop-item"><div class="prop-label">Starting monthly rent</div>
+ <div class="ctrl-row"><div class="num-wrap"><span class="num-prefix">$</span><input class="num-in" type="number" id="pp_rent" value="3500" min="500" max="20000" step="100"></div>
+ <input class="range-in" type="range" id="rp_rent" min="500" max="20000" step="100" value="3500"></div></div>
+ <div class="prop-item"><div class="prop-label">Rent increase (every 3 yrs)</div>
+ <div class="ctrl-row"><div class="num-wrap"><input class="num-in" type="number" id="pp_rentinc" value="5.0" min="0" max="15" step="0.5"><span class="num-suffix">%</span></div>
+ <input class="range-in" type="range" id="rp_rentinc" min="0" max="15" step="0.5" value="5.0"></div></div>
+ </div>
+
+ <div class="prop-group">
+ <div class="prop-group-title" style="color:#dc2626">Annual Costs</div>
+ <div class="prop-item"><div class="prop-label">Water (per quarter)</div>
+ <div class="ctrl-row"><div class="num-wrap"><span class="num-prefix">$</span><input class="num-in" type="number" id="pp_water" value="250" min="0" max="2000" step="10"></div>
+ <input class="range-in" type="range" id="rp_water" min="0" max="2000" step="10" value="250"></div></div>
+ <div class="prop-item"><div class="prop-label">Council rates (per quarter)</div>
+ <div class="ctrl-row"><div class="num-wrap"><span class="num-prefix">$</span><input class="num-in" type="number" id="pp_council" value="450" min="0" max="3000" step="25"></div>
+ <input class="range-in" type="range" id="rp_council" min="0" max="3000" step="25" value="450"></div></div>
+ <div class="prop-item"><div class="prop-label">Maintenance (per year)</div>
+ <div class="ctrl-row"><div class="num-wrap"><span class="num-prefix">$</span><input class="num-in" type="number" id="pp_maint" value="2000" min="0" max="20000" step="500"></div>
+ <input class="range-in" type="range" id="rp_maint" min="0" max="20000" step="500" value="2000"></div></div>
+ <div class="prop-item"><div class="prop-label">Property management</div>
+ <div class="ctrl-row"><div class="num-wrap"><input class="num-in" type="number" id="pp_mgmt" value="5.0" min="0" max="15" step="0.5"><span class="num-suffix">%</span></div>
+ <input class="range-in" type="range" id="rp_mgmt" min="0" max="15" step="0.5" value="5.0"></div></div>
+ <div class="prop-item"><div class="prop-label">Misc maintenance</div>
+ <div class="ctrl-row"><div class="num-wrap"><input class="num-in" type="number" id="pp_misc" value="5.0" min="0" max="15" step="0.5"><span class="num-suffix">%</span></div>
+ <input class="range-in" type="range" id="rp_misc" min="0" max="15" step="0.5" value="5.0"></div></div>
+ </div>
+
+ <div class="prop-group">
+ <div class="prop-group-title" style="color:#7c3aed">Sydney Growth Model</div>
+ <div class="prop-item"><div class="prop-label">Yr 1–12 (high growth)</div>
+ <div class="ctrl-row"><div class="num-wrap"><input class="num-in" type="number" id="pp_g1" value="7.0" min="0" max="20" step="0.5"><span class="num-suffix">%</span></div>
+ <input class="range-in" type="range" id="rp_g1" min="0" max="20" step="0.5" value="7.0"></div></div>
+ <div class="prop-item"><div class="prop-label">Yr 13–22 (moderate)</div>
+ <div class="ctrl-row"><div class="num-wrap"><input class="num-in" type="number" id="pp_g2" value="5.0" min="0" max="15" step="0.5"><span class="num-suffix">%</span></div>
+ <input class="range-in" type="range" id="rp_g2" min="0" max="15" step="0.5" value="5.0"></div></div>
+ <div class="prop-item"><div class="prop-label">Yr 23–30 (saturated)</div>
+ <div class="ctrl-row"><div class="num-wrap"><input class="num-in" type="number" id="pp_g3" value="3.5" min="0" max="10" step="0.5"><span class="num-suffix">%</span></div>
+ <input class="range-in" type="range" id="rp_g3" min="0" max="10" step="0.5" value="3.5"></div></div>
+ <div style="font-size:11px;color:var(--tx3);margin-top:6px;line-height:1.55">Building depreciation: 2.5%/yr on 40% of purchase price (ATO schedule). Growth is applied to land+building market value separately.</div>
+ </div>
+ </div>
+
+ <!-- ── RESULTS ── -->
+ <div style="display:flex;flex-direction:column;gap:14px;">
+
+ <!-- Summary tiles -->
+ <div class="prop-tiles" id="propTiles"></div>
+ <div id="propEtfTile" style="margin-top:10px"></div>
+
+ <!-- Cash flow narrative -->
+ <div class="cf-note" id="propNote"></div>
+
+ <!-- Charts -->
+ <div class="chart-box">
+ <div class="ch-hdr">
+ <div class="ch-ttl">Property Value &amp; Cumulative Cash Position — Nominal &amp; Real (inflation-adj)</div>
+ <div style="font-size:11px;color:#9ca3af;margin-top:2px">Solid lines = nominal · Dashed lines = real (today's $) · Inflation rate shared with Section 1</div>
+ </div>
+ <canvas id="propMainChart" style="max-height:320px"></canvas>
+ </div>
+
+ <div class="chart-box">
+ <div class="ch-hdr">
+ <div class="ch-ttl">Annual Rent Income vs All Outgoings — Cash Flow Crossover</div>
+ <div style="font-size:11px;color:#9ca3af;margin-top:2px">Green bars = rent in · Red = op costs · Orange = mortgage · Blue line = annual net CF · Purple dashed = cumulative CF</div>
+ </div>
+ <canvas id="propIncomeChart" style="max-height:310px"></canvas>
+ </div>
+
+ <!-- Year-by-year table -->
+ <div class="prop-tbl-box">
+ <div class="prop-tbl-hdr">
+ <div class="prop-tbl-title">Year-by-Year Property Breakdown</div>
+ </div>
+ <div class="prop-tscroll">
+ <table><thead id="propTHead"></thead><tbody id="propTBody"></tbody></table>
+ </div>
+ </div>
+
+ </div><!-- end results -->
+ </div><!-- end prop-layout -->
+</section>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// PROPERTY SIMULATION
+// ═══════════════════════════════════════════════════════
+const pg = id => document.getElementById(id);
+const pfmt = n => (!isFinite(n))?'—':'$'+Math.abs(Math.round(n)).toLocaleString();
+const pfmtM = n => {
+ if(!isFinite(n)) return '—';
+ const a=Math.abs(n);
+ const s=n<0?'-':'';
+ if(a>=1e9) return s+'$'+(a/1e9).toFixed(2)+'B';
+ if(a>=1e6) return s+'$'+(a/1e6).toFixed(2)+'M';
+ if(a>=1e3) return s+'$'+Math.round(a/1e3)+'K';
+ return s+'$'+Math.round(a);
+};
+
+function calcMonthlyPayment(principal, annualRate, months){
+ const r = annualRate/12;
+ if(r===0) return principal/months;
+ return principal * r * Math.pow(1+r,months) / (Math.pow(1+r,months)-1);
+}
+
+function getPropInputs(){
+ const gv = id => +pg(id).value||0;
+ return {
+ price: gv('pp_price'),
+ equity: gv('pp_equity'),
+ mrate: gv('pp_mrate')/100,
+ erate: gv('pp_erate')/100,
+ term: gv('pp_term'),
+ rent: gv('pp_rent'),
+ rentinc: gv('pp_rentinc')/100,
+ water: gv('pp_water'),
+ council: gv('pp_council'),
+ maint: gv('pp_maint'),
+ mgmt: gv('pp_mgmt')/100,
+ misc: gv('pp_misc')/100,
+ g1: gv('pp_g1')/100,
+ g2: gv('pp_g2')/100,
+ g3: gv('pp_g3')/100,
+ };
+}
+
+function simulateProperty(){
+ const p = getPropInputs();
+ const loanAmt = p.price - p.equity; // investment mortgage
+ const equityLoan = p.equity; // equity withdrawal loan
+ const months = p.term * 12;
+
+ const invPmt = calcMonthlyPayment(loanAmt, p.mrate, months);
+ const eqPmt = calcMonthlyPayment(equityLoan, p.erate, months);
+ const totalMonthlyMortgage = invPmt + eqPmt;
+
+ // Building depreciation
+ const buildingVal = p.price * 0.40;
+ const annualDepr = buildingVal * 0.025;
+
+ // Amortize both loans month by month, aggregate per year
+ let invBal = loanAmt, eqBal = equityLoan;
+ let propVal = p.price;
+ let cumRent=0, cumOpCosts=0, cumMortgagePaid=0, cumCashflow=0, cumDepr=0;
+ let cumInterest=0, cumRentCoveredMort=0, cumOOPMort=0, cumNegCF=0, cumPosCF=0;
+ const data=[];
+
+ const growthRate = yr => yr<=12 ? p.g1 : yr<=22 ? p.g2 : p.g3;
+ const inf = getBase().inf; // shared inflation rate from Section 1
+
+ for(let yr=1; yr<=p.term; yr++){
+ const monthlyRent = p.rent * Math.pow(1+p.rentinc, Math.floor((yr-1)/3)); // +rentinc% every 3rd year
+ const annualRent = monthlyRent * 12;
+
+ // Operating costs
+ const water = p.water * 4 * Math.pow(1.05, yr-1);
+ const council = p.council * 4 * Math.pow(1.03, yr-1);
+ const maint = p.maint;
+ const mgmt = annualRent * p.mgmt;
+ const misc = annualRent * p.misc;
+ const vacancy = annualRent * (2/52); // 2 weeks vacant between tenancies (Sydney avg)
+ const marketing = 500 * Math.pow(1+inf, yr-1); // $500/yr advertising, inflation-adjusted
+ const opCosts = water + council + maint + mgmt + misc + vacancy + marketing;
+
+ // Mortgage for this year (12 months)
+ let yearlyInvInt=0, yearlyInvPrin=0, yearlyEqInt=0, yearlyEqPrin=0;
+ for(let m=0; m<12; m++){
+ const ii=invBal*(p.mrate/12), ip=Math.min(invPmt-ii, invBal); invBal=Math.max(0,invBal-ip); yearlyInvInt+=ii; yearlyInvPrin+=ip;
+ const ei=eqBal*(p.erate/12), ep=Math.min(eqPmt-ei, eqBal); eqBal =Math.max(0,eqBal-ep); yearlyEqInt+=ei; yearlyEqPrin+=ep;
+ }
+ const yearlyMortgage = (invPmt + eqPmt) * 12;
+ const yearlyInterest = yearlyInvInt + yearlyEqInt; // total interest paid this year
+ const _netRentForMort = annualRent - opCosts; // rent surplus after running costs
+ const rentCoveredMort = Math.min(Math.max(0, _netRentForMort), yearlyMortgage); // how much rent covers mortgage
+ const oopMort = yearlyMortgage - rentCoveredMort; // remaining mortgage from your pocket
+
+ // Property value growth
+ const gr = growthRate(yr);
+ propVal *= (1+gr);
+
+ // Depreciation (book, for display)
+ const depr = Math.min(annualDepr * yr, buildingVal);
+ cumDepr += annualDepr;
+
+ const netCF = annualRent - opCosts - yearlyMortgage;
+ cumRent += annualRent;
+ cumOpCosts += opCosts;
+ cumMortgagePaid += yearlyMortgage;
+ cumCashflow += netCF;
+ cumInterest += yearlyInterest;
+ cumRentCoveredMort += rentCoveredMort;
+ cumOOPMort += oopMort;
+ if(netCF < 0) cumNegCF += -netCF; else cumPosCF += netCF;
+
+ const _inf_d = Math.pow(1+inf, yr);
+ const _netEq = propVal - Math.max(0,invBal) - Math.max(0,eqBal);
+ data.push({
+ yr, propVal, monthlyRent, annualRent, opCosts, yearlyMortgage,
+ netCF, cumRent, cumOpCosts, cumMortgagePaid, cumCashflow,
+ invBal:Math.max(0,invBal), eqBal:Math.max(0,eqBal),
+ totalBal:Math.max(0,invBal)+Math.max(0,eqBal),
+ water, council, maint, mgmt, misc, vacancy, marketing, gr, depr: cumDepr,
+ yearlyInterest, rentCoveredMort, oopMort,
+ netEquity: _netEq,
+ realPropVal: propVal / _inf_d,
+ realNetEquity: _netEq / _inf_d,
+ realCumCF: cumCashflow / _inf_d,
+ realAnnualRent: annualRent / _inf_d,
+ });
+ }
+
+ const fin = data[data.length-1];
+ // Sale proceeds: market value minus outstanding loans
+ const saleProceeds = fin.propVal - fin.totalBal;
+ // Total profit: sale proceeds + cumulative cash flows (which are negative in early years)
+ const totalProfit = saleProceeds + cumCashflow;
+
+ return {data, fin, saleProceeds, totalProfit, cumRent, cumOpCosts, cumMortgagePaid, cumCashflow, totalMonthlyMortgage, invPmt, eqPmt, p,
+ cumInterest, cumRentCoveredMort, cumOOPMort, cumNegCF, cumPosCF};
+}
+
+// ═══════════════════════════════════════
+// PROPERTY CHARTS
+// ═══════════════════════════════════════
+let propMainChart, propFlowChart, propRentChart;
+
+function renderProperty(){
+ const sim = simulateProperty();
+ const {data, fin, saleProceeds, totalProfit, cumRent, cumOpCosts, cumMortgagePaid, cumCashflow, totalMonthlyMortgage, invPmt, eqPmt, p,
+ cumInterest, cumRentCoveredMort, cumOOPMort, cumNegCF, cumPosCF} = sim;
+ const labels = data.map(r=>`Yr ${r.yr}`);
+ const fmt = pfmtM;
+
+ // ── Summary tiles ──────────────────────────────────────
+ const _propInf = getBase().inf;
+ const _propInfD = Math.pow(1+_propInf, p.term);
+ const realPropValFin = fin.propVal / _propInfD;
+ const realNetEqFin = fin.netEquity / _propInfD;
+ const realSaleProc = saleProceeds / _propInfD;
+ const realTotalProfit = totalProfit / _propInfD;
+ const netRentIncome = cumRent - cumOpCosts; // rent after all running costs (before mortgage)
+ const tiles=[
+ // ── OUTGOINGS ──────────────────────────────────────────────
+ {lbl:'Total Mortgage Paid', val:fmt(cumMortgagePaid),
+ sub:`<div style="margin-bottom:4px">$${Math.round(totalMonthlyMortgage).toLocaleString()}/mo · inv + equity loans</div>`+
+ `<div style="display:flex;gap:5px;margin-top:5px">`+
+ `<div style="background:#f0fdf4;border:1px solid #6ee7b7;border-radius:5px;padding:4px 6px;flex:1;text-align:center">`+
+ `<div style="font-size:9px;color:#059669;font-weight:700;letter-spacing:.4px">▲ RENT COVERED</div>`+
+ `<div style="font-size:12px;font-weight:800;color:#059669;margin-top:1px">${fmt(cumRentCoveredMort)}</div>`+
+ `<div style="font-size:9px;color:#94a3b8">${cumMortgagePaid>0?(cumRentCoveredMort/cumMortgagePaid*100).toFixed(0)+'% of total':''}</div>`+
+ `</div>`+
+ `<div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:5px;padding:4px 6px;flex:1;text-align:center">`+
+ `<div style="font-size:9px;color:#dc2626;font-weight:700;letter-spacing:.4px">▼ OUT-OF-POCKET</div>`+
+ `<div style="font-size:12px;font-weight:800;color:#dc2626;margin-top:1px">${fmt(cumOOPMort)}</div>`+
+ `<div style="font-size:9px;color:#94a3b8">${cumMortgagePaid>0?(cumOOPMort/cumMortgagePaid*100).toFixed(0)+'% of total':''}</div>`+
+ `</div></div>`,
+ cls:'#92400e', hi:'hi-y'},
+ {lbl:'Total Interest Paid', val:fmt(cumInterest),
+ sub:`${cumMortgagePaid>0?(cumInterest/cumMortgagePaid*100).toFixed(0)+'% of mortgage payments was interest':''} · ${fmt(cumMortgagePaid-cumInterest)} principal`, cls:'#b45309', hi:'hi-y'},
+ {lbl:'Total Op. Costs', val:fmt(cumOpCosts),
+ sub:'Water + council + mgmt + 2wk vacancy + $500 mktg', cls:'#dc2626', hi:'hi-r'},
+ // ── INCOME ─────────────────────────────────────────────────
+ {lbl:'Total Rent Earned', val:fmt(cumRent),
+ sub:`${p.term} years · rent +${(p.rentinc*100).toFixed(0)}% every 3 yrs`, cls:'#059669', hi:''},
+ {lbl:'Net Rent Income', val:fmt(netRentIncome),
+ sub:`Rent − all running costs · ${netRentIncome>=0?'Surplus':'Shortfall'} before mortgage`, cls:netRentIncome>=0?'#059669':'#dc2626', hi:''},
+ {lbl:'Net Cash Flow (30yr)', val:fmt(cumCashflow),
+ sub:`Real: ${fmt(fin.realCumCF)} · OOP top-ups: ${fmt(cumNegCF)} · Income pocketed: ${fmt(cumPosCF)}`, cls:cumCashflow>=0?'#059669':'#dc2626', hi:cumCashflow>=0?'hi-g':'hi-r'},
+ // ── WEALTH ─────────────────────────────────────────────────
+ {lbl:'Net Equity at Yr 30', val:fmt(fin.netEquity),
+ sub:`Real: ${fmt(realNetEqFin)} · Property value minus outstanding loans`, cls:'#4f46e5', hi:'hi-g'},
+ {lbl:'Property Value @ Yr 30',val:fmt(fin.propVal),
+ sub:`Real: ${fmt(realPropValFin)} · ${(fin.propVal/p.price).toFixed(1)}× growth from ${fmt(p.price)}`, cls:'#065f46', hi:'hi-g'},
+ {lbl:'Sale Proceeds (Net)', val:fmt(saleProceeds),
+ sub:`Real: ${fmt(realSaleProc)} · Market value − all outstanding loans`, cls:'#065f46', hi:'hi-g'},
+ {lbl:'Net Own Money if Sold', val:fmt(totalProfit),
+ sub:`Real: ${fmt(realTotalProfit)} · Sale proceeds + all cash flows over ${p.term}yr`, cls:totalProfit>=0?'#059669':'#dc2626', hi:totalProfit>=0?'hi-g':'hi-r'},
+ ];
+ pg('propTiles').innerHTML=tiles.map(t=>`<div class="ptile ${t.hi}"><div class="pt-lbl">${t.lbl}</div><div class="pt-val" style="color:${t.cls}">${t.val}</div><div class="pt-sub">${t.sub}</div></div>`).join('');
+
+ // ── ETF "what if" comparison tile ───────────────────────────
+ try {
+ const _s1e = simulate();
+ const _ef = _s1e.data.find(r=>r.yr===30)||_s1e.data[_s1e.data.length-1];
+ const _eIn = _s1e.dcaYrs * 12 * _s1e.totalDCApm;
+ const _eCagr = _eIn > 0 ? Math.pow((_ef.comb+_ef.cumWd)/_eIn, 1/30) - 1 : 0.07;
+ // FV of each year's OOP (negative CF) if invested in ETF for remaining years
+ let _etfFV2 = 0;
+ data.forEach(r => {
+ if(r.netCF < 0){
+ const yLeft = Math.max(0, 30 - r.yr + 0.5); // mid-year convention
+ _etfFV2 += (-r.netCF) * Math.pow(1 + _eCagr, yLeft);
+ }
+ });
+ const _oop2 = cumNegCF; // total cash paid from pocket (all negative-CF top-ups)
+ const _etfEl2 = pg('propEtfTile');
+ if(_etfEl2) _etfEl2.innerHTML = `
+ <div style="background:linear-gradient(135deg,#eef2ff,#f0f9ff);border:1.5px solid #a5b4fc;border-radius:12px;padding:14px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+ <div style="flex:1;min-width:180px">
+ <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#4f46e5;margin-bottom:6px">What if you'd put this into ETFs instead?</div>
+ <div style="font-size:11px;color:#64748b;line-height:1.6">Years where <em>rent − op costs − mortgage &lt; 0</em> required a cash top-up from your pocket. Each top-up compounded at the ETF CAGR (${(_eCagr*100).toFixed(1)}%) for the years it had left to grow to Year 30.</div>
+ </div>
+ <div style="display:flex;gap:10px;flex-shrink:0">
+ <div style="background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:10px 14px;text-align:center;min-width:110px">
+ <div style="font-size:9px;font-weight:700;color:#c2410c;text-transform:uppercase;letter-spacing:.5px">Paid into Property</div>
+ <div style="font-size:19px;font-weight:800;color:#c2410c;margin-top:3px">${pfmt(_oop2)}</div>
+ <div style="font-size:9px;color:#94a3b8;margin-top:2px">out-of-pocket top-ups</div>
+ </div>
+ <div style="display:flex;align-items:center;font-size:18px;color:#94a3b8">→</div>
+ <div style="background:#eef2ff;border:1.5px solid #a5b4fc;border-radius:10px;padding:10px 14px;text-align:center;min-width:110px">
+ <div style="font-size:9px;font-weight:700;color:#4338ca;text-transform:uppercase;letter-spacing:.5px">In ETFs @ ${(_eCagr*100).toFixed(1)}%</div>
+ <div style="font-size:19px;font-weight:800;color:#4338ca;margin-top:3px">${pfmt(_etfFV2)}</div>
+ <div style="font-size:9px;color:#94a3b8;margin-top:2px">value at Year 30</div>
+ </div>
+ </div>
+ </div>`;
+ } catch(e){ console.error('S2 ETF tile error:', e); }
+
+ // ── Cash flow note ──────────────────────────────────────
+ const breakEvenYr = data.find(r=>r.cumCashflow>=0);
+ const yr1CF = data[0].netCF;
+ pg('propNote').innerHTML=`
+ <strong>Property Snapshot</strong><br>
+ Investment mortgage: <strong>${pfmt(p.price-p.equity)}</strong> @ ${(p.mrate*100).toFixed(1)}% → <strong>${pfmt(invPmt)}/mo</strong>&nbsp;&nbsp;
+ Equity loan: <strong>${pfmt(p.equity)}</strong> @ ${(p.erate*100).toFixed(1)}% → <strong>${pfmt(eqPmt)}/mo</strong>&nbsp;&nbsp;
+ Total monthly mortgage: <strong>${pfmt(totalMonthlyMortgage)}</strong><br>
+ Year-1 cash flow: <strong style="color:${yr1CF>=0?'#059669':'#dc2626'}">${pfmtM(yr1CF)}</strong>
+ (rent <strong>${pfmt(data[0].annualRent)}</strong> − costs <strong>${pfmt(data[0].opCosts)}</strong> − mortgage <strong>${pfmt(data[0].yearlyMortgage)}</strong>)&nbsp;&nbsp;
+ ${breakEvenYr?`Cash-flow break-even: <strong style="color:#059669">Year ${breakEvenYr.yr}</strong>`:'<span style="color:#dc2626">Negative cash flow throughout</span>'}
+ &nbsp;&nbsp;Property depreciation (building): <strong>${pfmt(buildingVal_display)} over ${p.term}yr</strong>&nbsp;&nbsp;
+ Adjusted book value at sale: <strong>${pfmtM(fin.propVal - fin.depr)}</strong>
+ `;
+
+ // ── Main chart ──────────────────────────────────────────
+ if(propMainChart) propMainChart.destroy();
+ propMainChart = new Chart(pg('propMainChart').getContext('2d'),{type:'line',
+ data:{labels, datasets:[
+ {label:'Property Value (Nominal)', data:data.map(r=>r.propVal), borderColor:'#059669', backgroundColor:'rgba(5,150,105,.07)', borderWidth:2.5, fill:true, tension:.35, pointRadius:1, yAxisID:'y'},
+ {label:'Property Value (Real)', data:data.map(r=>r.realPropVal), borderColor:'#34d399', backgroundColor:'transparent', borderWidth:1.5, borderDash:[5,3], fill:false, tension:.35, pointRadius:0, yAxisID:'y'},
+ {label:'Net Equity (Nominal)', data:data.map(r=>r.netEquity), borderColor:'#4f46e5', backgroundColor:'rgba(79,70,229,.06)', borderWidth:2, fill:true, tension:.35, pointRadius:1, yAxisID:'y'},
+ {label:'Net Equity (Real)', data:data.map(r=>r.realNetEquity), borderColor:'#818cf8', backgroundColor:'transparent', borderWidth:1.5, borderDash:[5,3], fill:false, tension:.35, pointRadius:0, yAxisID:'y'},
+ {label:'Cum. Cash Flow (Nominal)', data:data.map(r=>r.cumCashflow), borderColor:'#d97706', backgroundColor:'rgba(217,119,6,.06)', borderWidth:2, fill:false, tension:.35, pointRadius:1, yAxisID:'y'},
+ {label:'Cum. Cash Flow (Real)', data:data.map(r=>r.realCumCF), borderColor:'#fbbf24', backgroundColor:'transparent', borderWidth:1.5, borderDash:[3,3], fill:false, tension:.35, pointRadius:0, yAxisID:'y'},
+ {label:'Remaining Loans', data:data.map(r=>r.totalBal), borderColor:'#dc2626', backgroundColor:'transparent', borderWidth:1.5, borderDash:[4,3], fill:false, tension:.2, pointRadius:1, yAxisID:'y'},
+ ]},
+ options:{responsive:true,maintainAspectRatio:true,interaction:{mode:'index',intersect:false},
+ plugins:{legend:{labels:{color:'#64748b',font:{size:11},padding:10,boxWidth:12}},
+ tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',borderColor:'#e2e8f0',borderWidth:1,padding:10,
+ callbacks:{label:c=>` ${c.dataset.label}: ${pfmtM(c.parsed.y)}`}}},
+ scales:{
+ x:{ticks:{color:'#94a3b8',font:{size:10},maxTicksLimit:16},grid:{color:'#f1f5f9'}},
+ y:{ticks:{color:'#94a3b8',font:{size:11},callback:v=>pfmtM(v)},grid:{color:'#f8fafc'}}
+ }}
+ });
+
+ // ── Annual cash flow bar chart ──────────────────────────
+ // ── Income vs Outgoings combo chart ───────────────────────
+ if(propFlowChart) propFlowChart.destroy();
+ if(propRentChart) propRentChart.destroy();
+ if(window._propIncomeChart) window._propIncomeChart.destroy();
+ const _pic = pg('propIncomeChart');
+ if(_pic){
+ const bkYrAnn = data.find(r=>r.netCF>=0);
+ const bkYrCum = data.find(r=>r.cumCashflow>=0);
+ const netColors = data.map(r=>r.netCF>=0?'rgba(5,150,105,.9)':'rgba(220,38,38,.85)');
+ window._propIncomeChart = new Chart(_pic.getContext('2d'),{
+ type:'bar',
+ data:{labels,
+ datasets:[
+ // Positive: rent income
+ {type:'bar', label:'Rent Income', data:data.map(r=>r.annualRent),
+ backgroundColor:'rgba(5,150,105,.65)', stack:'income',
+ borderRadius:{topLeft:3,topRight:3}, borderSkipped:false},
+ // Negative stacked: op costs
+ {type:'bar', label:'Op. Costs (incl. vacancy + mktg)', data:data.map(r=>-r.opCosts),
+ backgroundColor:'rgba(220,38,38,.55)', stack:'out', borderSkipped:false},
+ // Negative stacked: mortgage split into rent-covered vs OOP
+ {type:'bar', label:'Mortgage — Rent Covered', data:data.map(r=>-r.rentCoveredMort),
+ backgroundColor:'rgba(16,185,129,.45)', stack:'out',
+ borderSkipped:false},
+ {type:'bar', label:'Mortgage — Out-of-Pocket', data:data.map(r=>-r.oopMort),
+ backgroundColor:'rgba(245,158,11,.75)', stack:'out',
+ borderRadius:{bottomLeft:3,bottomRight:3}, borderSkipped:false},
+ // Annual net CF line
+ {type:'line', label:'Annual Net Cash Flow', data:data.map(r=>r.netCF),
+ borderColor:'#0891b2', backgroundColor:'transparent',
+ borderWidth:2.5, tension:.35, pointRadius:3,
+ pointBackgroundColor:netColors, pointBorderColor:netColors,
+ pointHoverRadius:5, fill:false, yAxisID:'y'},
+ // Cumulative CF dashed
+ {type:'line', label:'Cumulative Cash Flow', data:data.map(r=>r.cumCashflow),
+ borderColor:'#7c3aed', backgroundColor:'transparent',
+ borderWidth:2, borderDash:[5,3], tension:.35, pointRadius:1,
+ fill:false, yAxisID:'y'},
+ ]},
+ options:{responsive:true, maintainAspectRatio:true,
+ interaction:{mode:'index',intersect:false},
+ plugins:{
+ legend:{labels:{color:'#64748b',font:{size:11},padding:10,boxWidth:12}},
+ tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',
+ borderColor:'#e2e8f0',borderWidth:1,padding:10,
+ callbacks:{
+ label:c=>{
+ const lbl=c.dataset.label; const v=c.parsed.y;
+ if(lbl==='Op. Costs'||lbl==='Mortgage Payments')
+ return ` ${lbl}: −${pfmtM(Math.abs(v))}`;
+ return ` ${lbl}: ${v>=0?'+':''}${pfmtM(v)}`;
+ },
+ afterBody:ci=>{
+ const r=data[ci[0].dataIndex];
+ const msgs=[' ──────────'];
+ msgs.push(` Total Out: −${pfmtM(r.opCosts+r.yearlyMortgage)}`);
+ if(bkYrAnn&&r.yr===bkYrAnn.yr) msgs.push(` Annual CF turns POSITIVE this year!`);
+ if(bkYrCum&&r.yr===bkYrCum.yr) msgs.push(` Cumulative CF turns POSITIVE this year!`);
+ return msgs;
+ }
+ }}},
+ scales:{
+ x:{stacked:true,
+ ticks:{color:'#94a3b8',font:{size:9},maxTicksLimit:16},
+ grid:{color:'#f1f5f9'}},
+ y:{stacked:true,
+ ticks:{color:'#94a3b8',font:{size:10},
+ callback:v=>{const a=Math.abs(v);return (v<0?'−':'')+pfmtM(a);}},
+ grid:{color:'#f8fafc'},
+ title:{display:true,text:'Income (+) / Outgoings (−)',color:'#94a3b8',font:{size:10}}}
+ }}});
+ }
+
+ // ── Year-by-year table PROP ────────────────────────────────── // ── Year-by-year table PROP ──────────────────────────────────
+ pg('propTHead').innerHTML=`<tr>
+ <th style="text-align:left">Year</th>
+ <th>Monthly Rent</th><th>Annual Rent</th><th>Real Rent</th><th>Op. Costs</th>
+ <th>Mortgage Paid</th><th>Net Cash Flow</th><th>Cum. CF</th><th>Cum. CF (Real)</th>
+ <th>Property Value</th><th>Real Prop. Value</th><th>Remaining Loans</th><th>Net Equity</th><th>Real Net Equity</th>
+ <th>Building Depr.</th>
+ </tr>`;
+ pg('propTBody').innerHTML=data.map(r=>`
+ <tr class="${r.netCF<0?'neg-cf':''}">
+ <td>Year ${r.yr} <span style="font-size:10px;color:#9ca3af">${(r.gr*100).toFixed(1)}%↑</span></td>
+ <td>${pfmt(r.monthlyRent)}</td>
+ <td>${pfmtM(r.annualRent)}</td>
+ <td style="color:#059669;font-style:italic">${pfmtM(r.realAnnualRent)}</td>
+ <td style="color:#dc2626">${pfmtM(r.opCosts)}</td>
+ <td style="color:#92400e">${pfmtM(r.yearlyMortgage)}</td>
+ <td style="color:${r.netCF>=0?'#059669':'#dc2626'};font-weight:600">${pfmtM(r.netCF)}</td>
+ <td style="color:${r.cumCashflow>=0?'#059669':'#dc2626'}">${pfmtM(r.cumCashflow)}</td>
+ <td style="color:${r.realCumCF>=0?'#059669':'#94a3b8'};font-style:italic">${pfmtM(r.realCumCF)}</td>
+ <td style="color:#065f46;font-weight:600">${pfmtM(r.propVal)}</td>
+ <td style="color:#34d399;font-style:italic">${pfmtM(r.realPropVal)}</td>
+ <td style="color:#92400e">${pfmtM(r.totalBal)}</td>
+ <td style="color:#4f46e5;font-weight:600">${pfmtM(r.netEquity)}</td>
+ <td style="color:#818cf8;font-style:italic">${pfmtM(r.realNetEquity)}</td>
+ <td style="color:#64748b">${pfmtM(r.depr)}</td>
+ </tr>`).join('');
+}
+
+// Building value for display in note
+const buildingVal_display = 1000000 * 0.40 * 0.025 * 30; // approx max depreciation
+
+// ── Input binding ──────────────────────────────────────────
+const propPairs=[['price','price'],['equity','equity'],['mrate','mrate'],['erate','erate'],
+ ['term','term'],['rent','rent'],['rentinc','rentinc'],['water','water'],['council','council'],
+ ['maint','maint'],['mgmt','mgmt'],['misc','misc'],['g1','g1'],['g2','g2'],['g3','g3']];
+
+let propDebTimer;
+function propDebounce(){ clearTimeout(propDebTimer); propDebTimer=setTimeout(renderProperty,150); }
+
+propPairs.forEach(([k])=>{
+ const vEl=pg('pp_'+k), rEl=pg('rp_'+k);
+ if(!vEl||!rEl) return;
+ vEl.addEventListener('input',()=>{ rEl.value=vEl.value; propDebounce(); });
+ rEl.addEventListener('input',()=>{ vEl.value=rEl.value; propDebounce(); });
+});
+
+// ── Init ──────────────────────────────────────────────────
+renderProperty();
+</script>
+
+
+<!-- ═══════════════════════════════════════════════════════
+ SECTION 3 — PROPERTY PORTFOLIO (Buy Every 5 Years)
+ ═══════════════════════════════════════════════════════ -->
+<style>
+.pf-wrap{background:#fdf4ff;border-top:3px solid #7c3aed;padding:20px 16px;display:flex;flex-direction:column;gap:14px;}
+.pf-sec-hdr{background:#fff;border:1px solid #ddd6fe;border-radius:12px;padding:14px 18px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.pf-sec-title{font-size:16px;font-weight:800;color:#4c1d95;letter-spacing:-.2px;}
+.pf-sec-sub{font-size:13px;color:#6b7280;margin-top:3px;}
+.pf-layout{display:grid;grid-template-columns:320px 1fr;gap:14px;}
+@media(max-width:860px){.pf-layout{grid-template-columns:1fr;}}
+.pf-sidebar{display:flex;flex-direction:column;gap:10px;}
+.pf-group{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:11px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+.pf-group-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;}
+.pf-ref-box{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:9px 11px;font-size:12px;color:#5b21b6;line-height:1.6;}
+
+/* Tiles */
+.pf-tiles-big{background:#fff;border:1.5px solid #ddd6fe;border-radius:12px;padding:13px 15px;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.pf-tiles-big-hdr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+.pf-tiles-big-lbl{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#7c3aed;}
+.pf-tiles-big-val{font-size:24px;font-weight:800;color:#4c1d95;}
+.pf-prop-cards{display:flex;gap:7px;flex-wrap:wrap;}
+.pf-prop-card{flex:1;min-width:100px;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:8px 10px;}
+.pf-pc-id{font-size:10px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px;}
+.pf-pc-price{font-size:12px;font-weight:600;color:#4c1d95;margin-top:2px;}
+.pf-pc-val{font-size:13px;font-weight:800;color:#059669;margin-top:2px;}
+.pf-pc-sub{font-size:10px;color:#9ca3af;margin-top:1px;}
+
+.pf-tiles{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;}
+@media(max-width:1100px){.pf-tiles{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:640px){.pf-tiles{grid-template-columns:repeat(2,1fr);}}
+.pftile{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:10px 11px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+.pftile.hi-g{border-color:#6ee7b7;background:#f0fdf4;}
+.pftile.hi-p{border-color:#ddd6fe;background:#f5f3ff;}
+.pftile.hi-r{border-color:#fca5a5;background:#fef2f2;}
+.pftile.hi-y{border-color:#fde68a;background:#fefce8;}
+.pft-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#9ca3af;}
+.pft-val{font-size:15px;font-weight:700;margin-top:3px;letter-spacing:-.3px;}
+.pft-sub{font-size:10px;color:#9ca3af;margin-top:2px;}
+
+.pf-note{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:11px 14px;font-size:13px;color:#374151;line-height:1.65;}
+
+/* Table */
+.pf-tbl-box{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+.pf-tbl-hdr{padding:10px 14px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.pf-tbl-title{font-size:15px;font-weight:600;color:#4c1d95;}
+.pf-tscroll{overflow-x:auto;max-height:420px;overflow-y:auto;}
+.pf-tscroll table{width:100%;border-collapse:collapse;}
+.pf-tscroll thead th{position:sticky;top:0;z-index:2;background:#f5f3ff;padding:7px 10px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#7c3aed;text-align:right;border-bottom:1px solid #ddd6fe;white-space:nowrap;}
+.pf-tscroll thead th:first-child{text-align:left;}
+.pf-tscroll td{padding:6px 10px;font-size:12px;text-align:right;border-top:1px solid #f5f5f5;white-space:nowrap;}
+.pf-tscroll td:first-child{text-align:left;font-weight:600;color:#4c1d95;}
+.pf-tscroll tr:hover td{background:#f5f3ff;}
+.pf-tscroll tr.new-prop td:first-child::after{content:' ';font-size:10px;}
+.pf-tscroll tr.neg-yr td{color:#dc2626;}
+</style>
+
+<section class="pf-wrap" id="pfSection">
+ <div class="pf-sec-hdr">
+ <div class="pf-sec-title">Section 3: Property Portfolio Strategy — Buy Every 5 Years</div>
+ <div class="pf-sec-sub">Grow a portfolio by acquiring one property every 5 years · 50% deposit from equity, 50% from savings · Sell all at Year 30</div>
+ </div>
+
+ <div class="pf-layout">
+ <!-- INPUTS -->
+ <div class="pf-sidebar">
+ <div class="pf-group">
+ <div class="pf-group-title" style="color:#7c3aed">Portfolio Settings</div>
+ <div class="prop-item"><div class="prop-label">Number of properties</div>
+ <div class="ctrl-row">
+ <div class="num-wrap"><input class="num-in" type="number" id="pf_num" value="6" min="2" max="8" step="1"><span class="num-suffix">props</span></div>
+ <input class="range-in" type="range" id="pfr_num" min="2" max="8" step="1" value="6">
+ </div></div>
+ <div class="prop-item"><div class="prop-label">Purchase interval</div>
+ <div class="ctrl-row">
+ <div class="num-wrap"><input class="num-in" type="number" id="pf_interval" value="5" min="2" max="10" step="1"><span class="num-suffix">yr</span></div>
+ <input class="range-in" type="range" id="pfr_interval" min="2" max="10" step="1" value="5">
+ </div></div>
+ </div>
+ <div class="pf-group">
+ <div class="pf-group-title" style="color:#059669">Using Settings From Section 2</div>
+ <div class="pf-ref-box" id="pfRefBox">Loading from Section 2…</div>
+ <div style="font-size:11px;color:#9ca3af;margin-top:7px;line-height:1.55">
+ All property price, rent, costs, growth rates and mortgage rates are pulled live from Section 2. Adjust sliders there to see the impact here.
+ </div>
+ </div>
+ <div class="pf-group">
+ <div class="pf-group-title" style="color:#92400e">Deposit Structure</div>
+ <div style="font-size:12px;color:#374151;line-height:1.65">
+ Each property: <strong>20% deposit</strong><br>
+ → <strong>50%</strong> from equity (new equity loan at same rate)<br>
+ → <strong>50%</strong> cash savings (one-time outlay)<br>
+ Equity loans are amortised over the same term as the investment mortgage.
+ </div>
+ </div>
+ </div>
+
+ <!-- RESULTS -->
+ <div style="display:flex;flex-direction:column;gap:14px;">
+
+ <!-- Big tile: total portfolio -->
+ <div class="pf-tiles-big" id="pfBigTile"></div>
+
+ <!-- Stat tiles -->
+ <div class="pf-tiles" id="pfTiles"></div>
+ <div id="pfEtfTile" style="margin-top:10px"></div>
+
+ <!-- Narrative note -->
+ <div class="pf-note" id="pfNote"></div>
+
+ <!-- Charts -->
+ <div class="chart-box">
+ <div class="ch-hdr">
+ <div class="ch-ttl">Portfolio Cash Flow — Rent Income vs Outgoings as Properties Are Added</div>
+ <div style="font-size:11px;color:#9ca3af;margin-top:2px">Stacked purple bars = per-property rent · Red = op costs · Orange = mortgage · ▲ = property purchased · Blue line = annual net CF · Green dashed = cumulative CF</div>
+ </div>
+ <canvas id="pfCombChart" style="max-height:420px"></canvas>
+ </div>
+
+ <!-- Property summary table -->
+ <div class="pf-tbl-box">
+ <div class="pf-tbl-hdr"><div class="pf-tbl-title">Per-Property Summary at Year 30</div></div>
+ <div class="pf-tscroll"><table><thead id="pfPropHead"></thead><tbody id="pfPropBody"></tbody></table></div>
+ </div>
+
+ <!-- Year-by-year table -->
+ <div class="pf-tbl-box">
+ <div class="pf-tbl-hdr"><div class="pf-tbl-title">Year-by-Year Portfolio Breakdown</div></div>
+ <div class="pf-tscroll"><table><thead id="pfYrHead"></thead><tbody id="pfYrBody"></tbody></table></div>
+ </div>
+
+ </div>
+ </div>
+</section>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// PORTFOLIO SIMULATION (Section 3)
+// ═══════════════════════════════════════════════════════
+const pfg = id => document.getElementById(id);
+const pffmt = n => !isFinite(n)?'—':(n<0?'-':'')+' $'+Math.abs(Math.round(n)).toLocaleString();
+const pffmtM = n => {
+ if(!isFinite(n)) return '—';
+ const a=Math.abs(n), s=n<0?'−':'';
+ if(a>=1e9) return s+'$'+(a/1e9).toFixed(2)+'B';
+ if(a>=1e6) return s+'$'+(a/1e6).toFixed(2)+'M';
+ if(a>=1e3) return s+'$'+Math.round(a/1e3)+'K';
+ return s+'$'+Math.round(a);
+};
+
+function simulatePortfolio(){
+ const p = getPropInputs(); // reuse Section 2 inputs
+ const numProps = +pfg('pf_num').value || 6;
+ const interval = +pfg('pf_interval').value || 5;
+ const TERM = p.term; // 30 years
+
+ const gr = yr => yr <= 12 ? p.g1 : yr <= 22 ? p.g2 : p.g3;
+ const pfInf = getBase().inf; // shared inflation rate from Section 1
+
+ // Market cumulative growth index (mkt[0]=1.0 = start before yr1)
+ const mkt = [1.0];
+ for(let yr=1; yr<=TERM; yr++) mkt.push(mkt[yr-1]*(1+gr(yr)));
+
+ // Purchase schedule
+ const purchaseYrs = [];
+ for(let i=0; i<numProps; i++){
+ const py = 1 + i*interval;
+ if(py <= TERM) purchaseYrs.push(py);
+ }
+
+ // Initialise property objects
+ const props = purchaseYrs.map((pYr, idx)=>{
+ const mktScale = mkt[pYr-1]; // market at start of purchase year
+ const price = p.price * mktScale; // nominal purchase price
+ const deposit = price * 0.20;
+ const equityPortion = deposit * 0.50;
+ const savingsPortion = deposit * 0.50;
+ const loanAmt = price * 0.80;
+ const eqLoanAmt = equityPortion;
+ const invPmt = calcMonthlyPayment(loanAmt, p.mrate, TERM*12);
+ const eqPmt = calcMonthlyPayment(eqLoanAmt, p.erate, TERM*12);
+ return {
+ id:idx+1, purchaseYr:pYr, price, mktScale, deposit,
+ equityPortion, savingsPortion,
+ loanAmt, eqLoanAmt,
+ invBal:loanAmt, eqBal:eqLoanAmt,
+ invPmt, eqPmt,
+ startRent: p.rent * mktScale, // rent scales with property price
+ propVal: price,
+ // saved snapshots for per-property summary
+ cumRent:0, cumCosts:0, cumMort:0,
+ };
+ });
+
+ const totalSavings = props.reduce((s,pr)=>s+pr.savingsPortion, 0);
+ let cumCF=0, cumRent=0, cumCosts=0, cumMort=0;
+ let pfCumInterest=0, pfCumRentCovMort=0, pfCumOOPMort=0, pfCumNegCF=0, pfCumPosCF=0;
+ const data=[];
+
+ for(let yr=1; yr<=TERM; yr++){
+ let yrRent=0, yrCosts=0, yrMort=0;
+ const isNewProp = props.some(pr=>pr.purchaseYr===yr);
+
+ for(const prop of props){
+ if(prop.purchaseYr > yr) continue;
+ const age = yr - prop.purchaseYr + 1;
+
+ // Grow property value this year
+ prop.propVal *= (1+gr(yr));
+
+ // Rent (grows from startRent at rentinc% every 3 yrs)
+ const mRent = prop.startRent * Math.pow(1+p.rentinc, Math.floor((age-1)/3)); // +rentinc% every 3rd year
+ const aRent = mRent * 12;
+
+ // Op costs scale with property price relative to base
+ const sc = prop.mktScale;
+ const water = p.water * 4 * Math.pow(1.05, yr-1) * sc;
+ const council = p.council * 4 * Math.pow(1.03, yr-1) * sc;
+ const maint = p.maint * sc;
+ const mgmt = aRent * p.mgmt;
+ const misc = aRent * p.misc;
+ const vacancy = aRent * (2/52); // 2 weeks vacant between tenancies
+ const marketing = 500 * Math.pow(1+pfInf, yr-1) * sc; // $500/yr per property, inflation-adj + price-scaled
+ const opCost = water+council+maint+mgmt+misc+vacancy+marketing;
+
+ // Amortise loans (12 months)
+ let yInv=0, yEq=0, yInt=0;
+ for(let m=0;m<12;m++){
+ if(prop.invBal > 0.01){
+ const ii=prop.invBal*(p.mrate/12);
+ const ip=Math.min(prop.invPmt-ii, prop.invBal);
+ prop.invBal=Math.max(0,prop.invBal-ip);
+ yInv+=prop.invPmt; yInt+=ii;
+ }
+ if(prop.eqBal > 0.01){
+ const ei=prop.eqBal*(p.erate/12);
+ const ep=Math.min(prop.eqPmt-ei, prop.eqBal);
+ prop.eqBal=Math.max(0,prop.eqBal-ep);
+ yEq+=prop.eqPmt; yInt+=ei;
+ }
+ }
+ const mort = yInv+yEq;
+ const propRentCovMort = Math.min(Math.max(0, aRent - opCost), mort);
+ const propOOPMort = mort - propRentCovMort;
+
+ yrRent += aRent;
+ yrCosts += opCost;
+ yrMort += mort;
+ prop.cumRent += aRent;
+ prop.cumCosts += opCost;
+ prop.cumMort += mort;
+ prop._yrRent = aRent;
+ pfCumInterest += yInt;
+ pfCumRentCovMort += propRentCovMort;
+ pfCumOOPMort += propOOPMort;
+ }
+ // per-property rent array for stacked chart (padded to total props length)
+ const propRents = props.map(pr=>pr.purchaseYr<=yr ? (pr._yrRent||0) : 0);
+
+ const yrNetCF = yrRent - yrCosts - yrMort;
+ cumCF += yrNetCF;
+ cumRent += yrRent;
+ cumCosts += yrCosts;
+ cumMort += yrMort;
+ if(yrNetCF < 0) pfCumNegCF += -yrNetCF; else pfCumPosCF += yrNetCF;
+
+ const activeProps = props.filter(pr=>pr.purchaseYr<=yr);
+ const totalVal = activeProps.reduce((s,pr)=>s+pr.propVal, 0);
+ const totalLoan = activeProps.reduce((s,pr)=>s+pr.invBal+pr.eqBal, 0);
+
+ const _pf_inf_d = Math.pow(1+pfInf, yr);
+ const _pfNetEq = totalVal - totalLoan;
+ data.push({yr, yrRent, yrCosts, yrMort, yrNetCF, cumCF,
+ totalVal, totalLoan, netEquity:_pfNetEq,
+ activeCt: activeProps.length, isNewProp,
+ cumRent, cumCosts, cumMort, propRents,
+ realTotalVal: totalVal / _pf_inf_d,
+ realNetEquity: _pfNetEq / _pf_inf_d,
+ realCumCF: cumCF / _pf_inf_d,
+ });
+ }
+
+ const fin = data[data.length-1];
+ const saleProceeds = fin.totalVal - fin.totalLoan;
+ const totalProfit = saleProceeds + cumCF; // sale net + all cash flows (savings cost embedded in mortgage/equity loans)
+
+ return {data, fin, props, saleProceeds, totalProfit,
+ cumCF, cumRent, cumCosts, cumMort, totalSavings, p, purchaseYrs,
+ pfCumInterest, pfCumRentCovMort, pfCumOOPMort, pfCumNegCF, pfCumPosCF};
+}
+
+// ═══════════════════════════════════════
+// RENDER PORTFOLIO
+// ═══════════════════════════════════════
+let pfMain, pfFlow, pfRent, pfComb;
+
+function renderPortfolio(){
+ const sim = simulatePortfolio();
+ const {data,fin,props,saleProceeds,totalProfit,cumCF,cumRent,cumCosts,cumMort,totalSavings,p,purchaseYrs,
+ pfCumInterest,pfCumRentCovMort,pfCumOOPMort,pfCumNegCF,pfCumPosCF} = sim;
+ const labels = data.map(r=>`Yr ${r.yr}`);
+
+ // ── Ref box ─────────────────────────────────────────────
+ pfg('pfRefBox').innerHTML=
+ `Base property: <strong>$${(p.price/1e6).toFixed(2)}M</strong> · Mortgage: <strong>${(p.mrate*100).toFixed(1)}%</strong><br>
+ Start rent: <strong>$${p.rent.toLocaleString()}/mo</strong> · Growth: <strong>+${(p.rentinc*100).toFixed(0)}% every 3 yrs</strong><br>
+ Sydney growth: <strong>${(p.g1*100).toFixed(1)}% → ${(p.g2*100).toFixed(1)}% → ${(p.g3*100).toFixed(1)}%</strong>`;
+
+ // ── Big tile: per-property cards ─────────────────────────
+ const pcards = props.map(pr=>`
+ <div class="pf-prop-card">
+ <div class="pf-pc-id">P${pr.id} · Yr ${pr.purchaseYr}</div>
+ <div class="pf-pc-price">Bought ${pffmtM(pr.price)}</div>
+ <div class="pf-pc-val">${pffmtM(pr.propVal)}</div>
+ <div class="pf-pc-sub">Loan bal: ${pffmtM(pr.invBal+pr.eqBal)}</div>
+ </div>`).join('');
+ pfg('pfBigTile').innerHTML=`
+ <div class="pf-tiles-big-hdr">
+ <span class="pf-tiles-big-lbl">Portfolio at Year 30 — ${props.length} Properties</span>
+ <span class="pf-tiles-big-val">${pffmtM(fin.totalVal)}</span>
+ </div>
+ <div class="pf-prop-cards">${pcards}</div>`;
+
+ // ── Stat tiles ───────────────────────────────────────────
+ const _pfInfRate = getBase().inf;
+ const _pfInfD30 = Math.pow(1+_pfInfRate, 30);
+ const realPfNetEq = fin.netEquity / _pfInfD30;
+ const realPfSaleP = saleProceeds / _pfInfD30;
+ const realPfCumCF = fin.realCumCF !== undefined ? fin.realCumCF : cumCF / _pfInfD30;
+ const realPfProfit = totalProfit / _pfInfD30;
+ const pfNetRentIncome = cumRent - cumCosts; // rent after all running costs, before mortgage
+ const tiles=[
+ // ── OUTGOINGS ──────────────────────────────────────────────
+ {lbl:'Total Mortgage Paid (30yr)', val:pffmtM(cumMort),
+ sub:`<div style="margin-bottom:4px">All inv + equity loans across ${props.length} properties</div>`+
+ `<div style="display:flex;gap:5px;margin-top:5px">`+
+ `<div style="background:#f0fdf4;border:1px solid #6ee7b7;border-radius:5px;padding:4px 6px;flex:1;text-align:center">`+
+ `<div style="font-size:9px;color:#059669;font-weight:700;letter-spacing:.4px">▲ RENT COVERED</div>`+
+ `<div style="font-size:12px;font-weight:800;color:#059669;margin-top:1px">${pffmtM(pfCumRentCovMort)}</div>`+
+ `<div style="font-size:9px;color:#94a3b8">${cumMort>0?(pfCumRentCovMort/cumMort*100).toFixed(0)+'% of total':''}</div>`+
+ `</div>`+
+ `<div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:5px;padding:4px 6px;flex:1;text-align:center">`+
+ `<div style="font-size:9px;color:#dc2626;font-weight:700;letter-spacing:.4px">▼ OUT-OF-POCKET</div>`+
+ `<div style="font-size:12px;font-weight:800;color:#dc2626;margin-top:1px">${pffmtM(pfCumOOPMort)}</div>`+
+ `<div style="font-size:9px;color:#94a3b8">${cumMort>0?(pfCumOOPMort/cumMort*100).toFixed(0)+'% of total':''}</div>`+
+ `</div></div>`,
+ cls:'#92400e', hi:'hi-y'},
+ {lbl:'Total Interest Paid (30yr)', val:pffmtM(pfCumInterest),
+ sub:`${cumMort>0?(pfCumInterest/cumMort*100).toFixed(0)+'% of mortgage was interest':''} · ${pffmtM(cumMort-pfCumInterest)} principal repaid`, cls:'#b45309', hi:'hi-y'},
+ {lbl:'Total Op. Costs (30yr)', val:pffmtM(cumCosts),
+ sub:'Incl. 2wk vacancy + $500/yr mktg per property', cls:'#dc2626', hi:'hi-r'},
+ // ── INCOME ─────────────────────────────────────────────────
+ {lbl:'Total Rent (30yr)', val:pffmtM(cumRent),
+ sub:'All properties combined — gross rent collected', cls:'#059669', hi:''},
+ {lbl:'Net Rent Income (30yr)', val:pffmtM(pfNetRentIncome),
+ sub:`Rent − all running costs · ${pfNetRentIncome>=0?'Surplus':'Shortfall'} before mortgage payments`, cls:pfNetRentIncome>=0?'#059669':'#dc2626', hi:''},
+ {lbl:'Net Cash Flow (30yr)', val:pffmtM(cumCF),
+ sub:`Real: ${pffmtM(realPfCumCF)} · OOP top-ups: ${pffmtM(pfCumNegCF)} · Pocketed: ${pffmtM(pfCumPosCF)}`, cls:cumCF>=0?'#059669':'#dc2626', hi:cumCF>=0?'hi-g':'hi-r'},
+ // ── WEALTH ─────────────────────────────────────────────────
+ {lbl:'Net Portfolio Equity', val:pffmtM(fin.netEquity),
+ sub:`Real: ${pffmtM(realPfNetEq)} · All property values minus all outstanding loans`, cls:'#4c1d95', hi:'hi-p'},
+ {lbl:'Sale Proceeds (net)', val:pffmtM(saleProceeds),
+ sub:`Real: ${pffmtM(realPfSaleP)} · After clearing all loans at Yr 30`, cls:'#065f46', hi:'hi-g'},
+ {lbl:'Net Own Money if Sold', val:pffmtM(totalProfit),
+ sub:`Real: ${pffmtM(realPfProfit)} · Sale proceeds + all 30yr cash flows`, cls:totalProfit>=0?'#065f46':'#dc2626', hi:totalProfit>=0?'hi-g':'hi-r'},
+ ];
+ pfg('pfTiles').innerHTML=tiles.map(t=>`
+ <div class="pftile ${t.hi}">
+ <div class="pft-lbl">${t.lbl}</div>
+ <div class="pft-val" style="color:${t.cls}">${t.val}</div>
+ <div class="pft-sub">${t.sub}</div>
+ </div>`).join('');
+
+ // ── ETF "what if" comparison tile ────────────────────────────
+ try {
+ const _s1p = simulate();
+ const _efp = _s1p.data.find(r=>r.yr===30)||_s1p.data[_s1p.data.length-1];
+ const _eInP = _s1p.dcaYrs * 12 * _s1p.totalDCApm;
+ const _eCagrP = _eInP > 0 ? Math.pow((_efp.comb+_efp.cumWd)/_eInP, 1/30) - 1 : 0.07;
+ // FV of each year's portfolio OOP (negative CF years) invested in ETF
+ let _etfFV3 = 0;
+ data.forEach(r => {
+ if(r.yrNetCF < 0){
+ const yLeft = Math.max(0, 30 - r.yr + 0.5);
+ _etfFV3 += (-r.yrNetCF) * Math.pow(1 + _eCagrP, yLeft);
+ }
+ });
+ // FV of initial cash savings (deposits), invested from Year 0
+ props.forEach(pr => {
+ const depositYr = pr.purchaseYr || 1;
+ const yLeft = Math.max(0, 30 - depositYr + 1);
+ _etfFV3 += pr.savingsPortion * Math.pow(1 + _eCagrP, yLeft);
+ });
+ const _oopP = totalSavings + pfCumNegCF; // deposits + annual top-ups
+ const _etfElP = pfg('pfEtfTile');
+ if(_etfElP) _etfElP.innerHTML = `
+ <div style="background:linear-gradient(135deg,#eef2ff,#f0f9ff);border:1.5px solid #a5b4fc;border-radius:12px;padding:14px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+ <div style="flex:1;min-width:180px">
+ <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#4f46e5;margin-bottom:6px">What if you'd put this into ETFs instead?</div>
+ <div style="font-size:11px;color:#64748b;line-height:1.6">Initial cash deposits + years where <em>total rent − costs − mortgage &lt; 0</em> required a top-up. Each compounded at your ETF CAGR (${(_eCagrP*100).toFixed(1)}%) for the years remaining to Year 30.</div>
+ </div>
+ <div style="display:flex;gap:10px;flex-shrink:0">
+ <div style="background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:10px 14px;text-align:center;min-width:120px">
+ <div style="font-size:9px;font-weight:700;color:#c2410c;text-transform:uppercase;letter-spacing:.5px">Paid into Property</div>
+ <div style="font-size:19px;font-weight:800;color:#c2410c;margin-top:3px">${pffmtM(_oopP)}</div>
+ <div style="font-size:9px;color:#94a3b8;margin-top:2px">${pffmtM(totalSavings)} deposits + ${pffmtM(pfCumNegCF)} top-ups</div>
+ </div>
+ <div style="display:flex;align-items:center;font-size:18px;color:#94a3b8">→</div>
+ <div style="background:#eef2ff;border:1.5px solid #a5b4fc;border-radius:10px;padding:10px 14px;text-align:center;min-width:120px">
+ <div style="font-size:9px;font-weight:700;color:#4338ca;text-transform:uppercase;letter-spacing:.5px">In ETFs @ ${(_eCagrP*100).toFixed(1)}%</div>
+ <div style="font-size:19px;font-weight:800;color:#4338ca;margin-top:3px">${pffmtM(_etfFV3)}</div>
+ <div style="font-size:9px;color:#94a3b8;margin-top:2px">value at Year 30</div>
+ </div>
+ </div>
+ </div>`;
+ } catch(e){ console.error('S3 ETF tile error:', e); }
+
+ // ── Narrative note ───────────────────────────────────────
+ const bey = data.find(r=>r.cumCF>=0);
+ const totalDeposits = props.reduce((s,pr)=>s+pr.deposit,0);
+ pfg('pfNote').innerHTML=`
+ <strong>Portfolio at a Glance</strong><br>
+ ${props.length} properties purchased at: ${purchaseYrs.map((y,i)=>`<strong>Yr ${y}</strong> (P${i+1} @ ${pffmtM(props[i].price)})`).join(' → ')}<br>
+ Total deposits paid: <strong>${pffmtM(totalDeposits)}</strong> (50% equity loans + 50% cash savings of <strong>${pffmtM(totalSavings)}</strong>)<br>
+ ${bey?`Portfolio cash-flow break-even: <strong style="color:#059669">Year ${bey.yr}</strong>`:'<span style="color:#dc2626">Negative cumulative cash flow throughout</span>'} ·
+ Year-1 monthly mortgage across all active loans: <strong>${pffmtM(props[0].invPmt+props[0].eqPmt)}/mo</strong><br>
+ At Year 30 all properties sold: proceeds <strong style="color:#059669">${pffmtM(saleProceeds)}</strong> + cumulative CF <strong style="color:${cumCF>=0?'#059669':'#dc2626'}">${pffmtM(cumCF)}</strong> = Total profit <strong style="color:${totalProfit>=0?'#059669':'#dc2626'}">${pffmtM(totalProfit)}</strong>`;
+
+ // ── Single combo chart: per-property stacked rent + outgoings + CF lines ──
+ if(pfMain) pfMain.destroy();
+ if(pfFlow) pfFlow.destroy();
+ if(pfRent) pfRent.destroy();
+ if(pfComb) pfComb.destroy();
+ const PF_COLORS = ['#5b21b6','#6d28d9','#7c3aed','#8b5cf6','#a78bfa','#c4b5fd'];
+ const PF_DARKS = ['#3b0764','#4c1d95','#5b21b6','#6d28d9','#7c3aed','#8b5cf6'];
+ const maxNumProps = props.length;
+
+ // Per-property stacked rent bars
+ const pfRentDatasets = props.map((pr, pi)=>({
+ type:'bar',
+ label:`P${pr.id} Rent (Yr${pr.purchaseYr})`,
+ data: data.map(r=> r.propRents[pi]||0),
+ backgroundColor: PF_COLORS[pi]+'bb',
+ borderColor: PF_DARKS[pi],
+ borderWidth: 0.5,
+ stack:'rent',
+ borderSkipped:false,
+ }));
+
+ // Negative outgoing bars
+ const pfOutDatasets = [
+ {type:'bar', label:'Op. Costs', data:data.map(r=>-r.yrCosts),
+ backgroundColor:'rgba(220,38,38,.5)', stack:'out', borderSkipped:false},
+ {type:'bar', label:'Mortgage — Rent Covered', data:data.map(r=>{
+ const yrNetRent = r.yrRent - r.yrCosts;
+ return -Math.min(Math.max(0, yrNetRent), r.yrMort);
+ }),
+ backgroundColor:'rgba(16,185,129,.4)', stack:'out', borderSkipped:false},
+ {type:'bar', label:'Mortgage — Out-of-Pocket', data:data.map(r=>{
+ const yrNetRent = r.yrRent - r.yrCosts;
+ const covered = Math.min(Math.max(0, yrNetRent), r.yrMort);
+ return -(r.yrMort - covered);
+ }),
+ backgroundColor:'rgba(245,158,11,.65)', stack:'out', borderSkipped:false},
+ ];
+
+ // Net CF line colors
+ const pfNColors = data.map(r=>r.yrNetCF>=0?'rgba(5,150,105,.9)':'rgba(220,38,38,.85)');
+
+ // Property purchase markers (triangle at y=0)
+ const pfPurchaseMarker = {
+ type:'line', label:'Property Purchased', data:data.map(r=>r.isNewProp?0:null),
+ borderColor:'#f59e0b', backgroundColor:'#fbbf24',
+ borderWidth:0, pointStyle:'triangle', pointRadius:data.map(r=>r.isNewProp?10:0),
+ pointHoverRadius:12, tension:0, fill:false, yAxisID:'y', spanGaps:false, showLine:false,
+ };
+
+ const bkYrAnn2 = data.find(r=>r.yrNetCF>=0);
+ const bkYrCum2 = data.find(r=>r.cumCF>=0);
+
+ pfComb = new Chart(pfg('pfCombChart').getContext('2d'),{
+ type:'bar',
+ data:{labels,
+ datasets:[
+ ...pfRentDatasets,
+ ...pfOutDatasets,
+ // Annual net CF line
+ {type:'line', label:'Annual Net CF', data:data.map(r=>r.yrNetCF),
+ borderColor:'#0891b2', backgroundColor:'transparent',
+ borderWidth:2.5, tension:.35, pointRadius:3,
+ pointBackgroundColor:pfNColors, pointBorderColor:pfNColors,
+ pointHoverRadius:5, fill:false, yAxisID:'y'},
+ // Cumulative CF line
+ {type:'line', label:'Cumulative CF (Nominal)', data:data.map(r=>r.cumCF),
+ borderColor:'#059669', backgroundColor:'transparent',
+ borderWidth:2, borderDash:[6,3], tension:.35, pointRadius:1,
+ fill:false, yAxisID:'y'},
+ // Real net equity line
+ {type:'line', label:'Net Equity (Real)', data:data.map(r=>r.realNetEquity),
+ borderColor:'#34d399', backgroundColor:'transparent',
+ borderWidth:2, borderDash:[4,4], tension:.35, pointRadius:0,
+ fill:false, yAxisID:'y'},
+ // Real cumulative CF line
+ {type:'line', label:'Cum. CF (Real)', data:data.map(r=>r.realCumCF),
+ borderColor:'#6ee7b7', backgroundColor:'transparent',
+ borderWidth:1.5, borderDash:[2,4], tension:.35, pointRadius:0,
+ fill:false, yAxisID:'y'},
+ // Active props count (right axis)
+ {type:'line', label:'# Props', data:data.map(r=>r.activeCt),
+ borderColor:'rgba(79,70,229,.5)', backgroundColor:'rgba(79,70,229,.06)',
+ borderWidth:1.5, borderDash:[2,3], tension:.1, pointRadius:0,
+ fill:true, yAxisID:'y2'},
+ pfPurchaseMarker,
+ ]},
+ options:{responsive:true, maintainAspectRatio:true,
+ interaction:{mode:'index',intersect:false},
+ plugins:{
+ legend:{labels:{color:'#64748b',font:{size:10},padding:8,boxWidth:10,
+ filter:item=>item.text!=='Property Purchased'
+ }},
+ tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',
+ borderColor:'#e2e8f0',borderWidth:1,padding:10,
+ callbacks:{
+ label:c=>{
+ const lbl=c.dataset.label; const v=c.parsed.y;
+ if(v===null||v===undefined) return null;
+ if(lbl==='# Props') return ` ${v} active properties`;
+ if(lbl==='Op. Costs'||lbl==='Mortgage Payments')
+ return ` ${lbl}: −${pffmtM(Math.abs(v))}`;
+ return ` ${lbl}: ${v>=0?'+':''}${pffmtM(v)}`;
+ },
+ afterBody:ci=>{
+ const r=data[ci[0].dataIndex];
+ const msgs=[' ──────────'];
+ msgs.push(` Rent In: +${pffmtM(r.yrRent)}`);
+ msgs.push(` Total Out: −${pffmtM(r.yrCosts+r.yrMort)}`);
+ msgs.push(` Net CF: ${r.yrNetCF>=0?'+':''}${pffmtM(r.yrNetCF)}`);
+ if(r.isNewProp) msgs.push(` Property ${r.activeCt} purchased this year!`);
+ if(bkYrAnn2&&r.yr===bkYrAnn2.yr) msgs.push(` Annual CF turns POSITIVE!`);
+ if(bkYrCum2&&r.yr===bkYrCum2.yr) msgs.push(` Cumulative CF turns POSITIVE!`);
+ return msgs;
+ }
+ }}},
+ scales:{
+ x:{stacked:true, ticks:{color:'#94a3b8',font:{size:9},maxTicksLimit:16}, grid:{color:'#f1f5f9'}},
+ y:{stacked:true,
+ ticks:{color:'#94a3b8',font:{size:10},
+ callback:v=>{const a=Math.abs(v);return (v<0?'−':'')+pffmtM(a);}},
+ grid:{color:'#f8fafc'},
+ title:{display:true,text:'Income (+) / Outgoings (−)',color:'#94a3b8',font:{size:10}}},
+ y2:{type:'linear',position:'right', min:0, max:maxNumProps+2,
+ ticks:{color:'#a78bfa',font:{size:10},stepSize:1}, grid:{display:false},
+ title:{display:true,text:'# Props',color:'#a78bfa',font:{size:9}}},
+ }}});
+
+ // ── Per-property summary table ─────────────────────────── // ── Per-property summary table ───────────────────────────
+ pfg('pfPropHead').innerHTML=`<tr>
+ <th style="text-align:left">Property</th>
+ <th>Purchase Yr</th><th>Purchase Price</th><th>Deposit (20%)</th>
+ <th>Savings Out</th><th>Equity Loan</th>
+ <th>Yr30 Value</th><th>Remaining Loan</th><th>Net Equity</th><th>Real Net Equity</th>
+ <th>Cum. Rent</th><th>Cum. Costs</th><th>Cum. Mortgage</th><th>Net CF</th>
+ </tr>`;
+ pfg('pfPropBody').innerHTML=props.map(pr=>{
+ const netCF=pr.cumRent-pr.cumCosts-pr.cumMort;
+ const remLoan=pr.invBal+pr.eqBal;
+ return `<tr>
+ <td>P${pr.id} — Yr${pr.purchaseYr}</td>
+ <td style="text-align:right">Yr ${pr.purchaseYr}</td>
+ <td style="text-align:right;color:#4c1d95">${pffmtM(pr.price)}</td>
+ <td style="text-align:right">${pffmtM(pr.deposit)}</td>
+ <td style="text-align:right;color:#92400e">${pffmtM(pr.savingsPortion)}</td>
+ <td style="text-align:right;color:#dc2626">${pffmtM(pr.equityPortion)}</td>
+ <td style="text-align:right;color:#059669;font-weight:700">${pffmtM(pr.propVal)}</td>
+ <td style="text-align:right;color:#dc2626">${pffmtM(remLoan)}</td>
+ <td style="text-align:right;color:#4c1d95;font-weight:700">${pffmtM(pr.propVal-remLoan)}</td>
+ <td style="text-align:right;color:#34d399;font-style:italic">${pffmtM((pr.propVal-remLoan)/Math.pow(1+getBase().inf, 30))}</td>
+ <td style="text-align:right;color:#059669">${pffmtM(pr.cumRent)}</td>
+ <td style="text-align:right;color:#dc2626">${pffmtM(pr.cumCosts)}</td>
+ <td style="text-align:right;color:#92400e">${pffmtM(pr.cumMort)}</td>
+ <td style="text-align:right;font-weight:600;color:${netCF>=0?'#059669':'#dc2626'}">${pffmtM(netCF)}</td>
+ </tr>`;}).join('');
+
+ // ── Year-by-year table ───────────────────────────────────
+ pfg('pfYrHead').innerHTML=`<tr>
+ <th style="text-align:left">Year</th>
+ <th>Props</th><th>Annual Rent</th><th>Annual Costs</th>
+ <th>Annual Mortgage</th><th>Net CF</th><th>Cum. CF</th><th>Cum. CF (Real)</th>
+ <th>Portfolio Value</th><th>Real Port. Value</th><th>Loan Balance</th><th>Net Equity</th><th>Real Net Equity</th>
+ </tr>`;
+ pfg('pfYrBody').innerHTML=data.map(r=>`
+ <tr class="${r.yrNetCF<0?'neg-yr':''} ${r.isNewProp?'new-prop':''}">
+ <td>Year ${r.yr}</td>
+ <td style="text-align:right;color:#7c3aed;font-weight:600">${r.activeCt}</td>
+ <td style="text-align:right;color:#059669">${pffmtM(r.yrRent)}</td>
+ <td style="text-align:right;color:#dc2626">${pffmtM(r.yrCosts)}</td>
+ <td style="text-align:right;color:#92400e">${pffmtM(r.yrMort)}</td>
+ <td style="text-align:right;font-weight:600;color:${r.yrNetCF>=0?'#059669':'#dc2626'}">${pffmtM(r.yrNetCF)}</td>
+ <td style="text-align:right;color:${r.cumCF>=0?'#059669':'#dc2626'}">${pffmtM(r.cumCF)}</td>
+ <td style="text-align:right;color:${r.realCumCF>=0?'#059669':'#94a3b8'};font-style:italic">${pffmtM(r.realCumCF)}</td>
+ <td style="text-align:right;color:#4c1d95;font-weight:700">${pffmtM(r.totalVal)}</td>
+ <td style="text-align:right;color:#34d399;font-style:italic">${pffmtM(r.realTotalVal)}</td>
+ <td style="text-align:right;color:#dc2626">${pffmtM(r.totalLoan)}</td>
+ <td style="text-align:right;color:#059669;font-weight:700">${pffmtM(r.netEquity)}</td>
+ <td style="text-align:right;color:#818cf8;font-style:italic">${pffmtM(r.realNetEquity)}</td>
+ </tr>`).join('');
+}
+
+// ── Input binding (portfolio-specific) ──────────────────────
+let pfDebTimer;
+function pfDebounce(){ clearTimeout(pfDebTimer); pfDebTimer=setTimeout(renderPortfolio,150); }
+[['pf_num','pfr_num'],['pf_interval','pfr_interval']].forEach(([v,r])=>{
+ const vEl=pfg(v), rEl=pfg(r); if(!vEl||!rEl) return;
+ vEl.addEventListener('input',()=>{ rEl.value=vEl.value; pfDebounce(); });
+ rEl.addEventListener('input',()=>{ vEl.value=rEl.value; pfDebounce(); });
+});
+
+// Also re-render portfolio whenever Section 2 inputs change
+// Patch propDebounce to cascade S2→S3 (assignment, not declaration, avoids hoisting bug)
+propDebounce = function(){
+ clearTimeout(propDebTimer);
+ propDebTimer = setTimeout(function(){ renderProperty(); pfDebounce(); }, 150);
+};
+
+// Re-wire Section 2 inputs to also trigger portfolio
+propPairs.forEach(([k])=>{
+ const vEl=pg('pp_'+k), rEl=pg('rp_'+k); if(!vEl||!rEl) return;
+ vEl.addEventListener('input', pfDebounce);
+ rEl.addEventListener('input', pfDebounce);
+});
+
+// ── Init ─────────────────────────────────────────────────────
+renderPortfolio();
+</script>
+
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+ SECTION 4 — STRATEGY COMPARISON: ETF vs Property Portfolio
+ ═══════════════════════════════════════════════════════════════════════ -->
+<section class="sec-wrap" style="border-top:3px solid #d97706;margin-top:36px">
+<style>
+.cmp-hdr-band{background:linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%);border-radius:14px;padding:18px 22px;margin-bottom:18px;border:1.5px solid #fcd34d;}
+.cmp-badge{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#d97706;color:#fff;font-size:17px;font-weight:800;flex-shrink:0}
+.cmp-vs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:stretch;margin-bottom:14px}
+.cmp-col{background:#fff;border-radius:12px;padding:14px 16px;border:1.5px solid #e2e8f0}
+.cmp-col.etf{border-color:#c7d2fe}
+.cmp-col.prop{border-color:#a7f3d0}
+.cmp-col-hdr{font-size:13px;font-weight:700;margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid #f1f5f9}
+.cmp-row{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;font-size:12px;border-bottom:1px solid #f8fafc}
+.cmp-row:last-child{border-bottom:none}
+.cmp-lbl{color:#64748b}
+.cmp-val{font-weight:600;font-size:13px}
+.cmp-vs-divider{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:8px 0}
+.cmp-vs-pill{background:#d97706;color:#fff;border-radius:20px;padding:6px 12px;font-size:12px;font-weight:800}
+.cmp-winner-badge{font-size:10px;background:#f0fdf4;color:#059669;border:1px solid #86efac;border-radius:8px;padding:2px 7px;margin-left:6px}
+.cmp-loser-badge{font-size:10px;background:#fff7ed;color:#92400e;border:1px solid #fed7aa;border-radius:8px;padding:2px 7px;margin-left:6px}
+.cmp-rec{background:linear-gradient(135deg,#fefce8,#fff7ed);border:1.5px solid #fcd34d;border-radius:12px;padding:16px 20px;margin-bottom:16px;font-size:12.5px;line-height:1.7}
+.cmp-rec strong{color:#92400e}
+.cmp-rec .verdict{font-size:15px;font-weight:700;margin-bottom:8px;color:#78350f}
+.cmp-tbl-box{background:#fff;border-radius:12px;border:1.5px solid #fde68a;overflow:hidden;margin-top:14px}
+.cmp-tbl-hdr{background:#fffbeb;padding:11px 16px;font-size:13px;font-weight:700;color:#92400e;border-bottom:1px solid #fde68a}
+.cmp-tbl-scroll{overflow-x:auto}
+.cmp-tbl-scroll table{width:100%;border-collapse:collapse;font-size:12px}
+.cmp-tbl-scroll th{background:#fffbeb;padding:8px 10px;text-align:center;font-size:11px;color:#78350f;font-weight:600;border-bottom:1px solid #fde68a;white-space:nowrap}
+.cmp-tbl-scroll th:first-child{text-align:left}
+.cmp-tbl-scroll td{padding:7px 10px;text-align:center;border-bottom:1px solid #fef9c3}
+.cmp-tbl-scroll td:first-child{text-align:left;font-weight:600;color:#475569}
+.cmp-tbl-scroll tr:hover td{background:#fffbeb}
+.cmp-tbl-scroll .winner{color:#059669;font-weight:700}
+.cmp-tbl-scroll .loser{color:#94a3b8}
+.cmp-section-lbl{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#d97706;font-weight:700;margin:14px 0 6px}
+</style>
+
+ <div class="sec-inner">
+ <div class="cmp-hdr-band">
+ <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
+ <div class="cmp-badge">4</div>
+ <div>
+ <div style="font-size:18px;font-weight:800;color:#78350f">Strategy Comparison — ETF Portfolio vs Property Portfolio</div>
+ <div style="font-size:12px;color:#92400e;margin-top:2px">Live · auto-updates when you change any input above · 30-year common comparison window</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Side-by-side KPI columns -->
+ <div class="cmp-vs-grid">
+ <div class="cmp-col etf">
+ <div class="cmp-col-hdr" style="color:#4f46e5">Section 1 — ETF Portfolio</div>
+ <div id="cmpEtfRows"></div>
+ </div>
+ <div class="cmp-vs-divider">
+ <div class="cmp-vs-pill">VS</div>
+ </div>
+ <div class="cmp-col prop">
+ <div class="cmp-col-hdr" style="color:#059669">Section 3 — Property Portfolio</div>
+ <div id="cmpPropRows"></div>
+ </div>
+ </div>
+
+ <!-- Recommendation box -->
+ <div class="cmp-rec" id="cmpRec"></div>
+
+ <!-- Wealth trajectory chart -->
+ <div class="chart-box">
+ <div class="ch-hdr">
+ <div class="ch-ttl">Wealth Trajectory — First 30 Years (ETF Portfolio Value vs Property Net Equity + CF)</div>
+ <div style="font-size:11px;color:#9ca3af;margin-top:2px">Solid = nominal · Dashed = real (inflation-adjusted) · ETF in indigo · Property in green/amber · Same 3% inflation applied to both</div>
+ </div>
+ <canvas id="cmpChart" style="max-height:340px"></canvas>
+ </div>
+
+ <!-- Capital in vs wealth out bar chart -->
+ <div class="chart-box" style="margin-top:14px">
+ <div class="ch-hdr">
+ <div class="ch-ttl">Cash Out-of-Pocket vs Total Wealth Created at Year 30</div>
+ </div>
+ <canvas id="cmpBarChart" style="max-height:240px"></canvas>
+ </div>
+
+ <!-- Deep dive table -->
+ <div class="cmp-tbl-box" style="margin-top:14px">
+ <div class="cmp-tbl-hdr">Deep Dive — Head-to-Head Metrics
+ <span id="cmpScaleNote" style="font-size:11px;font-weight:400;color:#92400e;margin-left:12px"></span>
+ </div>
+ <div class="cmp-tbl-scroll">
+ <table><thead id="cmpDTHead"></thead><tbody id="cmpDTBody"></tbody></table>
+ </div>
+ </div>
+
+ </div>
+</section>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// SECTION 4 — STRATEGY COMPARISON
+// ════════════════════════════════════════════════════════════════
+let cmpChart, cmpBarChart;
+const cfmt = v => v >= 1e6 ? `$${(v/1e6).toFixed(2)}M` : `$${Math.round(v).toLocaleString()}`;
+const cfmtK = v => v >= 1e6 ? `$${(v/1e6).toFixed(2)}M` : (v>=1e3?`$${(v/1e3).toFixed(0)}K`:`$${Math.round(v).toLocaleString()}`);
+const cpct = v => `${(v*100).toFixed(1)}%`;
+
+function cg(id){ return document.getElementById(id); }
+
+function renderComparison(){
+ // ── Run both simulations ──────────────────────────────────────
+ const s1 = simulate();
+ const s3 = simulatePortfolio();
+
+ const {data:ed, dcaYrs, coast, wYrs, TOTAL, totalDCApm} = s1;
+ const {data:pd, fin:pf, saleProceeds, cumCF, cumRent, cumCosts, cumMort, totalSavings, props, purchaseYrs, p:pp} = s3;
+
+ // ── ETF metrics (first 30 years for fair comparison) ─────────
+ const ef30 = ed.find(r=>r.yr===30) || ed[ed.length-1];
+ const efFin = ed[ed.length-1];
+ const etfIn = dcaYrs * 12 * totalDCApm; // total DCA contributions
+ const etfV30 = ef30.comb; // portfolio value at yr 30
+ const etfWd30 = ef30.cumWd; // withdrawn by yr 30
+ const etfTotalOut = etfV30 + etfWd30; // portfolio + what you pulled out
+ const etfNetGain = etfTotalOut - etfIn;
+ const etfMult = etfIn > 0 ? etfTotalOut / etfIn : 0;
+ const etfCagr = etfIn > 0 ? Math.pow(etfTotalOut / etfIn, 1/30) - 1 : 0;
+ // Annual income in withdrawal years (yr 30)
+ const etfWdRow = ed.find(r=>r.yr===30&&r.phase===3);
+ const etfAnnualIncome = etfWdRow ? -etfWdRow.regFlow : 0;
+
+ // ── Property metrics ─────────────────────────────────────────
+ const pfNegCF = pd.reduce((s,r) => s + (r.yrNetCF < 0 ? -r.yrNetCF : 0), 0); // total top-ups paid
+ const pfTotalIn = totalSavings + pfNegCF; // real cash out of pocket (savings deposits + shortfall top-ups)
+ const pfOut = saleProceeds + cumRent; // total received (sale proceeds + all rent)
+ const pfNetGain = pfOut - pfTotalIn;
+ const pfMult = pfTotalIn > 0 ? pfOut / pfTotalIn : 0;
+ const pfCagr = pfTotalIn > 0 ? Math.pow(pfMult, 1/30) - 1 : 0;
+ const pfFinalYr = pd[pd.length-1];
+ const pfAnnualRent = pfFinalYr ? pfFinalYr.yrRent : 0; // rent income in final year
+
+ // ── 30-year trajectory arrays ─────────────────────────────────
+ const T = 30;
+ const labels = Array.from({length:T}, (_,i) => `Yr ${i+1}`);
+ const etfPV = labels.map((_,i) => { const r=ed.find(x=>x.yr===i+1); return r?r.comb:null; });
+ const etfRV = labels.map((_,i) => { const r=ed.find(x=>x.yr===i+1); return r?r.real:null; });
+ const pfEQ = labels.map((_,i) => { const r=pd.find(x=>x.yr===i+1); return r?r.netEquity:null; });
+ const pfEQReal = labels.map((_,i) => { const r=pd.find(x=>x.yr===i+1); return r?r.realNetEquity:null; });
+ const pfTot = labels.map((_,i) => { const r=pd.find(x=>x.yr===i+1); return r?r.netEquity+r.cumCF:null; });
+ const pfTotReal = labels.map((_,i) => { const r=pd.find(x=>x.yr===i+1); return r?r.realNetEquity+r.realCumCF:null; });
+ const pfCFL = labels.map((_,i) => { const r=pd.find(x=>x.yr===i+1); return r?r.cumCF:null; });
+
+ // Property purchase markers
+ const pfMarkers = labels.map((_,i) => {
+ const r=pd.find(x=>x.yr===i+1);
+ return (r&&r.isNewProp) ? (pfEQ[i]||0) : null;
+ });
+
+ // ── Determine winner per metric ───────────────────────────────
+ const etfWinsGain = etfNetGain > pfNetGain;
+ const etfWinsMult = etfMult > pfMult;
+ const etfWinsIn = etfIn < pfTotalIn; // lower cash in = better
+ const propWinsV30 = pf.totalVal > etfV30;
+ const propWinsIncome= pfAnnualRent > etfAnnualIncome;
+
+ // Score: ETF wins
+ const etfScore = [etfWinsGain, etfWinsMult, etfWinsIn, !propWinsV30, !propWinsIncome].filter(Boolean).length;
+ const propScore = 5 - etfScore;
+
+ // ── KPI rows ─────────────────────────────────────────────────
+ const mkRow = (lbl, v1, v2, higherBetter=true, note='') => {
+ const v1wins = higherBetter ? v1>=v2 : v1<=v2;
+ return `<div class="cmp-row">
+ <span class="cmp-lbl">${lbl}</span>
+ <span style="display:flex;align-items:center;gap:4px">
+ ${note ? `<span style="font-size:10px;color:#94a3b8">${note}</span>` : ''}
+ </span>
+ </div>`;
+ };
+
+ const etfRows = [
+ {lbl:'Total Contributed (DCA)', val:cfmt(etfIn), note:''},
+ {lbl:'Portfolio Value @ Yr 30', val:cfmt(etfV30), note:'nominal'},
+ {lbl:'Real Value @ Yr 30', val:cfmt(ef30.real), note:"today's $"},
+ {lbl:'Withdrawn by Yr 30', val:cfmt(etfWd30), note:''},
+ {lbl:'Total Wealth @ Yr 30', val:cfmt(etfTotalOut), note:'value+withdrawn', bold:true},
+ {lbl:'Net Gain', val:cfmt(etfNetGain), col:etfNetGain>=0?'#059669':'#dc2626'},
+ {lbl:'Return Multiple', val:`${etfMult.toFixed(2)}×`, bold:true},
+ {lbl:'Approx. CAGR (30yr)', val:cpct(etfCagr), note:''},
+ {lbl:`Annual Income @ Yr 30`, val:cfmt(etfAnnualIncome), note:'withdrawal'},
+ {lbl:'Liquidity', val:'High', note:'sell any time'},
+ {lbl:'Leverage', val:'None', note:'no debt'},
+ {lbl:'Active mgmt needed', val:'Minimal', note:'rebalance only'},
+ ];
+
+ const pfRows = [
+ {lbl:'Cash Out-of-Pocket', val:cfmt(pfTotalIn), note:'deposits+shortfall'},
+ {lbl:'Portfolio Value @ Yr 30', val:cfmt(pf.totalVal), note:'all props'},
+ {lbl:'Net Equity @ Yr 30', val:cfmt(pf.netEquity), note:'value−loans'},
+ {lbl:'Total Rent Collected', val:cfmt(cumRent), note:'30yr total'},
+ {lbl:'Total Wealth Created', val:cfmt(pfOut), note:'proceeds+rent', bold:true},
+ {lbl:'Net Gain', val:cfmt(pfNetGain), col:pfNetGain>=0?'#059669':'#dc2626'},
+ {lbl:'Return Multiple', val:`${pfMult.toFixed(2)}×`, bold:true},
+ {lbl:'Approx. CAGR (30yr)', val:cpct(pfCagr), note:''},
+ {lbl:'Annual Rent @ Yr 30', val:cfmt(pfAnnualRent), note:'gross income'},
+ {lbl:'Liquidity', val:'Low', note:'months to sell'},
+ {lbl:'Leverage', val:`${props.length} loans`, note:`${props.length} mortgages`},
+ {lbl:'Active mgmt needed', val:'High', note:'tenants/repairs'},
+ ];
+
+ const rowHtml = rows => rows.map(r =>
+ `<div class="cmp-row">
+ <span class="cmp-lbl">${r.lbl}${r.note?` <span style="font-size:10px;color:#94a3b8">(${r.note})</span>`:''}</span>
+ <span class="cmp-val" style="${r.col?`color:${r.col}`:''};${r.bold?'font-weight:800':''}">${r.val}</span>
+ </div>`
+ ).join('');
+
+ cg('cmpEtfRows').innerHTML = rowHtml(etfRows);
+ cg('cmpPropRows').innerHTML = rowHtml(pfRows);
+
+ // ── Recommendation ────────────────────────────────────────────
+ const totalGainWinner = etfNetGain > pfNetGain ? 'ETF' : 'Property';
+ const multWinner = etfMult > pfMult ? 'ETF' : 'Property';
+ const cashWinner = etfIn < pfTotalIn ? 'ETF' : 'Property'; // lower cash in wins
+ const overallWinner = etfScore >= propScore ? 'ETF Portfolio' : 'Property Portfolio';
+ const loser = overallWinner === 'ETF Portfolio' ? 'Property Portfolio' : 'ETF Portfolio';
+
+ // Breakeven year for property (annual CF positive)
+ const pfBreakEvenYr = pd.find(r=>r.yrNetCF>=0);
+ const pfCumBreakEvenYr = pd.find(r=>r.cumCF>=0);
+
+ cg('cmpRec').innerHTML = `
+ <div class="verdict">Optimal Path: <span style="color:#059669">${overallWinner}</span>
+ <span style="font-size:12px;font-weight:400;color:#64748b;margin-left:8px">
+ (Score: ETF ${etfScore}/5 · Property ${propScore}/5 across key metrics)
+ </span>
+ </div>
+ <strong>Net gain:</strong> ETF <strong style="color:${etfWinsGain?'#059669':'#dc2626'}">${cfmt(etfNetGain)}</strong>
+ vs Property <strong style="color:${!etfWinsGain?'#059669':'#dc2626'}">${cfmt(pfNetGain)}</strong>
+ — <strong>${totalGainWinner}</strong> creates more absolute wealth over 30 years.<br>
+ <strong>Return multiple:</strong> ETF <strong>${etfMult.toFixed(2)}×</strong>
+ vs Property <strong>${pfMult.toFixed(2)}×</strong>
+ — <strong>${multWinner}</strong> generates a better return on every dollar deployed.<br>
+ <strong>Cash required:</strong> ETF needs <strong>${cfmt(etfIn)}</strong> in DCA contributions vs
+ Property needs <strong>${cfmt(pfTotalIn)}</strong> out-of-pocket
+ — <strong>${cashWinner}</strong> demands less capital upfront.<br>
+ <strong>Annual income @ Yr 30:</strong> ETF withdrawal <strong>${cfmt(etfAnnualIncome)}</strong> vs
+ Property gross rent <strong>${cfmt(pfAnnualRent)}</strong>
+ (property net CF is higher once loans are repaid).<br>
+ ${pfBreakEvenYr
+ ? `<strong>Property cash-flow positive:</strong> Annual rent > all costs from <strong>Year ${pfBreakEvenYr.yr}</strong>
+ · Cumulative CF positive from <strong>Year ${pfCumBreakEvenYr?pfCumBreakEvenYr.yr:'30+'}</strong>.`
+ : `<strong>Property cash flow:</strong> Never turns positive within 30 years — review rent/mortgage inputs.`
+ }
+ <br><br>
+ <strong>Key trade-off:</strong> ${overallWinner === 'ETF Portfolio'
+ ? `The ETF portfolio wins on <em>simplicity, liquidity, and risk-adjusted returns</em>.
+ You contribute ${cfmt(etfIn)}, stay debt-free, and can exit any day.
+ Property offers a <em>larger gross rent income stream</em> and leverage-amplified asset growth,
+ but requires more capital, locks wealth in illiquid assets, and demands active management across ${props.length} properties.
+ If you value flexibility and lower stress, stick with ETFs.
+ If you can handle the complexity and are comfortable with leverage, a hybrid approach (1–2 properties + ETFs) may be ideal.`
+ : `The Property Portfolio wins on <em>total wealth created and leverage-amplified growth</em>.
+ Owning ${props.length} properties by Year 30 builds a substantial asset base,
+ with rent income eventually dwarfing ETF withdrawals.
+ However, it demands more cash out-of-pocket (${cfmt(pfTotalIn)} vs ${cfmt(etfIn)}),
+ carries ${props.length} mortgages, and is highly illiquid.
+ ETFs offer a simpler, more liquid path with comparable or stronger risk-adjusted returns.
+ Consider a hybrid: ETF DCA for liquidity + 1–2 investment properties for leverage exposure.`
+ }`;
+
+ // ── Wealth trajectory chart ───────────────────────────────────
+ if(cmpChart) cmpChart.destroy();
+ try {
+ cmpChart = new Chart(cg('cmpChart').getContext('2d'),{
+ type:'line',
+ data:{labels,
+ datasets:[
+ {type:'line', label:'ETF Portfolio Value (Nominal)', data:etfPV,
+ borderColor:'#4f46e5', backgroundColor:'rgba(79,70,229,.07)',
+ borderWidth:2.5, fill:true, tension:.35, pointRadius:1},
+ {type:'line', label:'ETF Portfolio Value (Real)', data:etfRV,
+ borderColor:'#818cf8', backgroundColor:'transparent',
+ borderWidth:1.5, borderDash:[4,3], fill:false, tension:.35, pointRadius:0},
+ {type:'line', label:'Property Net Equity (Nominal)', data:pfEQ,
+ borderColor:'#059669', backgroundColor:'rgba(5,150,105,.06)',
+ borderWidth:2.5, fill:true, tension:.35, pointRadius:1},
+ {type:'line', label:'Property Net Equity (Real)', data:pfEQReal,
+ borderColor:'#34d399', backgroundColor:'transparent',
+ borderWidth:1.5, borderDash:[4,3], fill:false, tension:.35, pointRadius:0},
+ {type:'line', label:'Property Equity + CF (Nominal)', data:pfTot,
+ borderColor:'#d97706', backgroundColor:'transparent',
+ borderWidth:2, borderDash:[5,3], fill:false, tension:.35, pointRadius:0},
+ {type:'line', label:'Property Equity + CF (Real)', data:pfTotReal,
+ borderColor:'#fbbf24', backgroundColor:'transparent',
+ borderWidth:1.5, borderDash:[2,4], fill:false, tension:.35, pointRadius:0},
+ {type:'line', label:'Property Cum. CF (Nominal)', data:pfCFL,
+ borderColor:'#f59e0b', backgroundColor:'transparent',
+ borderWidth:1, borderDash:[2,3], fill:false, tension:.35, pointRadius:0},
+ // Property purchase markers (line type required for category x-axis)
+ {type:'line', label:'Property Purchased', data:pfMarkers,
+ borderColor:'transparent', backgroundColor:'#d97706',
+ borderWidth:0, showLine:false, fill:false,
+ pointStyle:'triangle',
+ pointRadius:pfMarkers.map(v=>v!==null?10:0),
+ pointHoverRadius:12},
+ ]},
+ options:{responsive:true, maintainAspectRatio:true,
+ interaction:{mode:'index',intersect:false},
+ plugins:{
+ legend:{labels:{color:'#64748b',font:{size:11},padding:10,boxWidth:12,
+ filter:item=>item.text!=='Property Purchased'}},
+ tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',
+ borderColor:'#e2e8f0',borderWidth:1,padding:10,
+ callbacks:{label:c=>` ${c.dataset.label}: ${cfmt(c.parsed.y)}`}}},
+ scales:{
+ x:{ticks:{color:'#94a3b8',font:{size:9},maxTicksLimit:16},grid:{color:'#f1f5f9'}},
+ y:{ticks:{color:'#94a3b8',font:{size:10},callback:v=>cfmtK(v)},grid:{color:'#f8fafc'},
+ title:{display:true,text:'Wealth ($)',color:'#94a3b8',font:{size:10}}}
+ }}});
+
+ } catch(e){ console.error('cmpChart error:', e); }
+
+ // ── Capital In vs Wealth Out bar ──────────────────────────────
+ if(cmpBarChart) cmpBarChart.destroy();
+ try {
+ cmpBarChart = new Chart(cg('cmpBarChart').getContext('2d'),{type:'bar',
+ data:{
+ labels:['Cash Out-of-Pocket','Total Wealth @ Yr 30','Net Gain','Return Multiple'],
+ datasets:[
+ {label:'ETF Portfolio',
+ data:[etfIn, etfTotalOut, etfNetGain, etfMult*1e5],
+ backgroundColor:['rgba(79,70,229,.6)','rgba(79,70,229,.8)','rgba(99,102,241,.7)','rgba(129,140,248,.6)'],
+ borderColor:'#4f46e5', borderWidth:1, borderRadius:4},
+ {label:'Property Portfolio',
+ data:[pfTotalIn, pfOut, pfNetGain, pfMult*1e5],
+ backgroundColor:['rgba(5,150,105,.55)','rgba(5,150,105,.75)','rgba(16,185,129,.65)','rgba(52,211,153,.55)'],
+ borderColor:'#059669', borderWidth:1, borderRadius:4},
+ ]},
+ options:{responsive:true, maintainAspectRatio:true,
+ plugins:{
+ legend:{labels:{color:'#64748b',font:{size:11},padding:10,boxWidth:12}},
+ tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',
+ borderColor:'#e2e8f0',borderWidth:1,padding:10,
+ callbacks:{label:c=>{
+ const i=c.dataIndex;
+ if(i===3) return ` ${c.dataset.label}: ${(c.parsed.y/1e5).toFixed(2)}×`;
+ return ` ${c.dataset.label}: ${cfmt(c.parsed.y)}`;
+ }}}},
+ scales:{
+ x:{ticks:{color:'#64748b',font:{size:11}},grid:{display:false}},
+ y:{ticks:{color:'#94a3b8',font:{size:10},callback:v=>{
+ if(v>=1e5) return cfmtK(v); return cfmtK(v);
+ }},grid:{color:'#f8fafc'},
+ title:{display:true,text:'Value ($) — Multiple bar scaled to ×100K',color:'#94a3b8',font:{size:9}}}
+ }}});
+
+ } catch(e){ console.error('cmpBarChart error:', e); }
+
+ // ── Deep dive table ───────────────────────────────────────────
+ // ── Scaled ETF: what if same capital as property was put into ETFs? ──────
+ const etfScale = pfTotalIn > 0 ? pfTotalIn / etfIn : 1; // ratio to match property capital
+ const etfSOut = etfTotalOut * etfScale; // scaled total wealth
+ const etfSGain = etfSOut - pfTotalIn; // scaled net gain (same capital base)
+ const etfSV30 = etfV30 * etfScale; // scaled portfolio value at yr 30
+ const etfSIncome = etfAnnualIncome * etfScale; // scaled annual withdrawal
+ // Multiple and CAGR are invariant to linear scaling
+ const etfSMult = pfTotalIn > 0 ? etfSOut / pfTotalIn : etfMult;
+ // Real scaled value (same inf deflation)
+ const etfSReal30 = ef30.real * etfScale;
+
+ // Row format: [metric, etfActual, propVal, etfScaled, note]
+ // Winner is determined per-column vs property
+ const rows2 = [
+ ['Total capital out-of-pocket', cfmt(etfIn), cfmt(pfTotalIn), cfmt(pfTotalIn), 'Property capital used as baseline'],
+ ['Total wealth @ Yr 30 (Nominal)',cfmt(etfTotalOut), cfmt(pfOut), cfmt(etfSOut), 'Higher is better'],
+ ['Total wealth @ Yr 30 (Real)', cfmt(ef30.real), cfmt((pf.realNetEquity||0)+(pf.realCumCF||0)), cfmt(etfSReal30), "Today's dollars"],
+ ['Net financial gain', cfmt(etfNetGain), cfmt(pfNetGain), cfmt(etfSGain), 'Wealth created above capital in'],
+ ['Return multiple', `${etfMult.toFixed(2)}×`, `${pfMult.toFixed(2)}×`, `${etfSMult.toFixed(2)}×`, 'Multiple on capital invested'],
+ ['30-yr CAGR (approx)', cpct(etfCagr), cpct(pfCagr), cpct(etfCagr), 'CAGR is scale-invariant'],
+ ['Asset value @ Yr 30', cfmt(etfV30), cfmt(pf.totalVal), cfmt(etfSV30), 'Portfolio / property value'],
+ ['Net equity @ Yr 30', cfmt(etfV30), cfmt(pf.netEquity), cfmt(etfSV30), 'ETF has no debt to deduct'],
+ ['Annual income @ Yr 30', cfmt(etfAnnualIncome), cfmt(pfAnnualRent), cfmt(etfSIncome), 'Withdrawal vs gross rent'],
+ ['Total negative CF (funded)', '$0', cfmt(pfNegCF), '$0', 'ETF never cash-negative'],
+ ['Leverage / debt', 'None', `${props.length} loans`, 'None', 'ETF = zero debt risk'],
+ ['Liquidity', 'Same day', '3–6 months', 'Same day', 'ETF wins on flexibility'],
+ ['Tax — depreciation benefit', 'None', 'Yes (building)', 'None', 'Property advantage here'],
+ ['Diversification', 'Built-in (ETF)', `${props.length} assets`, 'Built-in (ETF)', 'Market vs concentrated property'],
+ ['Active management', 'Minimal', 'High (tenants, repairs)', 'Minimal', 'ETF set-and-forget'],
+ ];
+
+ const scaleLbl = `ETF @ $${(pfTotalIn/1e6).toFixed(2)}M (same as Property)`;
+ const snEl = cg('cmpScaleNote');
+ if(snEl) snEl.textContent = `3rd column scales ETF by ${etfScale.toFixed(1)}× to match property's $${(pfTotalIn/1e6).toFixed(2)}M out-of-pocket — true apples-to-apples`;
+ cg('cmpDTHead').innerHTML = `<tr>
+ <th style="text-align:left">Metric</th>
+ <th style="color:#4f46e5">ETF Actual<br><span style="font-size:10px;font-weight:400">(${cfmt(etfIn)} in)</span></th>
+ <th style="color:#059669">Property<br><span style="font-size:10px;font-weight:400">(${cfmt(pfTotalIn)} in)</span></th>
+ <th style="color:#d97706">ETF @ Equal Capital<br><span style="font-size:10px;font-weight:400">(${cfmt(pfTotalIn)} in — apples-to-apples)</span></th>
+ <th>Note</th>
+ </tr>`;
+
+ cg('cmpDTBody').innerHTML = rows2.map(([metric, etfV, propV, etfSV, note]) => {
+ // For numeric comparisons, parse the values
+ const parseVal = s => {
+ if(typeof s !== 'string') return null;
+ if(s.includes('×')) return parseFloat(s);
+ if(s.includes('%')) return parseFloat(s);
+ if(s==='$0'||s==='None'||s==='Minimal'||s==='Same day'||s.startsWith('Built')||s.startsWith('High')) return null;
+ const n = parseFloat(s.replace(/[^0-9.\-]/g,''));
+ return isNaN(n) ? null : n;
+ };
+ const ev=parseVal(etfV), pv=parseVal(propV), sv=parseVal(etfSV);
+ // Determine winner for property vs scaled ETF (the fair comparison)
+ const propWins = (pv!==null && sv!==null) ? pv > sv : false;
+ const scaledWins = (sv!==null && pv!==null) ? sv > pv : false;
+ // For non-numeric rows, check if prop has '' advantage
+ const propAdvantage = (propV==='Yes (building)' || propV.includes('loans')) ? true : false;
+ return `<tr>
+ <td style="font-weight:600;color:#475569">${metric}</td>
+ <td style="text-align:center;color:#64748b">${etfV}</td>
+ <td class="${propWins&&!propAdvantage?'winner':propAdvantage?'winner':''}" style="text-align:center">${(propWins&&!propAdvantage)||propAdvantage?'':''}${propV}</td>
+ <td class="${scaledWins?'winner':''}" style="text-align:center;background:${scaledWins?'#f0fdf4':'#fffbeb'}">${scaledWins?'':''}${etfSV}</td>
+ <td style="color:#94a3b8;font-size:11px">${note}</td>
+ </tr>`;
+ }).join('');
+}
+
+// ── Cascade Section 4 into existing render calls ──────────────────
+const _origRenderAll = typeof renderAll === 'function' ? renderAll : null;
+const _origRenderPortfolio = typeof renderPortfolio === 'function' ? renderPortfolio : null;
+
+// Patch renderAll to also trigger comparison
+const _origRenderFunds = renderFunds;
+renderFunds = function(){
+ _origRenderFunds.apply(this, arguments);
+ setTimeout(renderComparison, 60);
+};
+
+// Patch renderPortfolio to also trigger comparison
+const __rp = renderPortfolio;
+renderPortfolio = function(){
+ __rp.apply(this, arguments);
+ setTimeout(renderComparison, 60);
+};
+
+// Initial render
+setTimeout(renderComparison, 300);
+
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 5 — Like-for-Like: Property scaled to ETF capital budget -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<style>
+.s5-vs-grid{display:grid;grid-template-columns:1fr 44px 1fr;gap:10px;margin:14px 0;align-items:start}
+.s5-col{background:#fff;border-radius:12px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.s5-col.s5-etf{border:1.5px solid #c7d2fe}
+.s5-col.s5-prop{border:1.5px solid #86efac}
+.s5-col-hdr{font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.s5-kpi{display:flex;flex-direction:column;gap:8px}
+.s5-kpi-row{background:#f8fafc;border-radius:8px;padding:8px 10px;border:1px solid #e2e8f0}
+.s5-kpi-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#64748b;font-weight:600}
+.s5-kpi-val{font-size:15px;font-weight:800;margin-top:2px}
+.s5-kpi-sub{font-size:10px;color:#94a3b8;margin-top:1px}
+.s5-divider{display:flex;align-items:center;justify-content:center;padding-top:55px}
+.s5-vs-pill{background:#f1f5f9;border:2px solid #cbd5e1;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#475569}
+.s5-verdict{background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border:1.5px solid #6ee7b7;border-radius:12px;padding:16px 20px;margin:14px 0;font-size:12px;line-height:1.85}
+.s5-verdict .vtitle{font-size:15px;font-weight:800;color:#065f46;margin-bottom:8px}
+.s5-tbl-box{background:#fff;border-radius:12px;border:1.5px solid #7dd3fc;overflow:hidden;margin-top:14px}
+.s5-tbl-hdr{background:#e0f2fe;padding:11px 16px;font-size:13px;font-weight:700;color:#0369a1;border-bottom:1px solid #bae6fd}
+.s5-tbl-scroll{overflow-x:auto}
+.s5-tbl-scroll table{width:100%;border-collapse:collapse;font-size:12px}
+.s5-tbl-scroll th{background:#f0f9ff;padding:8px 10px;text-align:center;font-size:11px;color:#0369a1;font-weight:600;border-bottom:1px solid #bae6fd;white-space:nowrap}
+.s5-tbl-scroll th:first-child{text-align:left}
+.s5-tbl-scroll td{padding:7px 10px;text-align:center;border-bottom:1px solid #e0f2fe}
+.s5-tbl-scroll td:first-child{text-align:left;font-weight:600;color:#475569}
+.s5-tbl-scroll tr:hover td{background:#f0f9ff}
+.s5-win{color:#059669;font-weight:700}
+.s5-neutral{color:#6366f1;font-weight:700}
+</style>
+
+<section id="sec5" style="margin-top:14px">
+
+ <!-- Header band -->
+ <div style="background:linear-gradient(135deg,#e0f2fe,#f0f9ff);border:1.5px solid #7dd3fc;border-radius:14px;padding:16px 20px;margin-bottom:16px">
+ <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
+ <div style="display:inline-flex;width:34px;height:34px;align-items:center;justify-content:center;border-radius:50%;background:#0284c7;color:#fff;font-size:17px;font-weight:800;flex-shrink:0">5</div>
+ <div>
+ <div style="font-size:18px;font-weight:800;color:#0c4a6e">Like-for-Like — Property at ETF Capital</div>
+ <div style="font-size:12px;color:#0369a1;margin-top:2px">Reverse-engineer: take the ETF capital budget and see what a proportionally-scaled property portfolio delivers</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Scale explanation note -->
+ <div style="background:#e0f2fe;border:1px solid #7dd3fc;border-radius:10px;padding:12px 16px;font-size:11px;color:#0369a1;line-height:1.75;margin-bottom:14px" id="s5Note">Loading…</div>
+
+ <!-- Side-by-side KPI columns -->
+ <div class="s5-vs-grid">
+ <div class="s5-col s5-etf">
+ <div class="s5-col-hdr"><span style="font-size:18px"></span> ETF Portfolio (Actual)</div>
+ <div class="s5-kpi" id="s5EtfKpi"></div>
+ </div>
+ <div class="s5-divider">
+ <div class="s5-vs-pill">VS</div>
+ </div>
+ <div class="s5-col s5-prop">
+ <div class="s5-col-hdr"><span style="font-size:18px"></span> Property @ Same Budget</div>
+ <div class="s5-kpi" id="s5PropKpi"></div>
+ </div>
+ </div>
+
+ <!-- Verdict box -->
+ <div id="s5Verdict"></div>
+
+ <!-- Wealth trajectory chart -->
+ <div class="chart-box">
+ <div class="ch-hdr">
+ <div class="ch-ttl">Wealth Trajectory — Equal Capital Invested · 30 Years</div>
+ <div style="font-size:11px;color:#9ca3af;margin-top:2px">Solid = nominal · Dashed = real (inflation-adjusted) · Indigo = ETF · Teal = Scaled Property · Same inflation applied to both</div>
+ </div>
+ <canvas id="s5Chart" style="max-height:340px"></canvas>
+ </div>
+
+ <!-- Deep dive table -->
+ <div class="s5-tbl-box">
+ <div class="s5-tbl-hdr">Head-to-Head Metrics — Equal Capital, Equal Footing</div>
+ <div class="s5-tbl-scroll">
+ <table><thead id="s5DtHead"></thead><tbody id="s5DtBody"></tbody></table>
+ </div>
+ </div>
+
+</section>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// SECTION 5 — LIKE-FOR-LIKE (Property scaled to ETF capital)
+// ════════════════════════════════════════════════════════════════
+let s5Chart;
+const s5el = id => document.getElementById(id);
+const s5f = v => v >= 1e6 ? `$${(v/1e6).toFixed(2)}M` : `$${Math.round(v).toLocaleString()}`;
+const s5fp = v => `${(v*100).toFixed(1)}%`;
+
+function renderLikeForLike(){
+ try {
+
+ // ── Run both simulations ──────────────────────────────────────
+ const s1 = simulate();
+ const s3 = simulatePortfolio();
+ const {data:ed, dcaYrs, totalDCApm} = s1;
+ const {data:pd, fin:pf, saleProceeds, cumRent, cumCosts, cumMort,
+ totalSavings, props, purchaseYrs} = s3;
+
+ // ── ETF metrics (30-year window) ──────────────────────────────
+ const ef30 = ed.find(r=>r.yr===30) || ed[ed.length-1];
+ const etfIn = dcaYrs * 12 * totalDCApm;
+ const etfV30 = ef30.comb;
+ const etfWd30 = ef30.cumWd;
+ const etfTotalOut = etfV30 + etfWd30;
+ const etfNetGain = etfTotalOut - etfIn;
+ const etfMult = etfIn > 0 ? etfTotalOut / etfIn : 0;
+ const etfCagr = etfIn > 0 ? Math.pow(Math.max(etfMult,0), 1/30) - 1 : 0;
+ const etfWdRow = ed.find(r=>r.yr===30 && r.phase===3);
+ const etfAnnInc = etfWdRow ? -etfWdRow.regFlow : 0;
+ const etfReal30 = ef30.real;
+
+ // ── Property metrics (full portfolio) ────────────────────────
+ const pfNegCF = pd.reduce((s,r) => s + (r.yrNetCF < 0 ? -r.yrNetCF : 0), 0);
+ const pfTotalIn = totalSavings + pfNegCF;
+ const pfOut = saleProceeds + cumRent;
+ const pfFinalYr = pd[pd.length-1];
+
+ // ── Scale factor: compress property to match ETF budget ───────
+ const propScale = pfTotalIn > 0 ? etfIn / pfTotalIn : 1;
+
+ // Scaled property outputs (linear — CAGR & multiple are invariant)
+ const psTotalIn = etfIn;
+ const psTotalOut = pfOut * propScale;
+ const psNetGain = psTotalOut - psTotalIn;
+ const psMult = psTotalIn > 0 ? psTotalOut / psTotalIn : 0;
+ const psCagr = psTotalIn > 0 ? Math.pow(Math.max(psMult,0), 1/30) - 1 : 0;
+ const psNetEq = pf.netEquity * propScale;
+ const psSaleP = saleProceeds * propScale;
+ const psCumRent = cumRent * propScale;
+ const psAnnRent = (pfFinalYr ? pfFinalYr.yrRent : 0) * propScale;
+ const psNegCF = pfNegCF * propScale;
+ const psRealNEq = (pf.realNetEquity||0) * propScale;
+ const psRealCF = (pf.realCumCF||0) * propScale;
+ const psRealTot = psRealNEq + psRealCF;
+ const psTotalVal = (pf.totalVal||0) * propScale;
+ const psNumProps = Math.max(1, Math.round(props.length * propScale));
+
+ // ── Scale note ────────────────────────────────────────────────
+ const noteEl = s5el('s5Note');
+ if(noteEl) noteEl.innerHTML =
+ `<strong>How this works:</strong> Your ETF strategy invests <strong>${s5f(etfIn)}</strong> total.
+ Your full property portfolio costs <strong>${s5f(pfTotalIn)}</strong> out-of-pocket (deposits + shortfall top-ups).
+ To get a fair comparison, we scale the property portfolio down by
+ <strong>${(propScale*100).toFixed(1)}%</strong> (i.e. ÷ ${(1/propScale).toFixed(1)}×) so both strategies use exactly the same capital.
+ This is like asking: <em>"What if I put ${s5f(etfIn)} into property instead of ETFs?"</em>
+ CAGR and return multiples are <em>scale-invariant</em> — only absolute dollar values shrink.
+ In practice with ${s5f(etfIn)} you'd likely be able to buy ~${psNumProps} propert${psNumProps===1?'y':'ies'}
+ (scaled from ${props.length} in the full Section 3 portfolio).`;
+
+ // ── ETF KPI column ────────────────────────────────────────────
+ const etfKpis = [
+ {lbl:'Capital Invested', val:s5f(etfIn), sub:'Total DCA contributions', color:'#4f46e5'},
+ {lbl:'Total Wealth @ Yr 30',val:s5f(etfTotalOut), sub:`Portfolio ${s5f(etfV30)} + Withdrawals ${s5f(etfWd30)}`, color:'#059669'},
+ {lbl:'Real Wealth @ Yr 30', val:s5f(etfReal30), sub:"Inflation-adjusted — today's dollars", color:'#64748b'},
+ {lbl:'Net Gain', val:s5f(etfNetGain), sub:'Wealth created above capital in', color:'#059669'},
+ {lbl:'Return Multiple', val:`${etfMult.toFixed(2)}x`, sub:'Wealth ÷ capital', color:'#4f46e5'},
+ {lbl:'30-yr CAGR', val:s5fp(etfCagr), sub:'Annualised return on capital', color:'#7c3aed'},
+ {lbl:'Annual Income @ Yr 30',val:s5f(etfAnnInc), sub:'Withdrawal income in final year', color:'#059669'},
+ {lbl:'Liquidity', val:'Same day', sub:'ETF sells in seconds', color:'#0891b2'},
+ {lbl:'Debt / Leverage', val:'None', sub:'Zero interest risk', color:'#64748b'},
+ {lbl:'Management burden', val:'Minimal', sub:'Set-and-forget', color:'#64748b'},
+ ];
+ s5el('s5EtfKpi').innerHTML = etfKpis.map(k=>`
+ <div class="s5-kpi-row">
+ <div class="s5-kpi-lbl">${k.lbl}</div>
+ <div class="s5-kpi-val" style="color:${k.color}">${k.val}</div>
+ <div class="s5-kpi-sub">${k.sub}</div>
+ </div>`).join('');
+
+ // ── Property (scaled) KPI column ─────────────────────────────
+ const propKpis = [
+ {lbl:'Capital Invested', val:s5f(psTotalIn), sub:`Full portfolio needs ${s5f(pfTotalIn)} — scaled to match ETF`, color:'#059669'},
+ {lbl:'Total Wealth @ Yr 30',val:s5f(psTotalOut), sub:`Sale ${s5f(psSaleP)} + Rent ${s5f(psCumRent)}`, color:'#059669'},
+ {lbl:'Real Wealth @ Yr 30', val:s5f(psRealTot), sub:"Inflation-adjusted — today's dollars", color:'#64748b'},
+ {lbl:'Net Gain', val:s5f(psNetGain), sub:'Wealth created above capital in', color:psNetGain>=0?'#059669':'#dc2626'},
+ {lbl:'Return Multiple', val:`${psMult.toFixed(2)}x`, sub:'Scale-invariant (same as full portfolio)', color:'#059669'},
+ {lbl:'30-yr CAGR', val:s5fp(psCagr), sub:'Scale-invariant — leverage effect included', color:'#7c3aed'},
+ {lbl:'Annual Income @ Yr 30',val:s5f(psAnnRent), sub:'Scaled gross rent in final year', color:'#059669'},
+ {lbl:'Liquidity', val:'3–6 months', sub:'Property sales take time', color:'#92400e'},
+ {lbl:'Debt / Leverage', val:`~${psNumProps} loan${psNumProps>1?'s':''}`, sub:`Scaled from ${props.length}-property portfolio`, color:'#d97706'},
+ {lbl:'Management burden', val:'Active', sub:'Tenants, repairs, compliance', color:'#d97706'},
+ ];
+ s5el('s5PropKpi').innerHTML = propKpis.map(k=>`
+ <div class="s5-kpi-row">
+ <div class="s5-kpi-lbl">${k.lbl}</div>
+ <div class="s5-kpi-val" style="color:${k.color}">${k.val}</div>
+ <div class="s5-kpi-sub">${k.sub}</div>
+ </div>`).join('');
+
+ // ── Verdict ───────────────────────────────────────────────────
+ const etfWinsWealth = etfTotalOut > psTotalOut;
+ const etfWinsMult = etfMult > psMult;
+ const etfWinsInc = etfAnnInc > psAnnRent;
+ const wealthDiff = Math.abs(etfTotalOut - psTotalOut);
+ const overallWinner = etfWinsWealth ? 'ETF Portfolio' : 'Property Portfolio';
+ const winColor = etfWinsWealth ? '#065f46' : '#0c4a6e';
+ const winEmoji = etfWinsWealth ? '' : '';
+ s5el('s5Verdict').innerHTML = `
+ <div class="s5-verdict">
+ <div class="vtitle">${winEmoji} ${overallWinner} wins at this capital level (${s5f(etfIn)} invested)</div>
+ <p>With exactly the same out-of-pocket budget over 30 years:</p>
+ <ul style="margin:8px 0 0 16px;line-height:2.1">
+ <li><strong>Total wealth at Yr 30:</strong> ETF <strong>${s5f(etfTotalOut)}</strong> vs Property <strong>${s5f(psTotalOut)}</strong> — ${etfWinsWealth?'ETF':'Property'} wins by <strong>${s5f(wealthDiff)}</strong></li>
+ <li><strong>Return multiple:</strong> ETF <strong>${etfMult.toFixed(2)}x</strong> vs Property <strong>${psMult.toFixed(2)}x</strong> — ${etfWinsMult?'ETF ahead':'Property ahead'}</li>
+ <li><strong>Annual income at Yr 30:</strong> ETF <strong>${s5f(etfAnnInc)}</strong> vs Property <strong>${s5f(psAnnRent)}</strong> — ${etfWinsInc?'ETF withdrawal > scaled rent':'Scaled rent > ETF withdrawal'}</li>
+ <li><strong>Risk trade-off:</strong> Property uses leverage (magnifies both gains &amp; losses), requires active management, and is illiquid. ETF is passive, same-day liquid, and debt-free.</li>
+ <li><strong>Practical note:</strong> With ${s5f(etfIn)} you can realistically buy ~${psNumProps} propert${psNumProps===1?'y':'ies'}. The linear scaling is theoretical — use S3 to model the actual property count you can afford.</li>
+ </ul>
+ </div>`;
+
+ // ── Wealth trajectory chart ───────────────────────────────────
+ const labels=[], etfNom=[], etfReal=[], propNom=[], propReal=[];
+ for(let yr=0; yr<=30; yr++){
+ labels.push('Yr '+yr);
+ const er = ed.find(r=>r.yr===yr);
+ etfNom.push(er ? er.comb + er.cumWd : null);
+ etfReal.push(er ? er.real : null);
+ const pr = pd.find(r=>r.yr===yr);
+ propNom.push( pr ? (pr.totalVal + pr.cumCF) * propScale : null);
+ propReal.push(pr ? ((pr.realTotalVal||0) + (pr.realCumCF||0)) * propScale : null);
+ }
+
+ if(s5Chart) s5Chart.destroy();
+ try{
+ s5Chart = new Chart(s5el('s5Chart').getContext('2d'),{
+ type:'line',
+ data:{
+ labels,
+ datasets:[
+ {label:'ETF — Nominal', data:etfNom, borderColor:'#4f46e5', backgroundColor:'rgba(79,70,229,.07)',
+ borderWidth:2.5, pointRadius:0, fill:true, tension:.35},
+ {label:'ETF — Real', data:etfReal, borderColor:'#818cf8', borderDash:[5,3],
+ borderWidth:1.5, pointRadius:0, fill:false, tension:.35},
+ {label:'Property — Nominal', data:propNom, borderColor:'#0891b2', backgroundColor:'rgba(8,145,178,.06)',
+ borderWidth:2.5, pointRadius:0, fill:true, tension:.35},
+ {label:'Property — Real', data:propReal, borderColor:'#67e8f9', borderDash:[5,3],
+ borderWidth:1.5, pointRadius:0, fill:false, tension:.35},
+ ]
+ },
+ options:{
+ responsive:true, maintainAspectRatio:true,
+ interaction:{mode:'index', intersect:false},
+ plugins:{
+ legend:{position:'top', labels:{font:{size:11}, boxWidth:12}},
+ tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${s5f(ctx.raw)}`}}
+ },
+ scales:{
+ x:{ticks:{font:{size:10}, maxTicksLimit:16}},
+ y:{ticks:{font:{size:10}, callback:v=>s5f(v)}, grid:{color:'#f1f5f9'}}
+ }
+ }
+ });
+ }catch(e){console.error('s5Chart error:',e);}
+
+ // ── Deep dive table ───────────────────────────────────────────
+ s5el('s5DtHead').innerHTML = `<tr>
+ <th style="text-align:left">Metric</th>
+ <th style="color:#4f46e5">ETF Portfolio<br><span style="font-size:10px;font-weight:400">(${s5f(etfIn)} invested)</span></th>
+ <th style="color:#0891b2">Property — Scaled to ETF Budget<br><span style="font-size:10px;font-weight:400">(${s5f(psTotalIn)} · ${(propScale*100).toFixed(1)}% of full portfolio · ~${psNumProps} propert${psNumProps===1?'y':'ies'})</span></th>
+ <th>Note</th>
+ </tr>`;
+
+ const pNum = s => {
+ if(typeof s!=='string') return null;
+ if(s.includes('x')&&!s.includes('ax')) return parseFloat(s);
+ if(s.includes('%')) return parseFloat(s);
+ if(['Same day','None','Minimal','Active','—'].includes(s)||s.startsWith('3–')||s.startsWith('~')) return null;
+ const n = parseFloat(s.replace(/[^0-9.\-]/g,''));
+ return isNaN(n) ? null : n;
+ };
+
+ const rows5 = [
+ ['Capital invested', s5f(etfIn), s5f(psTotalIn), 'Same budget — purpose of Section 5'],
+ ['Total wealth @ Yr 30 (Nom)',s5f(etfTotalOut), s5f(psTotalOut), 'Higher is better'],
+ ['Total wealth @ Yr 30 (Real)',s5f(etfReal30), s5f(psRealTot), "Today's purchasing power"],
+ ['Net financial gain', s5f(etfNetGain), s5f(psNetGain), 'Wealth above capital in'],
+ ['Return multiple', `${etfMult.toFixed(2)}x`, `${psMult.toFixed(2)}x`, 'Wealth / capital (scale-invariant)'],
+ ['30-yr CAGR', s5fp(etfCagr), s5fp(psCagr), 'Annualised — leverage included in prop'],
+ ['Asset value @ Yr 30', s5f(etfV30), s5f(psTotalVal), 'Portfolio value / property gross value'],
+ ['Net equity @ Yr 30', s5f(etfV30), s5f(psNetEq), 'ETF portfolio / property equity after debt'],
+ ['Annual income @ Yr 30', s5f(etfAnnInc), s5f(psAnnRent), 'Withdrawal vs gross scaled rent'],
+ ['Negative CF funded', '$0', s5f(psNegCF), 'Extra top-ups needed for property shortfalls'],
+ ['Liquidity', 'Same day', '3–6 months', 'ETF wins on flexibility'],
+ ['Leverage / debt', 'None', `~${psNumProps} loan${psNumProps>1?'s':''}`, 'Debt cuts both ways'],
+ ['Active management', 'Minimal', 'Yes (tenants, repairs)', 'ETF is set-and-forget'],
+ ['Tax — depreciation', 'None', 'Yes (building)', 'Property deducts depreciation — advantage'],
+ ['Diversification', 'Built-in (ETF)', `~${psNumProps} properties`, 'Market-wide vs concentrated assets'],
+ ];
+
+ s5el('s5DtBody').innerHTML = rows5.map(([metric, etfV, propV, note])=>{
+ const ev = pNum(etfV), pv = pNum(propV);
+ const eWin = ev!==null && pv!==null && ev>pv;
+ const pWin = pv!==null && ev!==null && pv>ev;
+ const pSpecial = (propV==='Yes (building)'||propV==='Yes (tenants, repairs)');
+ return `<tr>
+ <td style="font-weight:600;color:#475569">${metric}</td>
+ <td class="${eWin?'s5-win':''}" style="text-align:center">${eWin?'&#x2705; ':''}${etfV}</td>
+ <td class="${pWin||pSpecial?'s5-win':''}" style="text-align:center">${pWin||pSpecial?'&#x2705; ':''}${propV}</td>
+ <td style="color:#94a3b8;font-size:10px">${note}</td>
+ </tr>`;
+ }).join('');
+
+ } catch(err){ console.error('S5 error:', err); }
+}
+
+// ── Cascade into existing render calls ──────────────────────────
+const _s5rF = renderFunds;
+renderFunds = function(){
+ _s5rF.apply(this, arguments);
+ setTimeout(renderLikeForLike, 90);
+};
+const _s5rP = renderPortfolio;
+renderPortfolio = function(){
+ _s5rP.apply(this, arguments);
+ setTimeout(renderLikeForLike, 90);
+};
+setTimeout(renderLikeForLike, 500);
+
+// ── Full cascade: S1 inputs → S4 + S5 ──────────────────────────
+// render() is S1's main output fn; patch it here (after renderComparison
+// and renderLikeForLike are both defined) so S1 slider changes propagate.
+const _cascadeRender = render;
+render = function(){
+ _cascadeRender.apply(this, arguments);
+ setTimeout(renderComparison, 80);
+ setTimeout(renderLikeForLike, 120);
+};
+
+// ── Full cascade: S2 renderProperty() → S4 + S5 ─────────────────
+// propDebounce already cascades to pfDebounce (S3 → S4/S5),
+// but renderProperty itself also needs to feed S4/S5 directly.
+const _cascadeRenderProp = renderProperty;
+renderProperty = function(){
+ _cascadeRenderProp.apply(this, arguments);
+ setTimeout(renderComparison, 80);
+ setTimeout(renderLikeForLike, 120);
+};
+
+// ── Kick everything once to sync all sections on load ────────────
+setTimeout(function(){ renderComparison(); renderLikeForLike(); }, 700);
+
+</script>
+
+</body>
+</html>
+

@@ -482,11 +482,11 @@ input[type="range"], .range-in { display: none !important; }
 .p2-main-heading em{font-style:italic;color:#c9a535;font-weight:900;}
 .p2-sub{font-size:14px;color:#3d5166;text-align:right;max-width:100%;line-height:1.5;}
 
-/* 5×1 card row */
+/* 6×1 card row */
 .p2-cards{
   display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:12px;
+  grid-template-columns:repeat(6,1fr);
+  gap:10px;
   width:100%;
   flex:1;min-height:0;
 }
@@ -526,6 +526,26 @@ input[type="range"], .range-in { display: none !important; }
 .c5 .p2-features li::before{color:#d4af37;}
 .c5 .p2-explore{color:rgba(212,175,55,.75);}
 .c5 .p2-explore:hover{color:#d4af37;}
+/* Strategy VI — Get Rich Quick (pun intended) */
+.p2-card.c6{
+  border-color:rgba(0,255,80,.28);
+  background:linear-gradient(145deg,rgba(0,18,6,.88),rgba(0,30,10,.8));
+  cursor:pointer;
+}
+.p2-card.c6:hover{
+  border-color:rgba(0,255,80,.75);
+  box-shadow:0 24px 60px rgba(0,0,0,.55),0 0 40px rgba(0,255,80,.18),0 0 0 1px rgba(0,255,80,.25);
+}
+.c6 .p2-card-icon{background:rgba(0,255,80,.08);border:1.5px solid rgba(0,255,80,.3);}
+.c6 .p2-card-eyebrow{color:#00e676;}
+.c6 .p2-card-title{color:#ccffcc;font-style:italic;}
+.c6 .p2-roman{color:rgba(0,255,80,.07);}
+.c6 .p2-divider{border-color:rgba(0,255,80,.18);}
+.c6 .p2-card-desc{color:rgba(180,255,180,.65);}
+.c6 .p2-features{color:rgba(180,255,180,.65);}
+.c6 .p2-features li::before{color:#00e676;}
+.c6 .p2-explore{color:rgba(0,255,80,.65);}
+.c6 .p2-explore:hover{color:#00e676;}
 
 /* giant roman numeral watermark */
 .p2-roman{
@@ -1297,6 +1317,65 @@ input[type="range"], .range-in { display: none !important; }
         <div class="p2-explore">Explore strategy <span>→</span></div>
       </div>
 
+      <!-- Card VI — Explore Fastest Way to Be Wealthy (Pun Intended) -->
+      <div class="p2-card c6" onclick="enterApp('meme')">
+        <div class="p2-roman">VI</div>
+        <div class="p2-card-icon">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+            <!-- Rocket body -->
+            <path d="M18 3 C18 3 26 8 26 18 L22 28 L14 28 L10 18 C10 8 18 3 18 3Z" fill="url(#rktGrad)" stroke="rgba(0,255,80,.6)" stroke-width="1.2"/>
+            <!-- Window -->
+            <circle cx="18" cy="15" r="3.5" fill="none" stroke="rgba(0,255,200,.8)" stroke-width="1.5"/>
+            <circle cx="18" cy="15" r="1.5" fill="rgba(0,255,200,.4)"/>
+            <!-- Fins -->
+            <path d="M10 20 L5 28 L14 25Z" fill="rgba(0,220,60,.5)" stroke="rgba(0,255,80,.4)" stroke-width=".8"/>
+            <path d="M26 20 L31 28 L22 25Z" fill="rgba(0,220,60,.5)" stroke="rgba(0,255,80,.4)" stroke-width=".8"/>
+            <!-- Flame -->
+            <path d="M15 28 C14 30 13 33 18 35 C23 33 22 30 21 28Z" fill="url(#flameGrad)" opacity=".9"/>
+            <!-- $ signs floating -->
+            <text x="3" y="12" font-size="7" fill="#00e676" opacity=".8" font-weight="900">$</text>
+            <text x="29" y="16" font-size="6" fill="#00ff80" opacity=".7" font-weight="900">$</text>
+            <text x="6" y="22" font-size="5" fill="#00cc60" opacity=".6" font-weight="900">$</text>
+            <defs>
+              <linearGradient id="rktGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#00ff80"/>
+                <stop offset="50%" stop-color="#00aa40"/>
+                <stop offset="100%" stop-color="#005520"/>
+              </linearGradient>
+              <linearGradient id="flameGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ffcc00"/>
+                <stop offset="50%" stop-color="#ff6600"/>
+                <stop offset="100%" stop-color="#ff2200" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="p2-card-eyebrow">⚡ Strategy Six ⚡</div>
+        <div class="p2-card-title">Explore Fastest Way to Be Wealthy</div>
+        <div class="p2-divider"></div>
+        <div class="p2-card-desc">(Pun Intended) Skip the boring strategies. Double your money in just 21 din. Guaranteed*</div>
+        <div class="p2-brand-pills">
+          <span class="p2-pill" style="background:rgba(0,60,20,.7);border-color:rgba(0,255,80,.35);color:#00e676;font-style:italic;">
+            <svg width="19" height="19" viewBox="0 0 19 19" fill="none"><text x="9.5" y="14" text-anchor="middle" font-size="13" font-weight="900" fill="#00e676">🚀</text></svg>
+            100% Legit
+          </span>
+          <span class="p2-pill" style="background:rgba(0,60,20,.7);border-color:rgba(0,255,80,.3);color:#80ff80;">
+            <svg width="19" height="19" viewBox="0 0 19 19" fill="none"><text x="9.5" y="14" text-anchor="middle" font-size="13" font-weight="900" fill="#80ff80">💸</text></svg>
+            No Risk
+          </span>
+          <span class="p2-pill" style="background:rgba(0,60,20,.7);border-color:rgba(0,255,80,.3);color:#80ff80;">
+            <svg width="19" height="19" viewBox="0 0 19 19" fill="none"><text x="9.5" y="14" text-anchor="middle" font-size="13" font-weight="900" fill="#80ff80">⭐</text></svg>
+            Trust Me Bro
+          </span>
+        </div>
+        <ul class="p2-features">
+          <li>21 din mein paisa double 💰</li>
+          <li>*Terms &amp; conditions apply</li>
+          <li>Results may vary. Heavily.</li>
+        </ul>
+        <div class="p2-explore">Explore strategy <span>→</span></div>
+      </div>
+
     </div>
     </div><!-- /.p2-right -->
   </div>
@@ -1357,9 +1436,10 @@ var STRATEGY_META = {
   mortInvest: { name:'Strategy II — Pay-Off Mortgage and Then Invest',     badge:'Mortgage',  section:'mortInvestSection' },
   s3:         { name:'Strategy III — Property Portfolio',                  badge:'Property',  section:'propSection'       },
   compare:    { name:'Strategy IV — High Touch Property Portfolio',        badge:'Property',  section:'pfSection'         },
-  precious:   { name:'Strategy V — Precious Metals Portfolio',             badge:'Metals',    section:'preciousSection'   }
+  precious:   { name:'Strategy V — Precious Metals Portfolio',             badge:'Metals',    section:'preciousSection'   },
+  meme:       { name:'Strategy VI — Fastest Way to Be Wealthy',           badge:'🚀 Legit',  section:'memeSection'       }
 };
-var ALL_SECTIONS = ['etfSection','propSection','pfSection','mortInvestSection','preciousSection'];
+var ALL_SECTIONS = ['etfSection','propSection','pfSection','mortInvestSection','preciousSection','memeSection'];
 
 // ── Page transitions ──────────────────────────────────────────
 function showStrategyPicker(){
@@ -1386,7 +1466,7 @@ function enterApp(strategy){
       var el = document.getElementById(id);
       if(!el) return;
       if(id === meta.section){
-        el.style.display = (id === 'mortInvestSection' || id === 'preciousSection') ? 'block' : '';
+        el.style.display = (id === 'mortInvestSection' || id === 'preciousSection' || id === 'memeSection') ? 'block' : '';
       } else {
         el.style.display = 'none';
       }
@@ -4640,6 +4720,346 @@ if(document.readyState==='loading'){
 } else { pmInit(); }
 
 })();
+</script>
+
+<!-- ══════════ STRATEGY VI — THE FASTEST WAY TO WEALTH ══════════ -->
+<style>
+#memeSection{
+  display:none;
+  min-height:100vh;
+  background:#000;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  overflow:hidden;
+  position:relative;
+}
+
+/* ── Phase 1: Glitter screen ── */
+#meme-p1{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  background:radial-gradient(ellipse at center, #001a08 0%, #000800 50%, #000 100%);
+  position:relative;
+  overflow:hidden;
+  text-align:center;
+  padding:40px 20px;
+}
+/* animated star particles */
+#meme-p1::before{
+  content:'';
+  position:absolute;inset:0;
+  background-image:
+    radial-gradient(circle,rgba(0,255,80,.9) 1px,transparent 1px),
+    radial-gradient(circle,rgba(255,215,0,.8) 1px,transparent 1px),
+    radial-gradient(circle,rgba(0,200,255,.7) 1px,transparent 1px);
+  background-size:120px 120px,180px 180px,90px 90px;
+  background-position:0 0,60px 60px,30px 90px;
+  animation:starsTwinkle 2.4s ease-in-out infinite alternate;
+  pointer-events:none;
+}
+@keyframes starsTwinkle{
+  0%{opacity:.3;transform:scale(1);}
+  100%{opacity:1;transform:scale(1.04);}
+}
+
+/* main headline */
+.meme-headline{
+  font-size:clamp(38px,7.5vw,110px);
+  font-weight:900;
+  letter-spacing:-2px;
+  line-height:1.05;
+  text-transform:uppercase;
+  width:100%;
+  background:linear-gradient(90deg,
+    #ffcc00 0%,#fff700 10%,#00ff80 20%,#ffcc00 30%,
+    #ff9900 40%,#fff700 50%,#00ffcc 60%,#ffcc00 70%,
+    #ff6600 80%,#fff700 90%,#00ff80 100%
+  );
+  background-size:300% auto;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:shimmerText 2s linear infinite, floatBig 3s ease-in-out infinite;
+  text-shadow:none;
+  filter:drop-shadow(0 0 30px rgba(255,215,0,.7)) drop-shadow(0 0 60px rgba(0,255,80,.4));
+  position:relative;z-index:2;
+}
+@keyframes shimmerText{
+  0%{background-position:0% center;}
+  100%{background-position:300% center;}
+}
+@keyframes floatBig{
+  0%,100%{transform:translateY(0) scale(1);}
+  50%{transform:translateY(-18px) scale(1.02);}
+}
+
+/* sparkle emoji layer */
+.meme-sparkles{
+  font-size:clamp(24px,3vw,48px);
+  letter-spacing:8px;
+  animation:sparkleRotate 1.8s ease-in-out infinite;
+  display:block;
+  margin:10px 0 20px;
+  position:relative;z-index:2;
+}
+@keyframes sparkleRotate{
+  0%,100%{transform:scale(1);opacity:.9;}
+  50%{transform:scale(1.15);opacity:1;}
+}
+
+/* click here text */
+.meme-click{
+  font-size:clamp(22px,3.5vw,52px);
+  font-weight:700;
+  color:rgba(200,255,200,.7);
+  margin-top:24px;
+  cursor:pointer;
+  border:none;background:none;
+  text-decoration:underline;
+  text-underline-offset:6px;
+  animation:clickPulse 1.4s ease-in-out infinite;
+  position:relative;z-index:2;
+  font-family:inherit;
+}
+.meme-click span{
+  color:#00ff80;
+  font-style:italic;
+  text-shadow:0 0 20px rgba(0,255,80,.8),0 0 40px rgba(0,255,80,.4);
+}
+@keyframes clickPulse{
+  0%,100%{opacity:.7;transform:scale(1);}
+  50%{opacity:1;transform:scale(1.05);}
+}
+
+/* ── Phase 2: The Meme ── */
+#meme-p2{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:#000;
+  cursor:pointer;
+  align-items:center;
+  justify-content:center;
+}
+/* ── Meme image wrapper ── */
+.meme-img-wrap{
+  position:relative;
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+}
+.meme-img-wrap img{
+  max-width:100%;max-height:100%;
+  object-fit:contain;
+  display:block;
+  pointer-events:none;
+  user-select:none;
+}
+/* Fallback if meme.jpg not found */
+.meme-fallback{
+  display:none;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:40px;color:#fff;
+  position:absolute;inset:0;
+}
+.meme-fallback-icon{font-size:70px;margin-bottom:16px;}
+.meme-fallback-title{font-size:clamp(22px,3vw,36px);color:#ffcc00;margin-bottom:12px;font-weight:800;}
+.meme-fallback-body{font-size:clamp(15px,2vw,22px);color:#bbb;line-height:1.7;max-width:560px;}
+.meme-fallback-body code{color:#00ffcc;background:rgba(255,255,255,.1);padding:2px 10px;border-radius:5px;font-size:1.1em;}
+/* ── kept for backwards compat but unused now ── */
+.meme-scene{
+  width:100%;height:100%;
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(
+    180deg,
+    #87ceeb 0%,        /* sky blue */
+    #b0d8f0 20%,       /* lighter sky */
+    #a8c8a0 35%,       /* distant trees/buildings */
+    #8ab898 40%,       /* more greenery */
+    #c8a870 55%,       /* ground/street */
+    #d4b880 65%,
+    #b89860 75%,
+    #a08050 100%
+  );
+}
+/* sun */
+.meme-scene::before{
+  content:'';position:absolute;top:5%;right:15%;
+  width:60px;height:60px;border-radius:50%;
+  background:rgba(255,250,220,.85);
+  box-shadow:0 0 40px 20px rgba(255,240,150,.4);
+}
+/* film grain overlay */
+.meme-scene::after{
+  content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.07'/%3E%3C/svg%3E");
+  opacity:.45;pointer-events:none;
+}
+/* trees in background */
+.meme-trees{
+  position:absolute;top:20%;left:0;right:0;
+  height:25%;
+  background:
+    radial-gradient(ellipse 30px 50px at 10% 80%,#3a7a3a,transparent),
+    radial-gradient(ellipse 40px 60px at 18% 70%,#4a8a4a,transparent),
+    radial-gradient(ellipse 35px 55px at 28% 85%,#3a6a3a,transparent),
+    radial-gradient(ellipse 50px 70px at 38% 75%,#5a9a5a,transparent),
+    radial-gradient(ellipse 30px 50px at 50% 80%,#4a8a4a,transparent),
+    radial-gradient(ellipse 45px 65px at 62% 70%,#3a7030,transparent),
+    radial-gradient(ellipse 35px 55px at 75% 80%,#5a9050,transparent),
+    radial-gradient(ellipse 40px 60px at 88% 75%,#4a8040,transparent);
+}
+/* construction building silhouette */
+.meme-bldg{
+  position:absolute;top:15%;right:8%;
+  width:80px;height:35%;
+  background:rgba(80,90,100,.5);
+  border:1px solid rgba(100,110,120,.3);
+}
+.meme-bldg::before{
+  content:'';position:absolute;top:-20px;left:10px;
+  width:8px;height:25px;
+  background:rgba(100,100,100,.6);
+}
+/* food cart (right side) */
+.meme-cart{
+  position:absolute;bottom:20%;right:5%;
+  width:100px;height:80px;
+}
+.meme-cart-body{
+  position:absolute;bottom:20px;left:0;right:0;height:50px;
+  background:rgba(180,100,50,.8);
+  border:1px solid rgba(200,120,60,.5);
+  border-radius:4px;
+}
+.meme-cart-wheel{
+  position:absolute;bottom:0;
+  width:22px;height:22px;border-radius:50%;
+  background:rgba(60,60,60,.9);
+  border:3px solid rgba(100,100,100,.6);
+}
+.meme-cart-wheel.left{left:10px;}
+.meme-cart-wheel.right{right:10px;}
+/* red table cloth (left side) */
+.meme-table{
+  position:absolute;bottom:25%;left:2%;
+  width:70px;height:10px;
+  background:rgba(180,30,30,.7);
+}
+.meme-table::after{
+  content:'';position:absolute;top:10px;left:0;right:0;height:40px;
+  background:rgba(160,20,20,.4);
+}
+
+/* People / Figures */
+.meme-figure{
+  position:absolute;bottom:22%;
+  display:flex;flex-direction:column;align-items:center;
+}
+/* Figure 1 — guy with sunglasses & funky shirt */
+.meme-f1{left:30%;transform:scale(1.1);}
+/* Figure 2 — guy leaning in (brown jacket, back to us) */
+.meme-f2{left:48%;transform:scale(1.05);}
+/* far background people */
+.meme-bg-people{
+  position:absolute;bottom:35%;
+}
+.meme-head{border-radius:50%;}
+.meme-body{border-radius:4px 4px 0 0;}
+.meme-arm{position:absolute;border-radius:3px;}
+
+/* ── Classic Bollywood subtitles ── */
+.meme-subtitle{
+  position:absolute;
+  bottom:5%;
+  left:50%;transform:translateX(-50%);
+  width:90%;
+  text-align:center;
+  font-size:clamp(20px,3.5vw,48px);
+  font-weight:700;
+  color:#ffff00;
+  text-shadow:
+    2px 2px 0 #000,
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+    0 0 20px rgba(0,0,0,.9);
+  font-family:'Arial','Helvetica',sans-serif;
+  letter-spacing:.5px;
+  line-height:1.3;
+  z-index:10;
+}
+
+/* close hint */
+.meme-close-hint{
+  position:absolute;top:20px;right:24px;
+  color:rgba(255,255,255,.5);font-size:14px;
+  z-index:20;pointer-events:none;
+}
+</style>
+
+<div id="memeSection">
+
+  <!-- Phase 1: The Glitter Screen -->
+  <div id="meme-p1">
+    <span class="meme-sparkles">✨ 💰 ✨ 💎 ✨ 💰 ✨</span>
+
+    <div class="meme-headline">
+      21 DIN MEIN<br>PAISA DOUBLE ??
+    </div>
+
+    <span class="meme-sparkles" style="animation-delay:.6s;">🚀 ⭐ 🤑 ⭐ 🚀 ⭐ 🤑 ⭐ 🚀</span>
+
+    <button class="meme-click" onclick="showMeme()">
+      Click <span>HERE</span>...
+    </button>
+  </div>
+
+  <!-- Phase 2: The Bollywood Meme (full-screen overlay, click anywhere to close) -->
+  <div id="meme-p2" onclick="document.getElementById('meme-p2').style.display='none'">
+    <div class="meme-img-wrap">
+
+      <!-- ★ ACTUAL MEME IMAGE — place meme.jpg in the Investment folder ★ -->
+      <img
+        src="./meme.jpg"
+        alt="tu ja yaha se, ye scheme tere liye hai hi nahi"
+        onerror="this.style.display='none';document.getElementById('meme-fallback').style.display='flex';"
+      >
+
+      <!-- Subtitle overlay (sits on top of the photo) -->
+      <div class="meme-subtitle">
+        tu ja yaha se, ye scheme tere liye hai hi nahi
+      </div>
+
+      <!-- Fallback shown only when meme.jpg is missing -->
+      <div id="meme-fallback" class="meme-fallback">
+        <div class="meme-fallback-icon">🎬</div>
+        <div class="meme-fallback-title">One more step!</div>
+        <div class="meme-fallback-body">
+          Save the meme image as<br>
+          <code>meme.jpg</code><br>
+          inside your <strong style="color:#00ffcc;">Investment</strong> folder<br>
+          (same folder as index.html)<br><br>
+          Then reload and click again 🍿
+        </div>
+        <div class="meme-subtitle" style="position:static;transform:none;margin-top:36px;width:auto;font-size:clamp(16px,2.5vw,32px);">
+          tu ja yaha se, ye scheme tere liye hai hi nahi
+        </div>
+      </div>
+
+      <!-- Close hint -->
+      <div class="meme-close-hint">Tap anywhere to close</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showMeme(){
+  document.getElementById('meme-p2').style.display = 'block';
+}
 </script>
 
 </body>

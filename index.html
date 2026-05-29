@@ -452,11 +452,16 @@ input[type="range"], .range-in { display: none !important; }
 }
 
 #p2-content{
-  flex:1;display:flex;flex-direction:row;
-  align-items:stretch;
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;
   position:relative;z-index:1;
   padding:14px 36px 18px;
   gap:0;min-height:0;
+}
+.p2-main-row{
+  display:flex;flex-direction:row;
+  align-items:stretch;
+  flex:1;width:100%;min-height:0;
 }
 /* left visual panel */
 .p2-visual{
@@ -710,7 +715,7 @@ input[type="range"], .range-in { display: none !important; }
 <div id="strategyBar">
   <div class="sb-left">
     <button class="sb-back" onclick="backToStrategies()">← Strategy Menu</button>
-    <span class="sb-name" id="strategyBarName">Strategy I — Invest in ETFs</span>
+    <span class="sb-name" id="strategyBarName">Strategy I: Invest in ETFs</span>
     <span class="sb-badge" id="strategyBarBadge">ETFs</span>
   </div>
   <button class="sb-save" onclick="saveResults()">⬇ Save Results</button>
@@ -885,6 +890,11 @@ input[type="range"], .range-in { display: none !important; }
 
   <div id="p2-content">
 
+    <!-- Saved-results comparison panel — spans full width, centered above card grid -->
+    <div id="pm-compare-panel" style="display:none;background:rgba(13,30,53,.7);border:1px solid rgba(201,165,53,.28);border-radius:16px;padding:12px 20px;margin:0 auto 8px;backdrop-filter:blur(12px);width:90%;max-width:1100px;"></div>
+
+    <div class="p2-main-row">
+
     <!-- Left: visionary illustration -->
     <div class="p2-visual">
       <svg viewBox="0 0 340 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -1013,9 +1023,6 @@ input[type="range"], .range-in { display: none !important; }
     <h2 class="p2-main-heading">Which path leads to <em>your</em> freedom?</h2>
     <p class="p2-sub">Select a strategy to model. Results are automatically saved each session for comparison.</p>
 
-    <!-- Saved-results comparison panel (populated by pmRenderCompare) -->
-    <div id="pm-compare-panel" style="display:none;background:rgba(13,30,53,.7);border:1px solid rgba(201,165,53,.28);border-radius:16px;padding:16px 20px;margin-bottom:4px;backdrop-filter:blur(12px);"></div>
-
     <div class="p2-cards">
 
       <!-- Card I — ETFs -->
@@ -1031,7 +1038,7 @@ input[type="range"], .range-in { display: none !important; }
         <div class="p2-card-eyebrow">Strategy One</div>
         <div class="p2-card-title">Invest in ETFs</div>
         <div class="p2-divider"></div>
-        <div class="p2-card-desc">Dollar-cost average into diversified index funds. Let compounding do the work across 20 years — time and consistency are your greatest assets.</div>
+        <div class="p2-card-desc">Dollar-cost average into diversified index funds. Let compounding do the work across 20 years. Time and consistency are your greatest assets.</div>
         <div class="p2-brand-pills">
           <span class="p2-pill" style="background:#002980;border-color:rgba(80,140,255,.4);color:#fff;">
             <svg width="19" height="19" viewBox="0 0 19 19" fill="none">
@@ -1312,9 +1319,9 @@ input[type="range"], .range-in { display: none !important; }
           </span>
         </div>
         <ul class="p2-features">
-          <li>Gold: 8.0% p.a. · Silver: 6.6% p.a. (2009–2025)</li>
-          <li>Vault cost $1,000/yr · +5% annually</li>
-          <li>Inflation-adjusted real returns (3% p.a.)</li>
+          <li>Gold: 8.0% p.a. &nbsp; Silver: 6.6% p.a. (2009 to 2025)</li>
+          <li>Vault cost $1,000/yr, escalating 5% annually</li>
+          <li>Inflation adjusted real returns (3% p.a.)</li>
         </ul>
         <div class="p2-explore">Explore strategy <span>→</span></div>
       </div>
@@ -1380,7 +1387,8 @@ input[type="range"], .range-in { display: none !important; }
 
     </div>
     </div><!-- /.p2-right -->
-  </div>
+    </div><!-- /.p2-main-row -->
+  </div><!-- /#p2-content -->
 </div>
 
 <script>
@@ -1414,9 +1422,13 @@ window.addEventListener('resize',function(){ drawLoBg('loBgCanvas'); });
 
 // ── In-memory session store (persists while tab is open) ──────
 window.STRATEGY_RESULTS = {};
+window.STRATEGY_RESULTS_ORDER = [];
 
 window.pmSaveSnapshot = function(key, data){
   window.STRATEGY_RESULTS[key] = Object.assign({ savedAt: new Date().toISOString() }, data);
+  if(window.STRATEGY_RESULTS_ORDER.indexOf(key) === -1){
+    window.STRATEGY_RESULTS_ORDER.push(key);
+  }
 };
 
 /** Generic DOM harvest — reads visible tile values from a section */
@@ -1434,7 +1446,7 @@ window.pmHarvestSection = function(key, sectionId){
 
 // ── Strategy meta ─────────────────────────────────────────────
 var STRATEGY_META = {
-  s1:         { name:'Strategy I — Invest in ETFs',                        badge:'ETFs',      section:'etfSection'        },
+  s1:         { name:'Strategy I: Invest in ETFs',                        badge:'ETFs',      section:'etfSection'        },
   mortInvest: { name:'Strategy II — Pay-Off Mortgage and Then Invest',     badge:'Mortgage',  section:'mortInvestSection' },
   s3:         { name:'Strategy III — Property Portfolio',                  badge:'Property',  section:'propSection'       },
   compare:    { name:'Strategy IV — High Touch Property Portfolio',        badge:'Property',  section:'pfSection'         },
@@ -1537,7 +1549,8 @@ var STRATEGY_HIGHLIGHT_KEYS = [
 
 function pmRenderCompare(){
   var results = window.STRATEGY_RESULTS || {};
-  var keys = Object.keys(results);
+  var order = window.STRATEGY_RESULTS_ORDER || [];
+  var keys = order.filter(function(k){ return !!results[k]; }).slice(0,3);
   var panel = document.getElementById('pm-compare-panel');
   if(!panel) return;
   if(!keys.length){ panel.style.display='none'; return; }
@@ -1546,21 +1559,21 @@ function pmRenderCompare(){
     var r = results[k];
     var lbl = STRATEGY_LABELS[k] || r.strategy || k;
     var cells = STRATEGY_HIGHLIGHT_KEYS.map(function(hk){
-      return r[hk] ? '<td style="color:#60e888;font-weight:700;">'+r[hk]+'</td>' : '<td style="color:rgba(255,255,255,.2);">—</td>';
+      return r[hk] ? '<td style="color:#60e888;font-weight:700;font-size:12px;padding:2px 4px;">'+r[hk]+'</td>' : '<td style="color:rgba(255,255,255,.2);font-size:12px;padding:2px 4px;">—</td>';
     });
-    return '<tr><td style="font-weight:700;color:#f5e6a3;white-space:nowrap;">'+lbl+'</td>'+cells.join('')+'</tr>';
+    return '<tr><td style="font-weight:700;color:#f5e6a3;white-space:nowrap;font-size:12px;padding:2px 4px;">'+lbl+'</td>'+cells.join('')+'</tr>';
   }).join('');
 
   var headerCells = STRATEGY_HIGHLIGHT_KEYS.map(function(k){
-    return '<th>'+k+'</th>';
+    return '<th style="font-size:10px;padding:2px 4px;">'+k+'</th>';
   }).join('');
 
   panel.innerHTML =
-    '<div style="font-size:13px;font-weight:800;color:#c9a535;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">📊 Session Results Saved — '+keys.length+' strateg'+(keys.length===1?'y':'ies')+'</div>'+
-    '<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:11px;">'+
-    '<thead><tr style="color:rgba(201,165,53,.6);font-size:9px;text-transform:uppercase;letter-spacing:.5px;"><th style="text-align:left;">Strategy</th>'+headerCells+'</tr></thead>'+
+    '<div style="font-size:14px;font-weight:700;color:#c9a535;letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px;text-align:center;">Session Results Saved '+keys.length+' strateg'+(keys.length===1?'y':'ies')+'</div>'+
+    '<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:12px;margin:0 auto;">'+
+    '<thead><tr style="color:rgba(201,165,53,.6);font-size:10px;text-transform:uppercase;letter-spacing:.5px;"><th style="text-align:left;font-size:10px;padding:2px 4px;">Strategy</th>'+headerCells+'</tr></thead>'+
     '<tbody>'+rows+'</tbody></table></div>'+
-    '<div style="font-size:10px;color:rgba(201,165,53,.35);margin-top:8px;">Results are stored in this browser session only — no data leaves your device.</div>';
+    '<div style="font-size:10px;color:#ffffff;margin-top:6px;text-align:center;">Results are stored in this browser session only. No data leaves your device.</div>';
   panel.style.display='block';
 }
 
@@ -4408,7 +4421,7 @@ if(document.readyState==='loading'){
 
       <!-- Fixed parameters (info display) -->
       <div class="pm-ctrl-group">
-        <div class="pm-ctrl-title">📊 Historical Returns (16-yr avg)</div>
+        <div class="pm-ctrl-title">Historical Returns (16-yr avg)</div>
         <div class="pm-info-row">
           <div class="pm-info-line"><span class="pm-info-lbl">🥇 Gold CAGR (2009–2025)</span><span class="pm-info-val gold">8.0% p.a.</span></div>
           <div class="pm-info-line"><span class="pm-info-lbl">🥈 Silver CAGR (2009–2025)</span><span class="pm-info-val silver">6.6% p.a.</span></div>

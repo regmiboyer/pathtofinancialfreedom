@@ -1491,6 +1491,7 @@ function enterApp(strategy){
       setTimeout(function(){ window.miRender(); }, 80);
     }
     if(strategy === 'precious' && window.pmRender){
+      if(window.pmMarkVisited) window.pmMarkVisited(); // mark as intentionally visited before saving
       setTimeout(function(){ window.pmRender(); }, 80);
     }
 
@@ -1549,31 +1550,76 @@ var STRATEGY_HIGHLIGHT_KEYS = [
 
 function pmRenderCompare(){
   var results = window.STRATEGY_RESULTS || {};
-  var order = window.STRATEGY_RESULTS_ORDER || [];
-  var keys = order.filter(function(k){ return !!results[k]; }).slice(0,3);
+
+  // Sort by most-recently-saved first, cap at 3
+  var keys = Object.keys(results)
+    .filter(function(k){ return !!results[k]; })
+    .sort(function(a,b){
+      return new Date(results[b].savedAt||0) - new Date(results[a].savedAt||0);
+    })
+    .slice(0,3);
+
   var panel = document.getElementById('pm-compare-panel');
   if(!panel) return;
   if(!keys.length){ panel.style.display='none'; return; }
 
+  // Parse formatted values e.g. "$240.0k", "$1.2M" → number
+  function parseVal(s){
+    if(!s||s==='—') return 0;
+    s = String(s).replace('$','').trim();
+    if(s.endsWith('M')) return parseFloat(s)*1e6;
+    if(s.endsWith('k')) return parseFloat(s)*1e3;
+    if(s.endsWith('B')) return parseFloat(s)*1e9;
+    return parseFloat(s.replace(/,/g,''))||0;
+  }
+
+  // Find winner: best portfolio or return value across strategies
+  var winnerKey = null;
+  if(keys.length > 1){
+    var WINNER_METRICS = ['Portfolio Value (Nominal)','Total Nominal Return','Total ETF value','Portfolio at End'];
+    var bestVal = -Infinity;
+    keys.forEach(function(k){
+      var r = results[k];
+      for(var i=0;i<WINNER_METRICS.length;i++){
+        var v = parseVal(r[WINNER_METRICS[i]]);
+        if(v>0){ if(v>bestVal){ bestVal=v; winnerKey=k; } break; }
+      }
+    });
+  }
+
+  var headerCells = STRATEGY_HIGHLIGHT_KEYS.map(function(k){
+    return '<th style="font-size:12px;padding:5px 12px;color:rgba(201,165,53,.65);font-weight:700;letter-spacing:.4px;">'+k+'</th>';
+  }).join('');
+
   var rows = keys.map(function(k){
     var r = results[k];
     var lbl = STRATEGY_LABELS[k] || r.strategy || k;
+    var isWinner = (k===winnerKey);
+    var rowBg = isWinner ? 'background:rgba(201,165,53,.1);' : '';
+    var nameColor = isWinner ? '#f5d060' : '#f5e6a3';
+    var valColor  = isWinner ? '#f5d060' : '#60e888';
+    var winBadge  = isWinner ? ' <span style="font-size:8px;background:#c9a535;color:#000;font-weight:900;padding:1px 6px;border-radius:4px;letter-spacing:.8px;vertical-align:middle;margin-left:4px;">🏆 WINNER</span>' : '';
     var cells = STRATEGY_HIGHLIGHT_KEYS.map(function(hk){
-      return r[hk] ? '<td style="color:#60e888;font-weight:700;font-size:12px;padding:2px 4px;">'+r[hk]+'</td>' : '<td style="color:rgba(255,255,255,.2);font-size:12px;padding:2px 4px;">—</td>';
+      return r[hk]
+        ? '<td style="color:'+valColor+';font-weight:700;font-size:15px;padding:6px 12px;">'+r[hk]+'</td>'
+        : '<td style="color:rgba(255,255,255,.18);font-size:15px;padding:6px 12px;">—</td>';
     });
-    return '<tr><td style="font-weight:700;color:#f5e6a3;white-space:nowrap;font-size:12px;padding:2px 4px;">'+lbl+'</td>'+cells.join('')+'</tr>';
+    return '<tr style="'+rowBg+'border-bottom:1px solid rgba(255,255,255,.04);">'+
+           '<td style="font-weight:700;color:'+nameColor+';white-space:nowrap;font-size:15px;padding:6px 12px;">'+lbl+winBadge+'</td>'+
+           cells.join('')+'</tr>';
   }).join('');
 
-  var headerCells = STRATEGY_HIGHLIGHT_KEYS.map(function(k){
-    return '<th style="font-size:10px;padding:2px 4px;">'+k+'</th>';
-  }).join('');
+  var winnerLine = (winnerKey && keys.length>1)
+    ? '<div style="font-size:11px;color:#f5d060;font-weight:700;text-align:center;margin-bottom:6px;">🏆 '+(STRATEGY_LABELS[winnerKey]||results[winnerKey].strategy||winnerKey)+' leads on total return</div>'
+    : '';
 
   panel.innerHTML =
-    '<div style="font-size:14px;font-weight:700;color:#c9a535;letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px;text-align:center;">Session Results Saved '+keys.length+' strateg'+(keys.length===1?'y':'ies')+'</div>'+
-    '<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:12px;margin:0 auto;">'+
-    '<thead><tr style="color:rgba(201,165,53,.6);font-size:10px;text-transform:uppercase;letter-spacing:.5px;"><th style="text-align:left;font-size:10px;padding:2px 4px;">Strategy</th>'+headerCells+'</tr></thead>'+
+    '<div style="font-size:16px;font-weight:700;color:#c9a535;letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px;text-align:center;">Session Results Saved — '+keys.length+' strateg'+(keys.length===1?'y':'ies')+'</div>'+
+    winnerLine+
+    '<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:15px;margin:0 auto;">'+
+    '<thead><tr style="border-bottom:1px solid rgba(201,165,53,.25);"><th style="text-align:left;font-size:12px;padding:5px 12px;color:rgba(201,165,53,.65);font-weight:700;letter-spacing:.4px;">Strategy</th>'+headerCells+'</tr></thead>'+
     '<tbody>'+rows+'</tbody></table></div>'+
-    '<div style="font-size:10px;color:#ffffff;margin-top:6px;text-align:center;">Results are stored in this browser session only. No data leaves your device.</div>';
+    '<div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:8px;text-align:center;">Results are stored in this browser session only. No data leaves your device.</div>';
   panel.style.display='block';
 }
 
@@ -1631,15 +1677,15 @@ function saveResults(){
  <div class="ctrl-item">
  <div class="ctrl-label"><span class="tip-wrap">DCA duration <button class="tip-icon" tabindex="-1">ℹ</button><div class="tip-box">How many years you keep making monthly contributions. DCA = "Dollar-Cost Averaging" — investing a fixed amount regularly regardless of market ups and downs.</div></span></div>
  <div class="ctrl-row">
- <div class="num-wrap"><input class="num-in" type="number" id="v_dcaYrs" value="17" min="1" max="40" step="1"><span class="num-suffix">yr</span></div>
- <input class="range-in" type="range" id="r_dcaYrs" min="1" max="40" step="1" value="17">
+ <div class="num-wrap"><input class="num-in" type="number" id="v_dcaYrs" value="0" min="0" max="40" step="1"><span class="num-suffix">yr</span></div>
+ <input class="range-in" type="range" id="r_dcaYrs" min="0" max="40" step="0" value="0">
  </div>
  </div>
  <div class="ctrl-item">
  <div class="ctrl-label"><span class="tip-wrap">Coast duration <button class="tip-icon" tabindex="-1">ℹ</button><div class="tip-box">Years between stopping contributions and starting withdrawals. You stop adding money but leave it invested — the portfolio "coasts" and keeps growing on its own.</div></span></div>
  <div class="ctrl-row">
- <div class="num-wrap"><input class="num-in" type="number" id="v_coast" value="3" min="0" max="20" step="1"><span class="num-suffix">yr</span></div>
- <input class="range-in" type="range" id="r_coast" min="0" max="20" step="1" value="3">
+ <div class="num-wrap"><input class="num-in" type="number" id="v_coast" value="0" min="0" max="20" step="1"><span class="num-suffix">yr</span></div>
+ <input class="range-in" type="range" id="r_coast" min="0" max="20" step="1" value="0">
  </div>
  </div>
  <div class="ctrl-item">
@@ -1657,8 +1703,8 @@ function saveResults(){
  <div class="ctrl-item">
  <div class="ctrl-label"><span class="tip-wrap">Base monthly withdrawal <button class="tip-icon" tabindex="-1">ℹ</button><div class="tip-box">How much money you plan to take out of your portfolio each month in retirement. This is your starting amount — it increases each year by the withdrawal increase % below.</div></span></div>
  <div class="ctrl-row">
- <div class="num-wrap"><span class="num-prefix">$</span><input class="num-in" type="number" id="v_wdraw" value="12000" min="0" max="100000" step="500"></div>
- <input class="range-in" type="range" id="r_wdraw" min="0" max="100000" step="500" value="12000">
+ <div class="num-wrap"><span class="num-prefix">$</span><input class="num-in" type="number" id="v_wdraw" value="0" min="0" max="15000" step="100"></div>
+ <input class="range-in" type="range" id="r_wdraw" min="0" max="15000" step="100" value="0">
  </div>
  </div>
  <div class="ctrl-item">
@@ -1671,8 +1717,8 @@ function saveResults(){
  <div class="ctrl-item">
  <div class="ctrl-label"><span class="tip-wrap">Withdrawal duration <button class="tip-icon" tabindex="-1">ℹ</button><div class="tip-box">How many years you plan to draw from your portfolio in retirement. The simulation checks whether your money lasts this long — if not, it shows when funds run out.</div></span></div>
  <div class="ctrl-row">
- <div class="num-wrap"><input class="num-in" type="number" id="v_wYrs" value="30" min="5" max="50" step="1"><span class="num-suffix">yr</span></div>
- <input class="range-in" type="range" id="r_wYrs" min="5" max="50" step="1" value="30">
+ <div class="num-wrap"><input class="num-in" type="number" id="v_wYrs" value="0" min="0" max="50" step="1"><span class="num-suffix">yr</span></div>
+ <input class="range-in" type="range" id="r_wYrs" min="0" max="50" step="1" value="0">
  </div>
  </div>
  </div>
@@ -1914,8 +1960,8 @@ const MIN_FUNDS = 2;
 // ═══════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════
-const DEFAULTS = {dcaYrs:17,coast:3,inf:3.0,wdraw:12000,winc:3.0,wYrs:30};
-const DEFAULT_LUMPS = [{yr:20,amt:300000},{yr:25,amt:300000},{yr:30,amt:500000},{yr:35,amt:200000},{yr:40,amt:200000},{yr:45,amt:200000},{yr:50,amt:200000}];
+const DEFAULTS = {dcaYrs:0,coast:0,inf:3.0,wdraw:0,winc:3.0,wYrs:0};
+const DEFAULT_LUMPS = [{yr:0,amt:0}];
 const DEFAULT_FUNDS = [
  {sym:'VOO', name:'Vanguard S&P 500 ETF', cat:'Broad Market', cagr:13.8, yr:2010, rate:13.8, dca:1000},
  {sym:'QQQM',name:'Invesco Nasdaq-100 Mini ETF', cat:'Large Cap Growth',cagr:18.5, yr:2020, rate:18.5, dca:1000},
@@ -2307,7 +2353,8 @@ function render(){
  g('pb3v').textContent=wYrs+'yr'; g('pb3').style.flex=wYrs;
 
  // cards
- const at20 = data.find(r=>r.yr===20)||null;
+ const _phase1EndYr = dcaYrs+coast;
+ const at20 = data.find(r=>r.yr===_phase1EndYr)||null;
  const regularWd = fin.cumWd - totalLumps;
 
  // 1. Big tile — Total Invested with per-fund breakdown
@@ -2338,9 +2385,9 @@ function render(){
 
  // 2-7. Individual stat tiles
  const tiles = [
- {lbl:'Portfolio at Year 20', val:at20?fmtM(at20.comb):'—', sub: at20?`Real: ${fmtM(at20.real)}`:'Beyond timeline', cls:'i', extra:'card-yr20'},
- {lbl:'Portfolio at End (Nominal)', val:fmtM(fin.comb), sub:`After all ${TOTAL} years`, cls:'g', hi:'hi-g', extra:'card-end-nom'},
- {lbl:'Portfolio at End (Real)', val:fmtM(fin.real), sub:"In today's dollars", cls:'s'},
+ {lbl:`Portfolio at Year ${_phase1EndYr}`, val:at20?fmtM(at20.comb):'—', sub: at20?`Real: ${fmtM(at20.real)}`:'Beyond timeline', cls:'i', extra:'card-yr20'},
+ {lbl:`Portfolio at Year ${TOTAL}`, val:fmtM(fin.comb), sub:`After all ${TOTAL} years`, cls:'g', hi:'hi-g', extra:'card-end-nom'},
+ {lbl:`Real Portfolio at Year ${TOTAL}`, val:fmtM(fin.real), sub:"In today's dollars", cls:'s'},
  {lbl:'Total Lump Sum Withdrawals', val:totalLumps>0?fmt(totalLumps):'None', sub:totalLumps>0?`${lumpSums.length} events`:'No lump-sum events', cls:totalLumps>0?'y':'s', hi:totalLumps>0?'hi-y':''},
  {lbl:'Regular Monthly Withdrawals (Total)', val:wdraw>0?fmtM(regularWd):'None', sub:wdraw>0?`${wYrs}yr cumulative`:'No withdrawals set', cls:wdraw>0?'p':'s'},
  {lbl:'Total Withdrawn (Regular + Lumps)', val:fin.cumWd>0?fmtM(fin.cumWd):'None', sub:'All outflows combined', cls:fin.cumWd>0?'r':'s', hi:fin.cumWd>0?'hi-p':''},
@@ -2403,10 +2450,11 @@ function buildTable(f){
 // LUMP-SUM UI
 // ═══════════════════════════════════════
 function renderLumps(){
+ const _lumpMin = Math.max(0,(+g('v_dcaYrs').value||0)+(+g('v_coast').value||0));
  g('lumpList').innerHTML=lumpSums.map((l,i)=>`
  <div class="lump-entry">
  <span style="font-size:9px;color:#94a3b8">Yr</span>
- <div class="num-wrap" style="flex:0 0 auto"><input class="num-in" style="width:38px" type="number" data-li="${i}" data-field="yr" value="${l.yr}" min="1" max="100" step="1"></div>
+ <div class="num-wrap" style="flex:0 0 auto"><input class="num-in" style="width:38px" type="number" data-li="${i}" data-field="yr" value="${l.yr}" min="${_lumpMin}" max="50" step="1"></div>
  <span class="lump-sep">→</span>
  <div class="num-wrap" style="flex:1"><span class="num-prefix">$</span><input class="num-in" style="width:66px" type="number" data-li="${i}" data-field="amt" value="${l.amt}" min="0" max="1000000" step="10000"></div>
  <button class="lump-del" data-li="${i}"></button>
@@ -2417,12 +2465,15 @@ function renderLumps(){
  g('lumpList').querySelectorAll('.lump-del').forEach(btn=>{
  btn.addEventListener('click',()=>{ lumpSums.splice(+btn.dataset.li,1); renderLumps(); debounce(); });
  });
+ updateAddLumpBtn && updateAddLumpBtn();
 }
 g('addLump').addEventListener('click',()=>{
- const {dcaYrs,coast}=getBase();
- lumpSums.push({yr:Math.min(dcaYrs+coast+(+g('v_wYrs').value||30),35),amt:100000});
+ if(lumpSums.length >= 10) return;
+ lumpSums.push({yr:0,amt:0});
  renderLumps(); debounce();
+ g('addLump').textContent = lumpSums.length>=10 ? '＋ Add lump-sum event (max 10 reached)' : `＋ Add lump-sum event (${lumpSums.length}/10)`;
 });
+function updateAddLumpBtn(){ g('addLump').textContent = lumpSums.length>=10 ? '＋ Add lump-sum event (max 10 reached)' : `＋ Add lump-sum event (${lumpSums.length}/10)`; g('addLump').disabled = lumpSums.length>=10; }
 
 // ═══════════════════════════════════════
 // INPUT BINDING
@@ -2432,8 +2483,9 @@ function debounce(){ clearTimeout(debTimer); debTimer=setTimeout(render,120); }
 function bindPair(vId,rId){
  const vEl=g(vId),rEl=g(rId);
  if(!vEl||!rEl) return;
- vEl.addEventListener('input',()=>{ rEl.value=vEl.value; debounce(); });
- rEl.addEventListener('input',()=>{ vEl.value=rEl.value; debounce(); });
+ const isPhase1 = (vId==='v_dcaYrs'||vId==='v_coast');
+ vEl.addEventListener('input',()=>{ rEl.value=vEl.value; if(isPhase1) renderLumps(); debounce(); });
+ rEl.addEventListener('input',()=>{ vEl.value=rEl.value; if(isPhase1) renderLumps(); debounce(); });
 }
 ['dcaYrs','coast','inf','wdraw','winc','wYrs'].forEach(k=>bindPair('v_'+k,'r_'+k));
 
@@ -3834,18 +3886,19 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderPortfolio); 
           </div>
         </div>
 
-        <div class="ctrl-item">
-          <div class="ctrl-label">Pay extra for how many years?</div>
-          <div class="ctrl-row">
-            <div class="num-wrap"><input class="num-in" type="number" id="mi_extraDur" value="30" min="1" max="30" step="1"><span class="num-suffix">yr</span></div>
-            <input class="range-in" type="range" id="mi_extraDur_r" min="1" max="30" step="1" value="30">
-          </div>
-        </div>
+        <input type="hidden" id="mi_extraDur" value="30">
       </div>
 
       <!-- ETF funds -->
       <div class="ctrl-group">
         <div class="ctrl-group-title" style="color:#047857">📈 ETF Funds (after payoff)</div>
+        <div class="ctrl-item" style="margin-bottom:8px">
+          <div class="ctrl-label">ETF investing duration</div>
+          <div class="ctrl-row">
+            <div class="num-wrap"><input class="num-in" type="number" id="mi_etfDur" value="20" min="1" max="30" step="1"><span class="num-suffix">yr</span></div>
+            <input class="range-in" type="range" id="mi_etfDur_r" min="1" max="30" step="1" value="20">
+          </div>
+        </div>
         <div style="font-size:10px;color:#94a3b8;margin-bottom:8px">Up to 6 funds · set monthly DCA per fund</div>
         <div id="miFundList"></div>
         <button id="miAddFundBtn" style="width:100%;padding:5px;border-radius:8px;font-size:10px;font-weight:600;background:#ecfdf5;border:1px solid #a7f3d0;color:#047857;cursor:pointer;margin-top:4px" onclick="miAddFund()">＋ Add ETF Fund</button>
@@ -3859,14 +3912,14 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderPortfolio); 
 
       <!-- 20-year timeline bar -->
       <div class="ctrl-group" style="padding:12px 14px">
-        <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">20-Year Timeline</div>
+        <div id="mi_timeline_label" style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">Timeline</div>
         <div class="mi-tb">
           <div class="mi-tb-mort" id="mi_tb_mort" style="width:50%">
             <span class="mi-tb-label">Mortgage</span>
             <span class="mi-tb-val" id="mi_tb_mort_val">—</span>
           </div>
           <div class="mi-tb-etf" id="mi_tb_etf" style="width:50%">
-            <span class="mi-tb-label">Invest</span>
+            <span class="mi-tb-label" id="mi_tb_etf_label">ETF Funds</span>
             <span class="mi-tb-val" id="mi_tb_etf_val">—</span>
           </div>
         </div>
@@ -4051,16 +4104,18 @@ window.miRender=function(){
   var yrs  = parseInt(miG('mi_years').value)      || 30;
   var extra= parseFloat(miG('mi_extra').value)    || 0;
   var exDur= parseInt(miG('mi_extraDur').value)   || 30;
-  var TOTAL= 240; // 20 years in months
+  var etfDur = parseInt(miG('mi_etfDur').value)   || 20;
 
   // Mortgage sims
   var sim = simulateMortgage(bal, rate, yrs, extra, exDur);
   var std = simulateMortgage(bal, rate, yrs, 0,     0);
 
   var minPmt = sim.minPmt;
-  var payoffMo = Math.min(sim.payoffMo, TOTAL);
-  var payoffYrs= (sim.payoffMo/12).toFixed(1);
+  var payoffMo = sim.payoffMo;            // actual payoff in months
+  var payoffYrs= (payoffMo/12).toFixed(1);
+  var TOTAL = payoffMo + etfDur * 12;     // dynamic total timeline
   var saved = Math.max(0, std.totalInt - sim.totalInt);
+  var totalYrs = (TOTAL/12).toFixed(0);
 
   // Update summary
   if(miG('mi_minPmt'))      miG('mi_minPmt').textContent      = fmt(minPmt);
@@ -4074,7 +4129,9 @@ window.miRender=function(){
   var etfPct  = 100-mortPct;
   var tb1=miG('mi_tb_mort'), tb2=miG('mi_tb_etf');
   if(tb1){ tb1.style.width=mortPct+'%'; miG('mi_tb_mort_val').textContent=payoffYrs+'y'; }
-  if(tb2){ tb2.style.width=etfPct+'%';  miG('mi_tb_etf_val').textContent=((TOTAL-payoffMo)/12).toFixed(1)+'y'; }
+  if(tb2){ tb2.style.width=etfPct+'%';  miG('mi_tb_etf_val').textContent=etfDur+'y'; }
+  if(miG('mi_timeline_label')) miG('mi_timeline_label').textContent = payoffYrs+' yr Mortgage + '+etfDur+' yr ETF = '+totalYrs+' yr Timeline';
+  if(miG('mi_tb_etf_label'))   miG('mi_tb_etf_label').textContent   = 'ETF Funds ('+etfDur+' yr)';
 
   // ETF phase — monthly = sum of fund DCAs (user-set per fund)
   var monthly = MI_FUNDS.reduce(function(s,f){return s+(f.dca||0);},0);
@@ -4166,7 +4223,8 @@ function miInit(){
   miWire('mi_rate',     'mi_rate_r');
   miWire('mi_years',    'mi_years_r');
   miWire('mi_extra',    'mi_extra_r');
-  miWire('mi_extraDur', 'mi_extraDur_r');
+  miWire('mi_etfDur',   'mi_etfDur_r');
+  // mi_extraDur is now hidden (full loan term); no wire binding needed
   miRenderFunds();
   miRenderTotalDCA();
   miRender();
@@ -4293,6 +4351,81 @@ if(document.readyState==='loading'){
 
 /* main content area */
 .pm-main{padding:28px 32px;display:flex;flex-direction:column;gap:24px;}
+
+/* ── Live price tiles ── */
+.pm-live-prices{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:4px;}
+.pm-live-tile{
+  border-radius:22px;padding:28px 24px 24px;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+}
+.pm-live-tile::before{
+  content:'';position:absolute;inset:0;border-radius:22px;
+  background:radial-gradient(ellipse at 50% 0%,var(--glow-color) 0%,transparent 70%);
+  opacity:.18;pointer-events:none;
+}
+.pm-live-tile-gold{
+  background:linear-gradient(145deg,#140c00 0%,#1e1200 40%,#120a00 100%);
+  border:1.5px solid rgba(201,165,53,.55);
+  box-shadow:0 0 50px rgba(201,165,53,.22),0 0 120px rgba(201,165,53,.08),inset 0 1px 0 rgba(201,165,53,.15);
+  --glow-color:#c9a535;
+  animation:goldPulse 3s ease-in-out infinite;
+}
+.pm-live-tile-silver{
+  background:linear-gradient(145deg,#080d12 0%,#101820 40%,#080d12 100%);
+  border:1.5px solid rgba(160,180,200,.45);
+  box-shadow:0 0 50px rgba(150,170,195,.18),0 0 120px rgba(150,170,195,.06),inset 0 1px 0 rgba(180,195,215,.12);
+  --glow-color:#94a3b8;
+  animation:silverPulse 3.5s ease-in-out infinite;
+}
+@keyframes goldPulse{
+  0%,100%{box-shadow:0 0 50px rgba(201,165,53,.22),0 0 120px rgba(201,165,53,.08),inset 0 1px 0 rgba(201,165,53,.15);}
+  50%   {box-shadow:0 0 70px rgba(201,165,53,.38),0 0 160px rgba(201,165,53,.16),inset 0 1px 0 rgba(201,165,53,.25);}
+}
+@keyframes silverPulse{
+  0%,100%{box-shadow:0 0 50px rgba(150,170,195,.18),0 0 120px rgba(150,170,195,.06),inset 0 1px 0 rgba(180,195,215,.12);}
+  50%   {box-shadow:0 0 70px rgba(150,170,195,.32),0 0 160px rgba(150,170,195,.12),inset 0 1px 0 rgba(180,195,215,.22);}
+}
+.pm-live-badge{
+  font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  padding:3px 12px;border-radius:20px;margin-bottom:10px;
+}
+.pm-live-tile-gold .pm-live-badge{background:rgba(201,165,53,.12);color:#c9a535;border:1px solid rgba(201,165,53,.3);}
+.pm-live-tile-silver .pm-live-badge{background:rgba(148,163,184,.1);color:#94a3b8;border:1px solid rgba(148,163,184,.25);}
+.pm-live-icon{font-size:42px;margin-bottom:4px;line-height:1;}
+.pm-live-metal{font-size:11px;font-weight:800;letter-spacing:4px;text-transform:uppercase;margin-bottom:10px;}
+.pm-live-tile-gold .pm-live-metal{color:#c9a535;}
+.pm-live-tile-silver .pm-live-metal{color:#8aabb8;}
+.pm-live-price{
+  font-size:clamp(38px,4.8vw,60px);font-weight:900;letter-spacing:-1.5px;
+  line-height:1;margin-bottom:8px;font-variant-numeric:tabular-nums;
+  transition:all .4s ease;
+}
+.pm-live-tile-gold .pm-live-price{
+  color:#f7de7a;
+  text-shadow:0 0 24px rgba(201,165,53,.7),0 0 50px rgba(201,165,53,.35),0 0 90px rgba(201,165,53,.15);
+}
+.pm-live-tile-silver .pm-live-price{
+  color:#e8eef5;
+  text-shadow:0 0 24px rgba(220,232,245,.5),0 0 50px rgba(148,163,184,.28),0 0 90px rgba(148,163,184,.1);
+}
+.pm-live-sub{font-size:10px;color:rgba(255,255,255,.32);letter-spacing:.3px;}
+.pm-live-dot{
+  display:inline-block;width:6px;height:6px;border-radius:50%;
+  margin-right:5px;vertical-align:middle;
+  animation:pmDotPulse 2s ease-in-out infinite;
+}
+.pm-live-tile-gold .pm-live-dot{background:#c9a535;box-shadow:0 0 6px #c9a535;}
+.pm-live-tile-silver .pm-live-dot{background:#94a3b8;box-shadow:0 0 6px #94a3b8;}
+@keyframes pmDotPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.3;transform:scale(.7);}}
+.pm-live-refresh{
+  position:absolute;top:12px;right:14px;font-size:15px;cursor:pointer;
+  opacity:.3;background:none;border:none;color:inherit;transition:opacity .2s,transform .3s;
+  padding:4px;
+}
+.pm-live-refresh:hover{opacity:.9;transform:rotate(180deg);}
+.pm-live-loading .pm-live-price{opacity:.4;}
 
 /* result tiles */
 .pm-tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
@@ -4443,6 +4576,32 @@ if(document.readyState==='loading'){
     <!-- Main results -->
     <div class="pm-main">
 
+      <!-- Live Gold & Silver Spot Prices -->
+      <div class="pm-live-prices">
+        <!-- Gold -->
+        <div class="pm-live-tile pm-live-tile-gold pm-live-loading" id="pm_gold_tile">
+          <button class="pm-live-refresh" onclick="fetchMetalPrices()" title="Refresh live prices">↺</button>
+          <div class="pm-live-badge">🟡 Live Spot Price</div>
+          <div class="pm-live-icon">🥇</div>
+          <div class="pm-live-metal">Gold</div>
+          <div class="pm-live-price" id="pm_live_gold">…</div>
+          <div class="pm-live-sub">
+            <span class="pm-live-dot"></span><span id="pm_live_gold_sub">Fetching live price…</span>
+          </div>
+        </div>
+        <!-- Silver -->
+        <div class="pm-live-tile pm-live-tile-silver pm-live-loading" id="pm_silver_tile">
+          <button class="pm-live-refresh" onclick="fetchMetalPrices()" title="Refresh live prices">↺</button>
+          <div class="pm-live-badge">⚪ Live Spot Price</div>
+          <div class="pm-live-icon">🥈</div>
+          <div class="pm-live-metal">Silver</div>
+          <div class="pm-live-price" id="pm_live_silver">…</div>
+          <div class="pm-live-sub">
+            <span class="pm-live-dot"></span><span id="pm_live_silver_sub">Fetching live price…</span>
+          </div>
+        </div>
+      </div>
+
       <!-- 5 result tiles -->
       <div class="pm-tiles">
         <div class="pm-tile t-invested">
@@ -4522,8 +4681,91 @@ if(document.readyState==='loading'){
 (function(){
 'use strict';
 
-var pmMetal = 'both'; // 'gold','silver','both'
-var pmChart = null;
+// ── Live metal price fetch ─────────────────────────────────────
+window.fetchMetalPrices = function(){
+  var goldEl   = document.getElementById('pm_live_gold');
+  var silverEl = document.getElementById('pm_live_silver');
+  var goldSub  = document.getElementById('pm_live_gold_sub');
+  var silverSub= document.getElementById('pm_live_silver_sub');
+  var gTile    = document.getElementById('pm_gold_tile');
+  var sTile    = document.getElementById('pm_silver_tile');
+
+  function fmtSpot(n){ return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function setLoading(){
+    if(goldEl)   goldEl.textContent   = '…';
+    if(silverEl) silverEl.textContent = '…';
+    if(gTile) gTile.classList.add('pm-live-loading');
+    if(sTile) sTile.classList.add('pm-live-loading');
+  }
+  function setReady(){
+    if(gTile) gTile.classList.remove('pm-live-loading');
+    if(sTile) sTile.classList.remove('pm-live-loading');
+  }
+  function applyPrices(gold, silver, source){
+    if(goldEl)   goldEl.textContent   = fmtSpot(gold);
+    if(silverEl) silverEl.textContent = fmtSpot(silver);
+    var ts = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    if(goldSub)   goldSub.textContent   = 'USD / troy oz · '+source+' · '+ts;
+    if(silverSub) silverSub.textContent = 'USD / troy oz · '+source+' · '+ts;
+    setReady();
+  }
+  function showError(msg){
+    if(goldEl)   goldEl.textContent   = '—';
+    if(silverEl) silverEl.textContent = '—';
+    var note = msg || 'Could not fetch — tap ↺ to retry';
+    if(goldSub)   goldSub.textContent   = note;
+    if(silverSub) silverSub.textContent = note;
+    setReady();
+  }
+
+  setLoading();
+
+  // ── Source 1: metals.live (purpose-built metals API, CORS open) ──
+  fetch('https://metals.live/api/v1/spot/gold,silver',{cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('metals.live '+r.status); return r.json(); })
+    .then(function(d){
+      var row = Array.isArray(d) ? d[0] : d;
+      if(row && row.gold>0 && row.silver>0){
+        applyPrices(row.gold, row.silver, 'metals.live');
+      } else { throw new Error('metals.live bad data'); }
+    })
+    .catch(function(){
+      // ── Source 2: goldprice.org ──
+      fetch('https://data-asg.goldprice.org/dbXRates/USD',{cache:'no-store'})
+        .then(function(r){ if(!r.ok) throw new Error('gpo '+r.status); return r.json(); })
+        .then(function(d){
+          if(d && d.items && d.items[0] && d.items[0].xauPrice>0){
+            applyPrices(d.items[0].xauPrice, d.items[0].xagPrice, 'goldprice.org');
+          } else { throw new Error('gpo bad data'); }
+        })
+        .catch(function(){
+          // ── Source 3: Yahoo Finance (gold + silver futures) ──
+          var goldP = null, silverP = null;
+          function tryApply(){
+            if(goldP!==null && silverP!==null){
+              if(goldP>0 && silverP>0){ applyPrices(goldP, silverP, 'Yahoo Finance'); }
+              else { showError(); }
+            }
+          }
+          fetch('https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?interval=1d&range=1d',{cache:'no-store'})
+            .then(function(r){ return r.json(); })
+            .then(function(d){ goldP = d.chart.result[0].meta.regularMarketPrice || 0; tryApply(); })
+            .catch(function(){ goldP = 0; tryApply(); });
+          fetch('https://query1.finance.yahoo.com/v8/finance/chart/SI%3DF?interval=1d&range=1d',{cache:'no-store'})
+            .then(function(r){ return r.json(); })
+            .then(function(d){ silverP = d.chart.result[0].meta.regularMarketPrice || 0; tryApply(); })
+            .catch(function(){ silverP = 0; tryApply(); });
+        });
+    });
+};
+
+// Auto-fetch on load (small delay so DOM is ready)
+setTimeout(window.fetchMetalPrices, 300);
+
+var pmMetal   = 'both'; // 'gold','silver','both'
+var pmChart   = null;
+var pmVisited = false; // only save snapshot after user explicitly enters this section
+window.pmMarkVisited = function(){ pmVisited = true; };
 
 function pmFmt(n){
   if(Math.abs(n)>=1e6) return '$'+(n/1e6).toFixed(2)+'M';
@@ -4632,8 +4874,8 @@ window.pmRender = function(){
   var realRet = last.realVal - last.invested;
   pmG('pm_t_real').textContent        = pmFmt(realRet);
 
-  // Auto-save to in-memory session store
-  if(window.pmSaveSnapshot){
+  // Auto-save to in-memory session store — only after user has actually visited this section
+  if(pmVisited && window.pmSaveSnapshot){
     window.pmSaveSnapshot('precious', {
       strategy: 'Strategy V — Precious Metals',
       metal: pmMetal,

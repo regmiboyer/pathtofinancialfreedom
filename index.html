@@ -202,6 +202,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   50%{text-shadow:0 0 16px rgba(255,100,0,1),0 0 32px rgba(255,60,0,.8),0 0 60px rgba(220,38,38,.6);}
 }
 .card-longevity .c-sub{color:#ff9999 !important;font-weight:600 !important;}
+.card-longevity .c-sub2{font-size:15px;color:rgba(255,200,150,.75);font-weight:600;margin-top:4px;padding-top:4px;border-top:1px solid rgba(255,255,255,.1);}
 /* flame icon top-right */
 .card-longevity .flame-icon{
   position:absolute;top:6px;right:8px;font-size:22px;
@@ -2050,21 +2051,23 @@ function simulate(){
 // ═══════════════════════════════════════
 // CHARTS
 // ═══════════════════════════════════════
-// ── Fund longevity: how many years until portfolio depletes at given withdrawal ──
+// ── Fund longevity: exact months until portfolio depletes at given withdrawal ──
 function calcLongevity(startVal, funds, wdraw, winc){
  if(wdraw<=0) return Infinity;
+ if(!startVal||startVal<=0) return 0;
  const totDCA = funds.reduce((s,f)=>s+(f.dca||0),0)||1;
  const wAvgMRate = funds.reduce((s,f)=>s+(f.rate/100/12)*((f.dca||0)/totDCA),0);
  let val=startVal, months=0;
- const MAX=120*12;
+ const MAX=150*12; // 150-year ceiling
  while(val>0&&months<MAX){
- const yr=Math.floor(months/12);
- const mW=wdraw*Math.pow(1+winc,yr);
- val=Math.max(0,val-Math.min(mW,val));
- val=val*(1+wAvgMRate);
- months++;
+   const yr=Math.floor(months/12);
+   const mW=wdraw*Math.pow(1+(winc||0),yr);
+   if(mW>=val){ months++; break; } // depletes this month
+   val=val-mW;
+   val=val*(1+wAvgMRate);
+   months++;
  }
- return months<MAX ? months/12 : Infinity;
+ return months>=MAX ? Infinity : months/12;
 }
 
 let mainChart,flowChart,cumChart;
@@ -2375,13 +2378,62 @@ function render(){
  <div class="fund-subtiles">${fundSubtiles}</div>
  </div>`;
 
- // Fund longevity tile
- const _startOfWd = data[dcaYrs+coast-1]||data[0];
- const _longevityYrs = calcLongevity(_startOfWd.comb, funds, wdraw, winc);
- const _longevityStr = _longevityYrs===Infinity ? '♾ Forever' : `~${Math.floor(_longevityYrs)} yrs`;
+ // Fund longevity tile — fully interactive, precise calculation
+ const _wdStartIdx = Math.max(0, dcaYrs + coast - 1);
+ const _startOfWd = data[_wdStartIdx] || data[0];
+ const _startPortfolio = (_startOfWd && _startOfWd.comb > 0) ? _startOfWd.comb : 0;
+ const _longevityYrs = calcLongevity(_startPortfolio, funds, wdraw, winc);
  const _wincPct = ((winc||0)*100).toFixed(1);
- const _longevitySub = wdraw<=0 ? 'No withdrawals — fund grows indefinitely' : `At ${fmtM(wdraw)}/mo · ${_wincPct}% annual rise`;
- const _longevityCls = _longevityYrs===Infinity?'g':_longevityYrs>=30?'g':_longevityYrs>=15?'y':'r';
+
+ // Compute display: years + months
+ let _longevityStr, _longevityIcon, _longevityLine2, _longevityCls;
+ if (wdraw <= 0) {
+   _longevityStr  = '♾ Forever';
+   _longevityIcon = '♾';
+   _longevityLine2 = 'No withdrawals set — fund grows indefinitely';
+   _longevityCls  = 'g';
+ } else if (_startPortfolio <= 0) {
+   _longevityStr  = '0 years';
+   _longevityIcon = '⚠️';
+   _longevityLine2 = 'Fund is empty at start of withdrawal phase';
+   _longevityCls  = 'r';
+ } else if (_longevityYrs === Infinity) {
+   _longevityStr  = '♾ Forever';
+   _longevityIcon = '✅';
+   _longevityLine2 = `Returns outpace ${fmtM(wdraw)}/mo withdrawal — fund never depletes`;
+   _longevityCls  = 'g';
+ } else {
+   const _totalMos   = Math.round(_longevityYrs * 12);
+   const _dispYrs    = Math.floor(_totalMos / 12);
+   const _dispMos    = _totalMos % 12;
+   const _moStr      = _dispMos > 0 ? `, ${_dispMos} mo` : '';
+   _longevityStr     = `${_dispYrs} yr${_dispYrs !== 1 ? 's' : ''}${_moStr}`;
+   // Compare vs intended withdrawal duration
+   const _planMos    = (wYrs || 0) * 12;
+   if (wYrs > 0) {
+     const _diffMos  = _totalMos - _planMos;
+     const _diffYrs  = Math.abs(Math.floor(_diffMos / 12));
+     const _diffMoRem = Math.abs(_diffMos % 12);
+     const _diffStr  = _diffYrs > 0
+       ? `${_diffYrs} yr${_diffYrs!==1?'s':''}${_diffMoRem>0?', '+_diffMoRem+' mo':''}`
+       : `${Math.abs(_diffMos)} mo`;
+     if (_diffMos >= 0) {
+       _longevityIcon = '✅';
+       _longevityLine2 = `Outlasts your ${wYrs}-yr plan by ${_diffStr}`;
+       _longevityCls  = 'g';
+     } else {
+       _longevityIcon = '⚠️';
+       _longevityLine2 = `Runs out ${_diffStr} before your ${wYrs}-yr plan ends`;
+       _longevityCls  = _diffYrs >= 10 ? 'r' : 'y';
+     }
+   } else {
+     _longevityIcon = _dispYrs >= 30 ? '✅' : _dispYrs >= 15 ? '⚠️' : '🔴';
+     _longevityLine2 = `At ${fmtM(wdraw)}/mo · ${_wincPct}% annual rise`;
+     _longevityCls  = _dispYrs >= 30 ? 'g' : _dispYrs >= 15 ? 'y' : 'r';
+   }
+ }
+ const _longevitySub1 = wdraw <= 0 ? _longevityLine2 : `Starts with ${fmtM(_startPortfolio)} · ${fmtM(wdraw)}/mo · +${_wincPct}%/yr`;
+ const _longevitySub2 = wdraw > 0 && _startPortfolio > 0 ? _longevityLine2 : '';
 
  // 2-7. Individual stat tiles
  const tiles = [
@@ -2392,7 +2444,7 @@ function render(){
  {lbl:'Regular Monthly Withdrawals (Total)', val:wdraw>0?fmtM(regularWd):'None', sub:wdraw>0?`${wYrs}yr cumulative`:'No withdrawals set', cls:wdraw>0?'p':'s'},
  {lbl:'Total Withdrawn (Regular + Lumps)', val:fin.cumWd>0?fmtM(fin.cumWd):'None', sub:'All outflows combined', cls:fin.cumWd>0?'r':'s', hi:fin.cumWd>0?'hi-p':''},
  ].map(c=>`<div class="card ${c.hi||''} ${c.extra||''}"><div class="c-lbl">${c.lbl}</div><div class="c-val ${c.cls}">${c.val}</div><div class="c-sub">${c.sub}</div></div>`).join('')
- + `<div class="card card-longevity"><span class="flame-icon">🔥</span><div class="c-lbl">How Long Will the Fund Last?</div><div class="c-val">${_longevityStr}</div><div class="c-sub">${_longevitySub}</div></div>`;
+ + `<div class="card card-longevity"><span class="flame-icon">${_longevityIcon||'🔥'}</span><div class="c-lbl">How Long Will the Fund Last?</div><div class="c-val ${_longevityCls}">${_longevityStr}</div><div class="c-sub">${_longevitySub1}</div>${_longevitySub2?`<div class="c-sub2">${_longevitySub2}</div>`:''}</div>`;
 
  g('cards').innerHTML = bigTile + `<div class="cards-row">${tiles}</div>`;
 

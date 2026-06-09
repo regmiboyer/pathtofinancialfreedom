@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Investment Planner",
+  "schemaVersion": 1,
+  "description": "50-year interactive wealth simulation — pick any of 130 US ETFs, full DCA model with lump-sum events. DCA vs Timing the Market: 10-year VOO data, green/red heatmap, head-to-head comparison. All parameters live-editable."
+}
+</script>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -664,6 +671,16 @@ input[type="range"], .range-in { display: none !important; }
 .c5 .p2-explore{background:#faf6e8;color:#8a6a18;}
 .c5 .p2-explore:hover{background:#f0eacf;}
 
+/* c8 — DCA / Indigo-Teal theme */
+.p2-card.c8:hover{border-color:#818cf8;}
+.c8 .p2-accent-bar{background:linear-gradient(90deg,#4f46e5,#06b6d4);}
+.c8 .p2-num{background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe;}
+.c8 .p2-card-icon{background:linear-gradient(135deg,#eef2ff,#ecfdf5);border:1px solid #c7d2fe;}
+.c8 .p2-card-eyebrow{color:#4f46e5;}
+.c8 .p2-feat-dot{background:linear-gradient(135deg,#4f46e5,#06b6d4);}
+.c8 .p2-explore{background:#eef2ff;color:#4f46e5;}
+.c8 .p2-explore:hover{background:#e0e7ff;}
+
 /* ── Fun card (restrained but still cheeky) ── */
 @keyframes funWobble{
   0%,100%{transform:rotate(-.6deg);}
@@ -1156,6 +1173,31 @@ input[type="range"], .range-in { display: none !important; }
         </div>
       </div>
 
+      <!-- ⑧ DCA vs Market Timing -->
+      <div class="p2-card c8" onclick="enterApp('dca')">
+        <div class="p2-accent-bar"></div>
+        <div class="p2-card-body">
+          <div class="p2-num">08</div>
+          <div class="p2-card-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <polyline points="1.5,14 5,9 8.5,11 12,5 16.5,7" stroke="#4f46e5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <circle cx="16.5" cy="7" r="1.5" fill="#06b6d4"/>
+              <line x1="1.5" y1="14" x2="16.5" y2="14" stroke="#4f46e5" stroke-width="1" stroke-dasharray="2 2" opacity=".4"/>
+            </svg>
+          </div>
+          <div class="p2-card-eyebrow">Educational · Real Data</div>
+          <div class="p2-card-title">DCA vs Timing the Market</div>
+          <div class="p2-divider"></div>
+          <div class="p2-card-desc">10 years of real VOO data. Does waiting for dips beat investing $1,000 every single month? The answer will calm your nerves.</div>
+          <ul class="p2-features">
+            <li><span class="p2-feat-dot"></span>Jun 2016 – May 2026 · VOO monthly returns</li>
+            <li><span class="p2-feat-dot"></span>DCA vs "Buy the Dip" head-to-head</li>
+            <li><span class="p2-feat-dot"></span>Interactive heatmap &amp; cumulative chart</li>
+          </ul>
+          <div class="p2-explore">Open strategy <span class="p2-explore-arrow">→</span></div>
+        </div>
+      </div>
+
     </div><!-- /.p2-cards -->
 
     <!-- ⑦ Just For Fun — full-width cheeky banner -->
@@ -1260,9 +1302,10 @@ var STRATEGY_META = {
   compare:    { name:'Strategy V — High Touch Property Portfolio',        badge:'Property',  section:'pfSection'         },
   precious:   { name:'Strategy VI — Precious Metals Portfolio',             badge:'Metals',    section:'preciousSection'   },
   meme:       { name:'Strategy VII — Fastest Way to Be Wealthy',           badge:'🚀 Legit',  section:'memeSection'       },
-  super:      { name:'Strategy III — Super Salary Sacrifice (AU)',         badge:'🇦🇺 Super', section:'superSection'      }
+  super:      { name:'Strategy III — Super Salary Sacrifice (AU)',         badge:'🇦🇺 Super', section:'superSection'      },
+  dca:        { name:'DCA vs Timing the Market',                           badge:'📈 DCA',    section:'dcaSection'        }
 };
-var ALL_SECTIONS = ['etfSection','propSection','pfSection','mortInvestSection','preciousSection','memeSection','superSection'];
+var ALL_SECTIONS = ['etfSection','propSection','pfSection','mortInvestSection','preciousSection','memeSection','superSection','dcaSection'];
 
 // ── Page transitions ──────────────────────────────────────────
 function showStrategyPicker(){
@@ -1289,7 +1332,7 @@ function enterApp(strategy){
       var el = document.getElementById(id);
       if(!el) return;
       if(id === meta.section){
-        el.style.display = (id === 'mortInvestSection' || id === 'preciousSection' || id === 'memeSection' || id === 'superSection') ? 'block' : '';
+        el.style.display = (id === 'mortInvestSection' || id === 'preciousSection' || id === 'memeSection' || id === 'superSection' || id === 'dcaSection') ? 'block' : '';
       } else {
         el.style.display = 'none';
       }
@@ -1305,6 +1348,9 @@ function enterApp(strategy){
     }
     if(strategy === 'super'){
       setTimeout(function(){ if(window.suInit) window.suInit(); }, 80);
+    }
+    if(strategy === 'dca'){
+      setTimeout(function(){ if(window.dcaInit) window.dcaInit(); }, 80);
     }
 
     // Auto-harvest after render settles (non-PM sections)
@@ -1562,7 +1608,7 @@ function saveResults(){
 
  <div class="app-header">
  <div style="flex:1">
- <div class="app-title">Section 1: Investment in VanGuard ETF's</div>
+ <div class="app-title">Strategy I: Investment in VanGuard ETF's</div>
  <div class="app-sub" id="appSub">50-year wealth simulation</div>
  </div>
  <span class="pill">Build → Coast → Withdraw</span>
@@ -2662,7 +2708,7 @@ if(document.readyState === 'loading'){
 <section class="prop-wrap" id="propSection">
  <!-- Header -->
  <div class="prop-sec-hdr">
- <div class="prop-sec-title">Section 2: Rental Property Investment — Sydney Comparison</div>
+ <div class="prop-sec-title">Strategy IV: Rental Property Investment — Sydney Comparison</div>
  <div class="prop-sec-sub">120 Macdonald Rd Bardia baseline · Sydney investment property · Adjust any value to see live impact</div>
  </div>
 
@@ -2751,7 +2797,7 @@ if(document.readyState === 'loading'){
  <div class="chart-box">
  <div class="ch-hdr">
  <div class="ch-ttl">Property Value &amp; Cumulative Cash Position — Nominal &amp; Real (inflation-adj)</div>
- <div style="font-size:11px;color:#9ca3af;margin-top:2px">Solid lines = nominal · Dashed lines = real (today's $) · Inflation rate shared with Section 1</div>
+ <div style="font-size:11px;color:#9ca3af;margin-top:2px">Solid lines = nominal · Dashed lines = real (today's $) · Inflation rate shared with Strategy I</div>
  </div>
  <canvas id="propMainChart" style="max-height:320px"></canvas>
  </div>
@@ -2843,7 +2889,7 @@ function simulateProperty(){
  const data=[];
 
  const growthRate = yr => yr<=12 ? p.g1 : yr<=22 ? p.g2 : p.g3;
- const inf = getBase().inf; // shared inflation rate from Section 1
+ const inf = getBase().inf; // shared inflation rate from Strategy I
 
  for(let yr=1; yr<=p.term; yr++){
  const monthlyRent = p.rent * Math.pow(1+p.rentinc, Math.floor((yr-1)/3)); // +rentinc% every 3rd year
@@ -3297,7 +3343,7 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderProperty); }
 
 <section class="pf-wrap" id="pfSection">
  <div class="pf-sec-hdr">
- <div class="pf-sec-title">Section 3: Property Portfolio Strategy — Buy Every 5 Years</div>
+ <div class="pf-sec-title">Strategy V: Property Portfolio Strategy — Buy Every 5 Years</div>
  <div class="pf-sec-sub">Grow a portfolio by acquiring one property every 5 years · 50% deposit from equity, 50% from savings · Sell all at Year 30</div>
  </div>
 
@@ -3318,10 +3364,10 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderProperty); }
  </div></div>
  </div>
  <div class="pf-group">
- <div class="pf-group-title" style="color:#059669">Using Settings From Section 2</div>
- <div class="pf-ref-box" id="pfRefBox">Loading from Section 2…</div>
+ <div class="pf-group-title" style="color:#059669">Using Settings From Strategy IV</div>
+ <div class="pf-ref-box" id="pfRefBox">Loading from Strategy IV…</div>
  <div style="font-size:11px;color:#9ca3af;margin-top:7px;line-height:1.55">
- All property price, rent, costs, growth rates and mortgage rates are pulled live from Section 2. Adjust sliders there to see the impact here.
+ All property price, rent, costs, growth rates and mortgage rates are pulled live from Strategy IV. Adjust sliders there to see the impact here.
  </div>
  </div>
  <div class="pf-group">
@@ -3395,7 +3441,7 @@ function simulatePortfolio(){
  const TERM = p.term; // 30 years
 
  const gr = yr => yr <= 12 ? p.g1 : yr <= 22 ? p.g2 : p.g3;
- const pfInf = getBase().inf; // shared inflation rate from Section 1
+ const pfInf = getBase().inf; // shared inflation rate from Strategy I
 
  // Market cumulative growth index (mkt[0]=1.0 = start before yr1)
  const mkt = [1.0];
@@ -3877,7 +3923,7 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderPortfolio); 
 
 
 <!-- ═══════════════════════════════════════════════════════════════
-     STRATEGY IV — PAY-OFF MORTGAGE AND THEN INVEST
+     STRATEGY II — PAY-OFF MORTGAGE AND THEN INVEST
 ═══════════════════════════════════════════════════════════════ -->
 <style>
 /* ── Section IV wrapper ── */
@@ -3982,82 +4028,91 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderPortfolio); 
 ═══════════════════════════════════════════ */
 #superSection{display:none;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f8fafc;min-height:100vh;color:#0f172a;}
 
-/* ── Header: dark bar with green accent (like mi-hdr) ── */
-#superSection .pm-hdr{background:linear-gradient(135deg,#064e3b,#065f46);border-bottom:2px solid #10b981;}
-#superSection .pm-hdr-badge{background:#059669;border-color:#10b981;color:#fff;font-size:22px;font-weight:800;letter-spacing:2px;text-transform:uppercase;border-radius:24px;padding:8px 22px;}
-#superSection .pm-hdr-title{color:#fff;font-size:34px;font-weight:800;letter-spacing:-.4px;}
-#superSection .pm-hdr-sub{color:rgba(167,243,208,.75);font-size:20px;margin-top:4px;}
+/* ── Header: matches Strategy II exactly ── */
+#superSection .pm-hdr{
+  background:linear-gradient(135deg,#1e1040,#0a0a1a);
+  color:#fff;padding:16px 24px;
+  display:flex;align-items:center;gap:12px;border-bottom:2px solid #059669;
+}
+#superSection .pm-hdr-badge{
+  background:#059669;color:#fff;font-size:9px;font-weight:800;
+  letter-spacing:1.2px;text-transform:uppercase;
+  padding:4px 10px;border-radius:20px;
+}
+#superSection .pm-hdr-title{color:#fff;font-size:17px;font-weight:700;letter-spacing:-.2px;}
+#superSection .pm-hdr-sub{font-size:11px;color:#6b9e8a;margin-top:1px;}
 
-/* ── Sidebar: light panel (matches Strategy I/II) ── */
-#superSection .pm-sidebar{background:#f0fdf4;border-right:1.5px solid #d1fae5;padding:22px 18px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;}
-#superSection .pm-ctrl-group{background:#fff;border:1px solid #d1fae5;border-radius:14px;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
-#superSection .pm-ctrl-title{font-size:20px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px;color:#059669;}
-#superSection .pm-ctrl-label{font-size:18px;color:#475569;margin-bottom:5px;font-weight:500;}
-#superSection .pm-ctrl-item{margin-bottom:14px;}
+/* ── Sidebar: matches Strategy II exactly ── */
+#superSection .pm-sidebar{
+  background:#f0f4ff;border-right:1px solid #e2e8f0;
+  position:sticky;top:46px;height:calc(100vh - 46px);
+  overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;
+}
+#superSection .pm-sidebar::-webkit-scrollbar{width:4px;}
+#superSection .pm-sidebar::-webkit-scrollbar-thumb{background:#c7d2fe;border-radius:2px;}
+#superSection .pm-ctrl-group{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+#superSection .pm-ctrl-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px;color:#059669;}
+#superSection .pm-ctrl-label{font-size:11px;color:#64748b;margin-bottom:2px;font-weight:400;}
+#superSection .pm-ctrl-item{margin-bottom:8px;}
 #superSection .pm-ctrl-item:last-child{margin-bottom:0;}
-#superSection .pm-ctrl-row{display:flex;align-items:center;gap:8px;}
-#superSection .pm-num-wrap{background:#f0fdf4;border:1.5px solid #a7f3d0;border-radius:8px;padding:0 8px;min-width:120px;}
-#superSection .pm-num-in{color:#0f172a;font-size:22px;font-weight:700;width:90px;padding:6px 4px;text-align:right;background:transparent;border:none;outline:none;}
-#superSection .pm-num-prefix,#superSection .pm-num-suffix{font-size:20px;color:#6b7280;}
-#superSection .pm-range{flex:1;-webkit-appearance:none;appearance:none;height:5px;border-radius:3px;background:linear-gradient(90deg,#10b981,#d1fae5);outline:none;cursor:pointer;}
-#superSection .pm-range::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#059669;border:2px solid #a7f3d0;cursor:pointer;}
+#superSection .pm-ctrl-row{display:flex;align-items:center;gap:6px;}
+#superSection .pm-num-wrap{display:flex;align-items:center;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:0 5px;flex:0 0 auto;min-width:70px;}
+#superSection .pm-num-in{color:#0f172a;font-size:12px;font-weight:600;width:80px;padding:3px 3px;text-align:right;background:transparent;border:none;outline:none;}
+#superSection .pm-num-prefix,#superSection .pm-num-suffix{font-size:11px;color:#94a3b8;}
+#superSection .pm-range{flex:1;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:#cbd5e1;outline:none;cursor:pointer;}
+#superSection .pm-range::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:#059669;border:2px solid #a7f3d0;cursor:pointer;}
 
-/* ── Main content area ── */
-#superSection .pm-main{background:#f8fafc;padding:28px 32px;display:flex;flex-direction:column;gap:24px;}
+/* ── Main content: matches Strategy II ── */
+#superSection .pm-main{background:#f8fafc;padding:16px;display:flex;flex-direction:column;gap:14px;}
 
-/* ── Result tiles — light cards ── */
-#superSection .pm-tile{background:#fff;border:1.5px solid #e2e8f0;border-radius:16px;padding:18px 18px 14px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
-#superSection .pm-tile-lbl{font-size:16px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#94a3b8;}
-#superSection .pm-tile-val{font-size:30px;font-weight:800;letter-spacing:-.5px;color:#0f172a;}
-#superSection .pm-tile-sub{font-size:16px;color:#94a3b8;margin-top:2px;line-height:1.35;}
-#superSection .pm-tile.t-ss{border-color:#ddd6fe;background:#faf5ff;}
+/* ── Result tiles — matches Strategy II mi-card style ── */
+#superSection .pm-tile{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+#superSection .pm-tile-lbl{font-size:10px;color:#94a3b8;font-weight:500;margin-bottom:2px;text-transform:none;letter-spacing:0;}
+#superSection .pm-tile-val{font-size:18px;font-weight:800;letter-spacing:-.3px;color:#0f172a;}
+#superSection .pm-tile-sub{font-size:10px;color:#94a3b8;margin-top:1px;line-height:1.3;}
+#superSection .pm-tile.t-ss{border-color:#c4b5fd;background:#faf5ff;}
 #superSection .pm-tile.t-ss .pm-tile-val{color:#7c3aed;}
-#superSection .pm-tile.t-ss .pm-tile-lbl{color:#a78bfa;}
 #superSection .pm-tile.t-etf{border-color:#fde68a;background:#fffbeb;}
 #superSection .pm-tile.t-etf .pm-tile-val{color:#d97706;}
-#superSection .pm-tile.t-etf .pm-tile-lbl{color:#f59e0b;}
 #superSection .pm-tile.t-combined{border-color:#a7f3d0;background:#f0fdf4;}
 #superSection .pm-tile.t-combined .pm-tile-val{color:#059669;}
-#superSection .pm-tile.t-combined .pm-tile-lbl{color:#10b981;}
 #superSection .pm-tile.t-tax{border-color:#bfdbfe;background:#eff6ff;}
 #superSection .pm-tile.t-tax .pm-tile-val{color:#1d4ed8;}
-#superSection .pm-tile.t-tax .pm-tile-lbl{color:#3b82f6;}
 #superSection .pm-tile.t-cost{border-color:#fecaca;background:#fef2f2;}
 #superSection .pm-tile.t-cost .pm-tile-val{color:#dc2626;}
-#superSection .pm-tile.t-cost .pm-tile-lbl{color:#f87171;}
 
-/* ── Chart & table wrappers — light cards ── */
-#superSection .pm-chart-wrap{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:24px 26px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
-#superSection .pm-chart-title{color:#0f172a;font-size:22px;font-weight:800;}
-#superSection .pm-chart-sub{color:#64748b;font-size:18px;margin-top:4px;}
-#superSection .pm-leg-item{color:#475569;}
+/* ── Chart & table wrappers — matches Strategy II mi-chart-box ── */
+#superSection .pm-chart-wrap{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px;box-shadow:none;}
+#superSection .pm-chart-title{color:#1e293b;font-size:13px;font-weight:700;}
+#superSection .pm-chart-sub{color:#94a3b8;font-size:10px;margin-top:2px;}
+#superSection .pm-leg-item{color:#64748b;font-size:11px;}
 #superSection .pm-leg-dot{border-radius:50%;}
-#superSection .pm-table-wrap{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:20px 24px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
-#superSection .pm-table-title{color:#0f172a;}
-#superSection .pm-table th{border-bottom:1.5px solid #e2e8f0;background:#f8fafc;color:#059669;font-size:18px;}
-#superSection .pm-table td{border-bottom:1px solid #f1f5f9;color:#334155;font-size:18px;}
-#superSection .pm-table td:first-child{color:#475569;font-weight:700;}
-#superSection .pm-table tr:hover td{background:#f0fdf4;}
+#superSection .pm-table-wrap{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px 14px;}
+#superSection .pm-table-title{color:#1e293b;font-size:13px;font-weight:700;margin-bottom:8px;}
+#superSection .pm-table th{border-bottom:1px solid #e2e8f0;background:#f8fafc;color:#059669;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:6px 8px;}
+#superSection .pm-table td{border-bottom:1px solid #f1f5f9;color:#334155;font-size:11px;padding:5px 8px;}
+#superSection .pm-table td:first-child{color:#475569;font-weight:600;}
+#superSection .pm-table tr:hover td{background:#f8fafc;}
 #superSection .pm-table tr.highlight td{color:#059669;font-weight:700;}
 
-/* ── Super-specific elements (light versions) ── */
-.su-in{background:#f0fdf4;border:1.5px solid #a7f3d0;color:#0f172a;border-radius:8px;padding:7px 10px;font-size:20px;width:100%;outline:none;transition:border .2s;font-family:inherit;}
+/* ── Super-specific helpers — compact sizes ── */
+.su-in{background:#f1f5f9;border:1px solid #e2e8f0;color:#0f172a;border-radius:6px;padding:3px 8px;font-size:12px;width:100%;outline:none;transition:border .2s;font-family:inherit;}
 .su-in:focus{border-color:#059669;}
-.su-hint{font-size:19px;color:#059669;margin-top:5px;font-style:italic;}
-.su-cap-warn{font-size:19px;color:#dc2626;margin-top:5px;font-weight:600;}
-.su-cap-ok{font-size:19px;color:#059669;margin-top:5px;}
-.su-tax-bar{background:#f0fdf4;border:1px solid #a7f3d0;border-radius:9px;padding:12px 14px;margin-top:8px;font-size:19px;line-height:1.8;color:#0f172a;}
-.su-calc-btn{width:100%;padding:16px;border:none;border-radius:12px;background:linear-gradient(135deg,#065f46,#047857);color:#f0fdf4;font-size:22px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .2s;margin-top:4px;box-shadow:0 4px 14px rgba(5,150,105,.25);}
-.su-calc-btn:hover{background:linear-gradient(135deg,#047857,#059669);transform:translateY(-1px);box-shadow:0 6px 20px rgba(5,150,105,.35);}
-.su-placeholder{display:flex;align-items:center;justify-content:center;min-height:300px;color:#94a3b8;font-size:22px;background:#fff;border:2px dashed #d1fae5;border-radius:14px;}
+.su-hint{font-size:10px;color:#059669;margin-top:3px;font-style:italic;}
+.su-cap-warn{font-size:10px;color:#dc2626;margin-top:3px;font-weight:600;}
+.su-cap-ok{font-size:10px;color:#059669;margin-top:3px;}
+.su-tax-bar{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:7px;padding:8px 10px;margin-top:6px;font-size:10px;line-height:1.7;color:#0f172a;}
+.su-calc-btn{width:100%;padding:8px 12px;border:none;border-radius:8px;background:#059669;color:#fff;font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .2s;margin-top:4px;}
+.su-calc-btn:hover{background:#047857;transform:translateY(-1px);}
+.su-placeholder{display:flex;align-items:center;justify-content:center;min-height:200px;color:#94a3b8;font-size:13px;background:#fff;border:1.5px dashed #e2e8f0;border-radius:10px;}
 
-/* hero result card — light green gradient */
-.su-hero{background:linear-gradient(135deg,#ecfdf5,#f0fdf4);border:1.5px solid #a7f3d0;border-radius:18px;padding:28px 32px;box-shadow:0 2px 8px rgba(5,150,105,.1);}
-.su-hero-eyebrow{font-size:19px;text-transform:uppercase;letter-spacing:1.5px;color:#059669;font-weight:700;margin-bottom:10px;}
-.su-hero-row{display:flex;gap:36px;align-items:flex-start;flex-wrap:wrap;}
-.su-hero-amount{font-size:clamp(36px,5vw,52px);font-weight:900;color:#047857;letter-spacing:-1.5px;margin-bottom:6px;line-height:1;}
-.su-hero-sub{font-size:20px;color:#059669;}
-.su-hero-div{border-left:1px solid #d1fae5;padding-left:28px;}
+/* hero result card — compact, matches mi-card green style ── */
+.su-hero{background:#f0fdf4;border:1px solid #a7f3d0;border-radius:10px;padding:12px 14px;}
+.su-hero-eyebrow{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#059669;font-weight:700;margin-bottom:4px;}
+.su-hero-row{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;}
+.su-hero-amount{font-size:22px;font-weight:900;color:#047857;letter-spacing:-.5px;margin-bottom:3px;line-height:1.1;}
+.su-hero-sub{font-size:10px;color:#059669;}
+.su-hero-div{border-left:1px solid #d1fae5;padding-left:14px;}
 .su-hero-stat{font-size:20px;color:#475569;margin-bottom:5px;}
 .su-hero-stat strong{font-weight:700;color:#0f172a;}
 
@@ -4089,7 +4144,7 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderPortfolio); 
 
 <section id="mortInvestSection">
   <div class="mi-hdr">
-    <div class="mi-hdr-badge">Strategy V</div>
+    <div class="mi-hdr-badge">Strategy II</div>
     <div>
       <div class="mi-hdr-title">Pay-Off Mortgage and Then Invest</div>
       <div class="mi-hdr-sub">20-year combined simulation — mortgage payoff · interest saved · ETF growth</div>
@@ -4309,7 +4364,7 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderPortfolio); 
 
 <script>
 // ═══════════════════════════════════════════════
-//  STRATEGY IV — Mortgage + Invest Engine
+//  STRATEGY II — Mortgage + Invest Engine
 // ═══════════════════════════════════════════════
 (function(){
 var miMortChart = null, miEtfChart = null;
@@ -6406,6 +6461,405 @@ function _projTable(dur, ssCPA, netSupRet, etfMo, etfNetRate, etfDur, takeHomeIm
     '</tr></thead><tbody>'+rows+'</tbody></table></div>'+
     '<div style="font-size:18px;color:#94a3b8;margin-top:10px;padding:8px 0;border-top:1px solid #f1f5f9">SS: after 15% contributions tax &amp; 15% earnings tax · ETF: after ~18.5% effective CGT · Pocket cost = net take-home reduction + ETF investment</div>';
 }
+
+})();
+</script>
+
+
+<!-- ══════════════════ DCA vs TIMING THE MARKET SECTION ══════════════════ -->
+<div id="dcaSection" style="display:none;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0d1117;min-height:100vh;color:#e6edf3;padding-top:60px;">
+
+<!-- Header -->
+<div style="background:linear-gradient(135deg,#0f1923 0%,#161d2b 60%,#0f1923 100%);border-bottom:1px solid #21262d;padding:26px 28px 22px;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 25% 50%,rgba(79,70,229,.14) 0%,transparent 55%),radial-gradient(ellipse at 75% 50%,rgba(6,182,212,.08) 0%,transparent 55%);pointer-events:none;"></div>
+  <div style="position:relative;z-index:1;max-width:1160px;margin:0 auto;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
+      <button onclick="backToStrategies()" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#8b949e;padding:5px 13px;border-radius:6px;font-size:12px;cursor:pointer;font-family:inherit;">← Strategy Menu</button>
+      <span style="background:linear-gradient(90deg,#4f46e5,#06b6d4);color:#fff;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700;letter-spacing:.5px;">EDUCATIONAL</span>
+      <span style="background:rgba(52,211,153,.12);color:#34d399;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700;border:1px solid rgba(52,211,153,.2);">10 Years · Real VOO Data · ~$1,000/mo</span>
+    </div>
+    <h1 style="font-size:clamp(20px,3.2vw,36px);font-weight:800;margin:0 0 7px;letter-spacing:-.4px;background:linear-gradient(90deg,#e6edf3 0%,#a5b4fc 55%,#34d399 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Does Timing the Market Beat DCA?</h1>
+    <p style="font-size:13px;color:#8b949e;max-width:580px;line-height:1.65;margin:0;">Real monthly data from <strong style="color:#c9d1d9;">VOO (S&amp;P 500 ETF)</strong> · June 2016 – May 2026 · <strong style="color:#c9d1d9;">$1,000 invested every month</strong>. No theory — just the numbers. Perfect if you worry that you should be "waiting for the right time".</p>
+  </div>
+</div>
+
+<!-- Main content -->
+<div style="max-width:1160px;margin:0 auto;padding:20px 20px 40px;">
+
+  <!-- Summary stat tiles -->
+  <div id="dcaSummaryRow" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;"></div>
+
+  <!-- Monthly Returns Heatmap -->
+  <div style="background:#161b22;border:1px solid #21262d;border-radius:12px;padding:18px 20px;margin-bottom:16px;">
+    <div style="margin-bottom:12px;">
+      <h2 style="font-size:15px;font-weight:700;color:#f0f6ff;margin:0 0 4px;">Monthly Returns Heatmap — 10 Years of VOO</h2>
+      <p style="font-size:12px;color:#6e7681;margin:0;"><span style="color:#34d399;">■ Green = up ▲</span> &nbsp;·&nbsp; <span style="color:#f87171;">■ Red = down ▼</span> &nbsp;·&nbsp; Darker = bigger move. Hover for exact %. Notice how GREEN dominates.</p>
+    </div>
+    <div id="dcaHeatmap" style="overflow-x:auto;"></div>
+    <div id="dcaHeatmapStats" style="margin-top:10px;display:flex;gap:18px;font-size:12px;color:#6e7681;flex-wrap:wrap;border-top:1px solid #21262d;padding-top:10px;"></div>
+  </div>
+
+  <!-- DCA Growth Chart -->
+  <div style="background:#161b22;border:1px solid #21262d;border-radius:12px;padding:18px 20px;margin-bottom:16px;">
+    <div style="margin-bottom:12px;">
+      <h2 style="font-size:15px;font-weight:700;color:#f0f6ff;margin:0 0 4px;">DCA: $1,000/month — Cumulative Growth</h2>
+      <p style="font-size:12px;color:#6e7681;margin:0;">Green = portfolio value. Blue dashed = total money you put in (your cost basis). The gap is your profit — earned by doing <em>nothing special</em>.</p>
+    </div>
+    <div style="height:230px;position:relative;"><canvas id="dcaGrowthChart"></canvas></div>
+  </div>
+
+  <!-- Strategy Comparison -->
+  <div style="background:#161b22;border:1px solid #21262d;border-radius:12px;padding:18px 20px;margin-bottom:16px;">
+    <div style="margin-bottom:14px;">
+      <h2 style="font-size:15px;font-weight:700;color:#f0f6ff;margin:0 0 4px;">DCA vs "Buy the Dip" — Head to Head</h2>
+      <p style="font-size:12px;color:#6e7681;margin:0;">The dip buyer holds $1,000 in cash each month and only invests <em>the following month</em> after VOO fell more than 1%. Everyone else invests immediately on the 1st of every month.</p>
+    </div>
+
+    <!-- Outcome cards -->
+    <div id="dcaCompCards" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;"></div>
+
+    <!-- Month-by-month breakdown table -->
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#484f58;margin-bottom:8px;">Month-by-Month Breakdown — see exactly when the dip buyer invested vs missed</div>
+      <div id="dcaMonthTable" style="max-height:300px;overflow-y:auto;border-radius:8px;border:1px solid #21262d;font-size:11px;"></div>
+    </div>
+
+    <!-- Comparison chart -->
+    <div style="height:270px;position:relative;"><canvas id="dcaComparisonChart"></canvas></div>
+  </div>
+
+  <!-- Key insight -->
+  <div style="background:linear-gradient(135deg,rgba(79,70,229,.12) 0%,rgba(6,182,212,.08) 100%);border:1px solid rgba(79,70,229,.28);border-radius:12px;padding:18px 20px;margin-bottom:14px;">
+    <div style="display:flex;gap:12px;align-items:flex-start;">
+      <div style="font-size:26px;flex-shrink:0;line-height:1;">💡</div>
+      <div>
+        <h3 style="font-size:14px;font-weight:700;color:#f0f6ff;margin:0 0 8px;">The Bottom Line for Beginners</h3>
+        <div id="dcaInsightText" style="font-size:12.5px;color:#8b949e;line-height:1.75;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Disclaimer -->
+  <div style="background:#161b22;border:1px solid #21262d;border-radius:8px;padding:12px 16px;font-size:11px;color:#484f58;line-height:1.6;">
+    <strong style="color:#6e7681;">⚠ Educational Only</strong> — VOO prices are approximate historical values for illustration. Past performance does not guarantee future results. 2025–2026 data includes estimates. This is not financial advice. Always conduct your own research.
+  </div>
+
+</div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════
+   DCA vs TIMING THE MARKET — section logic
+════════════════════════════════════════════════════════ */
+(function(){
+'use strict';
+
+// VOO month-end adjusted close prices
+// Index 0 = May 2016 (base), Index 1–120 = Jun 2016 through May 2026
+// Sources: approximate adjusted closes; 2025+ includes estimates marked *
+var VOO_PRICES = [
+  186.10,                                                                             // May 2016 (base)
+  192.84,198.73,199.44,200.36,196.71,207.93,211.72,                                  // Jun-Dec 2016
+  213.23,219.69,220.89,222.01,225.62,227.33,232.14,233.41,236.84,243.32,251.25,253.66, // 2017
+  265.19,252.19,244.61,249.65,254.88,255.41,263.90,274.70,277.88,250.74,253.55,225.22, // 2018
+  246.40,254.68,262.94,272.28,252.86,271.64,277.15,270.98,277.23,282.54,291.23,298.10, // 2019
+  294.57,264.77,231.49,261.95,270.62,270.20,285.71,308.50,294.17,278.82,322.10,338.14, // 2020
+  341.58,347.37,362.83,380.42,381.32,394.24,404.02,415.99,397.20,420.58,408.24,434.44, // 2021
+  412.97,399.81,411.60,375.39,373.98,330.65,365.23,350.61,316.08,339.48,362.80,348.26, // 2022
+  375.50,364.76,376.08,382.80,380.68,407.23,421.27,413.59,394.87,386.93,422.25,446.36, // 2023
+  450.26,468.20,492.85,470.07,497.51,512.45,519.03,533.23,544.86,528.73,563.03,544.39, // 2024
+  566.02,539.11,496.24,463.28,518.07,540.00,552.00,558.00,545.00,561.00,575.00,582.00, // 2025 (* from Jun)
+  590.00,578.00,592.00,585.00,610.00                                                  // Jan-May 2026 *
+];
+
+var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var MONTHLY_AMT = 1000;
+var DIP_THRESHOLD = 0.01; // 1%
+
+// Build month data array (120 entries)
+function buildMonthData(){
+  var out=[]; var y=2016,m=6;
+  for(var i=0;i<120;i++){
+    var ret=(VOO_PRICES[i+1]-VOO_PRICES[i])/VOO_PRICES[i];
+    out.push({year:y,m:m-1,label:MON[m-1]+' '+y,ret:ret,price:VOO_PRICES[i+1],est:(y>2024||(y===2025&&m>=6))});
+    if(++m>12){m=1;y++;}
+  }
+  return out;
+}
+
+function fmt$(v){return '$'+Math.round(v).toLocaleString('en-US');}
+function fmtPct(v){return (v>=0?'+':'')+(v*100).toFixed(2)+'%';}
+function fmtPct1(v){return (v>=0?'+':'')+(v*100).toFixed(1)+'%';}
+
+// DCA simulation: invest $1k every month regardless
+function simDCA(months){
+  var port=0,invested=0;
+  var portArr=[],invArr=[];
+  for(var i=0;i<months.length;i++){
+    port=(port+MONTHLY_AMT)*(1+months[i].ret);
+    invested+=MONTHLY_AMT;
+    portArr.push(port);
+    invArr.push(invested);
+  }
+  return {portArr:portArr,invArr:invArr};
+}
+
+// Dip-buying simulation: invest only when prev month < -DIP_THRESHOLD
+function simDip(months){
+  var port=0,cash=0;
+  var portArr=[],cashArr=[],totalArr=[],deployed=[];
+  for(var i=0;i<months.length;i++){
+    cash+=MONTHLY_AMT; // receive this month's contribution into savings
+    var prevRet=i>0?months[i-1].ret:0;
+    if(prevRet<-DIP_THRESHOLD){
+      // Previous month was a dip — deploy all saved cash NOW
+      port=(port+cash)*(1+months[i].ret);
+      deployed.push(cash);
+      cash=0;
+    } else {
+      port=port*(1+months[i].ret);
+      deployed.push(0);
+    }
+    portArr.push(port);
+    cashArr.push(cash);
+    totalArr.push(port+cash);
+  }
+  return {portArr:portArr,cashArr:cashArr,totalArr:totalArr,deployed:deployed};
+}
+
+function renderSummaryRow(months,dca,dip){
+  var n=months.length;
+  var upM=months.filter(function(m){return m.ret>0;}).length;
+  var dcaFinal=dca.portArr[n-1];
+  var totalInvested=MONTHLY_AMT*n;
+  var gain=dcaFinal-totalInvested;
+  var dipTotal=dip.totalArr[n-1];
+  var dcaEdge=dcaFinal-dipTotal;
+
+  var tiles=[
+    {lbl:'DCA Final Portfolio',val:fmt$(dcaFinal),sub:'10 yrs · $1k/mo · no guessing',clr:'#4f46e5'},
+    {lbl:'Total Deposited',val:fmt$(totalInvested),sub:'120 months × $1,000',clr:'#6e7681'},
+    {lbl:'Total Profit (DCA)',val:fmt$(gain),sub:'+'+Math.round(gain/totalInvested*100)+'% above what you put in',clr:'#34d399'},
+    {lbl:'DCA Beats Dip Buyer by',val:fmt$(dcaEdge>0?dcaEdge:Math.abs(dcaEdge)),sub:(dcaEdge>0?'DCA wins 🏆':'Dip buyer wins (rare!)')+' · '+(upM)+'/120 up months',clr:dcaEdge>0?'#f59e0b':'#f87171'}
+  ];
+  var html='';
+  tiles.forEach(function(t){
+    html+='<div style="background:#1c2333;border:1px solid #21262d;border-radius:10px;padding:14px 16px;">'+
+      '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#484f58;margin-bottom:5px;">'+t.lbl+'</div>'+
+      '<div style="font-size:clamp(16px,2.2vw,22px);font-weight:800;color:'+t.clr+';letter-spacing:-.3px;margin-bottom:3px;">'+t.val+'</div>'+
+      '<div style="font-size:10.5px;color:#484f58;">'+t.sub+'</div>'+
+      '</div>';
+  });
+  document.getElementById('dcaSummaryRow').innerHTML=html;
+}
+
+function renderHeatmap(months){
+  // Group by year
+  var byYear={};
+  months.forEach(function(m){
+    if(!byYear[m.year]) byYear[m.year]=new Array(12).fill(null);
+    byYear[m.year][m.m]=m;
+  });
+  var yrs=Object.keys(byYear).map(Number).sort(function(a,b){return a-b;});
+
+  var tbl='<table style="border-collapse:collapse;width:100%;min-width:640px;">';
+  tbl+='<thead><tr><th style="text-align:left;padding:3px 8px;font-size:10px;color:#484f58;font-weight:700;width:52px;">Year</th>';
+  MON.forEach(function(mn){tbl+='<th style="text-align:center;padding:3px 4px;font-size:10px;color:#484f58;font-weight:600;min-width:52px;">'+mn+'</th>';});
+  tbl+='</tr></thead><tbody>';
+
+  yrs.forEach(function(yr){
+    tbl+='<tr><td style="padding:3px 8px;font-size:11px;font-weight:700;color:#6e7681;white-space:nowrap;">'+yr+(yr>=2025?'*':'')+'</td>';
+    for(var mi=0;mi<12;mi++){
+      var cell=byYear[yr][mi];
+      if(!cell){tbl+='<td style="padding:2px 3px;"></td>';continue;}
+      var r=cell.ret;
+      var intensity=Math.min(Math.abs(r)/0.13,1);
+      var bg=r>0?'rgba(52,211,153,'+intensity.toFixed(2)+')':'rgba(248,113,113,'+intensity.toFixed(2)+')';
+      var fg=intensity>0.55?'#0d1117':(r>0?'#34d399':'#f87171');
+      var arrow=r>=0?'▲':'▼';
+      tbl+='<td style="padding:2px 3px;text-align:center;" title="'+cell.label+': '+fmtPct(r)+'">'+
+        '<div style="background:'+bg+';border-radius:5px;padding:4px 2px;">'+
+        '<div style="font-size:10px;font-weight:700;color:'+fg+';">'+arrow+(Math.abs(r*100).toFixed(1))+'%</div>'+
+        '</div></td>';
+    }
+    tbl+='</tr>';
+  });
+  tbl+='</tbody></table>';
+  document.getElementById('dcaHeatmap').innerHTML=tbl;
+
+  var upM=months.filter(function(m){return m.ret>0;}).length;
+  var downM=months.filter(function(m){return m.ret<=0;}).length;
+  var best=months.reduce(function(a,b){return a.ret>b.ret?a:b;});
+  var worst=months.reduce(function(a,b){return a.ret<b.ret?a:b;});
+  var avgRet=months.reduce(function(s,m){return s+m.ret;},0)/months.length;
+
+  document.getElementById('dcaHeatmapStats').innerHTML=
+    '<span><span style="color:#34d399;font-weight:700;">▲ '+upM+' up</span> / <span style="color:#f87171;font-weight:700;">'+downM+' down</span> months</span>'+
+    '<span>Avg monthly return: <strong style="color:#a5b4fc;">'+fmtPct1(avgRet)+'</strong></span>'+
+    '<span>Best: <strong style="color:#34d399;">'+best.label+' ('+fmtPct1(best.ret)+')</strong></span>'+
+    '<span>Worst: <strong style="color:#f87171;">'+worst.label+' ('+fmtPct1(worst.ret)+')</strong></span>'+
+    '<span style="color:#484f58;font-style:italic;font-size:10.5px;">* 2025–2026 includes estimates</span>';
+}
+
+var dcaCharts={};
+function renderGrowthChart(months,dca){
+  if(dcaCharts.growth) dcaCharts.growth.destroy();
+  var c=document.getElementById('dcaGrowthChart');if(!c)return;
+  var labels=months.map(function(m){return m.label;});
+  dcaCharts.growth=new Chart(c.getContext('2d'),{
+    type:'line',
+    data:{labels:labels,datasets:[
+      {label:'Portfolio Value',data:dca.portArr,borderColor:'#34d399',backgroundColor:'rgba(52,211,153,.12)',borderWidth:2.5,fill:true,tension:.38,pointRadius:0},
+      {label:'Total Invested',data:dca.invArr,borderColor:'#4f46e5',backgroundColor:'rgba(79,70,229,.07)',borderWidth:2,fill:true,tension:0,pointRadius:0,borderDash:[6,4]}
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{labels:{color:'#8b949e',font:{size:11},boxWidth:12,padding:14}},
+        tooltip:{backgroundColor:'#1c2333',titleColor:'#f0f6ff',bodyColor:'#8b949e',borderColor:'#30363d',borderWidth:1,padding:10,
+          callbacks:{label:function(c){return ' '+c.dataset.label+': '+fmt$(c.parsed.y);}}}
+      },
+      scales:{
+        x:{ticks:{color:'#484f58',font:{size:9},maxTicksLimit:18},grid:{color:'rgba(255,255,255,.04)'}},
+        y:{ticks:{color:'#484f58',font:{size:10},callback:function(v){return '$'+Math.round(v/1000)+'k';}},grid:{color:'rgba(255,255,255,.04)'}}
+      }
+    }
+  });
+}
+
+function renderCompCards(months,dca,dip){
+  var n=months.length;
+  var dcaFinal=dca.portArr[n-1];
+  var dipTotal=dip.totalArr[n-1];
+  var dipPort=dip.portArr[n-1];
+  var dipCash=dip.cashArr[n-1];
+  var deployMonths=dip.deployed.filter(function(d){return d>0;}).length;
+  var missedUp=0;
+  for(var i=0;i<months.length;i++){if(dip.deployed[i]===0&&months[i].ret>0)missedUp++;}
+  var dcaEdge=dcaFinal-dipTotal;
+  var dcaWins=dcaEdge>0;
+
+  document.getElementById('dcaCompCards').innerHTML=
+    '<div style="background:rgba(52,211,153,.07);border:2px solid rgba(52,211,153,.25);border-radius:10px;padding:15px 18px;">'+
+    '<div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#34d399;letter-spacing:.5px;margin-bottom:7px;">'+(dcaWins?'✓ WINNER — ':'')+'DCA STRATEGY</div>'+
+    '<div style="font-size:clamp(18px,2.5vw,26px);font-weight:800;color:#34d399;margin-bottom:4px;">'+fmt$(dcaFinal)+'</div>'+
+    '<div style="font-size:11px;color:#6e7681;margin-bottom:10px;">Final portfolio value after 10 years</div>'+
+    '<div style="font-size:11.5px;color:#8b949e;border-top:1px solid rgba(52,211,153,.12);padding-top:10px;line-height:1.8;">'+
+    '📅 Invested all <strong style="color:#c9d1d9;">120 months</strong> without exception<br>'+
+    '📈 Captured every rally and every dip automatically<br>'+
+    '🧘 Zero effort · Zero stress · Set and forget</div>'+
+    '</div>'+
+
+    '<div style="background:rgba(248,113,113,.06);border:2px solid rgba(248,113,113,.2);border-radius:10px;padding:15px 18px;">'+
+    '<div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#f87171;letter-spacing:.5px;margin-bottom:7px;">'+(dcaWins?'⚠ BEHIND — ':'✓ WINNER — ')+'DIP BUYER STRATEGY</div>'+
+    '<div style="font-size:clamp(18px,2.5vw,26px);font-weight:800;color:#f59e0b;margin-bottom:4px;">'+fmt$(dipTotal)+'</div>'+
+    '<div style="font-size:11px;color:#6e7681;margin-bottom:10px;">Total wealth ('+fmt$(dipPort)+' invested + '+fmt$(dipCash)+' cash)</div>'+
+    '<div style="font-size:11.5px;color:#8b949e;border-top:1px solid rgba(248,113,113,.12);padding-top:10px;line-height:1.8;">'+
+    '📦 Only deployed in <strong style="color:#c9d1d9;">'+deployMonths+'/120</strong> months ('+Math.round(deployMonths/n*100)+'%)<br>'+
+    '⏳ Sat in cash <strong style="color:#f87171;">'+(n-deployMonths)+' months</strong> waiting for dips<br>'+
+    '😬 Missed <strong style="color:#f87171;">'+missedUp+' positive months</strong> while holding cash</div>'+
+    '</div>';
+}
+
+function renderMonthTable(months,dca,dip){
+  var html='<table style="width:100%;border-collapse:collapse;">'+
+    '<thead><tr style="background:#1c2333;position:sticky;top:0;">'+
+    '<th style="padding:8px 10px;text-align:left;font-size:10px;color:#484f58;font-weight:700;">Month</th>'+
+    '<th style="padding:8px 10px;text-align:right;font-size:10px;color:#484f58;font-weight:700;">VOO Return</th>'+
+    '<th style="padding:8px 10px;text-align:right;font-size:10px;color:#484f58;font-weight:700;">DCA Portfolio</th>'+
+    '<th style="padding:8px 10px;text-align:right;font-size:10px;color:#484f58;font-weight:700;">DCA MoM Δ</th>'+
+    '<th style="padding:8px 10px;text-align:center;font-size:10px;color:#484f58;font-weight:700;">Dip Buyer Action</th>'+
+    '<th style="padding:8px 10px;text-align:right;font-size:10px;color:#484f58;font-weight:700;">Dip Buyer Total</th>'+
+    '</tr></thead><tbody>';
+
+  for(var i=0;i<months.length;i++){
+    var m=months[i];
+    var ret=m.ret;
+    var retStr=fmtPct1(ret);
+    var retClr=ret>0?'#34d399':'#f87171';
+    var dcaVal=dca.portArr[i];
+    var dcaPrev=i>0?dca.portArr[i-1]:0;
+    var dcaDelta=dcaVal-dcaPrev-MONTHLY_AMT;// gain/loss component (minus new investment)
+    var dcaDeltaNet=dcaVal-(dcaPrev+MONTHLY_AMT);
+    var dipAction=dip.deployed[i]>0?'<span style="background:rgba(79,70,229,.2);color:#a5b4fc;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;">INVESTED '+fmt$(dip.deployed[i])+'</span>':'<span style="color:#484f58;font-size:10.5px;">holding cash</span>';
+    var rowBg=i%2===0?'#161b22':'#1a2030';
+    var estMark=m.est?'<sup style="color:#484f58;font-size:8px;">*</sup>':'';
+    html+='<tr style="background:'+rowBg+';">'+
+      '<td style="padding:6px 10px;font-size:11px;color:#8b949e;white-space:nowrap;">'+m.label+estMark+'</td>'+
+      '<td style="padding:6px 10px;text-align:right;font-size:11px;font-weight:700;color:'+retClr+';">'+retStr+'</td>'+
+      '<td style="padding:6px 10px;text-align:right;font-size:11px;color:#c9d1d9;font-weight:600;">'+fmt$(dcaVal)+'</td>'+
+      '<td style="padding:6px 10px;text-align:right;font-size:11px;color:'+(dcaDeltaNet>=0?'#34d399':'#f87171')+';">'+
+        (dcaDeltaNet>=0?'+':'')+fmt$(dcaDeltaNet)+
+      '</td>'+
+      '<td style="padding:6px 10px;text-align:center;">'+dipAction+'</td>'+
+      '<td style="padding:6px 10px;text-align:right;font-size:11px;color:#f59e0b;font-weight:600;">'+fmt$(dip.totalArr[i])+'</td>'+
+      '</tr>';
+  }
+  html+='</tbody></table>';
+  document.getElementById('dcaMonthTable').innerHTML=html;
+}
+
+function renderComparisonChart(months,dca,dip){
+  if(dcaCharts.comp) dcaCharts.comp.destroy();
+  var c=document.getElementById('dcaComparisonChart');if(!c)return;
+  var labels=months.map(function(m){return m.label;});
+  dcaCharts.comp=new Chart(c.getContext('2d'),{
+    type:'line',
+    data:{labels:labels,datasets:[
+      {label:'DCA (invest every month)',data:dca.portArr,borderColor:'#34d399',backgroundColor:'rgba(52,211,153,.08)',borderWidth:2.5,fill:false,tension:.38,pointRadius:0},
+      {label:'Dip Buyer — total wealth (invested+cash)',data:dip.totalArr,borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.07)',borderWidth:2,fill:false,tension:.38,pointRadius:0,borderDash:[5,3]},
+      {label:'Dip Buyer — invested portion only',data:dip.portArr,borderColor:'#f87171',backgroundColor:'rgba(248,113,113,.05)',borderWidth:1.5,fill:false,tension:.38,pointRadius:0,borderDash:[2,5]}
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{labels:{color:'#8b949e',font:{size:11},boxWidth:12,padding:12}},
+        tooltip:{backgroundColor:'#1c2333',titleColor:'#f0f6ff',bodyColor:'#8b949e',borderColor:'#30363d',borderWidth:1,padding:10,
+          callbacks:{label:function(c){return ' '+c.dataset.label+': '+fmt$(c.parsed.y);}}}
+      },
+      scales:{
+        x:{ticks:{color:'#484f58',font:{size:9},maxTicksLimit:18},grid:{color:'rgba(255,255,255,.04)'}},
+        y:{ticks:{color:'#484f58',font:{size:10},callback:function(v){return '$'+Math.round(v/1000)+'k';}},grid:{color:'rgba(255,255,255,.04)'}}
+      }
+    }
+  });
+}
+
+function renderInsight(months,dca,dip){
+  var n=months.length;
+  var dcaFinal=dca.portArr[n-1];
+  var dipTotal=dip.totalArr[n-1];
+  var dcaEdge=dcaFinal-dipTotal;
+  var dcaWins=dcaEdge>0;
+  var upM=months.filter(function(m){return m.ret>0;}).length;
+  var deployMonths=dip.deployed.filter(function(d){return d>0;}).length;
+  var missedUp=0;
+  for(var i=0;i<months.length;i++){if(dip.deployed[i]===0&&months[i].ret>0)missedUp++;}
+  var pctPositive=Math.round(upM/n*100);
+
+  var txt=
+    '<strong style="color:#c9d1d9;">The market went UP in '+pctPositive+'% of all months.</strong> That means waiting for a dip means sitting on the sidelines most of the time — and missing most of the growth.<br><br>'+
+    'Over these 10 years, the dip buyer only had a chance to invest in <strong style="color:#c9d1d9;">'+deployMonths+' out of 120 months</strong>. They watched their cash earn nothing while their money sat idle during <strong style="color:#f87171;">'+missedUp+' positive months</strong>.<br><br>'+
+    'The DCA investor? They didn\'t have to watch anything. They just kept investing $1,000 every single month — through crashes, rallies, and everything in between — and came out <strong style="color:'+(dcaWins?'#34d399':'#f87171')+';">'+(dcaWins?fmt$(dcaEdge)+' ahead':''+fmt$(Math.abs(dcaEdge))+' behind')+' the dip buyer</strong>.<br><br>'+
+    '<strong style="color:#a5b4fc;">"Time IN the market beats timing the market."</strong> This data is why.';
+
+  document.getElementById('dcaInsightText').innerHTML=txt;
+}
+
+window.dcaInit = function(){
+  var months=buildMonthData();
+  var dca=simDCA(months);
+  var dip=simDip(months);
+  renderSummaryRow(months,dca,dip);
+  renderHeatmap(months);
+  renderGrowthChart(months,dca);
+  renderCompCards(months,dca,dip);
+  renderMonthTable(months,dca,dip);
+  renderComparisonChart(months,dca,dip);
+  renderInsight(months,dca,dip);
+};
 
 })();
 </script>

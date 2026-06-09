@@ -77,14 +77,14 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 /* ── Big summary tile ── */
 .card-big{background:#fff;border:1.5px solid #c7d2fe;border-radius:12px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,.06);grid-column:1/-1;}
 .card-big-hdr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
-.card-big-lbl{font-size:16.2px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--tx3);}
-.card-big-val{font-size:27.5px;font-weight:800;color:#4f46e5;letter-spacing:-.5px;}
+.card-big-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--tx3);}
+.card-big-val{font-size:20px;font-weight:800;color:#4f46e5;letter-spacing:-.5px;}
 .fund-subtiles{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
 .fund-subtile{flex:1;min-width:90px;background:var(--bg3);border-radius:8px;padding:7px 9px;border:1px solid var(--border);}
 .fst-badge{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;color:#fff;font-size:12.5px;font-weight:800;margin-right:4px;vertical-align:middle;}
-.fst-lbl{font-size:13.8px;color:var(--tx2);font-weight:500;}
-.fst-val{font-size:17.5px;font-weight:700;margin-top:2px;}
-.fst-sub{font-size:12.5px;color:var(--tx3);margin-top:1px;}
+.fst-lbl{font-size:11px;color:var(--tx2);font-weight:500;}
+.fst-val{font-size:20px;font-weight:700;margin-top:2px;}
+.fst-sub{font-size:10px;color:var(--tx3);margin-top:1px;}
 
 .cards-row{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;grid-column:1/-1;width:100%;}
 @media(max-width:1200px){.cards-row{grid-template-columns:repeat(4,1fr);}}
@@ -263,9 +263,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   from{transform:scale(.88) rotate(-4deg);filter:brightness(.8);}
   to{transform:scale(1.18) rotate(4deg);filter:brightness(1.3);}
 }
-.c-lbl{font-size:17.9px;text-transform:uppercase;letter-spacing:.5px;color:var(--tx3);}
-.c-val{font-size:30.9px;font-weight:700;margin-top:2px;letter-spacing:-.4px;}
-.c-sub{font-size:17.9px;color:var(--tx3);margin-top:2px;}
+.c-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--tx3);}
+.c-val{font-size:20px;font-weight:700;margin-top:2px;letter-spacing:-.4px;}
+.c-sub{font-size:10px;color:var(--tx3);margin-top:2px;}
 .g{color:#059669}.i{color:#4f46e5}.a{color:#d97706}.s{color:#64748b}.p{color:#be185d}.r{color:#e11d48}.y{color:#92400e}
 
 /* Charts */
@@ -1230,9 +1230,9 @@ input[type="range"], .range-in { display: none !important; }
           <div class="p2-card-eyebrow">Educational · Real Data</div>
           <div class="p2-card-title">DCA vs Timing the Market</div>
           <div class="p2-divider"></div>
-          <div class="p2-card-desc">10 years of real VOO data. Does waiting for dips beat investing $1,000 every single month? The answer will calm your nerves.</div>
+          <div class="p2-card-desc">11 years of real VOO data (2015–2025). Does waiting for dips beat investing $1,000 every single month? The answer will calm your nerves.</div>
           <ul class="p2-features">
-            <li><span class="p2-feat-dot"></span>Jun 2016 – May 2026 · VOO monthly returns</li>
+            <li><span class="p2-feat-dot"></span>Jan 2015 – Dec 2025 · VOO monthly returns</li>
             <li><span class="p2-feat-dot"></span>DCA vs "Buy the Dip" head-to-head</li>
             <li><span class="p2-feat-dot"></span>Interactive heatmap &amp; cumulative chart</li>
           </ul>
@@ -2826,7 +2826,7 @@ if(document.readyState === 'loading'){
 .ptile.hi-r{border-color:#fca5a5;background:#fef2f2;}
 .ptile.hi-y{border-color:#fde68a;background:#fefce8;}
 .pt-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--tx3);}
-.pt-val{font-size:16px;font-weight:700;margin-top:3px;letter-spacing:-.3px;}
+.pt-val{font-size:20px;font-weight:700;margin-top:3px;letter-spacing:-.3px;}
 .pt-sub{font-size:10px;color:var(--tx3);margin-top:2px;}
 
 /* ── Cash flow note ── */
@@ -3463,7 +3463,7 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderProperty); }
 .pftile.hi-r{border-color:#fca5a5;background:#fef2f2;}
 .pftile.hi-y{border-color:#fde68a;background:#fefce8;}
 .pft-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#9ca3af;}
-.pft-val{font-size:15px;font-weight:700;margin-top:3px;letter-spacing:-.3px;}
+.pft-val{font-size:20px;font-weight:700;margin-top:3px;letter-spacing:-.3px;}
 .pft-sub{font-size:10px;color:#9ca3af;margin-top:2px;}
 
 .pf-note{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:11px 14px;font-size:13px;color:#374151;line-height:1.65;}
@@ -4129,9 +4129,9 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderPortfolio); 
 .mi-card.purple{border-color:#c4b5fd;background:#faf5ff;}
 .mi-card.green{border-color:#a7f3d0;background:#f0fdf4;}
 .mi-card.amber{border-color:#fde68a;background:#fffbeb;}
-.mi-c-lbl{font-size:25px;color:#94a3b8;font-weight:600;margin-bottom:2px;line-height:1.25;}
-.mi-c-val{font-size:36px;font-weight:800;color:#0f172a;letter-spacing:-.5px;}
-.mi-c-sub{font-size:23px;color:#94a3b8;margin-top:1px;line-height:1.2;}
+.mi-c-lbl{font-size:11px;color:#94a3b8;font-weight:600;margin-bottom:2px;line-height:1.25;}
+.mi-c-val{font-size:20px;font-weight:800;color:#0f172a;letter-spacing:-.5px;}
+.mi-c-sub{font-size:10px;color:#94a3b8;margin-top:1px;line-height:1.2;}
 
 /* ETF fund rows */
 /* MI fund rows — Strategy I style */
@@ -4209,8 +4209,8 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderPortfolio); 
 
 /* ── Result tiles — matches Strategy II mi-card style ── */
 #superSection .pm-tile{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
-#superSection .pm-tile-lbl{font-size:10px;color:#94a3b8;font-weight:500;margin-bottom:2px;text-transform:none;letter-spacing:0;}
-#superSection .pm-tile-val{font-size:18px;font-weight:800;letter-spacing:-.3px;color:#0f172a;}
+#superSection .pm-tile-lbl{font-size:11px;color:#94a3b8;font-weight:500;margin-bottom:2px;text-transform:none;letter-spacing:0;}
+#superSection .pm-tile-val{font-size:20px;font-weight:800;letter-spacing:-.3px;color:#0f172a;}
 #superSection .pm-tile-sub{font-size:10px;color:#94a3b8;margin-top:1px;line-height:1.3;}
 #superSection .pm-tile.t-ss{border-color:#c4b5fd;background:#faf5ff;}
 #superSection .pm-tile.t-ss .pm-tile-val{color:#7c3aed;}
@@ -5072,9 +5072,9 @@ if(document.readyState==='loading'){
   display:flex;flex-direction:column;gap:6px;
 }
 .pm-tile-icon{font-size:30px;margin-bottom:2px;}
-.pm-tile-lbl{font-size:16px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#6888a4;}
-.pm-tile-val{font-size:34px;font-weight:800;letter-spacing:-.5px;color:#c8daea;}
-.pm-tile-sub{font-size:16px;color:#405868;margin-top:2px;line-height:1.35;}
+.pm-tile-lbl{font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#6888a4;}
+.pm-tile-val{font-size:20px;font-weight:800;letter-spacing:-.5px;color:#c8daea;}
+.pm-tile-sub{font-size:10px;color:#405868;margin-top:2px;line-height:1.35;}
 
 /* per-tile accent — values keep distinctive readable colours, labels go silver */
 .pm-tile.t-invested{border-color:rgba(130,185,240,.3);background:rgba(100,165,230,.05);}
@@ -7040,7 +7040,7 @@ function _projTable(dur, ssCPA, netSupRet, etfMo, etfNetRate, etfDur, takeHomeIm
       <span style="background:#ecfdf5;color:#059669;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;border:1px solid #a7f3d0;">10 Years · Real VOO Data · ~$1,000/mo</span>
     </div>
     <h1 style="font-size:clamp(28px,4vw,44px);font-weight:800;margin:0 0 7px;letter-spacing:-.4px;background:linear-gradient(90deg,#0f172a 0%,#4f46e5 55%,#059669 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Does Timing the Market Beat DCA?</h1>
-    <p style="font-size:15px;color:#475569;max-width:620px;line-height:1.65;margin:0;">Real monthly data from <strong style="color:#1e293b;">VOO (S&amp;P 500 ETF)</strong> · June 2016 – May 2026 · <strong style="color:#1e293b;">$1,000 invested every month</strong>. No theory — just the numbers. Perfect if you worry that you should be "waiting for the right time".</p>
+    <p style="font-size:15px;color:#475569;max-width:620px;line-height:1.65;margin:0;">Real monthly data from <strong style="color:#1e293b;">VOO (S&amp;P 500 ETF)</strong> · January 2015 – December 2025 · <strong style="color:#1e293b;">$1,000 invested every month</strong>. No theory — just the numbers. Perfect if you worry that you should be "waiting for the right time".</p>
   </div>
 </div>
 
@@ -7064,7 +7064,7 @@ function _projTable(dur, ssCPA, netSupRet, etfMo, etfNetRate, etfDur, takeHomeIm
   <div style="background:#ffffff;border:1px solid rgba(225,231,239,.7);border-radius:20px;box-shadow:0 2px 12px rgba(13,20,36,.05);padding:18px 20px;margin-bottom:16px;">
     <div style="margin-bottom:12px;">
       <h2 style="font-size:18px;font-weight:700;color:#0f172a;margin:0 0 6px;">DCA: $1,000/month — Total Return Growth (Dividends Reinvested)</h2>
-      <p style="font-size:14px;color:#64748b;margin:0;">Green = total return (price + dividends reinvested). Grey dashed = price only. Blue dashed = your cost basis. The DRIP gap compounds massively over 10 years.</p>
+      <p style="font-size:14px;color:#64748b;margin:0;">Green = total return (price + dividends reinvested). Grey dashed = price only. Blue dashed = your cost basis. The DRIP gap compounds massively over 11 years.</p>
     </div>
     <div style="height:230px;position:relative;"><canvas id="dcaGrowthChart"></canvas></div>
   </div>
@@ -7102,7 +7102,7 @@ function _projTable(dur, ssCPA, netSupRet, etfMo, etfNetRate, etfDur, takeHomeIm
 
   <!-- Disclaimer -->
   <div style="background:#ffffff;border:1px solid rgba(225,231,239,.7);border-radius:14px;box-shadow:0 2px 8px rgba(13,20,36,.04);padding:14px 18px;font-size:13px;color:#64748b;line-height:1.6;">
-    <strong style="color:#64748b;">⚠ Educational Only</strong> — VOO prices are approximate historical values for illustration. Past performance does not guarantee future results. 2025–2026 data includes estimates. This is not financial advice. Always conduct your own research.
+    <strong style="color:#64748b;">⚠ Educational Only</strong> — VOO prices are approximate historical values for illustration. Past performance does not guarantee future results. Jun–Dec 2025 data includes estimates. This is not financial advice. Always conduct your own research.
   </div>
 
 </div>
@@ -7116,21 +7116,33 @@ function _projTable(dur, ssCPA, netSupRet, etfMo, etfNetRate, etfDur, takeHomeIm
 'use strict';
 
 // VOO month-end adjusted close prices
-// Index 0 = May 2016 (base), Index 1–120 = Jun 2016 through May 2026
-// Sources: approximate adjusted closes; 2025+ includes estimates marked *
+// Index 0 = Dec 2014 (base), Index 1–132 = Jan 2015 through Dec 2025
+// Sources: approximate adjusted closes; Jun–Dec 2025 are estimates
 var VOO_PRICES = [
-  186.10,                                                                             // May 2016 (base)
-  192.84,198.73,199.44,200.36,196.71,207.93,211.72,                                  // Jun-Dec 2016
-  213.23,219.69,220.89,222.01,225.62,227.33,232.14,233.41,236.84,243.32,251.25,253.66, // 2017
-  265.19,252.19,244.61,249.65,254.88,255.41,263.90,274.70,277.88,250.74,253.55,225.22, // 2018
-  246.40,254.68,262.94,272.28,252.86,271.64,277.15,270.98,277.23,282.54,291.23,298.10, // 2019
-  294.57,264.77,231.49,261.95,270.62,270.20,285.71,308.50,294.17,278.82,322.10,338.14, // 2020
-  341.58,347.37,362.83,380.42,381.32,394.24,404.02,415.99,397.20,420.58,408.24,434.44, // 2021
-  412.97,399.81,411.60,375.39,373.98,330.65,365.23,350.61,316.08,339.48,362.80,348.26, // 2022
-  375.50,364.76,376.08,382.80,380.68,407.23,421.27,413.59,394.87,386.93,422.25,446.36, // 2023
-  450.26,468.20,492.85,470.07,497.51,512.45,519.03,533.23,544.86,528.73,563.03,544.39, // 2024
-  566.02,539.11,496.24,463.28,518.07,540.00,552.00,558.00,545.00,561.00,575.00,582.00, // 2025 (* from Jun)
-  590.00,578.00,592.00,585.00,610.00                                                  // Jan-May 2026 *
+  // Dec 2014 (base)
+  184.49,
+  // Jan–Dec 2015
+  183.79,195.47,191.34,194.52,196.92,190.35,196.40,179.40,174.39,189.51,190.27,187.07,
+  // Jan–Dec 2016
+  175.64,174.46,185.38,185.87,186.10,192.84,198.73,199.44,200.36,196.71,207.93,209.00,
+  // Jan–Dec 2017
+  213.23,219.69,220.89,222.01,225.62,227.33,232.14,233.41,236.84,243.32,251.25,253.66,
+  // Jan–Dec 2018
+  265.19,252.19,244.61,249.65,254.88,255.41,263.90,274.70,277.88,250.74,253.55,225.22,
+  // Jan–Dec 2019
+  246.40,254.68,262.94,272.28,252.86,271.64,277.15,270.98,277.23,282.54,291.23,298.10,
+  // Jan–Dec 2020
+  294.57,264.77,231.49,261.95,270.62,270.20,285.71,308.50,294.17,278.82,322.10,338.14,
+  // Jan–Dec 2021
+  341.58,347.37,362.83,380.42,381.32,394.24,404.02,415.99,397.20,420.58,408.24,434.44,
+  // Jan–Dec 2022
+  412.97,399.81,411.60,375.39,373.98,330.65,365.23,350.61,316.08,339.48,362.80,348.26,
+  // Jan–Dec 2023
+  375.50,364.76,376.08,382.80,380.68,407.23,421.27,413.59,394.87,386.93,422.25,446.36,
+  // Jan–Dec 2024
+  450.26,468.20,492.85,470.07,497.51,512.45,519.03,533.23,544.86,528.73,563.03,558.00,
+  // Jan–Dec 2025 (* Jun–Dec estimated)
+  566.02,539.11,496.24,463.28,518.07,540.00,552.00,558.00,545.00,561.00,575.00,582.00
 ];
 
 var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -7165,12 +7177,12 @@ var VOO_DIV_YIELD = 0.0122; // Verified June 2026: VOO annual yield ~1.22% (stoc
 
 var DIV_MONTHLY   = Math.pow(1 + VOO_DIV_YIELD, 1/12) - 1; // ≈ 0.001163/month
 
-// Build month data array (120 entries)
+// Build month data array (132 entries: Jan 2015 – Dec 2025)
 function buildMonthData(){
-  var out=[]; var y=2016,m=6;
-  for(var i=0;i<120;i++){
+  var out=[]; var y=2015,m=1;
+  for(var i=0;i<132;i++){
     var ret=(VOO_PRICES[i+1]-VOO_PRICES[i])/VOO_PRICES[i];
-    out.push({year:y,m:m-1,label:MON[m-1]+' '+y,ret:ret,totalRet:ret+DIV_MONTHLY,price:VOO_PRICES[i+1],est:(y>2024||(y===2025&&m>=6))});
+    out.push({year:y,m:m-1,label:MON[m-1]+' '+y,ret:ret,totalRet:ret+DIV_MONTHLY,price:VOO_PRICES[i+1],est:(y===2025&&m>=6)});
     if(++m>12){m=1;y++;}
   }
   return out;
@@ -7233,7 +7245,7 @@ function renderSummaryRow(months,dca,dip){
 
   var tiles=[
     {lbl:'DCA Final (with DRIP)',val:fmt$(dcaFinal),sub:'Total return · price + dividends reinvested',clr:'#4f46e5'},
-    {lbl:'Total Deposited',val:fmt$(totalInvested),sub:'120 months × $1,000',clr:'#94a3b8'},
+    {lbl:'Total Deposited',val:fmt$(totalInvested),sub:n+' months × $1,000',clr:'#94a3b8'},
     {lbl:'Total Profit',val:fmt$(gain),sub:'+'+Math.round(gain/totalInvested*100)+'% above cost · incl. DRIP',clr:'#059669'},
     {lbl:'Dividend DRIP Gain',val:fmt$(divContrib),sub:'Extra from reinvesting ~1.4%/yr dividends',clr:'#d97706'},
     {lbl:'DCA vs Dip Buyer',val:fmt$(Math.abs(dcaEdge)),sub:(dcaEdge>0?'DCA wins 🏆':'Dip buyer wins')+' · '+(upM)+'/120 up months',clr:dcaEdge>0?'#f59e0b':'#dc2626'}
@@ -7261,6 +7273,7 @@ function renderHeatmap(months){
   var tbl='<table style="border-collapse:collapse;width:100%;min-width:640px;">';
   tbl+='<thead><tr><th style="text-align:left;padding:4px 8px;font-size:12px;color:#64748b;font-weight:700;width:60px;">Year</th>';
   MON.forEach(function(mn){tbl+='<th style="text-align:center;padding:4px 5px;font-size:12px;color:#64748b;font-weight:600;min-width:55px;">'+mn+'</th>';});
+  tbl+='<th style="text-align:center;padding:4px 8px;font-size:12px;color:#4f46e5;font-weight:700;min-width:62px;border-left:2px solid #e2e8f0;">Annual</th>';
   tbl+='</tr></thead><tbody>';
 
   yrs.forEach(function(yr){
@@ -7278,6 +7291,21 @@ function renderHeatmap(months){
         '<div style="font-size:11px;font-weight:700;color:'+fg+';">'+arrow+(Math.abs(r*100).toFixed(1))+'%</div>'+
         '</div></td>';
     }
+    // Annual return: compound all monthly returns in this year
+    var compound=1;
+    for(var ai=0;ai<12;ai++){
+      var ac=byYear[yr][ai];
+      if(ac) compound*=(1+ac.ret);
+    }
+    var annRet=compound-1;
+    var aInt=Math.min(Math.abs(annRet)/0.35,1);
+    var aBg=annRet>0?'rgba(52,211,153,'+aInt.toFixed(2)+')':'rgba(248,113,113,'+aInt.toFixed(2)+')';
+    var aFg=aInt>0.55?'#ffffff':(annRet>0?'#059669':'#dc2626');
+    var aArrow=annRet>=0?'▲':'▼';
+    tbl+='<td style="padding:2px 4px;text-align:center;border-left:2px solid #e2e8f0;">'+
+      '<div style="background:'+aBg+';border-radius:5px;padding:5px 3px;">'+
+      '<div style="font-size:11px;font-weight:800;color:'+aFg+';">'+aArrow+(Math.abs(annRet*100).toFixed(1))+'%</div>'+
+      '</div></td>';
     tbl+='</tr>';
   });
   tbl+='</tbody></table>';
@@ -7294,7 +7322,7 @@ function renderHeatmap(months){
     '<span>Avg monthly return: <strong style="color:#4f46e5;">'+fmtPct1(avgRet)+'</strong></span>'+
     '<span>Best: <strong style="color:#34d399;">'+best.label+' ('+fmtPct1(best.ret)+')</strong></span>'+
     '<span>Worst: <strong style="color:#f87171;">'+worst.label+' ('+fmtPct1(worst.ret)+')</strong></span>'+
-    '<span style="color:#94a3b8;font-style:italic;font-size:12px;">* 2025–2026 includes estimates</span>';
+    '<span style="color:#94a3b8;font-style:italic;font-size:12px;">* Jun–Dec 2025 includes estimates · Annual column = Dec-to-Dec compound return</span>';
 }
 
 var dcaCharts={};
@@ -7341,9 +7369,9 @@ function renderCompCards(months,dca,dip){
     '<div style="background:rgba(5,150,105,.05);border:2px solid rgba(5,150,105,.20);border-radius:10px;padding:15px 18px;">'+
     '<div style="font-size:12px;font-weight:700;text-transform:uppercase;color:#059669;letter-spacing:.5px;margin-bottom:8px;">'+(dcaWins?'✓ WINNER — ':'')+'DCA STRATEGY</div>'+
     '<div style="font-size:clamp(18px,2.5vw,26px);font-weight:800;color:#059669;margin-bottom:4px;">'+fmt$(dcaFinal)+'</div>'+
-    '<div style="font-size:13px;color:#64748b;margin-bottom:10px;">Final portfolio value after 10 years</div>'+
+    '<div style="font-size:13px;color:#64748b;margin-bottom:10px;">Final portfolio value after 11 years</div>'+
     '<div style="font-size:13px;color:#64748b;border-top:1px solid rgba(5,150,105,.15);padding-top:10px;line-height:1.8;">'+
-    '📅 Invested all <strong style="color:#1e293b;">120 months</strong> without exception<br>'+
+    '📅 Invested all <strong style="color:#1e293b;">'+n+' months</strong> without exception<br>'+
     '📈 Captured every rally and every dip automatically<br>'+
     '🧘 Zero effort · Zero stress · Set and forget</div>'+
     '</div>'+
@@ -7438,7 +7466,7 @@ function renderInsight(months,dca,dip){
 
   var txt=
     '<strong style="color:#1e293b;">The market went UP in '+pctPositive+'% of all months.</strong> That means waiting for a dip means sitting on the sidelines most of the time — and missing most of the growth.<br><br>'+
-    'Over these 10 years, the dip buyer only had a chance to invest in <strong style="color:#1e293b;">'+deployMonths+' out of 120 months</strong>. They watched their cash earn nothing while their money sat idle during <strong style="color:#f87171;">'+missedUp+' positive months</strong>.<br><br>'+
+    'Over these 11 years, the dip buyer only had a chance to invest in <strong style="color:#1e293b;">'+deployMonths+' out of 120 months</strong>. They watched their cash earn nothing while their money sat idle during <strong style="color:#f87171;">'+missedUp+' positive months</strong>.<br><br>'+
     'The DCA investor? They didn\'t have to watch anything. They just kept investing $1,000 every single month — through crashes, rallies, and everything in between — and came out <strong style="color:'+(dcaWins?'#059669':'#dc2626')+';">'+(dcaWins?fmt$(dcaEdge)+' ahead':''+fmt$(Math.abs(dcaEdge))+' behind')+' the dip buyer</strong>.<br><br>'+
     '<strong style="color:#4f46e5;">"Time IN the market beats timing the market."</strong> Dividends reinvested make it even more powerful.';
 

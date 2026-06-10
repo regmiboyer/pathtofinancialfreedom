@@ -2858,7 +2858,7 @@ if(document.readyState === 'loading'){
 /* ── Property section wrapper ── */
 .prop-wrap{background:var(--bg);border-top:3px solid #059669;padding:20px 16px;display:flex;flex-direction:column;gap:14px;}
 .prop-sec-hdr{background:#fff;border:1px solid #6ee7b7;border-radius:12px;padding:14px 18px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
-.prop-sec-title{font-size:16px;font-weight:800;color:#065f46;letter-spacing:-.2px;}
+.prop-sec-title{font-size:20px;font-weight:800;color:#065f46;letter-spacing:-.2px;}
 .prop-sec-sub{font-size:13px;color:#6b7280;margin-top:3px;}
 .prop-layout{display:grid;grid-template-columns:320px 1fr;gap:14px;}
 @media(max-width:860px){.prop-layout{grid-template-columns:1fr;}}
@@ -2866,7 +2866,7 @@ if(document.readyState === 'loading'){
 /* ── Property inputs ── */
 .prop-sidebar{display:flex;flex-direction:column;gap:10px;}
 .prop-group{background:#fff;border:1px solid var(--border);border-radius:10px;padding:11px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
-.prop-group-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:9px;}
+.prop-group-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:9px;}
 .prop-item{margin-bottom:8px;}.prop-item:last-child{margin-bottom:0;}
 .prop-label{font-size:11px;color:var(--tx2);margin-bottom:2px;}
 
@@ -2889,7 +2889,7 @@ if(document.readyState === 'loading'){
 /* ── Property table ── */
 .prop-tbl-box{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04);}
 .prop-tbl-hdr{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
-.prop-tbl-title{font-size:15px;font-weight:600;}
+.prop-tbl-title{font-size:13px;font-weight:600;}
 .prop-tscroll{overflow-x:auto;max-height:420px;overflow-y:auto;}
 .prop-tscroll table{width:100%;border-collapse:collapse;}
 .prop-tscroll thead th{position:sticky;top:0;z-index:2;background:#f0fdf4;padding:7px 10px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#065f46;text-align:right;border-bottom:1px solid #6ee7b7;white-space:nowrap;}
@@ -3003,6 +3003,15 @@ if(document.readyState === 'loading'){
  <div style="font-size:11px;color:#9ca3af;margin-top:2px">Green bars = rent in · Red = op costs · Orange = mortgage · Blue line = annual net CF · Purple dashed = cumulative CF</div>
  </div>
  <canvas id="propIncomeChart" style="max-height:310px"></canvas>
+ </div>
+
+ <!-- Interest vs Principal stacked bar -->
+ <div class="chart-box">
+  <div class="ch-hdr">
+   <div class="ch-ttl">💰 Annual Interest vs Principal Split</div>
+   <div style="font-size:11px;color:#9ca3af;margin-top:2px"><span style="color:#dc2626;font-weight:600;">Interest</span> (front-loaded in early years) transitions to <span style="color:#059669;font-weight:600;">Principal</span> over loan term · tooltip shows % interest each year</div>
+  </div>
+  <canvas id="propIntPrinChart" style="max-height:240px"></canvas>
  </div>
 
  <!-- Year-by-year table -->
@@ -3465,6 +3474,41 @@ const propPairs=[['price','price'],['equity','equity'],['mrate','mrate'],['erate
  ['maint','maint'],['mgmt','mgmt'],['misc','misc'],['g1','g1'],['g2','g2'],['g3','g3']];
 
 let propDebTimer;
+  // ── Interest vs Principal chart ──────────────
+  const propIPctx = pg('propIntPrinChart');
+  if(window._propIPChart) window._propIPChart.destroy();
+  if(propIPctx) window._propIPChart=new Chart(propIPctx.getContext('2d'),{
+    type:'bar',
+    data:{labels,datasets:[
+      {label:'Interest',data:data.map(r=>Math.round(r.yearlyInterest)),
+       backgroundColor:'rgba(220,38,38,.75)',borderWidth:0,borderRadius:0,stack:'ip'},
+      {label:'Principal',data:data.map(r=>Math.max(0,Math.round(r.yearlyMortgage-r.yearlyInterest))),
+       backgroundColor:'rgba(5,150,105,.75)',borderWidth:0,
+       borderRadius:{topLeft:3,topRight:3,bottomLeft:0,bottomRight:0},stack:'ip'}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{labels:{color:'#64748b',font:{size:11},boxWidth:11,padding:10}},
+        tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',
+          borderColor:'#e2e8f0',borderWidth:1,padding:9,
+          callbacks:{
+            label:c=>` ${c.dataset.label}: ${pfmtM(c.parsed.y)}`,
+            afterBody(items){
+              const tot=items.reduce((s,i)=>s+(i.parsed.y||0),0);
+              const int_=items.find(i=>i.dataset.label==='Interest');
+              const intAmt=int_?int_.parsed.y:0;
+              return tot>0?['──────────',`Total: ${pfmtM(tot)}`,`Interest share: ${(intAmt/tot*100).toFixed(0)}%`]:[];
+            }
+          }}},
+      scales:{
+        x:{stacked:true,ticks:{color:'#94a3b8',font:{size:10}},grid:{display:false}},
+        y:{stacked:true,ticks:{color:'#94a3b8',font:{size:10},callback:v=>pfmtM(v)},grid:{color:'rgba(0,0,0,.04)'}}
+      }
+    }
+  });
+}
+
 function propDebounce(){ clearTimeout(propDebTimer); propDebTimer=setTimeout(renderProperty,150); }
 
 propPairs.forEach(([k])=>{
@@ -3486,7 +3530,7 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderProperty); }
 <style>
 .pf-wrap{background:#fdf4ff;border-top:3px solid #7c3aed;padding:20px 16px;display:flex;flex-direction:column;gap:14px;}
 .pf-sec-hdr{background:#fff;border:1px solid #ddd6fe;border-radius:12px;padding:14px 18px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
-.pf-sec-title{font-size:16px;font-weight:800;color:#4c1d95;letter-spacing:-.2px;}
+.pf-sec-title{font-size:20px;font-weight:800;color:#4c1d95;letter-spacing:-.2px;}
 .pf-sec-sub{font-size:13px;color:#6b7280;margin-top:3px;}
 .pf-layout{display:grid;grid-template-columns:320px 1fr;gap:14px;}
 @media(max-width:860px){.pf-layout{grid-template-columns:1fr;}}
@@ -3524,7 +3568,7 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderProperty); }
 /* Table */
 .pf-tbl-box{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04);}
 .pf-tbl-hdr{padding:10px 14px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
-.pf-tbl-title{font-size:15px;font-weight:600;color:#4c1d95;}
+.pf-tbl-title{font-size:13px;font-weight:600;color:#4c1d95;}
 .pf-tscroll{overflow-x:auto;max-height:420px;overflow-y:auto;}
 .pf-tscroll table{width:100%;border-collapse:collapse;}
 .pf-tscroll thead th{position:sticky;top:0;z-index:2;background:#f5f3ff;padding:7px 10px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#7c3aed;text-align:right;border-bottom:1px solid #ddd6fe;white-space:nowrap;}
@@ -4133,7 +4177,7 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderPortfolio); 
   letter-spacing:1.2px;text-transform:uppercase;
   padding:4px 10px;border-radius:20px;
 }
-.mi-hdr-title{font-size:17px;font-weight:700;letter-spacing:-.2px;}
+.mi-hdr-title{font-size:20px;font-weight:700;letter-spacing:-.2px;}
 .mi-hdr-sub{font-size:11px;color:#7c6fa8;margin-top:1px;}
 
 .mi-layout{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 46px);}
@@ -4234,7 +4278,7 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderPortfolio); 
   letter-spacing:1.2px;text-transform:uppercase;
   padding:4px 10px;border-radius:20px;
 }
-#superSection .pm-hdr-title{color:#fff;font-size:17px;font-weight:700;letter-spacing:-.2px;}
+#superSection .pm-hdr-title{color:#fff;font-size:20px;font-weight:700;letter-spacing:-.2px;}
 #superSection .pm-hdr-sub{font-size:11px;color:#6b9e8a;margin-top:1px;}
 
 /* ── Sidebar: matches Strategy II exactly ── */
@@ -4317,10 +4361,10 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderPortfolio); 
 .su-tax-col{border-radius:10px;padding:16px;}
 .su-tax-col.without{background:#fef2f2;border:1px solid #fecaca;}
 .su-tax-col.with{background:#f0fdf4;border:1px solid #a7f3d0;}
-.su-tax-col-title{font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;}
+.su-tax-col-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;}
 .su-tax-col.without .su-tax-col-title{color:#dc2626;}
 .su-tax-col.with .su-tax-col-title{color:#059669;}
-.su-tax-item{display:flex;justify-content:space-between;font-size:19px;padding:4px 0;border-bottom:1px solid rgba(0,0,0,.06);}
+.su-tax-item{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid rgba(0,0,0,.06);}
 .su-tax-item .lab{color:#64748b;}
 .su-tax-item .val{font-weight:700;color:#0f172a;}
 .su-tax-saving-banner{background:linear-gradient(135deg,#ecfdf5,#d1fae5);border:1px solid #6ee7b7;border-radius:10px;padding:14px 18px;text-align:center;margin-top:14px;}
@@ -4328,9 +4372,9 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderPortfolio); 
 /* withdrawal rows */
 .su-wd-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f1f5f9;}
 .su-wd-row:last-child{border-bottom:none;}
-.su-wd-source{font-size:20px;color:#64748b;}
-.su-wd-amount{font-size:26px;font-weight:800;}
-.su-wd-badge{font-size:16px;padding:3px 10px;border-radius:10px;font-weight:700;letter-spacing:.5px;}
+.su-wd-source{font-size:13px;color:#64748b;}
+.su-wd-amount{font-size:20px;font-weight:800;}
+.su-wd-badge{font-size:11px;padding:3px 10px;border-radius:10px;font-weight:700;letter-spacing:.5px;}
 .su-wd-badge.ss{background:#ede9fe;color:#7c3aed;}
 .su-wd-badge.etf{background:#fffbeb;color:#d97706;border:1px solid #fde68a;}
 
@@ -4552,6 +4596,15 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderPortfolio); 
           </div>
         </div>
         <div style="position:relative;height:260px"><canvas id="miMortChart"></canvas></div>
+      </div>
+
+      <!-- Interest vs Principal stacked bar -->
+      <div class="mi-chart-box">
+        <div class="mi-ch-hdr"><div>
+          <div class="mi-ch-title">💰 Annual Interest vs Principal Split</div>
+          <div class="mi-ch-sub"><span style="color:#dc2626;font-weight:600;">Interest</span> front-loaded in early years · shifts to <span style="color:#059669;font-weight:600;">Principal</span> over time · tooltip shows % each year</div>
+        </div></div>
+        <div style="position:relative;height:220px"><canvas id="miIntPrinChart"></canvas></div>
       </div>
 
       <!-- Chart 2: ETF Portfolio -->
@@ -4838,6 +4891,21 @@ window.miRender=function(){
     stdBal.push(Math.max(0,stD?stD.balance:0));
   }
 
+  // ── derive yearly interest vs principal from monthly sim ──
+  var miYrLabels=[], miYrInt=[], miYrPrin=[];
+  var _totalMoSim=Math.min(sim.data.length-1, yrs*12);
+  for(var _y=1;_y<=Math.ceil(_totalMoSim/12);_y++){
+    var _m0=(_y-1)*12, _m1=Math.min(_y*12,_totalMoSim);
+    var _ci0=sim.data[_m0]?sim.data[_m0].cumInt:0;
+    var _ci1=sim.data[_m1]?sim.data[_m1].cumInt:(sim.data[sim.data.length-1]||{cumInt:0}).cumInt;
+    var _yInt=Math.max(0,_ci1-_ci0);
+    var _b0=sim.data[_m0]?sim.data[_m0].balance:0;
+    var _b1=sim.data[_m1]?sim.data[_m1].balance:0;
+    miYrLabels.push('Yr '+_y);
+    miYrInt.push(Math.round(_yInt));
+    miYrPrin.push(Math.max(0,Math.round(_b0-_b1)));
+  }
+
   if(miMortChart) miMortChart.destroy();
   var ctx1=miG('miMortChart'); if(!ctx1) return;
   miMortChart=new Chart(ctx1.getContext('2d'),{
@@ -4868,6 +4936,38 @@ window.miRender=function(){
       etfVals.push(etfData[idx]?etfData[idx].value:etfFinal);
     }
   }
+
+  // ── Interest vs Principal chart ─────────────
+  if(window._miIPChart) window._miIPChart.destroy();
+  var _miIPCtx=miG('miIntPrinChart');
+  if(_miIPCtx) window._miIPChart=new Chart(_miIPCtx.getContext('2d'),{
+    type:'bar',
+    data:{labels:miYrLabels,datasets:[
+      {label:'Interest',data:miYrInt,backgroundColor:'rgba(220,38,38,.75)',borderWidth:0,
+       borderRadius:0,stack:'ip'},
+      {label:'Principal',data:miYrPrin,backgroundColor:'rgba(5,150,105,.75)',borderWidth:0,
+       borderRadius:{topLeft:3,topRight:3,bottomLeft:0,bottomRight:0},stack:'ip'}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{labels:{color:'#64748b',font:{size:11},boxWidth:11,padding:10}},
+        tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',
+          borderColor:'#e2e8f0',borderWidth:1,padding:8,
+          callbacks:{
+            label:function(c){return ' '+c.dataset.label+': '+fmt(c.parsed.y);},
+            afterBody:function(items){
+              var tot=items.reduce(function(s,i){return s+(i.parsed.y||0);},0);
+              var intAmt=0; items.forEach(function(i){if(i.dataset.label==='Interest') intAmt=i.parsed.y;});
+              return tot>0?['──────────','Total: '+fmtK(tot),'Interest: '+(intAmt/tot*100).toFixed(0)+'%']:[];
+            }
+          }}},
+      scales:{
+        x:{stacked:true,ticks:{color:'#94a3b8',font:{size:10}},grid:{display:false}},
+        y:{stacked:true,ticks:{color:'#94a3b8',font:{size:10},callback:function(v){return fmtK(v);}},grid:{color:'rgba(0,0,0,.04)'}}
+      }
+    }
+  });
 
   if(miEtfChart) miEtfChart.destroy();
   var ctx2=miG('miEtfChart'); if(!ctx2) return;
@@ -4943,8 +5043,8 @@ if(document.readyState==='loading'){
   letter-spacing:2px;text-transform:uppercase;
   border-radius:24px;padding:8px 22px;flex-shrink:0;
 }
-.pm-hdr-title{font-size:34px;font-weight:800;color:#e8f4ff;letter-spacing:-.4px;}
-.pm-hdr-sub{font-size:20px;color:rgba(160,200,235,.65);margin-top:4px;}
+.pm-hdr-title{font-size:20px;font-weight:800;color:#e8f4ff;letter-spacing:-.4px;}
+.pm-hdr-sub{font-size:13px;color:rgba(160,200,235,.65);margin-top:4px;}
 
 /* layout */
 .pm-layout{display:grid;grid-template-columns:380px 1fr;gap:0;min-height:calc(100vh - 90px);}
@@ -4964,12 +5064,12 @@ if(document.readyState==='loading'){
   border-radius:14px;padding:16px 18px;
 }
 .pm-ctrl-title{
-  font-size:20px;font-weight:800;text-transform:uppercase;
+  font-size:10px;font-weight:800;text-transform:uppercase;
   letter-spacing:.6px;margin-bottom:14px;color:#a0c4dc;
 }
 .pm-ctrl-item{margin-bottom:14px;}
 .pm-ctrl-item:last-child{margin-bottom:0;}
-.pm-ctrl-label{font-size:18px;color:#8aacc4;margin-bottom:5px;font-weight:500;}
+.pm-ctrl-label{font-size:11px;color:#8aacc4;margin-bottom:5px;font-weight:500;}
 .pm-ctrl-row{display:flex;align-items:center;gap:8px;}
 .pm-num-wrap{
   display:flex;align-items:center;
@@ -4978,10 +5078,10 @@ if(document.readyState==='loading'){
   border-radius:8px;padding:0 8px;
   min-width:120px;
 }
-.pm-num-prefix,.pm-num-suffix{font-size:20px;color:#6888a4;}
+.pm-num-prefix,.pm-num-suffix{font-size:11px;color:#6888a4;}
 .pm-num-in{
   background:transparent;border:none;outline:none;
-  color:#d8eaf8;font-size:22px;font-weight:700;
+  color:#d8eaf8;font-size:12px;font-weight:700;
   width:90px;padding:6px 4px;text-align:right;
 }
 .pm-range{
@@ -5153,10 +5253,10 @@ if(document.readyState==='loading'){
   border-radius:18px;padding:24px 26px;
 }
 .pm-chart-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
-.pm-chart-title{font-size:26px;font-weight:800;color:#c8daea;}
-.pm-chart-sub{font-size:18px;color:#5a7890;margin-top:4px;}
+.pm-chart-title{font-size:13px;font-weight:800;color:#c8daea;}
+.pm-chart-sub{font-size:10px;color:#5a7890;margin-top:4px;}
 .pm-legend{display:flex;gap:20px;flex-wrap:wrap;align-items:center;}
-.pm-leg-item{display:flex;align-items:center;gap:7px;font-size:18px;color:#8aacc4;font-weight:500;}
+.pm-leg-item{display:flex;align-items:center;gap:7px;font-size:11px;color:#8aacc4;font-weight:500;}
 .pm-leg-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;}
 
 /* year-by-year table */
@@ -5166,8 +5266,8 @@ if(document.readyState==='loading'){
   border-radius:18px;padding:20px 24px;
   overflow-x:auto;
 }
-.pm-table-title{font-size:24px;font-weight:800;color:#c8daea;margin-bottom:16px;}
-.pm-table{width:100%;border-collapse:collapse;font-size:18px;}
+.pm-table-title{font-size:13px;font-weight:800;color:#c8daea;margin-bottom:16px;}
+.pm-table{width:100%;border-collapse:collapse;font-size:11px;}
 .pm-table th{
   color:#90b8d4;font-weight:700;text-transform:uppercase;
   letter-spacing:.4px;padding:10px 14px;text-align:right;
@@ -6521,12 +6621,12 @@ function suUpdateTaxSummary(){
   var el = document.getElementById('su_tax_summary');
   if(!el) return;
   el.innerHTML =
-    '<div style="color:#059669;font-size:19px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Your Tax Position</div>'+
-    '<div style="display:flex;justify-content:space-between;font-size:19px;padding:3px 0"><span style="color:#64748b">Gross income</span><span style="color:#0f172a;font-weight:700">'+fmtDollar(salary)+'</span></div>'+
-    '<div style="display:flex;justify-content:space-between;font-size:19px;padding:3px 0"><span style="color:#64748b">Income tax + Medicare</span><span style="color:#dc2626;font-weight:700">−'+fmtDollar(tax)+'</span></div>'+
-    '<div style="display:flex;justify-content:space-between;font-size:19px;padding:5px 0;border-top:1px solid #d1fae5;margin-top:5px"><span style="color:#64748b">Take-home pay</span><span style="color:#059669;font-weight:700">'+fmtDollar(takeHome)+'</span></div>'+
-    '<div style="display:flex;justify-content:space-between;font-size:19px;padding:3px 0"><span style="color:#64748b">Marginal rate (incl. Medicare)</span><span style="color:#d97706;font-weight:700">'+pct(marginal)+'</span></div>'+
-    '<div style="display:flex;justify-content:space-between;font-size:19px;padding:3px 0"><span style="color:#64748b">SS tax benefit vs super (15%)</span><span style="color:#059669;font-weight:700">'+pct(marginal-0.15)+' per $1</span></div>';
+    '<div style="color:#059669;font-size:13px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Your Tax Position</div>'+
+    '<div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0"><span style="color:#64748b">Gross income</span><span style="color:#0f172a;font-weight:700">'+fmtDollar(salary)+'</span></div>'+
+    '<div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0"><span style="color:#64748b">Income tax + Medicare</span><span style="color:#dc2626;font-weight:700">−'+fmtDollar(tax)+'</span></div>'+
+    '<div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-top:1px solid #d1fae5;margin-top:5px"><span style="color:#64748b">Take-home pay</span><span style="color:#059669;font-weight:700">'+fmtDollar(takeHome)+'</span></div>'+
+    '<div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0"><span style="color:#64748b">Marginal rate (incl. Medicare)</span><span style="color:#d97706;font-weight:700">'+pct(marginal)+'</span></div>'+
+    '<div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0"><span style="color:#64748b">SS tax benefit vs super (15%)</span><span style="color:#059669;font-weight:700">'+pct(marginal-0.15)+' per $1</span></div>';
 }
 
 window.suCalculate = function(){
@@ -6684,7 +6784,7 @@ window.suCalculate = function(){
 
     // 2b. Total Portfolio Summary
     '<div class="pm-chart-wrap" style="background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:20px 24px;margin-bottom:16px">'+
-    '<div style="font-size:18px;font-weight:800;color:#f8fafc;margin-bottom:16px;letter-spacing:-.4px">📊 Total Portfolio — All Streams Combined</div>'+
+    '<div style="font-size:13px;font-weight:800;color:#f8fafc;margin-bottom:16px;letter-spacing:-.4px">📊 Total Portfolio — All Streams Combined</div>'+
     '<div class="pm-tiles" style="grid-template-columns:repeat(4,1fr)">'+
     _metric('Employer SGC (Mandatory)', fmt$(empSGFV), (getSGRate()*100).toFixed(1)+'% of salary × '+dur+' yrs · 15% contrib tax · '+pct(supRet)+' fund return', 'blue')+
     _metric('Your SS in Super', fmt$(totalSacrifice), 'Pre-tax '+fmt$(ssExtra)+' + Post-tax '+fmt$(ncExtra)+' · voluntary', 'pur')+
@@ -6722,8 +6822,8 @@ window.suCalculate = function(){
     '</div>'+
     '</div>'+
     '<div class="su-tax-saving-banner">'+
-    '<div style="font-size:24px;font-weight:800;color:#047857">'+fmtDollar(grossTaxSaving)+' saved in tax every year</div>'+
-    '<div style="font-size:19px;color:#059669;margin-top:5px">Sacrifice '+fmtDollar(ssAmt)+' — actual pocket cost only '+fmtDollar(Math.round(takeHomeImpact))+' · '+pct(marginal)+' marginal vs 15% super = <strong>'+pct(marginal-0.15)+' advantage per $1</strong></div>'+
+    '<div style="font-size:20px;font-weight:800;color:#047857">'+fmtDollar(grossTaxSaving)+' saved in tax every year</div>'+
+    '<div style="font-size:12px;color:#059669;margin-top:5px">Sacrifice '+fmtDollar(ssAmt)+' — actual pocket cost only '+fmtDollar(Math.round(takeHomeImpact))+' · '+pct(marginal)+' marginal vs 15% super = <strong>'+pct(marginal-0.15)+' advantage per $1</strong></div>'+
     '</div>'+
     '</div>'+
 
@@ -6782,7 +6882,7 @@ window.suCalculate = function(){
 
     // 7b. Fund Longevity section
     '<div class="pm-chart-wrap" style="background:linear-gradient(135deg,#0f172a 0%,#1a1035 100%);border-radius:16px;padding:20px 24px;margin-bottom:16px">'+
-    '<div style="font-size:18px;font-weight:800;color:#f8fafc;margin-bottom:4px;letter-spacing:-.4px">⏳ Fund Longevity — How Long Will It Last?</div>'+
+    '<div style="font-size:13px;font-weight:800;color:#f8fafc;margin-bottom:4px;letter-spacing:-.4px">⏳ Fund Longevity — How Long Will It Last?</div>'+
     '<div style="font-size:12px;color:#94a3b8;margin-bottom:16px">From age '+PRES_AGE+' ('+presCalYr+') · Fund stays invested at '+pct(supRet)+' return while you draw down · withdrawal grows '+wdrawInc+'%/yr</div>'+
     '<div class="pm-tiles" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px">'+
     _metric('Super Only (SS+SGC)', _yrsStr(fundYrsSuper),
@@ -7559,7 +7659,7 @@ window.dcaInit = function(){
   letter-spacing:1.2px;text-transform:uppercase;
   padding:4px 10px;border-radius:20px;flex-shrink:0;
 }
-.he-hdr-title{font-size:17px;font-weight:700;letter-spacing:-.2px;}
+.he-hdr-title{font-size:20px;font-weight:700;letter-spacing:-.2px;}
 .he-hdr-sub{font-size:11px;color:#7bafc8;margin-top:1px;}
 .he-layout{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 46px);}
 @media(max-width:860px){.he-layout{grid-template-columns:1fr;}}
@@ -7753,6 +7853,15 @@ window.dcaInit = function(){
         <div class="he-chart-wrap"><canvas id="heChart3"></canvas></div>
       </div>
 
+      <!-- Chart 5: Interest vs Principal stacked bar -->
+      <div class="he-chart-box">
+        <div class="he-ch-hdr">
+          <div class="he-ch-title">💰 Annual Interest vs Principal — Equity Recycling Scenario</div>
+          <div class="he-ch-sub"><span style="color:#dc2626;font-weight:700;">Interest</span> (front-loaded) vs <span style="color:#059669;font-weight:700;">Principal</span> reduction each year · Dashed amber lines = equity events</div>
+        </div>
+        <div class="he-chart-wrap" style="height:260px;"><canvas id="heChart5"></canvas></div>
+      </div>
+
       <!-- Chart 4: Phase 1 DCA Build -->
       <div class="he-chart-box">
         <div class="he-ch-hdr">
@@ -7891,6 +8000,8 @@ window.heRun = function(){
   var etfPort=0, etfNolump=0, cumInv=0, cumInvNolump=0;
   var yLoan=[loanStart], yBase=[loanStart], yPmt=[initPmt];
   var yEtf=[0], yEtfNolump=[0], yInv=[0], yInvNolump=[0];
+  var yYrInt=[0], yYrPrin=[0];   // yearly interest & principal (with equity recycling)
+  var _yrInt=0, _yrPrin=0;
   var events=[];
 
   for(var m=1;m<=HORIZON;m++){
@@ -7904,6 +8015,7 @@ window.heRun = function(){
     if(loanBal>0.01){
       var int_=loanBal*r, prin=Math.max(0,Math.min(pmt-int_,loanBal));
       loanBal=Math.max(0,loanBal-prin); totalInt+=int_;
+      _yrInt+=int_; _yrPrin+=prin;
     }
     if(baseBal>0.01){
       var bI=baseBal*r, bP=Math.max(0,Math.min(initPmt-bI,baseBal));
@@ -7916,6 +8028,8 @@ window.heRun = function(){
       yLoan.push(loanBal); yBase.push(baseBal); yPmt.push(pmt);
       yEtf.push(etfPort); yEtfNolump.push(etfNolump);
       yInv.push(cumInv); yInvNolump.push(cumInvNolump);
+      yYrInt.push(Math.round(_yrInt)); yYrPrin.push(Math.round(_yrPrin));
+      _yrInt=0; _yrPrin=0;
     }
   }
   _heEvents=events;
@@ -8070,6 +8184,57 @@ window.heRun = function(){
     ]},
     options:makeOpts(kFmt,heFmt$)
   });
+
+  /* Chart 5 — Annual Interest vs Principal stacked bar */
+  if(_heCharts.c5) _heCharts.c5.destroy();
+  var el5=document.getElementById('heChart5');
+  if(el5){
+    var c5Labels=xLabels.slice(1); // skip 'Start', use Yr1..Yr20
+    var c5Int=yYrInt.slice(1), c5Prin=yYrPrin.slice(1);
+    _heCharts.c5=new Chart(el5.getContext('2d'),{
+      type:'bar',
+      plugins:[vertLinePlugin('rgba(245,158,11,.6)','#d97706')],
+      data:{
+        labels:c5Labels,
+        datasets:[
+          {label:'Interest Paid',data:c5Int,
+           backgroundColor:'rgba(220,38,38,.75)',borderColor:'#dc2626',borderWidth:0,
+           borderRadius:0,stack:'ip'},
+          {label:'Principal Repaid',data:c5Prin,
+           backgroundColor:'rgba(5,150,105,.75)',borderColor:'#059669',borderWidth:0,
+           borderRadius:{topLeft:3,topRight:3,bottomLeft:0,bottomRight:0},stack:'ip'}
+        ]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        interaction:{mode:'index',intersect:false},
+        plugins:{
+          legend:{labels:{color:'#64748b',font:{size:11},boxWidth:11,padding:12}},
+          tooltip:{
+            backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',
+            borderColor:'#e2e8f0',borderWidth:1,padding:9,
+            callbacks:{
+              label:function(c){return ' '+c.dataset.label+': '+heFmt$(c.parsed.y);},
+              afterBody:function(items){
+                var tot=items.reduce(function(s,i){return s+(i.parsed.y||0);},0);
+                var intItem=items.find(function(i){return i.dataset.label==='Interest Paid';});
+                var intAmt=intItem?intItem.parsed.y:0;
+                var pct=tot>0?(intAmt/tot*100).toFixed(0):0;
+                return ['───────────','Total Payment: '+heFmt$(tot),'Interest share: '+pct+'%'];
+              }
+            }
+          }
+        },
+        scales:{
+          x:{stacked:true,ticks:{color:'#94a3b8',font:{size:9.5}},grid:{display:false}},
+          y:{stacked:true,
+             ticks:{color:'#94a3b8',font:{size:10},callback:function(v){return '$'+Math.round(v/1000)+'k';}},
+             grid:{color:'rgba(0,0,0,.04)'},
+             title:{display:true,text:'Annual Payment ($)',color:'#94a3b8',font:{size:10}}}
+        }
+      }
+    });
+  }
 
   /* Chart 4 — DCA Phase 1 stacked bar */
   if(_heCharts.c4) _heCharts.c4.destroy();

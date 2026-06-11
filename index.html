@@ -2221,6 +2221,7 @@ let lumpSums = DEFAULT_LUMPS.map(l=>({...l}));
 let rows = [];
 let tableFilter = 'all';
 let activePicker = null; // fund index
+let activePickerMode = null; // 'mi','su','he','mei','mei4','mei5' or null for Strategy I
 let currentCat = 'All';
 
 // ═══════════════════════════════════════
@@ -2495,8 +2496,9 @@ g('addFundBtn').addEventListener('click',()=>{
 // ═══════════════════════════════════════
 // ETF PICKER MODAL
 // ═══════════════════════════════════════
-function openPicker(fi){
+function openPicker(fi, mode){
  activePicker=fi;
+ activePickerMode=mode||null;
  const letter=FUND_LETTERS[fi];
  g('modalTitle').textContent=`Select Fund ${letter}`;
  g('etfSearch').value='';
@@ -2509,8 +2511,31 @@ function closePicker(){ g('etfOverlay').classList.remove('open'); activePicker=n
 
 function selectETF(sym){
  const etf=ETF_DB.find(e=>e.sym===sym); if(!etf||activePicker===null) return;
- const prevDca=funds[activePicker].dca||1000; funds[activePicker]={...etf,rate:etf.cagr,dca:prevDca};
- closePicker(); renderFunds(); render();
+ const fi=activePicker, mode=activePickerMode;
+ closePicker();
+ if(!mode){
+   // Strategy I — ETF Simulation
+   const prevDca=funds[fi].dca||1000; funds[fi]={...etf,rate:etf.cagr,dca:prevDca};
+   renderFunds(); render();
+ } else if(mode==='mi'){
+   // Strategy IV — Property
+   if(window.MI_FUNDS){const p=(window.MI_FUNDS[fi]||{}).dca||500;window.MI_FUNDS[fi]={...etf,rate:etf.cagr,dca:p};if(window.miRenderFunds)window.miRenderFunds();if(window.miRender)window.miRender();}
+ } else if(mode==='su'){
+   // Strategy III — Super
+   if(window.SU_ETF_FUNDS){const p=(window.SU_ETF_FUNDS[fi]||{}).dca||500;window.SU_ETF_FUNDS[fi]={...etf,rate:etf.cagr,dca:p};if(window.suRenderFunds)window.suRenderFunds();if(window.suCalculate)window.suCalculate();}
+ } else if(mode==='he'){
+   // Strategy VIII — Home Equity
+   if(window.HE_FUNDS){const p=(window.HE_FUNDS[fi]||{}).dca||500;window.HE_FUNDS[fi]={...etf,rate:etf.cagr,dca:p};if(window.heRenderFunds)window.heRenderFunds();if(window.heRun)window.heRun();}
+ } else if(mode==='mei'){
+   // Strategy II — MEI Scenario 3 (ETF Side-by-Side)
+   if(window.MEI_FUNDS){const p=(window.MEI_FUNDS[fi]||{}).dca||500;window.MEI_FUNDS[fi]={...etf,rate:etf.cagr,dca:p};if(window.meiRenderFunds)window.meiRenderFunds();}
+ } else if(mode==='mei4'){
+   // Strategy II — MEI Scenario 4
+   if(window.MEI_FUNDS_SC4){const p=(window.MEI_FUNDS_SC4[fi]||{}).dca||500;window.MEI_FUNDS_SC4[fi]={...etf,rate:etf.cagr,dca:p};if(window.meiRenderFundsSc4)window.meiRenderFundsSc4();}
+ } else if(mode==='mei5'){
+   // Strategy II — MEI Scenario 5
+   if(window.MEI_FUNDS_SC5){const p=(window.MEI_FUNDS_SC5[fi]||{}).dca||500;window.MEI_FUNDS_SC5[fi]={...etf,rate:etf.cagr,dca:p};if(window.meiRenderFundsSc5)window.meiRenderFundsSc5();}
+ }
 }
 
 function renderCatChips(){
@@ -2540,10 +2565,14 @@ function renderETFList(){
  }).join('');
 }
 
-g('etfClose').addEventListener('click',closePicker);
-g('etfOverlay').addEventListener('click',e=>{ if(e.target===g('etfOverlay')) closePicker(); });
+// Picker event listeners — deferred to DOMContentLoaded so the
+// modal HTML (placed at body end) is available when this script runs
+document.addEventListener('DOMContentLoaded',function(){
+  var ec=g('etfClose'); if(ec) ec.addEventListener('click',closePicker);
+  var eo=g('etfOverlay'); if(eo) eo.addEventListener('click',function(e){if(e.target===eo)closePicker();});
+  var es=g('etfSearch'); if(es) es.addEventListener('input',renderETFList);
+});
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePicker(); });
-g('etfSearch').addEventListener('input',renderETFList);
 
 // ═══════════════════════════════════════
 // MAIN RENDER
@@ -2694,9 +2723,13 @@ g('mainTg').addEventListener('click',e=>{
  btn.classList.add('on'); currentMode=btn.dataset.m;
  if(mainChart){
  const showFund=currentMode==='individual'||currentMode==='all';
- mainChart.data.datasets.forEach(ds=>{
- if(ds.id&&ds.id.startsWith('fund')) ds.hidden=!showFund;
- else if(ds.id) ds.hidden=!visMap[currentMode].includes(ds.id);
+ mainChart.data.datasets.forEach((ds,i)=>{
+   let hidden;
+   if(ds.id&&ds.id.startsWith('fund')) hidden=!showFund;
+   else if(ds.id) hidden=!visMap[currentMode].includes(ds.id);
+   else return;
+   // Use getDatasetMeta to update Chart.js 4 internal hidden state
+   mainChart.getDatasetMeta(i).hidden=hidden;
  });
  mainChart.update();
  }
@@ -3377,18 +3410,7 @@ function renderProperty(){
  <td style="color:#818cf8;font-style:italic">${pfmtM(r.realNetEquity)}</td>
  <td style="color:#64748b">${pfmtM(r.depr)}</td>
  </tr>`).join('');
-}
-
-// Building value for display in note
-const buildingVal_display = 1000000 * 0.40 * 0.025 * 30; // approx max depreciation
-
-// ── Input binding ──────────────────────────────────────────
-const propPairs=[['price','price'],['equity','equity'],['mrate','mrate'],['erate','erate'],
- ['term','term'],['rent','rent'],['rentinc','rentinc'],['water','water'],['council','council'],
- ['maint','maint'],['mgmt','mgmt'],['misc','misc'],['g1','g1'],['g2','g2'],['g3','g3']];
-
-let propDebTimer;
-  // ── Interest vs Principal chart ──────────────
+  // ── Interest vs Principal chart ──────────────────────────────────
   const propIPctx = pg('propIntPrinChart');
   if(window._propIPChart) window._propIPChart.destroy();
   if(propIPctx) window._propIPChart=new Chart(propIPctx.getContext('2d'),{
@@ -3422,6 +3444,16 @@ let propDebTimer;
     }
   });
 }
+
+// Building value for display in note
+const buildingVal_display = 1000000 * 0.40 * 0.025 * 30; // approx max depreciation
+
+// ── Input binding ──────────────────────────────────────────
+const propPairs=[['price','price'],['equity','equity'],['mrate','mrate'],['erate','erate'],
+ ['term','term'],['rent','rent'],['rentinc','rentinc'],['water','water'],['council','council'],
+ ['maint','maint'],['mgmt','mgmt'],['misc','misc'],['g1','g1'],['g2','g2'],['g3','g3']];
+
+let propDebTimer;
 
 function propDebounce(){ clearTimeout(propDebTimer); propDebTimer=setTimeout(renderProperty,150); }
 
@@ -5692,7 +5724,6 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
 <!-- ══════════ STRATEGY VI — THE FASTEST WAY TO WEALTH ══════════ -->
 <style>
 #memeSection{
-  display:none;
   min-height:100vh;
   background:#000;
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
@@ -5979,6 +6010,14 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
 function showMeme(){
   document.getElementById('meme-p2').style.display = 'block';
 }
+// Nav engine hook — required for enterApp to register this section
+window.memeOnEnter = (function(){
+  var d = false;
+  return function(){
+    if(!d){ d=true; /* no heavy init needed for meme section */ }
+    else { window.dispatchEvent(new Event('resize')); }
+  };
+})();
 </script>
 
 <!-- ════════════════════════════════════════════════════════
@@ -9894,6 +9933,24 @@ window.updateSuperWidgets = updateSuperWidgets;
 
 })();
 </script>
+
+<!-- ═══════════════════════════════════════════════════════
+     GLOBAL ETF PICKER MODAL — shared by all strategies
+     Placed at body level so it's never clipped by a hidden section
+     ═══════════════════════════════════════════════════════ -->
+<div class="etf-overlay" id="etfOverlay">
+  <div class="etf-modal">
+    <div class="etf-hdr" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px 10px;border-bottom:1px solid #f1f5f9;">
+      <div id="modalTitle" style="font-size:15px;font-weight:800;color:#0f172a;letter-spacing:-.2px;">Select Fund</div>
+      <button class="etf-close" id="etfClose">×</button>
+    </div>
+    <div class="etf-searchbar">
+      <input id="etfSearch" type="text" placeholder="Search by ticker or name (e.g. QQQ, semiconductor…)" autocomplete="off">
+    </div>
+    <div class="etf-cats" id="catChips"></div>
+    <div class="etf-list" id="etfList"></div>
+  </div>
+</div>
 
 </body>
 </html>

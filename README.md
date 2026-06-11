@@ -1,198 +1,425 @@
-# Path To Financial Freedom
+# Investment Planner — Technical Reference
 
-A self-contained, interactive financial planning tool built as a single HTML file. No backend, no sign-up, no data leaves your browser. Open `index.html` and start modelling your path to financial independence.
-
-**Live site:** [your-github-pages-url-here]
+A single-file, client-side wealth simulation tool built for personal financial planning across seven investment strategies. All computation runs in the browser — no server, no accounts, no data leaves the device.
 
 ---
 
-## What This Tool Does
+## Architecture
 
-The planner lets you model three distinct investment strategies side by side — ETF investing, a single rental property, and a growing property portfolio — then compares them on equal footing in a final head-to-head section. Every number updates in real time as you change inputs on the left-hand panel.
+The entire application is one self-contained `index.html` file (~10,000 lines). It ships with:
 
----
+- **Vanilla JavaScript** — no frameworks, no build step
+- **Chart.js 4.5.0** — loaded via CDN
+- **CSS custom properties** — theming and responsive layout
+- **Navigation engine** — a lightweight section router that shows/hides strategy panels and fires `onEnter` callbacks to lazy-initialise charts only when a section becomes visible
 
-## The Four Sections
-
-### Section 1 — Investment in Vanguard ETFs
-
-Model a long-term ETF investment strategy with multiple funds running simultaneously.
-
-**What you can configure:**
-- **Starting capital** — the lump sum you invest on day one
-- **Monthly DCA (Dollar Cost Averaging)** — a fixed amount added every month automatically
-- **One-off lump sum injections** — add extra capital at any specific year (e.g. an inheritance, bonus, or property sale proceeds)
-- **Investment horizon** — how many years you want to simulate (up to 50 years)
-- **Inflation rate** — used across all sections to show real (today's dollar) values alongside nominal values
-- **Tax drag** — an annual percentage reduction applied to growth to account for capital gains tax on distributions
-
-**Funds:**
-- Add up to 5 ETFs from a preset list (VAS, VGS, IVV, NDQ, VDHG, A200, and more)
-- Each fund has a historical CAGR pre-loaded but you can override it
-- Assign a DCA split percentage to each fund (must total 100%)
-- Each fund is colour-coded throughout all charts
-
-**What it shows:**
-- A 50-year growth chart with solid lines (nominal value) and dashed lines (real value in today's dollars)
-- A summary tile with total portfolio value, total contributions, and total gains
-- Per-fund breakdown tiles showing each fund's final value and contribution
-- A timeline breakdown showing the "accumulation phase" vs "drawdown phase" (if you set a retirement horizon)
-
----
-
-### Section 2 — Rental Property Investment: Sydney Comparison
-
-Model buying and holding a single investment property in Sydney over a long-term horizon.
-
-**What you can configure:**
-- **Property purchase price** — the upfront cost of the property
-- **Deposit percentage** — how much of the price you pay upfront (the rest becomes a mortgage)
-- **Stamp duty** — automatically included as an upfront cost
-- **Annual property growth rate** — how fast the property appreciates in value each year
-- **Mortgage interest rate** — the annual rate on your loan
-- **Mortgage term** — how many years to repay the loan
-- **Weekly rent** — what tenants pay per week
-- **Rent increase rate** — rent increases by this percentage **every third year** (reflecting realistic lease renewal cycles)
-- **Annual operating costs** — property management, insurance, council rates, maintenance
-- **Vacancy allowance** — assumes 2 weeks per year vacancy between tenants
-- **Marketing costs** — $500/year to advertise for new tenants
-
-**What "real rent" means:**
-The tool calculates **net cash flow** as: `Rent collected − Operating costs − Mortgage repayment`. This is the true out-of-pocket position each year, not just gross rent.
-
-**What it shows:**
-- A combined chart with property value, remaining mortgage, and cumulative net cash flow over time
-- An income breakdown chart showing rent, costs, and mortgage payments year by year
-- Summary tiles covering: final property value, total mortgage paid, total rent collected, total operating costs, net profit, and cumulative cash flow
-- A triangle indicator showing what portion of the mortgage was covered by rent vs paid out of pocket
-- An **"ETF comparison tile"** at the bottom showing: if you had invested your deposit and ongoing cash shortfalls into ETFs instead, what would that portfolio be worth?
-
----
-
-### Section 3 — Property Portfolio Strategy: Buy Every 5 Years
-
-Models what happens when you reinvest your rental income and equity to buy an additional property every 5 years, building a multi-property portfolio over 30 years.
-
-**Key behaviours:**
-- All property price, rent, growth, and mortgage settings are **pulled directly from Section 2** — change them there and this section updates automatically
-- Every 5 years, a new property is added to the portfolio at the then-current market price
-- Each property ages independently — its rent, mortgage balance, and cash flow are tracked separately
-- Rent increases follow the same triennial (every 3 years) rule as Section 2
-- Portfolio-level cash flow is the sum of all individual property cash flows
-
-**What it shows:**
-- A stacked chart showing the value of each property in the portfolio over time
-- A combined cash flow chart showing when the portfolio tips from cash-flow negative to positive
-- Summary tiles covering: total portfolio value, total equity, total debt, cumulative rent, cumulative costs, and cumulative mortgage payments
-- Breakdown of how much of the mortgage was covered by rent vs paid out of pocket across the whole portfolio
-- An **"ETF comparison tile"** showing what the same total capital invested into ETFs would be worth
-
----
-
-### Section 4 — ETF vs Property: Like-for-Like Comparison
-
-A direct apples-to-apples comparison that takes the **same total capital** invested in the property strategy (deposit + all out-of-pocket shortfalls) and asks: *what if that money had gone into ETFs instead?*
-
-**What it shows:**
-- A side-by-side line chart: Section 1 ETF portfolio vs Section 3 property portfolio over 30 years
-- Final value comparison tile
-- Annualised return comparison
-
-This section recalculates automatically whenever Section 1 or Section 3 inputs change.
-
----
-
-## How the Inputs Work
-
-All inputs are on the **left-hand panel**. There are no sliders — every field is a free-form number input so you can type any value precisely.
-
-| Symbol | Meaning |
-|--------|---------|
-| `$` prefix | Dollar amount |
-| `%` suffix | Percentage (enter as a whole number, e.g. `7` for 7%) |
-| `yr` suffix | Number of years |
-
-Changes apply immediately — charts and tables update within a fraction of a second.
-
----
-
-## How Sections Connect
-
-The sections are **live-linked**:
-
-- Section 2 and 3 share the same property settings
-- Section 3 pulls all its inputs from Section 2 automatically
-- Section 4 reads from both Section 1 (ETF returns) and Section 3 (property capital deployed)
-- Inflation rate from Section 1 is used across all sections for real-value calculations
-
-This means you only need to update one input in the right place and the entire model refreshes.
-
----
-
-## Triennial Rent Increase Logic
-
-Rent does not increase every year. Instead it increases by the configured percentage **once every three years**, reflecting the real-world pattern of rent reviews at lease renewal. The formula used is:
+### Navigation Engine
 
 ```
-Rent in year N = Starting Rent × (1 + rent_increase_rate) ^ floor((N−1) / 3)
+enterApp(strategyKey)
+  → hideAllSections()           // sets display:none on all section elements
+  → showSection(sectionId)      // clears display:none on the target
+  → fires window.<key>OnEnter() // lazy chart init / resize
 ```
 
-This means:
-- Years 1–3: base rent
-- Years 4–6: rent × (1 + rate)
-- Years 7–9: rent × (1 + rate)²
-- And so on
+Each strategy is registered in `STRATEGY_META`:
 
----
-
-## Vacancy & Marketing Costs (Section 2 & 3)
-
-Two costs are baked in by default and cannot be turned off, as they reflect realistic property holding costs in Sydney:
-
-- **Vacancy:** 2 weeks per year of zero rent income (approximately 3.85% vacancy rate)
-- **Marketing:** $500/year to advertise the property between tenants
-
-These are subtracted from gross rent before calculating net cash flow.
-
----
-
-## Running It Locally
-
-No installation required. Just open the file:
-
-```bash
-open index.html
+```js
+var STRATEGY_META = {
+  s1:       { section: 'etfSection',      onEnter: 'etfOnEnter'      },
+  mei:      { section: 'meiSection',      onEnter: 'meiOnEnter'      },
+  super:    { section: 'superSection',    onEnter: 'superOnEnter'    },
+  compare:  { section: 'pfSection',       onEnter: 'pfOnEnter'       },
+  precious: { section: 'preciousSection', onEnter: 'preciousOnEnter' },
+  dca:      { section: 'dcaSection',      onEnter: 'dcaOnEnter'      },
+  meme:     { section: 'memeSection',     onEnter: 'memeOnEnter'     }
+};
 ```
 
-Or double-click `index.html` in Finder. It runs entirely in your browser.
+> **CSS `display:none` rule:** any section with a CSS-level `display:none` rule overrides the nav engine's show logic. Sections must use the `style="display:none"` HTML attribute — not a CSS rule — for the nav engine to control them correctly.
 
 ---
 
-## Updating the Live Site
+## Shared Infrastructure
 
-After making changes to `index.html`, push to GitHub and the live site updates automatically:
+### ETF Database
 
-```bash
-git add index.html
-git commit -m "describe your change"
-git push
+`ETF_DB` — ~130 US ETFs, each with:
+
+| Field  | Description                                    |
+|--------|------------------------------------------------|
+| `sym`  | Ticker symbol                                  |
+| `name` | Full fund name                                 |
+| `cat`  | Category (Broad Market, Technology, etc.)      |
+| `cagr` | Estimated 15-yr CAGR through 2025 (%)          |
+| `yr`   | Inception year                                 |
+| `div`  | Trailing dividend yield (%)                    |
+
+Covers Broad Market, Large/Mid/Small Cap, Growth, Value, Technology, Healthcare, Real Estate, Bonds, Commodities, International, and Leveraged.
+
+### Shared Inflation Rate
+
+`getBase().inf` — set in Strategy I's global controls — is read by every other strategy that needs real-return calculations. Single source of truth for purchasing-power adjustments across the entire app.
+
+### ETF Picker Modal
+
+A single shared modal (`id="etfOverlay"`) is used by all strategies. Opened via:
+
+```js
+openPicker(fundIndex, mode)
 ```
 
-GitHub Pages rebuilds the site within 30–60 seconds.
+`mode` routes the selected ETF to the correct fund array:
+
+| Mode     | Target array        | Strategy           |
+|----------|---------------------|--------------------|
+| `null`   | `funds[]`           | Strategy I         |
+| `'su'`   | `SU_ETF_FUNDS[]`    | Strategy III       |
+| `'mei'`  | `MEI_FUNDS[]`       | Strategy II Sc. 3  |
+| `'mei4'` | `MEI_FUNDS_SC4[]`   | Strategy II Sc. 4  |
+| `'mei5'` | `MEI_FUNDS_SC5[]`   | Strategy II Sc. 5  |
+| `'he'`   | `HE_FUNDS[]`        | Home Equity        |
+| `'mi'`   | `MI_FUNDS[]`        | Mortgage Invest    |
 
 ---
 
-## Technical Notes
+## Strategy I — Invest in ETFs
 
-- Built as a single self-contained HTML file (~170KB)
-- Uses [Chart.js 4.5.0](https://www.chartjs.org/) for all charts (loaded from CDN)
-- No frameworks, no build step, no dependencies beyond Chart.js
-- All calculations run client-side in JavaScript — no data is sent anywhere
-- Responsive layout: works on desktop and tablet (best experienced on a wide screen)
+**Section:** `etfSection`
+
+A 50-year, three-phase wealth accumulation and drawdown model.
+
+### Phases
+
+| Phase | Duration  | Description                                               |
+|-------|-----------|-----------------------------------------------------------|
+| 1     | `dcaYrs`  | Dollar-cost averaging — fixed monthly contributions       |
+| 2     | `coast`   | Coast period — no contributions, portfolio keeps growing  |
+| 3     | `wYrs`    | Withdrawal phase — monthly drawdown with annual increases |
+
+### Core Formula
+
+Each month, for each fund:
+
+```
+balance = balance × (1 + monthlyRate) + monthlyDCA
+```
+
+where `monthlyRate = fund.cagr / 12 / 100`.
+
+In Phase 3, the DCA contribution becomes a withdrawal:
+
+```
+withdrawal = wdraw × (1 + winc)^(drawdownYear - 1)
+```
+
+Lump-sum injections are added to the combined portfolio at the user-specified year.
+
+### Parameters
+
+| Control           | Default   | Description                              |
+|-------------------|-----------|------------------------------------------|
+| DCA duration      | 17 yr     | Years of regular contributions           |
+| Coast period      | 3 yr      | Years of zero contributions              |
+| Inflation         | 3.0%      | Annual CPI — shared across all strategies|
+| Withdrawal        | $12,000   | Starting annual drawdown                 |
+| Withdrawal growth | 3%        | Annual increase to withdrawals           |
+| Withdrawal period | 30 yr     | Years of drawdown                        |
+
+### Outputs
+
+- Combined nominal + real (inflation-adjusted) portfolio value
+- Per-fund breakdown (each fund simulated independently)
+- Coast FIRE target — portfolio value needed at end of Phase 1 to self-fund Phase 3
+- Dividend income estimate (`portfolio × dividend yield`)
+- Total invested vs. total gain
 
 ---
 
-## Disclaimer
+## Strategy II — Mortgage & ETF Investment
 
-This tool is for **educational and illustrative purposes only**. It does not constitute financial advice. All projections are based on assumptions you configure and historical averages — actual investment returns, property values, interest rates, and rental income will vary. Consult a licensed financial adviser before making investment decisions.
+**Section:** `meiSection`
 
+Five parallel scenarios modelled side-by-side: *What is the optimal relationship between paying down a mortgage and investing in ETFs?*
+
+### Scenarios
+
+| # | Name                       | Description                                                              |
+|---|----------------------------|--------------------------------------------------------------------------|
+| 1 | Base Mortgage              | Standard P&I repayments only, no extra investing                         |
+| 2 | Accelerated Payoff         | Extra monthly repayment to reduce the term                               |
+| 3 | ETF Side-by-Side           | Invest in ETFs while paying the mortgage simultaneously                  |
+| 4 | Pay Off First, Then Invest | Clear the mortgage, then redirect all payments to ETFs                   |
+| 5 | Equity Recycling           | Draw on home equity as collateral to fund ETF purchases (leverage)       |
+
+### Mortgage Amortisation
+
+Standard monthly payment formula:
+
+```
+       P × r × (1+r)^n
+PMT = ──────────────────
+         (1+r)^n - 1
+```
+
+where `r = annualRate / 12`, `n = term × 12`.
+
+### ETF Side-by-Side Logic (Scenarios 3–5)
+
+Monthly cash flow is split between mortgage repayment and ETF DCA. The ETF portfolio compounds independently using the same per-fund `cagr` model as Strategy I.
+
+In Scenario 4, the full mortgage repayment amount is redirected to ETFs from the payoff date onward — modelling the classic "debt-free then invest" approach.
+
+Scenario 5 (Equity Recycling) converts non-deductible home loan debt into investment debt by drawing equity, purchasing income-generating ETFs, and claiming interest as a tax deduction — a strategy used in Australian tax law.
+
+---
+
+## Strategy III — Super Salary Sacrifice
+
+**Section:** `superSection`
+
+Australian superannuation modelling with full ATO concessional contribution tax treatment.
+
+### Tax Treatment
+
+| Contribution Type             | Tax Rate Inside Super       |
+|-------------------------------|-----------------------------|
+| Employer SGC                  | 15% contributions tax        |
+| Extra salary sacrifice        | 15% contributions tax        |
+| Non-concessional (post-tax)   | 0% contributions tax; earnings taxed at 15% |
+| All earnings (super fund)     | 15% flat                    |
+
+**FY2025–26 Caps:**
+- Concessional cap: **$30,000** (employer SGC + salary sacrifice combined)
+- Non-concessional cap: **$120,000**
+
+### Simulation Loop
+
+Each year:
+
+```
+superBalance = superBalance × (1 + superRate × 0.85)
+             + (empSG + ssExtra) × (1 - 0.15)
+             + ncExtra
+```
+
+- `0.85` factor = earnings after 15% earnings tax
+- `(1 - 0.15)` = contributions after 15% contributions tax
+- `ncExtra` = non-concessional contribution (already post-tax, no contrib tax deducted)
+
+An ETF portfolio runs in parallel using the same monthly compounding model as Strategy I, allowing direct comparison of super vs. taxable investing.
+
+### Outputs
+
+- Super balance at preservation age (default 60)
+- ETF portfolio value comparison
+- Employer SGC vs. salary sacrifice vs. non-concessional contribution split
+- Effective tax saving (salary sacrifice vs. marginal tax rate)
+- Fund longevity simulator — how long the super balance lasts under various drawdown rates
+
+---
+
+## Strategy IV — High Touch Property Portfolio
+
+**Section:** `pfSection`  
+**Input source:** `propSection` (a legacy single-property analysis panel whose sliders feed the multi-property portfolio)
+
+Two linked sub-tools that share a single set of input controls.
+
+### Sub-tool A: Single Rental Property (`propSection`)
+
+Models one investment property over its full mortgage term.
+
+#### Key Inputs (`getPropInputs`)
+
+| ID           | Description                                      |
+|--------------|--------------------------------------------------|
+| `pp_price`   | Purchase price                                   |
+| `pp_equity`  | Equity used as deposit                           |
+| `pp_mrate`   | Mortgage interest rate (%)                       |
+| `pp_erate`   | Equity loan rate (%) if deposit is equity-funded |
+| `pp_term`    | Loan term (years)                                |
+| `pp_rent`    | Starting weekly rent                             |
+| `pp_rentinc` | Annual rent growth (%)                           |
+| `pp_water` … `pp_misc` | Annual operating costs            |
+| `g1` / `g2` / `g3` | Capital growth rates: years 1–12, 13–22, 23+ |
+
+#### `simulateProperty` Logic
+
+Year-by-year for each year of the loan term:
+- Property value compounds at the relevant growth tier
+- Monthly mortgage payment is constant (standard amortisation formula)
+- Rent grows at `rentinc`% annually
+- Operating costs deducted from rent → net cash flow
+- Net equity = property value − remaining loan balance
+- Building depreciation at 2.5% of building value per year (for tax modelling)
+
+### Sub-tool B: Multi-Property Portfolio (`pfSection` / `simulatePortfolio`)
+
+Extends the single-property model to a rolling acquisition strategy.
+
+- Properties are purchased at fixed intervals (default: every 5 years)
+- Each property's purchase price scales with cumulative market growth: `price = pp_price × mkt[purchaseYear]`
+- Rent and costs scale proportionally to the scaled purchase price
+- Portfolio net equity aggregates across all properties
+- ETF comparison (using Strategy I inputs) runs in parallel
+
+**Call chain:**
+
+```
+pfOnEnter → renderPortfolio → simulatePortfolio → getPropInputs()
+```
+
+`getPropInputs()` reads the `pp_*` slider values directly from `propSection`'s DOM elements. Both sub-tools share the same sliders — changes in the single-property panel immediately flow through to the portfolio view.
+
+---
+
+## Strategy V — Precious Metals Portfolio
+
+**Section:** `preciousSection`
+
+Physical gold and silver bullion as an inflation hedge.
+
+### Return Data
+
+| Metal  | Historical CAGR (2009–2025) |
+|--------|-----------------------------|
+| Gold   | 8.0% p.a.                   |
+| Silver | 6.6% p.a.                   |
+
+### Live Spot Price Fetching
+
+The app attempts three API sources in sequence with automatic fallback:
+
+1. `metals.live` REST API
+2. `goldprice.org` data feed
+3. Yahoo Finance futures proxy
+
+Falls back gracefully to "Live price unavailable" if all three fail (e.g., offline or CORS blocked).
+
+### Simulation
+
+DCA into a user-defined gold/silver blend over a build period, compounding at historical CAGR. Allocation split (gold % vs. silver %) is adjustable. Real returns are inflation-deflated using the shared rate from Strategy I.
+
+---
+
+## Strategy VI — DCA vs Timing the Market
+
+**Section:** `dcaSection`
+
+An evidence-based backtest using 11 years of real VOO daily price data (January 2015 – December 2025).
+
+### The Question
+
+*Does waiting for a price dip before buying outperform investing a fixed amount every single month?*
+
+### Methodology
+
+Two hypothetical investors with identical monthly budgets:
+
+- **DCA investor:** Invests `$MONTHLY_AMT` on the first trading day of every month, unconditionally.
+- **Market timer:** Holds cash each month. Buys only when the current price is below its trailing N-month moving average (i.e., a "dip" condition is detected). Otherwise, accumulates cash.
+
+### Metrics Tracked
+
+| Metric              | Description                                                |
+|---------------------|------------------------------------------------------------|
+| DCA final value     | Portfolio value of the automatic investor                  |
+| Timer final value   | Portfolio value of the dip-buyer                           |
+| Months invested     | How many of the 132 months each strategy was in the market |
+| Cash drag           | Months the timer sat in cash waiting for a dip             |
+| Relative performance| Final value comparison (DCA − Timer)                      |
+
+### Key Insight
+
+Across the 2015–2025 VOO dataset, consistent dollar-cost averaging outperforms dip-waiting in the large majority of scenarios. The primary drag on the timer's performance is cash sitting idle while the market continues to rise — dips that meet the threshold either don't arrive, or arrive only after significant run-ups have already been missed.
+
+---
+
+## Strategy VII — Fastest Path to Billionaire
+
+**Section:** `memeSection`
+
+A deliberately aggressive, concentrated-bet simulator — the educational counter-example to the evidence-based strategies.
+
+Models concentrated positions in high-beta, high-volatility assets (leveraged ETFs, single stocks, high-growth themes) at maximum assumed CAGR. It exists to illustrate why these approaches carry extreme risk of total loss despite their theoretical upside at aggressive return assumptions.
+
+> **Disclaimer:** For entertainment and educational illustration only. Not investment advice.
+
+---
+
+## Global Controls & Cross-Strategy State
+
+### Inflation Rate
+
+Defined in Strategy I via `v_inf`. Read everywhere as `getBase().inf`. Affects all real-return calculations and inflation-adjusted chart overlays across all seven strategies.
+
+### Scenario Comparison Panel
+
+A global panel allows users to freeze a snapshot of any strategy's output and compare it against a modified configuration side-by-side.
+
+### Tax Settings Panel
+
+A global tax panel exposes the user's marginal tax rate, which flows into:
+- Salary sacrifice tax savings (Strategy III)
+- Interest deductibility calculations (Strategy II, Equity Recycling)
+- After-tax return comparisons
+
+### PDF Export
+
+Print CSS is embedded for all seven strategies. Activating the browser print dialog (`Ctrl+P` / `Cmd+P`) produces a clean, chart-inclusive PDF of the currently visible strategy.
+
+---
+
+## Data Flow
+
+```
+Strategy I (getBase())
+    ├─ inf ────────────────────────── shared → all strategies
+    ├─ dcaYrs, coast, wYrs, wdraw, winc
+    └─ funds[]
+                │
+Strategy II ─── MEI_FUNDS[], MEI_FUNDS_SC4[], MEI_FUNDS_SC5[]
+Strategy III ── SU_ETF_FUNDS[] + super balance simulation
+Strategy IV ─── getPropInputs() reads propSection DOM
+                simulatePortfolio() reads prop inputs for price / rent / costs
+Strategy V ──── Live spot price APIs + historical CAGR constants
+Strategy VI ─── Hardcoded VOO price array (2015–2025)
+Strategy VII ── User-defined aggressive CAGR assumptions
+```
+
+---
+
+## Implementation Notes
+
+- **Chart.js 4 dataset visibility:** Must use `chart.getDatasetMeta(i).hidden = value` — direct mutation of `dataset.hidden` after chart creation has no effect in Chart.js 4.
+- **propSection / pfSection coupling:** `pfSection` reads its property inputs from `propSection`'s DOM via `getPropInputs()`. Both must exist in the DOM. `propSection` starts visible on page load (no inline `style="display:none"` attribute).
+- **ETF picker modal:** The single `#etfOverlay` DOM element is shared by all strategies. `activePickerMode` tracks which strategy opened the picker and routes the selected fund to the correct fund array in `selectETF()`.
+- **Section visibility rule:** Sections must use `style="display:none"` HTML attributes, not CSS `display:none` rules. CSS rules take precedence over inline style removal by the nav engine.
+- **Script block scoping:** All `<script>` blocks share the global `window` scope. `const`/`let` at the top level of one block are visible in all subsequent blocks. A duplicate `const` declaration across blocks — or a stray `}` at the top level — causes a `SyntaxError` that silently prevents the entire affected block from executing, including all hoisted function declarations within it.
+
+---
+
+## File Structure
+
+```
+index.html
+├── <head>           CSS variables, global layout, landing page styles
+├── Landing Page     Disclaimer + entry CTA
+├── Strategy Picker  Seven strategy cards + nav engine
+├── Strategy Bar     Persistent top bar inside any active strategy
+├── etfSection       Strategy I — ETF simulation + shared ETF picker modal
+├── propSection      Strategy IV input sliders (single rental property analysis)
+├── pfSection        Strategy IV portfolio view (multi-property scaling)
+├── meiSection       Strategy II — Mortgage + ETF five-scenario comparison
+├── superSection     Strategy III — Australian superannuation salary sacrifice
+├── preciousSection  Strategy V — Precious Metals (gold + silver)
+├── dcaSection       Strategy VI — DCA vs Market Timing backtest
+├── memeSection      Strategy VII — High-risk concentrated bets
+├── ETF Overlay      Shared fund picker modal (#etfOverlay)
+└── <script> blocks  Scenario comparison, tax panel, DCA extra controls
+```
+
+---
+
+*Not financial advice. All projections are illustrative models based on historical averages and user-defined assumptions. Past performance does not guarantee future results.*

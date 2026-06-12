@@ -9086,6 +9086,41 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         <div id="meiSc1Result"></div>
       </div>
     </div>
+    <!-- ─── Remaining Balance Chart ─────────────────────────────── -->
+    <div id="meiBalChartWrap" style="display:none;padding:16px 20px 18px;border-top:1px solid #f1f5f9;background:#f8fafc;">
+      <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:13px;font-weight:800;color:#0f172a;">&#x1F4C9; Remaining Mortgage Balance — Year by Year</div>
+          <div style="font-size:10px;color:#94a3b8;margin-top:2px;">Hover any year to inspect balance, equity built, % paid off &amp; cumulative interest</div>
+        </div>
+        <div id="meiBalHoverStats" style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:9px;padding:7px 13px;min-width:70px;text-align:center;">
+            <div style="font-size:9px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.4px;">Year</div>
+            <div id="meiBalHoverYr" style="font-size:16px;font-weight:800;color:#0f172a;margin-top:2px;">—</div>
+          </div>
+          <div style="background:#fff;border:1px solid #bfdbfe;border-radius:9px;padding:7px 13px;min-width:130px;text-align:center;">
+            <div style="font-size:9px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.4px;">Balance Remaining</div>
+            <div id="meiBalHoverBal" style="font-size:16px;font-weight:800;color:#1d4ed8;margin-top:2px;">—</div>
+          </div>
+          <div style="background:#fff;border:1px solid #a7f3d0;border-radius:9px;padding:7px 13px;min-width:120px;text-align:center;">
+            <div style="font-size:9px;font-weight:700;color:#059669;text-transform:uppercase;letter-spacing:.4px;">Equity Built</div>
+            <div id="meiBalHoverEq" style="font-size:16px;font-weight:800;color:#059669;margin-top:2px;">—</div>
+          </div>
+          <div style="background:#fff;border:1px solid #ddd6fe;border-radius:9px;padding:7px 13px;min-width:108px;text-align:center;">
+            <div style="font-size:9px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.4px;">% Paid Off</div>
+            <div id="meiBalHoverPct" style="font-size:16px;font-weight:800;color:#7c3aed;margin-top:2px;">—</div>
+            <div style="background:#e2e8f0;border-radius:4px;height:5px;margin-top:4px;overflow:hidden;">
+              <div id="meiBalHoverBar" style="height:100%;width:0%;background:linear-gradient(90deg,#7c3aed,#0d9488);border-radius:4px;transition:width .15s;"></div>
+            </div>
+          </div>
+          <div style="background:#fff;border:1px solid #fecaca;border-radius:9px;padding:7px 13px;min-width:130px;text-align:center;">
+            <div style="font-size:9px;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.4px;">Cumul. Interest</div>
+            <div id="meiBalHoverInt" style="font-size:16px;font-weight:800;color:#dc2626;margin-top:2px;">—</div>
+          </div>
+        </div>
+      </div>
+      <div style="position:relative;height:210px;"><canvas id="meiChartBalBase"></canvas></div>
+    </div>
     <div style="padding:12px 18px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fafafa;">
       <div style="font-size:10px;color:#94a3b8;">Baseline used by all 5 scenarios</div>
       <button onclick="meiRunSc1()" style="padding:9px 20px;background:linear-gradient(135deg,#0f766e,#0d9488);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(13,148,136,.3);">▶ Run Scenario 1</button>
@@ -9429,6 +9464,57 @@ window.meiUpdateBase = function(){
     '<div><div style="font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;">Interest %</div><div style="font-size:12px;font-weight:700;">'+(sch.totalInterest/loan*100).toFixed(0)+'%</div></div>'+
     '</div>';
   meiBar('meiChartBase','base',sch.labels,[dsBar('Principal',sch.principalByYr,'#0d9488'),dsBar('Interest',sch.interestByYr,'#f97316')]);
+
+  /* ── Remaining Balance Chart (live, interactive hover) ── */
+  var wrap=document.getElementById('meiBalChartWrap');
+  if(wrap) wrap.style.display='block';
+  meiDestroy('balBase');
+  var ctxBal=document.getElementById('meiChartBalBase');
+  if(ctxBal){
+    var balData=sch.balanceByYr.slice(1);
+    var eqData=balData.map(function(b){return Math.round(loan-b);});
+    var cumIntData=sch.cumIntByYr.slice(1);
+    MEI_CHARTS['balBase']=new Chart(ctxBal.getContext('2d'),{
+      type:'line',
+      data:{
+        labels:sch.labels,
+        datasets:[
+          {label:'Remaining Balance',data:balData,borderColor:'#1d4ed8',backgroundColor:'rgba(29,78,216,0.09)',fill:true,tension:.4,borderWidth:2.5,pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:'#1d4ed8'},
+          {label:'Equity Built',data:eqData,borderColor:'#059669',backgroundColor:'rgba(5,150,105,0.07)',fill:true,tension:.4,borderWidth:2,pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:'#059669'}
+        ]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,animation:{duration:250},
+        interaction:{mode:'index',intersect:false},
+        onHover:function(evt,items){
+          if(!items||!items.length) return;
+          var idx=items[0].index;
+          var b=balData[idx],e=eqData[idx],pct=Math.round(e/loan*100),ci=cumIntData[idx];
+          var hYr=document.getElementById('meiBalHoverYr');
+          var hBal=document.getElementById('meiBalHoverBal');
+          var hEq=document.getElementById('meiBalHoverEq');
+          var hPct=document.getElementById('meiBalHoverPct');
+          var hBar=document.getElementById('meiBalHoverBar');
+          var hInt=document.getElementById('meiBalHoverInt');
+          if(hYr) hYr.textContent=sch.labels[idx];
+          if(hBal) hBal.textContent=fmtF(b);
+          if(hEq) hEq.textContent=fmtF(e);
+          if(hPct) hPct.textContent=pct+'%';
+          if(hBar) hBar.style.width=pct+'%';
+          if(hInt) hInt.textContent=fmtF(ci);
+        },
+        plugins:{
+          legend:{position:'bottom',labels:{usePointStyle:true,pointStyle:'circle',padding:10,font:{size:10}}},
+          tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': '+fmtF(c.raw);}}}
+        },
+        scales:{
+          x:{ticks:{font:{size:9}},grid:{color:'rgba(0,0,0,.03)'}},
+          y:{min:0,ticks:{font:{size:9},callback:function(v){return fmt(v);}},grid:{color:'rgba(0,0,0,.05)'},
+             title:{display:true,text:'$',font:{size:9},color:'#94a3b8'}}
+        }
+      }
+    });
+  }
 };
 
 /* ── Scenario 1 ───────────────────────────────────────── */
@@ -9728,7 +9814,10 @@ window.meiResetSc1 = function(){
   var t=document.getElementById('meiT1a'); if(t)t.textContent='—';
   var t2=document.getElementById('meiT1b'); if(t2)t2.textContent='—';
   var r=document.getElementById('meiSc1Result'); if(r)r.innerHTML=meiEmptyState(1);
-  meiDestroy('base');
+  meiDestroy('base'); meiDestroy('balBase');
+  var w=document.getElementById('meiBalChartWrap'); if(w)w.style.display='none';
+  ['meiBalHoverYr','meiBalHoverBal','meiBalHoverEq','meiBalHoverPct','meiBalHoverInt'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='—';});
+  var hBar=document.getElementById('meiBalHoverBar'); if(hBar)hBar.style.width='0%';
   var s=document.getElementById('meiBaseSummary'); if(s)s.innerHTML='<div style="font-size:10px;color:#94a3b8;text-align:center;">Fill in loan details above</div>';
   meiUpdateComparison();
 };

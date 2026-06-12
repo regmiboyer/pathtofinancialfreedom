@@ -339,6 +339,55 @@ tr:hover td{background:#f8fafc;}
 .no-results{text-align:center;padding:28px;color:var(--tx3);font-size:26px;}
 
 input[type="range"], .range-in { display: none !important; }
+
+/* ── Strategy Guide Tooltip ───────────────────────────────── */
+.s-guide{
+  position:fixed;z-index:9999;
+  background:#1e293b;color:#f1f5f9;
+  border:1.5px solid #6366f1;border-radius:13px;
+  padding:14px 16px 12px;width:280px;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+  font-family:inherit;line-height:1.45;
+  pointer-events:auto;box-sizing:border-box;
+}
+.s-guide::before{
+  content:'';position:absolute;left:-9px;top:16px;
+  width:0;height:0;
+  border-top:8px solid transparent;
+  border-bottom:8px solid transparent;
+  border-right:9px solid #6366f1;
+}
+.s-guide.arrow-right::before{
+  left:auto;right:-9px;
+  border-right:0;border-left:9px solid #6366f1;
+}
+.s-guide-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;}
+.s-guide-title{font-size:12.5px;font-weight:800;color:#a5b4fc;line-height:1.3;padding-right:6px;}
+.s-guide-close{background:none;border:none;color:#64748b;font-size:15px;cursor:pointer;padding:0;line-height:1;flex-shrink:0;}
+.s-guide-close:hover{color:#f1f5f9;}
+.s-guide-body{color:#94a3b8;font-size:12.5px;line-height:1.55;margin-bottom:11px;}
+.s-guide-footer{display:flex;justify-content:space-between;align-items:center;}
+.s-guide-dots{display:flex;gap:5px;align-items:center;}
+.s-guide-dot{width:7px;height:7px;border-radius:50%;background:#334155;transition:background .2s;}
+.s-guide-dot.active{background:#6366f1;}
+.s-guide-dot.done{background:#22d3ee;}
+.s-guide-btns{display:flex;gap:5px;}
+.s-guide-next{background:#6366f1;color:#fff;border:none;border-radius:7px;padding:5px 12px;font-size:12px;cursor:pointer;font-weight:700;}
+.s-guide-next:hover{background:#4f46e5;}
+.s-guide-skip{background:none;border:1px solid #475569;color:#64748b;border-radius:7px;padding:5px 10px;font-size:11.5px;cursor:pointer;}
+.s-guide-skip:hover{border-color:#6366f1;color:#a5b4fc;}
+.guide-highlight{
+  outline:2.5px solid #6366f1 !important;
+  outline-offset:4px !important;
+  border-radius:8px !important;
+  box-shadow:0 0 0 5px rgba(99,102,241,.12) !important;
+}
+.s-guide-trigger{
+  background:none;border:1.5px solid #6366f1;color:#6366f1;
+  border-radius:8px;padding:5px 12px;font-size:11px;cursor:pointer;
+  font-weight:700;letter-spacing:.3px;margin-left:6px;
+}
+.s-guide-trigger:hover{background:#6366f1;color:#fff;}
 </style>
 
 <!-- ══════════════════ LANDING + STRATEGY STYLES ══════════════════ -->
@@ -2001,16 +2050,36 @@ window.saveResults = function(){
  <span id="lumpArrow" style="font-size:9px;color:#7c3aed;font-weight:700;">▼</span>
  </div>
  <div id="lumpBody">
- <div style="display:flex;gap:6px;margin-top:8px;margin-bottom:6px;">
- <button class="add-lump" id="addLumpInvest" style="flex:1;background:#f0fdf4;border-color:#86efac;color:#065f46;font-size:10px;">💰 Invest</button>
- <button class="add-lump" id="addLumpWithdraw" style="flex:1;background:#fff7ed;border-color:#fdba74;color:#9a3412;font-size:10px;">💸 Withdraw</button>
+
+ <!-- INVEST panel -->
+ <div style="margin-top:8px;border:1.5px solid #86efac;border-radius:11px;overflow:hidden;">
+ <div style="background:#f0fdf4;padding:6px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #bbf7d0;">
+ <span style="font-size:10px;font-weight:800;color:#065f46;letter-spacing:.3px;">💰 Add to Portfolio</span>
+ <button id="addLumpInvest" style="padding:2px 10px;border-radius:99px;background:#dcfce7;border:1.5px solid #86efac;color:#065f46;font-size:10px;font-weight:700;cursor:pointer;">+ Add</button>
  </div>
- <div style="font-size:10px;color:#94a3b8;margin-bottom:6px;">Add one-time investments or withdrawals at any year</div>
- <div class="lump-list" id="lumpList"></div>
+ <div style="padding:6px 8px 4px;background:#f8fff8;">
+ <div id="lumpInvestList" class="lump-list"></div>
+ <div id="lumpInvSummary"></div>
  </div>
  </div>
 
- <button class="reset-btn" id="resetBtn">↺ Reset to Zero</button>
+ <!-- WITHDRAW panel -->
+ <div style="margin-top:7px;border:1.5px solid #fca5a5;border-radius:11px;overflow:hidden;">
+ <div style="background:#fff1f2;padding:6px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #fecaca;">
+ <span style="font-size:10px;font-weight:800;color:#be123c;letter-spacing:.3px;">💸 Take from Portfolio</span>
+ <button id="addLumpWithdraw" style="padding:2px 10px;border-radius:99px;background:#ffe4e6;border:1.5px solid #fca5a5;color:#be123c;font-size:10px;font-weight:700;cursor:pointer;">+ Add</button>
+ </div>
+ <div style="padding:6px 8px 4px;background:#fffafa;">
+ <div id="lumpWithdrawList" class="lump-wd-list"></div>
+ <div id="lumpWdSummary"></div>
+ </div>
+ </div>
+
+ <div style="font-size:9px;color:#94a3b8;margin-top:5px;text-align:center;">Any year 1 → total timeline · updates charts &amp; tiles live</div>
+ </div>
+ </div>
+
+ <button class="reset-btn" id="resetBtn">↺ Reset to Zero</button><button class="s-guide-trigger" id="showGuideS1" onclick="if(window.s1Guide){s1Guide.reset();setTimeout(function(){s1Guide.check();},50);}">🧭 Show Guide</button>
  <div class="disc">Past performance ≠ future results. Not financial advice. Returns compound monthly. DCA &amp; withdrawals split equally across all active funds.</div>
 </aside>
 
@@ -2671,6 +2740,7 @@ function render(){
   g('susContent').innerHTML='';
   const db=g('dcaBreakdown');if(db)db.style.display='none';
   buildTable(tableFilter);
+  if(window.s1Guide) s1Guide.check();
   return;
  }
  const fin=data[data.length-1];
@@ -2680,6 +2750,18 @@ function render(){
  const totalLumpIn=lumpSums.filter(l=>l.type==='invest').reduce((s,l)=>s+l.amt,0);
  const totalLumps=totalLumpOut; // backward compat
  const lastMW=wdraw*Math.pow(1+(+g('v_winc').value/100||.03),wYrs-1);
+
+ // Longevity: years until portfolio depletes in withdrawal phase (null = infinite)
+ let longevityYrs = null;
+ if(wYrs > 0 && wdraw > 0){
+   const drawStartYr = dcaYrs + coast;
+   for(const r of data){
+     if(r.phase === 3 && r.comb <= 0){
+       longevityYrs = r.yr - drawStartYr;
+       break;
+     }
+   }
+ }
 
  // header
  g('appSub').textContent=`${funds.map(f=>f.sym).join(' · ')} · ${TOTAL}-year simulation`;
@@ -2722,7 +2804,16 @@ function render(){
  {lbl:'Total Withdrawn (Regular + Lumps)', val:fmtM(fin.cumWd), sub:'All outflows combined', cls:'r', hi:'hi-p'},
  ].map(c=>`<div class="card ${c.hi||''}"><div class="c-lbl">${c.lbl}</div><div class="c-val ${c.cls}">${c.val}</div><div class="c-sub">${c.sub}</div></div>`).join('');
 
- g('cards').innerHTML = bigTile + `<div class="cards-row">${tiles}</div>`;
+ // Longevity tile (fire/ember animation, only when withdrawal is configured)
+ const longevityTile = (wYrs > 0 && wdraw > 0) ? (() => {
+   const lv = longevityYrs === null
+     ? {val:'∞ Infinite', sub:`Portfolio survives all ${wYrs} withdrawal years`}
+     : {val:longevityYrs + ' yrs', sub:`Fund depletes ${longevityYrs} yr${longevityYrs===1?'':'s'} into withdrawals`};
+   return `<div class="card card-longevity"><div class="c-lbl">Fund Lasts After Withdrawal</div><div class="c-val">${lv.val}</div><div class="c-sub">${lv.sub}</div></div>`;
+ })() : '';
+
+ g('cards').innerHTML = bigTile + `<div class="cards-row">${tiles}${longevityTile}</div>`;
+ renderLumps(); // refresh year max inputs to match current TOTAL
 
  initCharts(sim);
 
@@ -2747,6 +2838,7 @@ function render(){
 
  buildTable(tableFilter);
  renderDcaBreakdown(sim);
+ if(window.s1Guide) s1Guide.check();
 }
 
 // ═══════════════════════════════════════
@@ -2844,43 +2936,95 @@ function buildTable(f){
 // LUMP-SUM UI
 // ═══════════════════════════════════════
 function renderLumps(){
- g('lumpList').innerHTML=lumpSums.map((l,i)=>{
- const t=l.type||'withdraw';
- const isIn=t==='invest';
- const badgeStyle=isIn
- ?'background:#dcfce7;color:#065f46;border:1px solid #86efac;'
- :'background:#fff7ed;color:#9a3412;border:1px solid #fdba74;';
- return `<div class="lump-entry" style="align-items:center;gap:5px;flex-wrap:nowrap;">
- <button class="lump-type-btn" data-li="${i}" style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;cursor:pointer;white-space:nowrap;${badgeStyle}">${isIn?'💰 IN':'💸 OUT'}</button>
- <span style="font-size:9px;color:#94a3b8">Yr</span>
- <div class="num-wrap" style="flex:0 0 auto"><input class="num-in" style="width:38px" type="number" data-li="${i}" data-field="yr" value="${l.yr}" min="1" max="100" step="1"></div>
- <div class="num-wrap" style="flex:1"><span class="num-prefix">$</span><input class="num-in" style="width:60px" type="number" data-li="${i}" data-field="amt" value="${l.amt}" min="0" max="10000000" step="10000"></div>
- <button class="lump-del" data-li="${i}"></button>
+ const {dcaYrs:_ld,coast:_lc,wYrs:_lw}=getBase();
+ const lTOTAL=Math.max(1,_ld+_lc+_lw);
+ const iListEl=g('lumpInvestList'), wListEl=g('lumpWithdrawList');
+ const iSumEl=g('lumpInvSummary'), wSumEl=g('lumpWdSummary');
+ if(!iListEl||!wListEl) return;
+
+ // Tag each entry with its original index before filtering
+ const tagged = lumpSums.map((l,i)=>({...l,i}));
+ const investEvts  = tagged.filter(l=>l.type==='invest');
+ const withdrawEvts= tagged.filter(l=>(l.type||'withdraw')==='withdraw');
+
+ function pfHint(yr){
+   if(!rows||!rows.length) return '';
+   const r=rows[Math.min(yr,rows.length)-1];
+   if(!r) return '';
+   return `<span style="font-size:9px;color:#64748b;white-space:nowrap;margin-left:auto;">PF: <strong style="color:#4f46e5">${fmtM(r.comb)}</strong></span>`;
+ }
+
+ function makeRow(l, isInvest){
+   const clampedYr=Math.max(1,Math.min(l.yr,lTOTAL));
+   const borderC=isInvest?'#86efac':'#fca5a5';
+   const bg=isInvest?'rgba(5,150,105,.04)':'rgba(225,29,72,.04)';
+   const delC=isInvest?'#065f46':'#be123c';
+   return `<div style="display:flex;align-items:center;gap:4px;padding:5px 7px;border:1px solid ${borderC};border-radius:8px;background:${bg};margin-bottom:5px;">
+ <span style="font-size:9px;color:#94a3b8;white-space:nowrap;">Year</span>
+ <div class="num-wrap" style="flex:0 0 auto;"><input class="num-in lump-yr-in" style="width:40px;" type="number" data-li="${l.i}" data-field="yr" value="${clampedYr}" min="1" max="${lTOTAL}" step="1"></div>
+ <span style="font-size:9px;color:#94a3b8;">of ${lTOTAL}</span>
+ <div class="num-wrap" style="flex:1;"><span class="num-prefix">$</span><input class="num-in lump-amt-in" style="width:68px;" type="number" data-li="${l.i}" data-field="amt" value="${l.amt}" min="0" max="10000000" step="5000"></div>
+ ${pfHint(clampedYr)}
+ <button class="lump-del" data-li="${l.i}" style="color:${delC};border-color:${delC}22;background:${isInvest?'#dcfce7':'#ffe4e6'};">✕</button>
  </div>`;
- }).join('');
- g('lumpList').querySelectorAll('.num-in').forEach(inp=>{
- inp.addEventListener('input',()=>{ lumpSums[+inp.dataset.li][inp.dataset.field]=+inp.value; debounce(); });
- });
- g('lumpList').querySelectorAll('.lump-del').forEach(btn=>{
- btn.addEventListener('click',()=>{ lumpSums.splice(+btn.dataset.li,1); renderLumps(); debounce(); });
- });
- g('lumpList').querySelectorAll('.lump-type-btn').forEach(btn=>{
- btn.addEventListener('click',()=>{
- const i=+btn.dataset.li;
- lumpSums[i].type=lumpSums[i].type==='invest'?'withdraw':'invest';
- renderLumps(); debounce();
- });
+ }
+
+ const emptyInvest='<div style="font-size:9px;color:#94a3b8;padding:6px 4px;text-align:center;">No invest events · click + Add above</div>';
+ const emptyWithdraw='<div style="font-size:9px;color:#94a3b8;padding:6px 4px;text-align:center;">No withdraw events · click + Add above</div>';
+
+ iListEl.innerHTML=investEvts.length ? investEvts.map(l=>makeRow(l,true)).join('') : emptyInvest;
+ wListEl.innerHTML=withdrawEvts.length ? withdrawEvts.map(l=>makeRow(l,false)).join('') : emptyWithdraw;
+
+ // Summaries
+ if(iSumEl){
+   const tot=investEvts.reduce((s,l)=>s+l.amt,0);
+   iSumEl.innerHTML=tot>0?`<div class="lump-inv-summary">+${fmt(tot)} total across ${investEvts.length} event${investEvts.length===1?'':'s'}</div>`:'';
+ }
+ if(wSumEl){
+   const tot=withdrawEvts.reduce((s,l)=>s+l.amt,0);
+   wSumEl.innerHTML=tot>0?`<div class="lump-wd-summary">-${fmt(tot)} total across ${withdrawEvts.length} event${withdrawEvts.length===1?'':'s'}</div>`:'';
+ }
+
+ // Wire inputs — update on change and refresh PF hint
+ [iListEl,wListEl].forEach(el=>{
+   el.querySelectorAll('.num-in').forEach(inp=>{
+     inp.addEventListener('input',()=>{
+       const li=+inp.dataset.li;
+       lumpSums[li][inp.dataset.field]=+inp.value;
+       // live-refresh just the PF hint without full re-render
+       if(inp.dataset.field==='yr'){
+         const row=inp.closest('div[style]');
+         if(row){
+           const hint=row.querySelector('span[style*="PF"]');
+           const hNew=document.createElement('span');
+           const yr=Math.max(1,Math.min(+inp.value,lTOTAL));
+           const r=rows&&rows.length?rows[Math.min(yr,rows.length)-1]:null;
+           const hStr=r?`<span style="font-size:9px;color:#64748b;white-space:nowrap;margin-left:auto;">PF: <strong style="color:#4f46e5">${fmtM(r.comb)}</strong></span>`:'';
+           if(hint) hint.outerHTML=hStr;
+         }
+       }
+       debounce();
+     });
+   });
+   el.querySelectorAll('.lump-del').forEach(btn=>{
+     btn.addEventListener('click',()=>{ lumpSums.splice(+btn.dataset.li,1); renderLumps(); debounce(); });
+   });
  });
 }
 g('addLumpInvest').addEventListener('click',()=>{
- const {dcaYrs,coast}=getBase();
- const nextYr=Math.max(1,Math.min(dcaYrs,Math.round(dcaYrs/2)));
+ const {dcaYrs,coast,wYrs}=getBase();
+ const TOTAL=Math.max(1,dcaYrs+coast+wYrs);
+ // Default to midpoint of DCA, or year 1 if no DCA
+ const nextYr=Math.max(1,Math.min(dcaYrs>0?Math.round(dcaYrs/2):1, TOTAL));
  lumpSums.push({yr:nextYr,amt:50000,type:'invest'});
  renderLumps(); debounce();
 });
 g('addLumpWithdraw').addEventListener('click',()=>{
  const {dcaYrs,coast,wYrs}=getBase();
- lumpSums.push({yr:Math.min(dcaYrs+coast+wYrs,dcaYrs+coast+5),amt:100000,type:'withdraw'});
+ const TOTAL=Math.max(1,dcaYrs+coast+wYrs);
+ // Default to first year of withdrawal phase, or TOTAL if no withdrawal configured
+ const defaultYr=Math.min(Math.max(1, dcaYrs+coast+(wYrs>0?1:0)), TOTAL);
+ lumpSums.push({yr:defaultYr,amt:100000,type:'withdraw'});
  renderLumps(); debounce();
 });
 
@@ -2923,10 +3067,165 @@ g('resetBtn').addEventListener('click',()=>{
  Object.entries(DEFAULTS).forEach(([k,v])=>{ if(g('v_'+k)){ g('v_'+k).value=v; if(g('r_'+k)) g('r_'+k).value=v; }});
  funds=DEFAULT_FUNDS.map(f=>({...f}));
  lumpSums=DEFAULT_LUMPS.map(l=>({...l}));
+ if(window.s1Guide) s1Guide.reset();
  renderFunds(); renderLumps(); render();
 });
 
 
+
+// ═══════════════════════════════════════════════════════════
+// STRATEGY GUIDE SYSTEM  — sequential step-by-step tooltips
+// ═══════════════════════════════════════════════════════════
+(function(){
+
+class StrategyGuide{
+  constructor(steps){
+    this.steps=steps;
+    this.step=0;
+    this.dismissed=false;
+    this._el=null;
+    this._hl=null;
+    this._listeners=[];
+  }
+  _clearListeners(){
+    this._listeners.forEach(function(l){l.el.removeEventListener('input',l.fn);});
+    this._listeners=[];
+  }
+  _wireStep(i){
+    this._clearListeners();
+    if(i>=this.steps.length) return;
+    const s=this.steps[i];
+    const ids=s.advanceOn?(Array.isArray(s.advanceOn)?s.advanceOn:[s.advanceOn]):[];
+    ids.forEach(id=>{
+      const el=document.getElementById(id);
+      if(!el) return;
+      const fn=()=>{if(this.step===i&&!this.dismissed){this._advance(i);}};
+      el.addEventListener('input',fn);
+      this._listeners.push({el,fn});
+    });
+  }
+  _advance(fromStep){
+    if(fromStep!==this.step) return;
+    this._clearListeners();
+    this._clearHL();
+    this._removeEl();
+    this.step++;
+    if(this.step>=this.steps.length){this.dismissed=true;return;}
+    this._show();
+  }
+  _clearHL(){
+    if(this._hl){this._hl.classList.remove('guide-highlight');this._hl=null;}
+  }
+  _removeEl(){
+    if(this._el){this._el.remove();this._el=null;}
+  }
+  _show(){
+    if(this.dismissed||this.step>=this.steps.length) return;
+    const s=this.steps[this.step];
+    const target=document.getElementById(s.target);
+    if(!target) return;
+    // visibility check
+    const rect=target.getBoundingClientRect();
+    if(rect.width===0&&rect.height===0) return;
+    // highlight
+    this._clearHL();
+    this._hl=target;
+    target.classList.add('guide-highlight');
+    // wire advance listeners
+    this._wireStep(this.step);
+    // build tooltip (only if not already showing for this step)
+    if(this._el) return;
+    const el=document.createElement('div');
+    el.className='s-guide';
+    const dots=this.steps.map((_,i)=>`<span class="s-guide-dot${i<this.step?' done':i===this.step?' active':''}"></span>`).join('');
+    const isOpt=!!s.optional;
+    el.innerHTML=
+      `<div class="s-guide-header"><span class="s-guide-title">${s.title}</span><button class="s-guide-close" title="Hide guide">✕</button></div>`+
+      `<div class="s-guide-body">${s.body}</div>`+
+      `<div class="s-guide-footer"><div class="s-guide-dots">${dots}</div>`+
+      `<div class="s-guide-btns">${isOpt?'<button class="s-guide-skip">Skip →</button>':''}`+
+      `<button class="s-guide-next">Next →</button></div></div>`;
+    document.body.appendChild(el);
+    this._el=el;
+    this._positionEl(target,el);
+    el.querySelector('.s-guide-next').addEventListener('click',()=>this._advance(this.step));
+    if(isOpt) el.querySelector('.s-guide-skip').addEventListener('click',()=>this._advance(this.step));
+    el.querySelector('.s-guide-close').addEventListener('click',()=>this.dismiss());
+  }
+  _positionEl(target,el){
+    const rect=target.getBoundingClientRect();
+    const tw=288,margin=14;
+    let left=rect.right+margin;
+    let top=Math.max(8,rect.top+4);
+    const winW=window.innerWidth;
+    el.classList.remove('arrow-right');
+    if(left+tw>winW-8){
+      left=Math.max(8,rect.left-tw-margin);
+      el.classList.add('arrow-right');
+    }
+    const winH=window.innerHeight;
+    if(top+210>winH) top=Math.max(8,winH-215);
+    el.style.left=left+'px';
+    el.style.top=top+'px';
+  }
+  check(){
+    if(this.dismissed||this.step>=this.steps.length) return;
+    if(!this._el){this._show();}
+  }
+  dismiss(){
+    this.dismissed=true;
+    this._clearHL();
+    this._removeEl();
+    this._clearListeners();
+  }
+  reset(){
+    this._clearListeners();
+    this._clearHL();
+    this._removeEl();
+    this.step=0;
+    this.dismissed=false;
+  }
+}
+
+// ── Strategy I step definitions ─────────────────────────────
+const STEPS_S1=[
+  {title:'📊 Step 1 of 5 — Select Funds',
+   body:'Pick the ETF funds you want to invest in. Adjust each fund\'s allocation % to match your risk appetite. Default funds are pre-loaded to get you started.',
+   target:'fundsList', advanceOn:'v_dcaYrs', optional:false},
+  {title:'📅 Step 2 of 5 — DCA Phase',
+   body:'Set how many <strong style="color:#a5b4fc">years you\'ll contribute</strong> and your <strong style="color:#a5b4fc">monthly investment amount</strong>. This is your core wealth-building phase.',
+   target:'v_dcaYrs', advanceOn:['v_coast','v_wdraw'], optional:false},
+  {title:'🏖️ Step 3 of 5 — Coast Phase',
+   body:'Optionally set a coast period — years where you <em>stop contributing</em> and let the portfolio compound on its own before withdrawals begin.',
+   target:'v_coast', advanceOn:'v_wdraw', optional:true},
+  {title:'💸 Step 4 of 5 — Withdrawal Phase',
+   body:'Enter a <strong style="color:#a5b4fc">monthly withdrawal amount</strong> and how many years you plan to draw down. Skip if you\'re not modelling retirement income yet.',
+   target:'v_wdraw', advanceOn:null, optional:true},
+  {title:'💰 Step 5 of 5 — Cash Events',
+   body:'Add one-time lump-sum investments or withdrawals at specific years — e.g. an inheritance, property sale, or large purchase.',
+   target:'lumpBody', advanceOn:null, optional:true}
+];
+
+// ── Strategy II step definitions ────────────────────────────
+const STEPS_S2=[
+  {title:'🏠 Step 1 of 4 — Mortgage Details',
+   body:'Enter your <strong style="color:#a5b4fc">loan balance, interest rate, and term</strong>. These drive all 5 scenarios in parallel at the top.',
+   target:'mei_principal', advanceOn:'mei_extraMort', optional:false},
+  {title:'💳 Step 2 of 4 — Extra Repayments',
+   body:'Set extra monthly payments above the minimum. More here = faster payoff = more to invest sooner. Skip to keep minimum-only repayments.',
+   target:'mei_extraMort', advanceOn:null, optional:true},
+  {title:'📈 Step 3 of 4 — ETF Portfolio',
+   body:'Add ETF funds for Scenarios 3–5. These represent what you\'d invest in <em>parallel with</em> or <em>after</em> paying off the mortgage.',
+   target:'meiFundsList', advanceOn:null, optional:false},
+  {title:'🎯 Step 4 of 4 — Compare Scenarios',
+   body:'The 5 summary tiles at the top update live. Compare base mortgage vs interest saved vs ETF returns vs hybrid debt+investment strategies.',
+   target:'meiT1a', advanceOn:null, optional:true}
+];
+
+window.s1Guide=new StrategyGuide(STEPS_S1);
+window.s2Guide=new StrategyGuide(STEPS_S2);
+
+})();
 
 // Lazy init — called when Strategy I is first opened
 ;(function(){
@@ -9181,6 +9480,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         <div style="font-size:10px;color:rgba(255,255,255,.8);">5 progressive scenarios — compare every path from debt to wealth</div>
       </div>
       <button onclick="meiReset()" style="margin-left:auto;padding:8px 16px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);border-radius:8px;color:#fff;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:.3px;">↺ Reset to Zero</button>
+      <button onclick="if(window.s2Guide){s2Guide.reset();setTimeout(function(){s2Guide.check();},50);}" style="padding:8px 14px;background:rgba(255,255,255,.1);border:1.5px solid rgba(165,180,252,.6);border-radius:8px;color:#a5b4fc;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:.3px;">🧭 Show Guide</button>
     </div>
   </div>
 
@@ -10099,6 +10399,7 @@ window.meiReset = function(){
   window.meiRenderFunds();window.meiRenderFundsSc4();window.meiRenderFundsSc5();meiRenderLumps();
   var sum=document.getElementById('meiBaseSummary');if(sum)sum.innerHTML='<div style="font-size:10px;color:#94a3b8;text-align:center;">Fill in loan details above</div>';
   var prev=document.getElementById('meiSc4Preview');if(prev)prev.innerHTML='Fill loan details + run Sc1 first';
+  if(window.s2Guide){s2Guide.reset();setTimeout(function(){s2Guide.check();},50);}
 };
 
 /* ── Init ─────────────────────────────────────────────── */
@@ -10110,6 +10411,7 @@ window.meiInit = function(){
   window.meiRenderFunds();window.meiRenderFundsSc4();window.meiRenderFundsSc5();meiRenderLumps();meiUpdateBase();
   // Seed result panels with empty-state placeholder
   [1,2,3,4,5].forEach(function(n){var e=document.getElementById('meiSc'+n+'Result');if(e&&!e.innerHTML.trim())e.innerHTML=meiEmptyState(n);});
+  if(window.s2Guide) s2Guide.check();
 };
 
 /* ── Per-scenario resets ──────────────────────────────── */

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Investment Planner — Multi-Agent Architecture</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;overflow-x:hidden}
+  a{color:#818cf8;text-decoration:none}
+
+  /* ── Header ── */
+  .hdr{background:linear-gradient(135deg,#1e293b,#0f172a);border-bottom:1px solid #1e293b;padding:24px 40px;display:flex;align-items:center;gap:16px}
+  .hdr-icon{width:48px;height:48px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+  .hdr h1{font-size:1.3rem;font-weight:700;color:#f1f5f9}
+  .hdr p{font-size:0.8rem;color:#64748b;margin-top:2px}
+  .badge{background:#1e293b;border:1px solid #334155;border-radius:20px;padding:4px 12px;font-size:0.72rem;color:#94a3b8;margin-left:auto;white-space:nowrap}
+
+  /* ── Main layout ── */
+  .main{display:grid;grid-template-columns:1fr 380px;gap:0;height:calc(100vh - 80px)}
+  .canvas{padding:32px 40px;overflow-y:auto}
+  .sidebar{background:#0a1120;border-left:1px solid #1e293b;overflow-y:auto;padding:24px}
+
+  /* ── Section labels ── */
+  .sec-lbl{font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#475569;margin-bottom:12px}
+
+  /* ── Agents ── */
+  .agents-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:8px}
+  .agent-card{border-radius:14px;padding:20px 16px;cursor:pointer;transition:all .2s;position:relative;border:2px solid transparent}
+  .agent-card:hover{transform:translateY(-2px);filter:brightness(1.05)}
+  .agent-card.active{border-color:currentColor;box-shadow:0 0 0 4px rgba(255,255,255,.07)}
+  .agent-card .a-icon{font-size:26px;margin-bottom:8px}
+  .agent-card .a-name{font-size:0.85rem;font-weight:700;margin-bottom:4px}
+  .agent-card .a-role{font-size:0.72rem;opacity:.7}
+  .agent-card .a-tools{margin-top:10px;display:flex;flex-wrap:wrap;gap:4px}
+  .tool-chip{font-size:0.62rem;padding:2px 7px;border-radius:20px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.7)}
+
+  .pm-card  {background:linear-gradient(135deg,#1e3a5f,#1a2e4a);color:#93c5fd}
+  .dev-card {background:linear-gradient(135deg,#14432a,#0f3020);color:#6ee7b7}
+  .qa-card  {background:linear-gradient(135deg,#451a03,#3a1400);color:#fdba74}
+  .rel-card {background:linear-gradient(135deg,#2e1065,#1e0a4a);color:#c4b5fd}
+
+  /* ── Workflow steps ── */
+  .workflow{margin-top:28px}
+  .step{display:flex;gap:16px;margin-bottom:4px;position:relative}
+  .step-left{display:flex;flex-direction:column;align-items:center;width:36px;flex-shrink:0}
+  .step-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;flex-shrink:0;border:2px solid transparent;transition:all .3s;cursor:pointer}
+  .step-line{width:2px;flex:1;min-height:16px;margin-top:4px}
+  .step-body{padding:10px 14px;border-radius:10px;flex:1;cursor:pointer;transition:all .2s;border:1px solid transparent}
+  .step-body:hover{border-color:#334155}
+  .step-body.active{border-color:#4f46e5;background:#1e1b4b22}
+  .step-agent{font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
+  .step-title{font-size:0.88rem;font-weight:600;color:#f1f5f9;margin-bottom:4px}
+  .step-desc{font-size:0.78rem;color:#64748b;line-height:1.5}
+  .step-output{margin-top:8px;padding:8px 10px;background:#0f172a;border-radius:7px;font-size:0.72rem;color:#94a3b8;font-family:monospace}
+
+  /* Feedback loop connector */
+  .feedback-loop{margin:4px 0 4px 18px;display:flex;align-items:center;gap:10px}
+  .feedback-arrow{color:#f97316;font-size:1.1rem}
+  .feedback-text{font-size:0.75rem;color:#f97316;background:#431407;border:1px solid #78350f;border-radius:6px;padding:4px 10px}
+
+  /* ── Sidebar ── */
+  .prompt-box{background:#1e293b;border-radius:10px;padding:16px;margin-bottom:16px}
+  .prompt-box h3{font-size:0.8rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .prompt-box pre{font-size:0.7rem;color:#94a3b8;white-space:pre-wrap;line-height:1.6;font-family:'Fira Code',monospace;max-height:220px;overflow-y:auto}
+  .prompt-box pre::-webkit-scrollbar{width:4px}
+  .prompt-box pre::-webkit-scrollbar-track{background:#0f172a}
+  .prompt-box pre::-webkit-scrollbar-thumb{background:#334155;border-radius:2px}
+
+  .state-box{background:#1e293b;border-radius:10px;padding:16px;margin-bottom:16px}
+  .state-box h3{font-size:0.8rem;font-weight:700;margin-bottom:10px;color:#94a3b8}
+  .state-json{font-size:0.68rem;color:#6ee7b7;font-family:monospace;line-height:1.6;white-space:pre-wrap;max-height:280px;overflow-y:auto}
+
+  .howto{background:#1e293b;border-radius:10px;padding:16px;margin-bottom:16px}
+  .howto h3{font-size:0.8rem;font-weight:700;margin-bottom:10px;color:#94a3b8}
+  .howto code{display:block;background:#0f172a;border-radius:7px;padding:10px;font-size:0.72rem;color:#6ee7b7;font-family:monospace;line-height:1.8}
+  .cmd{color:#f472b6}
+  .cmt{color:#475569}
+
+  /* ── Status flow diagram ── */
+  .status-flow{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0}
+  .sf-node{font-size:0.65rem;padding:4px 9px;border-radius:20px;border:1px solid #334155;color:#64748b}
+  .sf-node.done{background:#14432a;border-color:#166534;color:#6ee7b7}
+  .sf-arrow{color:#334155;font-size:0.7rem;align-self:center}
+
+  /* Simulate button */
+  .sim-btn{width:100%;padding:10px;border-radius:8px;border:none;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;font-size:0.82rem;font-weight:600;cursor:pointer;margin-bottom:16px;transition:all .2s}
+  .sim-btn:hover{filter:brightness(1.1)}
+  .sim-btn:active{transform:scale(.98)}
+  .sim-btn.running{background:linear-gradient(135deg,#059669,#047857);animation:pulse 1.5s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+
+  /* Step highlight during simulation */
+  .step-num.running{animation:spin 1s linear infinite}
+  @keyframes spin{from{border-color:#4f46e5}25%{border-color:#7c3aed}50%{border-color:#8b5cf6}75%{border-color:#6d28d9}to{border-color:#4f46e5}}
+  .step-num.done-step{background:#166534;border-color:#16a34a;color:#fff}
+
+  @media(max-width:900px){
+    .main{grid-template-columns:1fr}
+    .sidebar{border-left:none;border-top:1px solid #1e293b}
+    .agents-row{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="hdr">
+  <div class="hdr-icon">🏗️</div>
+  <div>
+    <h1>Investment Planner — Multi-Agent Architecture</h1>
+    <p>PM → Developer → QA ⟺ Developer → Release (with Computer Use)</p>
+  </div>
+  <div class="badge">Claude Agent SDK · 4 Agents · anthropic</div>
+</div>
+
+<div class="main">
+  <!-- ── Left canvas ── -->
+  <div class="canvas">
+    <div class="sec-lbl">Four Agents</div>
+    <div class="agents-row">
+      <div class="agent-card pm-card" id="ag-pm" onclick="selectAgent('pm')">
+        <div class="a-icon">📋</div>
+        <div class="a-name">Product Manager</div>
+        <div class="a-role">Story creation · Acceptance criteria</div>
+        <div class="a-tools">
+          <span class="tool-chip">WebSearch</span>
+          <span class="tool-chip">Write</span>
+          <span class="tool-chip">TaskCreate</span>
+        </div>
+      </div>
+      <div class="agent-card dev-card" id="ag-dev" onclick="selectAgent('dev')">
+        <div class="a-icon">💻</div>
+        <div class="a-name">Developer</div>
+        <div class="a-role">Jira · Code patches · Bug fixes</div>
+        <div class="a-tools">
+          <span class="tool-chip">Read/Edit</span>
+          <span class="tool-chip">Bash</span>
+          <span class="tool-chip">Jira API</span>
+        </div>
+      </div>
+      <div class="agent-card qa-card" id="ag-qa" onclick="selectAgent('qa')">
+        <div class="a-icon">🧪</div>
+        <div class="a-name">QA Engineer</div>
+        <div class="a-role">Test cases · Bug reports · Approval</div>
+        <div class="a-tools">
+          <span class="tool-chip">Read</span>
+          <span class="tool-chip">Bash</span>
+          <span class="tool-chip">Screenshot</span>
+        </div>
+      </div>
+      <div class="agent-card rel-card" id="ag-rel" onclick="selectAgent('rel')">
+        <div class="a-icon">🚢</div>
+        <div class="a-name">Release Manager</div>
+        <div class="a-role">Apply patches · Screenshot · Release notes</div>
+        <div class="a-tools">
+          <span class="tool-chip">Computer Use</span>
+          <span class="tool-chip">Write</span>
+          <span class="tool-chip">Bash</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="workflow">
+      <div class="sec-lbl" style="margin-top:24px">Workflow — click any step to see details</div>
+
+      <div class="step" id="step-1" onclick="selectStep(1)">
+        <div class="step-left">
+          <div class="step-num" id="sn-1" style="background:#1e3a5f;border-color:#3b82f6;color:#93c5fd">1</div>
+          <div class="step-line" style="background:#1e3a5f"></div>
+        </div>
+        <div class="step-body" id="sb-1">
+          <div class="step-agent" style="color:#93c5fd">📋 Product Manager</div>
+          <div class="step-title">Create User Story</div>
+          <div class="step-desc">PM receives the raw feature request and converts it into a structured user story with acceptance criteria, story points, and out-of-scope boundaries.</div>
+          <div class="step-output">→ Output: user_story.json {story_id, acceptance_criteria[], story_points}</div>
+        </div>
+      </div>
+
+      <div class="step" id="step-2" onclick="selectStep(2)">
+        <div class="step-left">
+          <div class="step-num" id="sn-2" style="background:#14432a;border-color:#16a34a;color:#6ee7b7">2</div>
+          <div class="step-line" style="background:#14432a"></div>
+        </div>
+        <div class="step-body" id="sb-2">
+          <div class="step-agent" style="color:#6ee7b7">💻 Developer</div>
+          <div class="step-title">Create Jira Ticket</div>
+          <div class="step-desc">Developer reads the user story and creates a Jira ticket with implementation plan, affected components, and test case hints before writing a single line of code.</div>
+          <div class="step-output">→ Output: jira_ticket.json {ticket_id, implementation_plan[], files_to_change[]}</div>
+        </div>
+      </div>
+
+      <div class="step" id="step-3" onclick="selectStep(3)">
+        <div class="step-left">
+          <div class="step-num" id="sn-3" style="background:#14432a;border-color:#16a34a;color:#6ee7b7">3</div>
+          <div class="step-line" style="background:#14432a"></div>
+        </div>
+        <div class="step-body" id="sb-3">
+          <div class="step-agent" style="color:#6ee7b7">💻 Developer</div>
+          <div class="step-title">Implement Feature</div>
+          <div class="step-desc">Developer produces exact search/replace code patches for index.html. Each change includes a description, the old code string to find, and the new code string to insert.</div>
+          <div class="step-output">→ Output: code_changes.json {changes[{search, replace, description}], testing_notes}</div>
+        </div>
+      </div>
+
+      <!-- QA loop -->
+      <div style="position:relative">
+        <div class="step" id="step-4" onclick="selectStep(4)">
+          <div class="step-left">
+            <div class="step-num" id="sn-4" style="background:#451a03;border-color:#ea580c;color:#fdba74">4</div>
+            <div class="step-line" style="background:#451a03"></div>
+          </div>
+          <div class="step-body" id="sb-4">
+            <div class="step-agent" style="color:#fdba74">🧪 QA Engineer</div>
+            <div class="step-title">QA Review (Iteration 1…3)</div>
+            <div class="step-desc">QA checks every acceptance criterion, hunts for edge-case bugs (zero inputs, max values, JS errors), and returns a structured review with bug severity and reproduction steps.</div>
+            <div class="step-output">→ Output: qa_review.json {status: approved|rejected, bugs[], passed_criteria[]}</div>
+          </div>
+        </div>
+
+        <div class="feedback-loop">
+          <div class="feedback-arrow">↩</div>
+          <div class="feedback-text">If <strong>rejected</strong>: bugs sent back to Developer → fix → re-QA (max 3 iterations)</div>
+        </div>
+
+        <div class="step" id="step-4b" onclick="selectStep('4b')">
+          <div class="step-left">
+            <div class="step-num" id="sn-4b" style="background:#14432a;border-color:#16a34a;color:#6ee7b7;font-size:0.65rem">4b</div>
+            <div class="step-line" style="background:#14432a"></div>
+          </div>
+          <div class="step-body" id="sb-4b">
+            <div class="step-agent" style="color:#6ee7b7">💻 Developer</div>
+            <div class="step-title">Bug Fix (if QA rejected)</div>
+            <div class="step-desc">Developer receives the bug report, targets each BUG-N item, and produces new search/replace patches. Loops back to QA until all criteria pass or max iterations reached.</div>
+            <div class="step-output">→ Output: code_changes.json {iteration: N, changes[{description, search, replace}]}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step" id="step-5" onclick="selectStep(5)">
+        <div class="step-left">
+          <div class="step-num" id="sn-5" style="background:#2e1065;border-color:#7c3aed;color:#c4b5fd">5</div>
+        </div>
+        <div class="step-body" id="sb-5">
+          <div class="step-agent" style="color:#c4b5fd">🚢 Release Manager</div>
+          <div class="step-title">Apply Patches → Screenshot → Release</div>
+          <div class="step-desc">Release Agent applies all search/replace patches to index.html, backs up the old file, opens the browser, triggers a macOS <code>screencapture</code> for visual proof, then writes a release manifest and changelog entry.</div>
+          <div class="step-output">→ Output: releases/release-1.0.XXX.json · screenshots/release-v1.0.XXX.png</div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /canvas -->
+
+  <!-- ── Sidebar ── -->
+  <div class="sidebar">
+
+    <button class="sim-btn" id="simBtn" onclick="simulate()">▶ Simulate Workflow</button>
+
+    <div class="sec-lbl">Status Flow</div>
+    <div class="status-flow" id="statusFlow">
+      <span class="sf-node" id="sf-initiated">initiated</span>
+      <span class="sf-arrow">→</span>
+      <span class="sf-node" id="sf-pm">pm_in_progress</span>
+      <span class="sf-arrow">→</span>
+      <span class="sf-node" id="sf-dev">dev_planning</span>
+      <span class="sf-arrow">→</span>
+      <span class="sf-node" id="sf-impl">dev_in_progress</span>
+      <span class="sf-arrow">→</span>
+      <span class="sf-node" id="sf-qa">qa_in_progress</span>
+      <span class="sf-arrow">→</span>
+      <span class="sf-node" id="sf-release">releasing</span>
+      <span class="sf-arrow">→</span>
+      <span class="sf-node" id="sf-released">released</span>
+    </div>
+
+    <div class="sec-lbl" style="margin-top:16px">Workflow State JSON</div>
+    <div class="state-box">
+      <pre class="state-json" id="stateJson">{
+  "workflow_id": "WF-20260611-120000",
+  "status": "initiated",
+  "pm_story": null,
+  "jira_ticket": null,
+  "code_changes": [],
+  "qa_iterations": [],
+  "release": null
+}</pre>
+    </div>
+
+    <div class="sec-lbl">Agent System Prompt</div>
+    <div class="prompt-box" id="promptBox">
+      <h3 id="promptTitle">📋 Product Manager</h3>
+      <pre id="promptText">You are the Product Manager for the Investment Planner — a single-file HTML app with 8 investment strategies.
+
+Responsibilities:
+• Convert raw feature requests into precise user stories.
+• Write every acceptance criterion as a testable pass/fail statement.
+• Flag risks, edge cases, and out-of-scope items.
+
+Return ONLY JSON:
+{
+  "story_id": "US-...",
+  "title": "...",
+  "user_story": "As a [user], I want [feature] so that [value].",
+  "acceptance_criteria": ["AC1: Given…When…Then…"],
+  "priority": "high|medium|low",
+  "story_points": 1-13,
+  "technical_notes": "...",
+  "out_of_scope": ["..."]
+}</pre>
+    </div>
+
+    <div class="howto">
+      <h3>▶ How to Run</h3>
+      <code>
+<span class="cmt"># 1. Install</span>
+<span class="cmd">pip install anthropic</span>
+
+<span class="cmt"># 2. Set API key</span>
+<span class="cmd">export ANTHROPIC_API_KEY=sk-ant-...</span>
+
+<span class="cmt"># 3. Run with a feature request</span>
+<span class="cmd">python multiagent_framework.py \
+  "Add dark mode toggle to Strategy I"</span>
+
+<span class="cmt"># 4. Release artifacts saved to:</span>
+<span>releases/release-1.0.XXX.json</span>
+<span>screenshots/release-v1.0.XXX.png</span>
+      </code>
+    </div>
+
+  </div><!-- /sidebar -->
+</div><!-- /main -->
+
+<script>
+// ── Agent prompts ──────────────────────────────────────────────────────
+const PROMPTS = {
+  pm:`You are the Product Manager for the Investment Planner — a single-file HTML app with 8 strategies (ETF, Mortgage, Super, Property, Precious Metals, DCA, Meme Stocks, VOO vs V500).
+
+Responsibilities:
+• Convert raw feature requests into precise, scope-bounded user stories.
+• Write every acceptance criterion as a testable pass/fail statement.
+• Flag risks, edge cases, and explicit out-of-scope items.
+
+Return ONLY JSON:
+{
+  "story_id": "US-<YYMMDD-NN>",
+  "title": "Short imperative title",
+  "user_story": "As a <user>, I want <feature> so that <value>.",
+  "acceptance_criteria": [
+    "AC1: Given … When … Then …",
+    "AC2: …"
+  ],
+  "priority": "high|medium|low",
+  "story_points": <fibonacci 1-13>,
+  "technical_notes": "Implementation hints for the developer.",
+  "out_of_scope": ["Anything explicitly excluded."]
+}`,
+
+  dev:`You are the Senior Front-End Developer for the Investment Planner.
+Stack: single HTML file (~11 000 lines), vanilla JS, Chart.js 4.5, CSS-in-HTML.
+
+Responsibilities:
+• Create Jira tickets from user stories (format: INVEST-<NNN>).
+• Produce exact code patches — search/replace string pairs.
+• Fix bugs reported by QA with minimal diff.
+
+Code-change JSON:
+{
+  "ticket_id": "INVEST-<NNN>",
+  "iteration": <N>,
+  "changes": [
+    {
+      "description": "What and why",
+      "search":  "Exact string to find in index.html",
+      "replace": "Exact replacement string"
+    }
+  ],
+  "summary": "Executive summary of what was done.",
+  "testing_notes": "How QA should test this change."
+}`,
+
+  qa:`You are the QA Engineer for the Investment Planner.
+
+Responsibilities:
+• Validate every acceptance criterion against the code diff.
+• Think adversarially — zero inputs, max values, mobile layout.
+• Report bugs with precise reproduction steps.
+• Approve only when ALL criteria pass and no critical/major bugs remain.
+
+Return ONLY JSON:
+{
+  "review_id": "QA-<story_id>-iter<N>",
+  "iteration": <N>,
+  "status": "approved|rejected",
+  "passed_criteria": ["AC1", …],
+  "failed_criteria": ["AC2", …],
+  "bugs": [
+    {
+      "id": "BUG-<N>",
+      "severity": "critical|major|minor",
+      "title": "…",
+      "steps": "1. Open Strategy I  2. …",
+      "expected": "…",
+      "actual": "…"
+    }
+  ],
+  "approval_notes": "Reason for approval or guidance for developer."
+}`,
+
+  rel:`You are the Release Manager for the Investment Planner.
+
+Responsibilities:
+• Apply all approved patches to index.html (search/replace pairs).
+• Back up the previous file.
+• Open browser → macOS screencapture → save screenshot.
+• Write human-readable release notes and a release manifest.
+
+Return ONLY JSON:
+{
+  "version": "1.0.<build>",
+  "release_date": "<ISO date>",
+  "ticket_id": "INVEST-<NNN>",
+  "story_title": "…",
+  "changes_applied": <N>,
+  "release_notes": "Markdown changelog entry.",
+  "screenshot_path": "screenshots/<filename>.png",
+  "status": "released|failed",
+  "failure_reason": null
+}`
+};
+
+// ── Agent labels ──────────────────────────────────────────────────────
+const AGENT_META = {
+  pm:  {emoji:'📋', name:'Product Manager',  color:'#93c5fd'},
+  dev: {emoji:'💻', name:'Developer',        color:'#6ee7b7'},
+  qa:  {emoji:'🧪', name:'QA Engineer',      color:'#fdba74'},
+  rel: {emoji:'🚢', name:'Release Manager',  color:'#c4b5fd'},
+};
+
+function selectAgent(id){
+  document.querySelectorAll('.agent-card').forEach(c=>c.classList.remove('active'));
+  document.getElementById('ag-'+id).classList.add('active');
+  const m = AGENT_META[id];
+  document.getElementById('promptTitle').textContent = m.emoji+' '+m.name;
+  document.getElementById('promptTitle').style.color = m.color;
+  document.getElementById('promptText').textContent  = PROMPTS[id];
+}
+
+const STEP_STATES = {};
+function selectStep(n){
+  Object.keys(STEP_STATES).forEach(k=>{
+    const el = document.getElementById('sb-'+k);
+    if(el) el.classList.remove('active');
+  });
+  const sb = document.getElementById('sb-'+n);
+  if(sb) sb.classList.add('active');
+}
+
+// ── Workflow simulation ───────────────────────────────────────────────
+const SIM_STEPS = [
+  {id:1,    agent:'pm',  status:'pm_in_progress', label:'PM creating user story…'},
+  {id:2,    agent:'dev', status:'dev_planning',   label:'Developer creating Jira ticket…'},
+  {id:3,    agent:'dev', status:'dev_in_progress',label:'Developer implementing feature…'},
+  {id:4,    agent:'qa',  status:'qa_in_progress', label:'QA reviewing (iteration 1)…'},
+  {id:'4b', agent:'dev', status:'dev_in_progress',label:'Developer fixing bugs…'},
+  {id:4,    agent:'qa',  status:'qa_in_progress', label:'QA reviewing (iteration 2)…'},
+  {id:5,    agent:'rel', status:'releasing',      label:'Release Manager deploying…'},
+];
+
+const STATE_SNAPSHOTS = [
+  {workflow_id:"WF-20260612-140000",status:"pm_in_progress",pm_story:null,jira_ticket:null,code_changes:[],qa_iterations:[],release:null},
+  {workflow_id:"WF-20260612-140000",status:"dev_planning",pm_story:{story_id:"US-260612-01",title:"Progressive chart build as values entered",priority:"high",story_points:5,acceptance_criteria:["AC1: Chart shows only DCA years when coast=0","AC2: Chart extends when coast>0","AC3: Withdrawal section hidden when wYrs=0"]},jira_ticket:null,code_changes:[],qa_iterations:[],release:null},
+  {workflow_id:"WF-20260612-140000",status:"dev_in_progress",pm_story:{story_id:"US-260612-01",title:"Progressive chart build as values entered",priority:"high",story_points:5},jira_ticket:{ticket_id:"INVEST-053",title:"Progressive chart x-axis build",component:"Strategy I",story_points:5},code_changes:[],qa_iterations:[],release:null},
+  {workflow_id:"WF-20260612-140000",status:"dev_in_progress",pm_story:{story_id:"US-260612-01",title:"Progressive chart build"},jira_ticket:{ticket_id:"INVEST-053",status:"in-progress"},code_changes:[{iteration:1,changes:[{description:"Zero dcaYrs default",search:"dcaYrs:17",replace:"dcaYrs:0"},{description:"Guard TOTAL=0 in simulate()",search:"const TOTAL = dcaYrs",replace:"const TOTAL = dcaYrs // guarded"}],summary:"Zeroed defaults and added empty-state guard"}],qa_iterations:[],release:null},
+  {workflow_id:"WF-20260612-140000",status:"qa_in_progress",pm_story:{story_id:"US-260612-01"},jira_ticket:{ticket_id:"INVEST-053"},code_changes:[{iteration:1}],qa_iterations:[{iteration:1,status:"rejected",bugs:[{id:"BUG-1",severity:"major",title:"Phase bar shows 0yr label briefly on load"}],passed_criteria:["AC1","AC3"],failed_criteria:["AC2"]}],release:null},
+  {workflow_id:"WF-20260612-140000",status:"qa_in_progress",pm_story:{story_id:"US-260612-01"},jira_ticket:{ticket_id:"INVEST-053"},code_changes:[{iteration:1},{iteration:2,changes:[{description:"Gate pb2 when coast=0"}],summary:"Fixed phase bar 0yr flash"}],qa_iterations:[{iteration:1,status:"rejected"},{iteration:2,status:"approved",passed_criteria:["AC1","AC2","AC3"],bugs:[]}],release:null},
+  {workflow_id:"WF-20260612-140000",status:"released",pm_story:{story_id:"US-260612-01"},jira_ticket:{ticket_id:"INVEST-053",status:"done"},code_changes:[{iteration:1},{iteration:2}],qa_iterations:[{iteration:1,status:"rejected"},{iteration:2,status:"approved"}],release:{version:"1.0.16314",status:"released",changes_applied:4,screenshot_path:"screenshots/release-1.0.16314.png",release_notes:"**v1.0.16314** — Progressive chart build: DCA/Coast/Withdrawal phases now appear incrementally as user enters values. Phase bar segments hidden when 0. Sustainability section gated on withdrawal configured."}},
+];
+
+const STATUS_IDS = ['sf-initiated','sf-pm','sf-dev','sf-impl','sf-qa','sf-release','sf-released'];
+
+let simRunning = false;
+async function simulate(){
+  if(simRunning) return;
+  simRunning = true;
+  const btn = document.getElementById('simBtn');
+  btn.classList.add('running');
+  btn.textContent = '⏳ Running simulation…';
+
+  // Reset
+  document.querySelectorAll('.step-num').forEach(el=>{
+    el.classList.remove('running','done-step');
+  });
+  STATUS_IDS.forEach(id=>{
+    document.getElementById(id).classList.remove('done');
+  });
+
+  document.getElementById('sf-initiated').classList.add('done');
+
+  for(let i=0;i<SIM_STEPS.length;i++){
+    const step = SIM_STEPS[i];
+    const snEl = document.getElementById('sn-'+step.id);
+    if(snEl){ snEl.classList.add('running'); }
+
+    selectAgent(step.agent);
+    selectStep(step.id);
+
+    // Update status
+    const sIdx = ['initiated','pm_in_progress','dev_planning','dev_in_progress','qa_in_progress','releasing','released'].indexOf(step.status);
+    if(sIdx>=0) document.getElementById(STATUS_IDS[sIdx]).classList.add('done');
+
+    // Update state JSON
+    if(STATE_SNAPSHOTS[i]){
+      document.getElementById('stateJson').textContent = JSON.stringify(STATE_SNAPSHOTS[i],null,2);
+    }
+
+    btn.textContent = '⏳ '+step.label;
+    await delay(2000 + Math.random()*800);
+
+    if(snEl){ snEl.classList.remove('running'); snEl.classList.add('done-step'); }
+  }
+
+  document.getElementById('sf-released').classList.add('done');
+  btn.classList.remove('running');
+  btn.textContent = '✅ Workflow Complete — click to restart';
+  simRunning = false;
+}
+
+function delay(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+// Init
+selectAgent('pm');
+selectStep(1);
+</script>
+</body>
+</html>

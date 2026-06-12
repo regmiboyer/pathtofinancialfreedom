@@ -1948,15 +1948,15 @@ window.saveResults = function(){
  <div class="ctrl-item">
  <div class="ctrl-label"><span class="tip-wrap">DCA duration <button class="tip-icon" tabindex="-1">ℹ</button><div class="tip-box">How many years you keep making monthly contributions. DCA = "Dollar-Cost Averaging" — investing a fixed amount regularly regardless of market ups and downs.</div></span></div>
  <div class="ctrl-row">
- <div class="num-wrap"><input class="num-in" type="number" id="v_dcaYrs" value="17" min="1" max="40" step="1"><span class="num-suffix">yr</span></div>
- <input class="range-in" type="range" id="r_dcaYrs" min="1" max="40" step="1" value="17">
+ <div class="num-wrap"><input class="num-in" type="number" id="v_dcaYrs" value="0" min="0" max="40" step="1"><span class="num-suffix">yr</span></div>
+ <input class="range-in" type="range" id="r_dcaYrs" min="0" max="40" step="1" value="0">
  </div>
  </div>
  <div class="ctrl-item">
  <div class="ctrl-label"><span class="tip-wrap">Coast duration <button class="tip-icon" tabindex="-1">ℹ</button><div class="tip-box">Years between stopping contributions and starting withdrawals. You stop adding money but leave it invested — the portfolio "coasts" and keeps growing on its own.</div></span></div>
  <div class="ctrl-row">
- <div class="num-wrap"><input class="num-in" type="number" id="v_coast" value="3" min="0" max="20" step="1"><span class="num-suffix">yr</span></div>
- <input class="range-in" type="range" id="r_coast" min="0" max="20" step="1" value="3">
+ <div class="num-wrap"><input class="num-in" type="number" id="v_coast" value="0" min="0" max="20" step="1"><span class="num-suffix">yr</span></div>
+ <input class="range-in" type="range" id="r_coast" min="0" max="20" step="1" value="0">
  </div>
  </div>
  <div class="ctrl-item">
@@ -1974,8 +1974,8 @@ window.saveResults = function(){
  <div class="ctrl-item">
  <div class="ctrl-label"><span class="tip-wrap">Base monthly withdrawal <button class="tip-icon" tabindex="-1">ℹ</button><div class="tip-box">How much money you plan to take out of your portfolio each month in retirement. This is your starting amount — it increases each year by the withdrawal increase % below.</div></span></div>
  <div class="ctrl-row">
- <div class="num-wrap"><span class="num-prefix">$</span><input class="num-in" type="number" id="v_wdraw" value="12000" min="500" max="100000" step="500"></div>
- <input class="range-in" type="range" id="r_wdraw" min="500" max="100000" step="500" value="12000">
+ <div class="num-wrap"><span class="num-prefix">$</span><input class="num-in" type="number" id="v_wdraw" value="0" min="0" max="100000" step="500"></div>
+ <input class="range-in" type="range" id="r_wdraw" min="0" max="100000" step="500" value="0">
  </div>
  </div>
  <div class="ctrl-item">
@@ -1988,20 +1988,29 @@ window.saveResults = function(){
  <div class="ctrl-item">
  <div class="ctrl-label"><span class="tip-wrap">Withdrawal duration <button class="tip-icon" tabindex="-1">ℹ</button><div class="tip-box">How many years you plan to draw from your portfolio in retirement. The simulation checks whether your money lasts this long — if not, it shows when funds run out.</div></span></div>
  <div class="ctrl-row">
- <div class="num-wrap"><input class="num-in" type="number" id="v_wYrs" value="30" min="5" max="50" step="1"><span class="num-suffix">yr</span></div>
- <input class="range-in" type="range" id="r_wYrs" min="5" max="50" step="1" value="30">
+ <div class="num-wrap"><input class="num-in" type="number" id="v_wYrs" value="0" min="0" max="50" step="1"><span class="num-suffix">yr</span></div>
+ <input class="range-in" type="range" id="r_wYrs" min="0" max="50" step="1" value="0">
  </div>
  </div>
  </div>
 
- <!-- Lump sums -->
+ <!-- One-Time Cash Events -->
  <div class="ctrl-group">
- <div class="ctrl-group-title" style="color:#92400e">Lump-Sum Events</div>
+ <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;" onclick="(function(){var b=document.getElementById('lumpBody');var a=document.getElementById('lumpArrow');if(!b)return;var open=b.style.display!=='none';b.style.display=open?'none':'block';a.textContent=open?'▶':'▼';})()">
+ <div class="ctrl-group-title" style="color:#7c3aed;margin-bottom:0;">💸 One-Time Cash Events</div>
+ <span id="lumpArrow" style="font-size:9px;color:#7c3aed;font-weight:700;">▼</span>
+ </div>
+ <div id="lumpBody">
+ <div style="display:flex;gap:6px;margin-top:8px;margin-bottom:6px;">
+ <button class="add-lump" id="addLumpInvest" style="flex:1;background:#f0fdf4;border-color:#86efac;color:#065f46;font-size:10px;">💰 Invest</button>
+ <button class="add-lump" id="addLumpWithdraw" style="flex:1;background:#fff7ed;border-color:#fdba74;color:#9a3412;font-size:10px;">💸 Withdraw</button>
+ </div>
+ <div style="font-size:10px;color:#94a3b8;margin-bottom:6px;">Add one-time investments or withdrawals at any year</div>
  <div class="lump-list" id="lumpList"></div>
- <button class="add-lump" id="addLump">＋ Add lump-sum event</button>
+ </div>
  </div>
 
- <button class="reset-btn" id="resetBtn">↺ Reset to defaults</button>
+ <button class="reset-btn" id="resetBtn">↺ Reset to Zero</button>
  <div class="disc">Past performance ≠ future results. Not financial advice. Returns compound monthly. DCA &amp; withdrawals split equally across all active funds.</div>
 </aside>
 
@@ -2024,7 +2033,23 @@ window.saveResults = function(){
  </div>
  </div>
 
- <div class="cards" id="cards"></div>
+ <!-- DCA Phase Breakdown -->
+<div id="dcaBreakdown" style="display:none;background:#fff;border:1px solid #e0e7ff;border-radius:12px;padding:14px 16px;margin-bottom:10px;">
+ <div style="font-size:12px;font-weight:800;color:#4f46e5;margin-bottom:10px;">📈 DCA Phase Breakdown</div>
+ <div id="dcaBdTiles" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;"></div>
+ <details id="dcaBdDetails" style="margin-top:4px;">
+ <summary style="font-size:11px;color:#64748b;cursor:pointer;list-style:none;display:flex;align-items:center;gap:4px;">
+ <span id="dcaBdArrow">▶</span> <span>Year-by-year DCA table</span>
+ </summary>
+ <div style="overflow-x:auto;margin-top:8px;">
+ <table id="dcaBdTable" style="width:100%;font-size:11px;border-collapse:collapse;">
+ <thead id="dcaBdHead" style="background:#f8fafc;"></thead>
+ <tbody id="dcaBdBody"></tbody>
+ </table>
+ </div>
+ </details>
+</div>
+<div class="cards" id="cards"></div>
 
  <div class="chart-box">
  <div class="ch-hdr">
@@ -2239,11 +2264,11 @@ const MIN_FUNDS = 2;
 // ═══════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════
-const DEFAULTS = {dcaYrs:17,coast:3,inf:3.0,wdraw:12000,winc:3.0,wYrs:30};
-const DEFAULT_LUMPS = [{yr:20,amt:300000},{yr:25,amt:300000},{yr:30,amt:500000},{yr:35,amt:200000},{yr:40,amt:200000},{yr:45,amt:200000},{yr:50,amt:200000}];
+const DEFAULTS = {dcaYrs:0,coast:0,inf:3.0,wdraw:0,winc:3.0,wYrs:0};
+const DEFAULT_LUMPS = [];
 const DEFAULT_FUNDS = [
- {sym:'VOO', name:'Vanguard S&P 500 ETF', cat:'Broad Market', cagr:13.8, yr:2010, rate:13.8, dca:1000},
- {sym:'QQQM',name:'Invesco Nasdaq-100 Mini ETF', cat:'Large Cap Growth',cagr:18.5, yr:2020, rate:18.5, dca:1000},
+ {sym:'VOO', name:'Vanguard S&P 500 ETF', cat:'Broad Market', cagr:13.8, yr:2010, rate:13.8, dca:0},
+ {sym:'QQQM',name:'Invesco Nasdaq-100 Mini ETF', cat:'Large Cap Growth',cagr:18.5, yr:2020, rate:18.5, dca:0},
 ];
 
 let funds = DEFAULT_FUNDS.map(f=>({...f}));
@@ -2268,12 +2293,12 @@ const fmtM = n => {
 };
 function getBase(){
  return {
- dcaYrs:+g('v_dcaYrs').value||17,
- coast: +g('v_coast').value ||3,
+ dcaYrs:+g('v_dcaYrs').value,
+ coast: +g('v_coast').value,
  inf: (+g('v_inf').value ||3.0)/100,
- wdraw: +g('v_wdraw').value ||12000,
+ wdraw: +g('v_wdraw').value,
  winc: (+g('v_winc').value ||3.0)/100,
- wYrs: +g('v_wYrs').value ||30,
+ wYrs: +g('v_wYrs').value,
  };
 }
 
@@ -2284,11 +2309,17 @@ function simulate(){
  const {dcaYrs,coast,inf,wdraw,winc,wYrs} = getBase();
  const N = funds.length;
  const TOTAL = dcaYrs+coast+wYrs;
+ if(TOTAL===0){rows=[];return {data:[],dcaYrs,coast,wYrs,TOTAL:0,totalDCApm:0,wdraw,winc,N};}
  const mRates = funds.map(f=>(f.rate/100)/12);
  const dcas = funds.map(f=>f.dca||0);
  const totalDCApm = dcas.reduce((s,v)=>s+v,0);
- const lumpMap = {};
- lumpSums.forEach(l=>{ if(l.yr>=1&&l.yr<=TOTAL&&l.amt>0) lumpMap[l.yr]=(lumpMap[l.yr]||0)+l.amt; });
+ const lumpInMap={}, lumpOutMap={};
+ lumpSums.forEach(l=>{
+ if(l.yr>=1&&l.yr<=TOTAL&&l.amt>0){
+ if((l.type||'withdraw')==='invest') lumpInMap[l.yr]=(lumpInMap[l.yr]||0)+l.amt;
+ else lumpOutMap[l.yr]=(lumpOutMap[l.yr]||0)+l.amt;
+ }
+ });
 
  let vals = new Array(N).fill(0);
  let cumInv=0, cumWd=0;
@@ -2310,7 +2341,16 @@ function simulate(){
  vals = vals.map((v,i)=>v*(1+mRates[i]));
 
  if(m%12===0){
- let lump=0; const lumpAmt=lumpMap[yr]||0;
+ // Lump invest: add money to portfolio proportionally
+ let lumpIn=0; const lumpInAmt=lumpInMap[yr]||0;
+ if(lumpInAmt>0){
+ const tot0=vals.reduce((s,v)=>s+v,0);
+ if(tot0>0) vals=vals.map(v=>v+lumpInAmt*(v/tot0));
+ else { const eq=lumpInAmt/(N||1); vals=vals.map(()=>eq); }
+ cumInv+=lumpInAmt; lumpIn=lumpInAmt;
+ }
+ // Lump withdraw: take money out proportionally
+ let lump=0; const lumpAmt=lumpOutMap[yr]||0;
  if(lumpAmt>0){
  const tot2=vals.reduce((s,v)=>s+v,0);
  if(tot2>0){ lump=Math.min(lumpAmt,tot2); vals=vals.map(v=>v-lump*(v/tot2)); cumWd+=lump; }
@@ -2318,7 +2358,8 @@ function simulate(){
  const comb=vals.reduce((s,v)=>s+v,0);
  const real=comb/Math.pow(1+inf,yr);
  const regFlow=phase===1?totalDCApm*12:phase===3?-(wdraw*Math.pow(1+winc,dYr-1)*12):0;
- data.push({yr,phase,vals:[...vals],comb,real,cumInv,cumWd,regFlow,lump,isLump:lump>0});
+ data.push({yr,phase,vals:[...vals],comb,real,cumInv,cumWd,regFlow,
+ lump,lumpIn,isLump:lump>0,isLumpIn:lumpIn>0});
  }
  }
  rows=data;
@@ -2347,6 +2388,10 @@ function makePhasePlugin(dcaYrs,coast){
  const x2=px(+i);ctx.strokeStyle='rgba(202,138,4,.4)';ctx.lineWidth=1;ctx.setLineDash([3,3]);
  ctx.beginPath();ctx.moveTo(x2,top);ctx.lineTo(x2,bottom);ctx.stroke();
  });
+ Object.keys(rows.reduce((a,r)=>r.isLumpIn?{...a,[r.yr-1]:1}:a,{})).forEach(i=>{
+ const x2=px(+i);ctx.strokeStyle='rgba(5,150,105,.4)';ctx.lineWidth=1;ctx.setLineDash([3,3]);
+ ctx.beginPath();ctx.moveTo(x2,top);ctx.lineTo(x2,bottom);ctx.stroke();
+ });
  ctx.restore();
  },
  afterDraw(chart){
@@ -2371,7 +2416,7 @@ const baseOpts=(dcaYrs,coast)=>({
  }
 });
 
-const visMap={combined:['comb','lumps'],individual:['lumps'],real:['comb','real','lumps'],all:['comb','real','lumps']};
+const visMap={combined:['comb','lumps','lumpIns'],individual:['lumps','lumpIns'],real:['comb','real','lumps','lumpIns'],all:['comb','real','lumps','lumpIns']};
 // individual and all also show fundX datasets
 let currentMode='combined';
 
@@ -2381,10 +2426,15 @@ function initCharts(sim){
  const plugin=makePhasePlugin(dcaYrs,coast);
  const opts=baseOpts(dcaYrs,coast);
 
- const lumpScatter={id:'lumps',label:'Lump-Sum',type:'scatter',
+ const lumpScatter={id:'lumps',label:'💸 Lump Withdrawal',type:'scatter',
  data:data.map((r,i)=>r.isLump?{x:i,y:r.comb}:null).filter(Boolean),
- pointStyle:'triangle',pointRadius:9,pointHoverRadius:12,
+ pointStyle:'triangle',pointRadius:9,pointHoverRadius:12,rotation:180,
  backgroundColor:'rgba(202,138,4,.9)',borderColor:'#ca8a04',borderWidth:1.5,showLine:false};
+
+ const lumpInScatter={id:'lumpIns',label:'💰 Lump Investment',type:'scatter',
+ data:data.map((r,i)=>r.isLumpIn?{x:i,y:r.comb}:null).filter(Boolean),
+ pointStyle:'triangle',pointRadius:9,pointHoverRadius:12,
+ backgroundColor:'rgba(5,150,105,.9)',borderColor:'#059669',borderWidth:1.5,showLine:false};
 
  const fundDs = funds.map((f,fi)=>({
  id:'fund'+fi, label:f.sym,
@@ -2394,7 +2444,7 @@ function initCharts(sim){
  }));
  const combDs={id:'comb',label:'Combined (Nom.)',data:data.map(r=>r.comb),borderColor:'#059669',backgroundColor:'rgba(5,150,105,.07)',borderWidth:2.5,fill:true,tension:.35,pointRadius:2,type:'line'};
  const realDs={id:'real',label:'Combined (Real)',data:data.map(r=>r.real),borderColor:'#94a3b8',backgroundColor:'transparent',borderWidth:2,borderDash:[4,3],fill:false,tension:.35,pointRadius:1,type:'line'};
- const mainDs=[...fundDs,combDs,realDs,lumpScatter];
+ const mainDs=[...fundDs,combDs,realDs,lumpScatter,lumpInScatter];
 
  // visibility
  const showFund = currentMode==='individual'||currentMode==='all';
@@ -2411,7 +2461,8 @@ function initCharts(sim){
  data:{labels,datasets:[
  {label:'Regular Flow',data:data.map(r=>r.regFlow),
  backgroundColor:data.map(r=>r.phase===1?'rgba(79,70,229,.7)':r.phase===2?'rgba(5,150,105,.4)':'rgba(190,24,93,.6)'),borderRadius:3},
- {label:'Lump Sum',data:data.map(r=>r.lump?-r.lump:null),backgroundColor:'rgba(202,138,4,.8)',borderRadius:3},
+ {label:'Lump Withdrawal',data:data.map(r=>r.lump?-r.lump:null),backgroundColor:'rgba(202,138,4,.8)',borderRadius:3},
+  {label:'Lump Investment',data:data.map(r=>r.lumpIn?r.lumpIn:null),backgroundColor:'rgba(5,150,105,.75)',borderRadius:3},
  ]},
  options:{responsive:true,maintainAspectRatio:true,
  plugins:{legend:{labels:{color:'#64748b',font:{size:10},padding:8,boxWidth:10}},
@@ -2447,7 +2498,7 @@ function renderFunds(){
  const col=FUND_COLORS[fi], letter=FUND_LETTERS[fi];
  const yrs=2025-f.yr, note=yrs<15?` · ${yrs}-yr est.`:'';
  const cc=f.rate>=15?'#059669':f.rate>=8?'#d97706':'#dc2626';
- const dca=f.dca||1000;
+ const dca=f.dca??0;
  return `
  <div class="fund-row">
  <div class="fund-row-hdr">
@@ -2545,7 +2596,7 @@ function selectETF(sym){
  closePicker();
  if(!mode){
    // Strategy I — ETF Simulation
-   const prevDca=funds[fi].dca||1000; funds[fi]={...etf,rate:etf.cagr,dca:prevDca};
+   const prevDca=funds[fi].dca??0; funds[fi]={...etf,rate:etf.cagr,dca:prevDca};
    renderFunds(); render();
  } else if(mode==='mi'){
    // Strategy IV — Property
@@ -2610,10 +2661,24 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePicker(); });
 function render(){
  const sim=simulate();
  const {data,dcaYrs,coast,wYrs,TOTAL,totalDCApm,wdraw,winc,N}=sim;
+ if(TOTAL===0){
+  if(mainChart){mainChart.destroy();mainChart=null;}
+  if(flowChart){flowChart.destroy();flowChart=null;}
+  if(cumChart){cumChart.destroy();cumChart=null;}
+  g('totalYrsLabel').textContent='0';
+  g('pb1').style.display='none';g('pb2').style.display='none';g('pb3').style.display='none';
+  g('cards').innerHTML=`<div style="grid-column:1/-1;text-align:center;color:#94a3b8;padding:32px 16px;font-size:0.9rem;line-height:1.8"><div style="font-size:2rem;margin-bottom:8px">📈</div><strong style="color:#64748b;font-size:1rem;display:block;margin-bottom:6px">Start by entering your DCA duration</strong>Set how many years you'll invest — the chart builds as you add DCA, coast, and withdrawal values.</div>`;
+  g('susContent').innerHTML='';
+  const db=g('dcaBreakdown');if(db)db.style.display='none';
+  buildTable(tableFilter);
+  return;
+ }
  const fin=data[data.length-1];
  const atDraw=data[dcaYrs+coast-1]||data[0];
  const totalInv=dcaYrs*12*totalDCApm;
- const totalLumps=lumpSums.reduce((s,l)=>s+l.amt,0);
+ const totalLumpOut=lumpSums.filter(l=>(l.type||'withdraw')==='withdraw').reduce((s,l)=>s+l.amt,0);
+ const totalLumpIn=lumpSums.filter(l=>l.type==='invest').reduce((s,l)=>s+l.amt,0);
+ const totalLumps=totalLumpOut; // backward compat
  const lastMW=wdraw*Math.pow(1+(+g('v_winc').value/100||.03),wYrs-1);
 
  // header
@@ -2621,9 +2686,9 @@ function render(){
 
  // phase bar
  g('totalYrsLabel').textContent=TOTAL;
- g('pb1v').textContent=dcaYrs+'yr'; g('pb1').style.flex=dcaYrs;
- g('pb2v').textContent=coast+'yr'; g('pb2').style.flex=Math.max(coast,.5);
- g('pb3v').textContent=wYrs+'yr'; g('pb3').style.flex=wYrs;
+ if(dcaYrs>0){g('pb1v').textContent=dcaYrs+'yr';g('pb1').style.flex=dcaYrs;g('pb1').style.display='';}else{g('pb1').style.display='none';}
+ if(coast>0){g('pb2v').textContent=coast+'yr';g('pb2').style.flex=coast;g('pb2').style.display='';}else{g('pb2').style.display='none';}
+ if(wYrs>0){g('pb3v').textContent=wYrs+'yr';g('pb3').style.flex=wYrs;g('pb3').style.display='';}else{g('pb3').style.display='none';}
 
  // cards
  const at20 = data.find(r=>r.yr===20)||null;
@@ -2652,7 +2717,7 @@ function render(){
  {lbl:'Portfolio at Year 20', val:at20?fmtM(at20.comb):'—', sub: at20?`Real: ${fmtM(at20.real)}`:'Beyond timeline', cls:'i'},
  {lbl:'Portfolio at End (Nominal)', val:fmtM(fin.comb), sub:`After all ${TOTAL} years`, cls:'g', hi:'hi-g'},
  {lbl:'Portfolio at End (Real)', val:fmtM(fin.real), sub:"In today's dollars", cls:'s'},
- {lbl:'Total Lump Sum Withdrawals', val:fmt(totalLumps), sub:`${lumpSums.length} events`,cls:'y', hi:'hi-y'},
+ {lbl:'Lump Sum Withdrawals', val:fmt(totalLumpOut), sub:`${lumpSums.filter(l=>(l.type||'withdraw')==='withdraw').length} events`,cls:'y', hi:'hi-y'},
  {lbl:'Regular Monthly Withdrawals (Total)', val:fmtM(regularWd), sub:`${wYrs}yr cumulative`, cls:'p'},
  {lbl:'Total Withdrawn (Regular + Lumps)', val:fmtM(fin.cumWd), sub:'All outflows combined', cls:'r', hi:'hi-p'},
  ].map(c=>`<div class="card ${c.hi||''}"><div class="c-lbl">${c.lbl}</div><div class="c-val ${c.cls}">${c.val}</div><div class="c-sub">${c.sub}</div></div>`).join('');
@@ -2662,6 +2727,9 @@ function render(){
  initCharts(sim);
 
  // sustainability
+ if(wYrs===0||wdraw===0){
+   g('susContent').innerHTML=`<div style="color:#94a3b8;font-size:0.85rem;padding:16px 0;text-align:center">Enter a withdrawal amount and duration above to see portfolio sustainability analysis.</div>`;
+ } else {
  const grew=fin.comb>atDraw.comb;
  g('susContent').innerHTML=`
  <div class="sus-grid">
@@ -2675,8 +2743,70 @@ function render(){
  ?`<strong style="color:#059669">Portfolio grew</strong> through all withdrawals. Ending: <strong style="color:#059669">${fmtM(fin.comb)}</strong>. Cash received: <strong style="color:#be185d">${fmtM(fin.cumWd)}</strong>. Net wealth on <strong style="color:#4f46e5">${fmt(totalInv)}</strong> invested: <strong style="color:#059669">${fmtM(fin.comb+fin.cumWd-totalInv)}</strong>.`
  :`Portfolio declined during withdrawals. Remaining: <strong>${fmtM(fin.comb)}</strong>. Consider reducing withdrawals or lump-sum amounts.`
  }</div>`;
+ }
 
  buildTable(tableFilter);
+ renderDcaBreakdown(sim);
+}
+
+// ═══════════════════════════════════════
+// DCA BREAKDOWN
+// ═══════════════════════════════════════
+function renderDcaBreakdown(sim){
+ const {data,dcaYrs,coast,wYrs,TOTAL,totalDCApm}=sim;
+ const wrap=g('dcaBreakdown'); if(!wrap) return;
+ const dcaRows=data.filter(r=>r.phase===1);
+ if(!dcaRows.length){ wrap.style.display='none'; return; }
+ wrap.style.display='block';
+ const last=dcaRows[dcaRows.length-1];
+ const first=dcaRows[0];
+ // derive retire year
+ const retireYr=dcaYrs+coast;
+ const retirePV=data[retireYr-1]||last;
+ const fmtPct=n=>(n*100).toFixed(1)+'%';
+ const growth=first.comb>0?(last.comb/first.comb-1):((last.comb/(totalDCApm*12))-1);
+ const totalInvDCA=dcaYrs*12*totalDCApm;
+ const gain=last.comb-totalInvDCA;
+
+ // 4 stat tiles
+ const tiles=[
+ {lbl:'End of DCA (Year '+dcaYrs+')',val:fmtM(last.comb),sub:'Portfolio value',col:'#4f46e5'},
+ {lbl:'Total DCA Invested',val:fmt(totalInvDCA),sub:'$'+totalDCApm.toLocaleString()+'/mo × '+dcaYrs+' yrs',col:'#0891b2'},
+ {lbl:'Unrealised Gain',val:fmtM(gain),sub:'Growth on invested capital',col:'#059669'},
+ {lbl:'Retire at Year',val:retireYr+' (after '+coast+'yr coast)',sub:'Portfolio then: '+fmtM(retirePV.comb),col:'#7c3aed'},
+ ];
+ g('dcaBdTiles').innerHTML=tiles.map(t=>`
+ <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;border-top:3px solid ${t.col}">
+ <div style="font-size:9px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;">${t.lbl}</div>
+ <div style="font-size:15px;font-weight:800;color:${t.col}">${t.val}</div>
+ <div style="font-size:9px;color:#94a3b8;margin-top:2px;">${t.sub}</div>
+ </div>`).join('');
+
+ // Year-by-year DCA table
+ const N=funds.length;
+ g('dcaBdHead').innerHTML=`<tr style="border-bottom:1px solid #e2e8f0;">
+ <th style="text-align:left;padding:4px 6px;color:#64748b;font-weight:600">Year</th>
+ ${funds.map((f,fi)=>`<th style="text-align:right;padding:4px 6px;color:${FUND_COLORS[fi]};font-weight:600">${f.sym}</th>`).join('')}
+ <th style="text-align:right;padding:4px 6px;color:#059669;font-weight:600">Combined</th>
+ <th style="text-align:right;padding:4px 6px;color:#64748b;font-weight:600">Real</th>
+ <th style="text-align:right;padding:4px 6px;color:#4f46e5;font-weight:600">Cum. Invested</th>
+ </tr>`;
+ g('dcaBdBody').innerHTML=dcaRows.map(r=>`
+ <tr style="border-bottom:1px solid #f8fafc;">
+ <td style="padding:3px 6px;font-weight:600;color:#0f172a">Yr ${r.yr}</td>
+ ${r.vals.map((v,fi)=>`<td style="text-align:right;padding:3px 6px;color:${FUND_COLORS[fi]}">${fmtM(v)}</td>`).join('')}
+ <td style="text-align:right;padding:3px 6px;color:#059669;font-weight:600">${fmtM(r.comb)}</td>
+ <td style="text-align:right;padding:3px 6px;color:#64748b">${fmtM(r.real)}</td>
+ <td style="text-align:right;padding:3px 6px;color:#4f46e5">${fmt(r.cumInv)}</td>
+ </tr>`).join('');
+
+ // toggle arrow
+ const det=g('dcaBdDetails');
+ if(det){
+ det.querySelectorAll('summary span:first-child').forEach(sp=>{
+ det.addEventListener('toggle',()=>{ sp.textContent=det.open?'▼':'▶'; },{ once:false, passive:true });
+ });
+ }
 }
 
 // ═══════════════════════════════════════
@@ -2690,7 +2820,7 @@ function buildTable(f){
  <th>Year</th><th>Phase</th><th>Invested</th>
  ${funds.map((fd,fi)=>`<th style="color:${FUND_COLORS[fi]}">${fd.sym}</th>`).join('')}
  <th>Combined (Nom.)</th><th>Combined (Real)</th>
- <th>Regular Flow</th><th>Lump Sum</th><th>Withdrawn (Cum.)</th>
+ <th>Regular Flow</th><th>Lump In 💰</th><th>Lump Out 💸</th><th>Withdrawn (Cum.)</th>
  </tr>`;
 
  const filtered=f==='all'?rows:f==='L'?rows.filter(r=>r.isLump):rows.filter(r=>r.phase===+f);
@@ -2704,6 +2834,7 @@ function buildTable(f){
  <td style="color:#059669;font-weight:600">${fmtM(r.comb)}</td>
  <td style="color:#64748b">${fmtM(r.real)}</td>
  <td style="color:${r.regFlow>=0?'#059669':'#be185d'}">${r.regFlow===0?'—':r.regFlow>0?'+'+fmtM(r.regFlow):'-'+fmtM(-r.regFlow)}</td>
+ <td style="color:#059669;font-weight:600">${r.lumpIn?'+'+fmt(r.lumpIn):'—'}</td>
  <td style="color:#92400e;font-weight:600">${r.lump?'-'+fmt(r.lump):'—'}</td>
  <td style="color:#e11d48">${r.cumWd>0?fmtM(r.cumWd):'—'}</td>
  </tr>`).join('');
@@ -2713,24 +2844,43 @@ function buildTable(f){
 // LUMP-SUM UI
 // ═══════════════════════════════════════
 function renderLumps(){
- g('lumpList').innerHTML=lumpSums.map((l,i)=>`
- <div class="lump-entry">
+ g('lumpList').innerHTML=lumpSums.map((l,i)=>{
+ const t=l.type||'withdraw';
+ const isIn=t==='invest';
+ const badgeStyle=isIn
+ ?'background:#dcfce7;color:#065f46;border:1px solid #86efac;'
+ :'background:#fff7ed;color:#9a3412;border:1px solid #fdba74;';
+ return `<div class="lump-entry" style="align-items:center;gap:5px;flex-wrap:nowrap;">
+ <button class="lump-type-btn" data-li="${i}" style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;cursor:pointer;white-space:nowrap;${badgeStyle}">${isIn?'💰 IN':'💸 OUT'}</button>
  <span style="font-size:9px;color:#94a3b8">Yr</span>
  <div class="num-wrap" style="flex:0 0 auto"><input class="num-in" style="width:38px" type="number" data-li="${i}" data-field="yr" value="${l.yr}" min="1" max="100" step="1"></div>
- <span class="lump-sep">→</span>
- <div class="num-wrap" style="flex:1"><span class="num-prefix">$</span><input class="num-in" style="width:66px" type="number" data-li="${i}" data-field="amt" value="${l.amt}" min="0" max="10000000" step="10000"></div>
+ <div class="num-wrap" style="flex:1"><span class="num-prefix">$</span><input class="num-in" style="width:60px" type="number" data-li="${i}" data-field="amt" value="${l.amt}" min="0" max="10000000" step="10000"></div>
  <button class="lump-del" data-li="${i}"></button>
- </div>`).join('');
+ </div>`;
+ }).join('');
  g('lumpList').querySelectorAll('.num-in').forEach(inp=>{
  inp.addEventListener('input',()=>{ lumpSums[+inp.dataset.li][inp.dataset.field]=+inp.value; debounce(); });
  });
  g('lumpList').querySelectorAll('.lump-del').forEach(btn=>{
  btn.addEventListener('click',()=>{ lumpSums.splice(+btn.dataset.li,1); renderLumps(); debounce(); });
  });
+ g('lumpList').querySelectorAll('.lump-type-btn').forEach(btn=>{
+ btn.addEventListener('click',()=>{
+ const i=+btn.dataset.li;
+ lumpSums[i].type=lumpSums[i].type==='invest'?'withdraw':'invest';
+ renderLumps(); debounce();
+ });
+ });
 }
-g('addLump').addEventListener('click',()=>{
+g('addLumpInvest').addEventListener('click',()=>{
  const {dcaYrs,coast}=getBase();
- lumpSums.push({yr:Math.min(dcaYrs+coast+(+g('v_wYrs').value||30),35),amt:100000});
+ const nextYr=Math.max(1,Math.min(dcaYrs,Math.round(dcaYrs/2)));
+ lumpSums.push({yr:nextYr,amt:50000,type:'invest'});
+ renderLumps(); debounce();
+});
+g('addLumpWithdraw').addEventListener('click',()=>{
+ const {dcaYrs,coast,wYrs}=getBase();
+ lumpSums.push({yr:Math.min(dcaYrs+coast+wYrs,dcaYrs+coast+5),amt:100000,type:'withdraw'});
  renderLumps(); debounce();
 });
 
@@ -2771,7 +2921,7 @@ g('fbRow').addEventListener('click',e=>{
 });
 g('resetBtn').addEventListener('click',()=>{
  Object.entries(DEFAULTS).forEach(([k,v])=>{ if(g('v_'+k)){ g('v_'+k).value=v; if(g('r_'+k)) g('r_'+k).value=v; }});
- funds=DEFAULT_FUNDS.map(f=>({...f,dca:f.dca||1000}));
+ funds=DEFAULT_FUNDS.map(f=>({...f}));
  lumpSums=DEFAULT_LUMPS.map(l=>({...l}));
  renderFunds(); renderLumps(); render();
 });
@@ -3557,9 +3707,12 @@ else{ requestAnimationFrame(function(){ requestAnimationFrame(renderProperty); }
 </style>
 
 <section class="pf-wrap" id="pfSection" style="display:none;">
- <div class="pf-sec-hdr">
- <div class="pf-sec-title">Strategy IV: High Touch Property Portfolio — Build &amp; Scale</div>
- <div class="pf-sec-sub">Grow a portfolio by acquiring one property every 5 years · 50% deposit from equity, 50% from savings · Sell all at Year 30</div>
+ <div class="pf-sec-hdr" style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+  <div>
+   <div class="pf-sec-title">Strategy IV: High Touch Property Portfolio — Build &amp; Scale</div>
+   <div class="pf-sec-sub">Grow a portfolio by acquiring one property every 5 years · 50% deposit from equity, 50% from savings · Sell all at Year 30</div>
+  </div>
+  <button onclick="strategyResetToZero('pfSection')" style="flex-shrink:0;padding:8px 16px;background:#7c3aed;border:none;border-radius:8px;color:#fff;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:.3px;margin-top:2px;">↺ Reset to Zero</button>
  </div>
 
  <div class="pf-layout">
@@ -5280,6 +5433,7 @@ if(document.readyState==='loading'){
       <div class="pm-hdr-title">🥇 Precious Metals Portfolio — Gold &amp; Silver Bullion</div>
       <div class="pm-hdr-sub">Physical bullion · Vault-stored · 16-yr historical returns (2009–2025) · Inflation-adjusted real returns</div>
     </div>
+    <button onclick="strategyResetToZero('preciousSection')" style="margin-left:auto;padding:8px 16px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);border-radius:8px;color:#fff;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:.3px;">↺ Reset to Zero</button>
   </div>
 
   <div class="pm-layout">
@@ -6061,6 +6215,7 @@ window.memeOnEnter = (function(){
       <div class="pm-hdr-title">🇦🇺 Salary Sacrifice &amp; Super</div>
       <div class="pm-hdr-sub">Model every extra dollar you voluntarily put into super + ETF investing. Full ATO tax treatment · $150k income · Family of 4</div>
     </div>
+    <button onclick="strategyResetToZero('superSection')" style="margin-left:auto;padding:8px 16px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);border-radius:8px;color:#fff;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:.3px;">↺ Reset to Zero</button>
   </div>
 
   <!-- Layout — mirrors pm-layout -->
@@ -7219,6 +7374,7 @@ window.suOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
       <button onclick="backToStrategies()" style="background:rgba(0,0,0,.05);border:1px solid rgba(0,0,0,.08);color:#64748b;padding:5px 13px;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit;">← Strategy Menu</button>
       <span style="background:#1e1b4b;color:#a5b4fc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:800;letter-spacing:1.5px;font-family:'Courier New',monospace;">VI</span> <span style="background:linear-gradient(90deg,#4f46e5,#06b6d4);color:#fff;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;letter-spacing:.5px;">EDUCATIONAL</span>
+      <button onclick="strategyResetToZero('dcaSection')" style="margin-left:auto;padding:6px 14px;background:rgba(79,70,229,.12);border:1.5px solid rgba(79,70,229,.3);border-radius:8px;color:#4f46e5;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:.3px;">↺ Reset to Zero</button>
       <span style="background:#ecfdf5;color:#059669;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;border:1px solid #a7f3d0;">10 Years · Real VOO Data · ~$1,000/mo</span>
     </div>
     <h1 style="font-size:clamp(28px,4vw,44px);font-weight:800;margin:0 0 7px;letter-spacing:-.4px;background:linear-gradient(90deg,#0f172a 0%,#4f46e5 55%,#059669 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Does Timing the Market Beat DCA?</h1>
@@ -7773,6 +7929,7 @@ window.dcaOnEnter=(function(){var d=false;return function(){if(!d){d=true;if(typ
   <div style="position:relative;z-index:1;max-width:1160px;margin:0 auto;">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
       <button onclick="backToStrategies()" style="background:rgba(0,0,0,.05);border:1px solid rgba(0,0,0,.08);color:#64748b;padding:5px 13px;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit;">&larr; Strategy Menu</button>
+      <button onclick="strategyResetToZero('voo500Section')" style="margin-left:auto;padding:6px 14px;background:rgba(29,78,216,.1);border:1.5px solid rgba(29,78,216,.25);border-radius:8px;color:#1d4ed8;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:.3px;">↺ Reset to Zero</button>
       <span style="background:#1e1b4b;color:#a5b4fc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:800;letter-spacing:1.5px;font-family:'Courier New',monospace;">VIII</span>
       <span style="background:linear-gradient(90deg,#1d4ed8,#d97706);color:#fff;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;letter-spacing:.5px;">CROSS-BORDER &middot; FX AWARE</span>
       <span style="background:#ecfdf5;color:#059669;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;border:1px solid #a7f3d0;">Stake Platform &middot; AUD Investor</span>
@@ -9023,7 +9180,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         <div style="font-size:16px;font-weight:900;color:#fff;">Strategy II — Mortgage &amp; ETF Investment</div>
         <div style="font-size:10px;color:rgba(255,255,255,.8);">5 progressive scenarios — compare every path from debt to wealth</div>
       </div>
-      <button onclick="meiReset()" style="margin-left:auto;padding:8px 16px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);border-radius:8px;color:#fff;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:.3px;">↺ RESET ALL</button>
+      <button onclick="meiReset()" style="margin-left:auto;padding:8px 16px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);border-radius:8px;color:#fff;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:.3px;">↺ Reset to Zero</button>
     </div>
   </div>
 
@@ -9121,6 +9278,27 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
       </div>
       <div style="position:relative;height:210px;"><canvas id="meiChartBalBase"></canvas></div>
     </div>
+    <!-- ─── Yearly Cash Flow Table ─────────────────────────── -->
+    <div id="meiCFTableWrap" style="display:none;border-top:1px solid #f1f5f9;">
+      <!-- collapsible header -->
+      <div style="padding:12px 20px 10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;cursor:pointer;user-select:none;background:#f8fafc;" onclick="(function(){var b=document.getElementById('meiCFBody1');var a=document.getElementById('meiCFArrow1');if(!b||!a)return;var open=b.style.display!=='none';b.style.display=open?'none':'block';a.textContent=open?'▶':'▼';})()">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span id="meiCFArrow1" style="font-size:10px;color:#0d9488;font-weight:700;">▼</span>
+          <div>
+            <div style="font-size:13px;font-weight:800;color:#0f172a;">📋 Yearly Cumulative Cash Flow</div>
+            <div style="font-size:10px;color:#94a3b8;margin-top:1px;">Every dollar paid — principal, interest, and running totals year by year</div>
+          </div>
+        </div>
+        <div id="meiCFSummaryPills" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+      </div>
+      <!-- collapsible body -->
+      <div id="meiCFBody1" style="overflow-x:auto;max-height:360px;overflow-y:auto;border-top:1px solid #f1f5f9;">
+        <table id="meiCFTable" style="width:100%;border-collapse:collapse;font-size:11px;min-width:700px;">
+          <thead id="meiCFHead" style="position:sticky;top:0;z-index:2;background:#f8fafc;"></thead>
+          <tbody id="meiCFBody"></tbody>
+        </table>
+      </div>
+    </div>
     <div style="padding:12px 18px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fafafa;">
       <div style="font-size:10px;color:#94a3b8;">Baseline used by all 5 scenarios</div>
       <button onclick="meiRunSc1()" style="padding:9px 20px;background:linear-gradient(135deg,#0f766e,#0d9488);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(13,148,136,.3);">▶ Run Scenario 1</button>
@@ -9160,6 +9338,25 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
       </div>
       <div style="border-left:1px solid #f1f5f9;overflow:auto;">
         <div id="meiSc2Result"></div>
+      </div>
+    </div>
+    <!-- ─── Sc2 Yearly Cash Flow Table ───────────────────── -->
+    <div id="meiCFTableWrap2" style="display:none;border-top:1px solid #f1f5f9;">
+      <div style="padding:12px 20px 10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;cursor:pointer;user-select:none;background:#faf5ff;" onclick="(function(){var b=document.getElementById('meiCFBody2');var a=document.getElementById('meiCFArrow2');if(!b||!a)return;var open=b.style.display!=='none';b.style.display=open?'none':'block';a.textContent=open?'▶':'▼';})()">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span id="meiCFArrow2" style="font-size:10px;color:#8b5cf6;font-weight:700;">▼</span>
+          <div>
+            <div style="font-size:13px;font-weight:800;color:#0f172a;">📋 Yearly Cumulative Cash Flow — Accelerated</div>
+            <div style="font-size:10px;color:#94a3b8;margin-top:1px;">Accelerated schedule with extra payments &amp; lump sums</div>
+          </div>
+        </div>
+        <div id="meiCFSummaryPills2" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+      </div>
+      <div id="meiCFBody2" style="overflow-x:auto;max-height:360px;overflow-y:auto;border-top:1px solid #f1f5f9;">
+        <table style="width:100%;border-collapse:collapse;font-size:11px;min-width:700px;">
+          <thead id="meiCFHead2" style="position:sticky;top:0;z-index:2;background:#faf5ff;"></thead>
+          <tbody id="meiCFBodyRows2"></tbody>
+        </table>
       </div>
     </div>
     <div style="padding:12px 18px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fafafa;">
@@ -9465,6 +9662,63 @@ window.meiUpdateBase = function(){
     '</div>';
   meiBar('meiChartBase','base',sch.labels,[dsBar('Principal',sch.principalByYr,'#0d9488'),dsBar('Interest',sch.interestByYr,'#f97316')]);
 
+  /* ── Yearly Cash Flow Table ── */
+  (function(){
+    var tw=document.getElementById('meiCFTableWrap'); if(!tw) return;
+    tw.style.display='block';
+    var n=sch.labels.length;
+    var annPmt=sch.principalByYr.map(function(p,i){return p+(sch.interestByYr[i]||0);});
+    // cumulative principal = loan - balance
+    // Header
+    document.getElementById('meiCFHead').innerHTML=
+      '<tr style="border-bottom:2px solid #e2e8f0;">'
+      +'<th style="padding:7px 10px;text-align:left;font-size:10px;font-weight:700;color:#64748b;white-space:nowrap;">Year</th>'
+      +'<th style="padding:7px 10px;text-align:right;font-size:10px;font-weight:700;color:#0d9488;white-space:nowrap;">Annual Pmt</th>'
+      +'<th style="padding:7px 10px;text-align:right;font-size:10px;font-weight:700;color:#059669;white-space:nowrap;">Principal (yr)</th>'
+      +'<th style="padding:7px 10px;text-align:right;font-size:10px;font-weight:700;color:#dc2626;white-space:nowrap;">Interest (yr)</th>'
+      +'<th style="padding:7px 10px;text-align:right;font-size:10px;font-weight:700;color:#b45309;white-space:nowrap;">Cumul. Interest</th>'
+      +'<th style="padding:7px 10px;text-align:right;font-size:10px;font-weight:700;color:#1d4ed8;white-space:nowrap;">Balance Remaining</th>'
+      +'<th style="padding:7px 10px;text-align:right;font-size:10px;font-weight:700;color:#7c3aed;white-space:nowrap;">Equity Built</th>'
+      +'<th style="padding:7px 10px;text-align:left;font-size:10px;font-weight:700;color:#7c3aed;white-space:nowrap;min-width:90px;">% Paid Off</th>'
+      +'</tr>';
+    // Body
+    var rows='';
+    for(var i=0;i<n;i++){
+      var bal=sch.balanceByYr[i+1]||0;
+      var eq=Math.round(loan-bal);
+      var pct=loan>0?Math.round(eq/loan*100):0;
+      var ci=sch.cumIntByYr[i+1]||0;
+      var isEven=i%2===0;
+      var bg=isEven?'#fff':'#f8fafc';
+      var barW=Math.min(pct,100);
+      var barCol=pct>=80?'#059669':pct>=50?'#0d9488':pct>=25?'#0891b2':'#6366f1';
+      rows+='<tr style="border-bottom:1px solid #f1f5f9;background:'+bg+';">'
+        +'<td style="padding:6px 10px;font-weight:700;color:#0f172a;">'+sch.labels[i]+'</td>'
+        +'<td style="padding:6px 10px;text-align:right;color:#0d9488;font-weight:600;">'+fmtF(annPmt[i])+'</td>'
+        +'<td style="padding:6px 10px;text-align:right;color:#059669;">'+fmtF(sch.principalByYr[i])+'</td>'
+        +'<td style="padding:6px 10px;text-align:right;color:#dc2626;">'+fmtF(sch.interestByYr[i])+'</td>'
+        +'<td style="padding:6px 10px;text-align:right;color:#b45309;font-weight:600;">'+fmtF(ci)+'</td>'
+        +'<td style="padding:6px 10px;text-align:right;color:#1d4ed8;font-weight:600;">'+(bal>0?fmtF(bal):'<span style="color:#059669;font-weight:800;">✓ Paid Off</span>')+'</td>'
+        +'<td style="padding:6px 10px;text-align:right;color:#7c3aed;font-weight:600;">'+fmtF(eq)+'</td>'
+        +'<td style="padding:6px 10px;">'
+          +'<div style="display:flex;align-items:center;gap:5px;">'
+          +'<div style="flex:1;background:#e2e8f0;border-radius:3px;height:6px;overflow:hidden;min-width:50px;">'
+            +'<div style="width:'+barW+'%;height:100%;background:'+barCol+';border-radius:3px;transition:width .2s;"></div>'
+          +'</div>'
+          +'<span style="font-size:9px;font-weight:700;color:'+barCol+';min-width:26px;text-align:right;">'+pct+'%</span>'
+          +'</div>'
+        +'</td>'
+        +'</tr>';
+    }
+    document.getElementById('meiCFBody').innerHTML=rows;
+    // Summary pills
+    var pills=document.getElementById('meiCFSummaryPills');
+    if(pills) pills.innerHTML=
+      '<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:#065f46;">📅 '+n+' years</div>'
+      +'<div style="background:#fff7ed;border:1px solid #fdba74;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:#9a3412;">💸 Total interest: '+fmtF(sch.totalInterest)+'</div>'
+      +'<div style="background:#f0f9ff;border:1px solid #7dd3fc;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:#0369a1;">🏠 Interest ratio: '+(loan>0?(sch.totalInterest/loan*100).toFixed(0):'—')+'%</div>';
+  })();
+
   /* ── Remaining Balance Chart (live, interactive hover) ── */
   var wrap=document.getElementById('meiBalChartWrap');
   if(wrap) wrap.style.display='block';
@@ -9582,6 +9836,57 @@ window.meiRunSc2 = function(){
     {label:'Total Interest',val:fmt(sch2.totalInterest),color:'#dc2626',border:'#fecaca',glow:'rgba(220,38,38,.18)'}
   ],'#faf5ff','#ede9fe'); }
   meiUpdateComparison();
+  /* ── Sc2 Yearly Cash Flow Table ── */
+  (function(){
+    var tw=document.getElementById('meiCFTableWrap2'); if(!tw) return;
+    tw.style.display='block';
+    var n=sch2.labels.length;
+    var annPmt=sch2.principalByYr.map(function(p,i){return p+(sch2.interestByYr[i]||0);});
+    document.getElementById('meiCFHead2').innerHTML=
+      '<tr style="border-bottom:2px solid #ede9fe;">'
+      +'<th style="padding:7px 10px;text-align:left;font-size:10px;font-weight:700;color:#64748b;white-space:nowrap;">Year</th>'
+      +'<th style="padding:7px 10px;text-align:right;font-size:10px;font-weight:700;color:#8b5cf6;white-space:nowrap;">Annual Pmt</th>'
+      +'<th style="padding:7px 10px;text-align:right;font-size:10px;font-weight:700;color:#059669;white-space:nowrap;">Principal (yr)</th>'
+      +'<th style="padding:7px 10px;text-align:right;font-size:10px;font-weight:700;color:#dc2626;white-space:nowrap;">Interest (yr)</th>'
+      +'<th style="padding:7px 10px;text-align:right;font-size:10px;font-weight:700;color:#b45309;white-space:nowrap;">Cumul. Interest</th>'
+      +'<th style="padding:7px 10px;text-align:right;font-size:10px;font-weight:700;color:#1d4ed8;white-space:nowrap;">Balance Remaining</th>'
+      +'<th style="padding:7px 10px;text-align:right;font-size:10px;font-weight:700;color:#7c3aed;white-space:nowrap;">Equity Built</th>'
+      +'<th style="padding:7px 10px;text-align:left;font-size:10px;font-weight:700;color:#7c3aed;white-space:nowrap;min-width:90px;">% Paid Off</th>'
+      +'</tr>';
+    var rows='';
+    for(var i=0;i<n;i++){
+      var bal=sch2.balanceByYr[i+1]||0;
+      var eq=Math.round(loan-bal);
+      var pct=loan>0?Math.round(eq/loan*100):0;
+      var ci=sch2.cumIntByYr[i+1]||0;
+      var bg=i%2===0?'#fff':'#faf5ff';
+      var barW=Math.min(pct,100);
+      var barCol=pct>=80?'#059669':pct>=50?'#8b5cf6':pct>=25?'#0891b2':'#6366f1';
+      rows+='<tr style="border-bottom:1px solid #f3f0ff;background:'+bg+';">'
+        +'<td style="padding:6px 10px;font-weight:700;color:#0f172a;">'+sch2.labels[i]+'</td>'
+        +'<td style="padding:6px 10px;text-align:right;color:#8b5cf6;font-weight:600;">'+fmtF(annPmt[i])+'</td>'
+        +'<td style="padding:6px 10px;text-align:right;color:#059669;">'+fmtF(sch2.principalByYr[i])+'</td>'
+        +'<td style="padding:6px 10px;text-align:right;color:#dc2626;">'+fmtF(sch2.interestByYr[i])+'</td>'
+        +'<td style="padding:6px 10px;text-align:right;color:#b45309;font-weight:600;">'+fmtF(ci)+'</td>'
+        +'<td style="padding:6px 10px;text-align:right;color:#1d4ed8;font-weight:600;">'+(bal>0?fmtF(bal):'<span style="color:#059669;font-weight:800;">✓ Paid Off</span>')+'</td>'
+        +'<td style="padding:6px 10px;text-align:right;color:#7c3aed;font-weight:600;">'+fmtF(eq)+'</td>'
+        +'<td style="padding:6px 10px;">'
+          +'<div style="display:flex;align-items:center;gap:5px;">'
+          +'<div style="flex:1;background:#ede9fe;border-radius:3px;height:6px;overflow:hidden;min-width:50px;">'
+            +'<div style="width:'+barW+'%;height:100%;background:'+barCol+';border-radius:3px;"></div>'
+          +'</div>'
+          +'<span style="font-size:9px;font-weight:700;color:'+barCol+';min-width:26px;text-align:right;">'+pct+'%</span>'
+          +'</div>'
+        +'</td>'
+        +'</tr>';
+    }
+    document.getElementById('meiCFBodyRows2').innerHTML=rows;
+    var pills=document.getElementById('meiCFSummaryPills2');
+    if(pills) pills.innerHTML=
+      '<div style="background:#f5f3ff;border:1px solid #c4b5fd;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:#6d28d9;">📅 '+n+' years</div>'
+      +'<div style="background:#fff7ed;border:1px solid #fdba74;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:#9a3412;">💸 Total interest: '+fmtF(sch2.totalInterest)+'</div>'
+      +'<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:#065f46;">💰 Saved: '+fmtF(saved)+'</div>';
+  })();
 };
 
 /* ── Fund UI (Sc3) ────────────────────────────────────── */
@@ -9814,7 +10119,7 @@ window.meiResetSc1 = function(){
   var t=document.getElementById('meiT1a'); if(t)t.textContent='—';
   var t2=document.getElementById('meiT1b'); if(t2)t2.textContent='—';
   var r=document.getElementById('meiSc1Result'); if(r)r.innerHTML=meiEmptyState(1);
-  meiDestroy('base'); meiDestroy('balBase');
+  meiDestroy('base'); meiDestroy('balBase'); (function(){var t=document.getElementById('meiCFTableWrap');if(t)t.style.display='none'; var b=document.getElementById('meiCFBody');if(b)b.innerHTML=''; var h=document.getElementById('meiCFHead');if(h)h.innerHTML=''; var p=document.getElementById('meiCFSummaryPills');if(p)p.innerHTML='';})();
   var w=document.getElementById('meiBalChartWrap'); if(w)w.style.display='none';
   ['meiBalHoverYr','meiBalHoverBal','meiBalHoverEq','meiBalHoverPct','meiBalHoverInt'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='—';});
   var hBar=document.getElementById('meiBalHoverBar'); if(hBar)hBar.style.width='0%';
@@ -9828,7 +10133,16 @@ window.meiResetSc2 = function(){
   var t=document.getElementById('meiT2a'); if(t)t.textContent='—';
   var t2=document.getElementById('meiT2b'); if(t2)t2.textContent='—';
   var r=document.getElementById('meiSc2Result'); if(r)r.innerHTML=meiEmptyState(2);
-  meiDestroy('sc2'); meiUpdateComparison();
+  meiDestroy('sc2');
+  (function(){
+    var t=document.getElementById('meiCFTableWrap2');if(t)t.style.display='none';
+    var b=document.getElementById('meiCFBodyRows2');if(b)b.innerHTML='';
+    var h=document.getElementById('meiCFHead2');if(h)h.innerHTML='';
+    var p=document.getElementById('meiCFSummaryPills2');if(p)p.innerHTML='';
+    var a=document.getElementById('meiCFArrow2');if(a)a.textContent='▼';
+    var bd=document.getElementById('meiCFBody2');if(bd)bd.style.display='block';
+  })();
+  meiUpdateComparison();
 };
 window.meiResetSc3 = function(){
   var e=document.getElementById('mei_sc3_dur'); if(e)e.value='30';
@@ -10640,5 +10954,24 @@ window.updateSuperWidgets = updateSuperWidgets;
   </div>
 </div>
 
+
+<script>
+/* ── Universal Reset to Zero helper ─────────────────────────────── */
+window.strategyResetToZero = function(sectionId){
+  var s = document.getElementById(sectionId);
+  if (!s) return;
+  s.querySelectorAll('input[type="number"]').forEach(function(e){
+    e.value = 0;
+    ['input','change'].forEach(function(ev){
+      e.dispatchEvent(new Event(ev,{bubbles:true}));
+    });
+  });
+  s.querySelectorAll('input[type="range"]').forEach(function(e){
+    var mn = parseFloat(e.getAttribute('min'))||0;
+    e.value = mn;
+    e.dispatchEvent(new Event('input',{bubbles:true}));
+  });
+};
+</script>
 </body>
 </html>

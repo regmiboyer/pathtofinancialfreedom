@@ -1606,11 +1606,11 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
   flex:1;padding:24px 36px 36px;
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:16px;align-content:start;
+  gap:16px;align-content:start;align-items:start;
   overflow-y:auto;
 }
-/* 7th card full row */
-#hf-grid .hf-card:nth-child(7){
+/* cards 7+ span full row (voo500 strategy VII + hf-fun bonus) */
+#hf-grid .hf-card:nth-child(n+7){
   grid-column:1/-1;
 }
 
@@ -1623,45 +1623,45 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
 .hf-card:hover{border-color:#3a5888;background:#1e3555;transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4);}
 .hf-card-stripe{position:absolute;left:0;top:0;bottom:0;width:4px;}
 
-.hf-card-top{padding:18px 20px 14px 24px;flex:1;}
-.hf-card-num-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.hf-card-top{padding:24px 24px 18px 28px;flex:1;}
+.hf-card-num-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
 .hf-card-roman{
-  font-size:13px;font-weight:900;letter-spacing:2px;
+  font-size:26px;font-weight:900;letter-spacing:2px;
   font-family:'Courier New',monospace;
 }
 .hf-card-class{
-  font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
-  padding:3px 9px;border-radius:3px;
+  font-size:15px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  padding:4px 11px;border-radius:3px;
 }
-.hf-card-title{font-size:16px;font-weight:800;color:#fff;letter-spacing:-.3px;margin-bottom:4px;line-height:1.3;}
-.hf-card-ticker{font-size:10px;font-weight:700;letter-spacing:2px;color:#5a7898;font-family:'Courier New',monospace;margin-bottom:12px;}
+.hf-card-title{font-size:32px;font-weight:800;color:#fff;letter-spacing:-.3px;margin-bottom:8px;line-height:1.3;}
+.hf-card-ticker{font-size:14px;font-weight:700;letter-spacing:2px;color:#5a7898;font-family:'Courier New',monospace;margin-bottom:14px;}
 /* metrics row */
 .hf-metrics{
   display:grid;grid-template-columns:repeat(3,1fr);
   gap:1px;background:#1e3050;border:1px solid #1e3050;border-radius:5px;
-  overflow:hidden;margin-bottom:12px;
+  overflow:hidden;margin-bottom:16px;
 }
-.hf-metric{background:#182c48;padding:7px 8px;text-align:center;}
-.hf-metric-label{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#4a6888;margin-bottom:3px;}
-.hf-metric-val{font-size:12px;font-weight:800;font-family:'Courier New',monospace;}
-.hf-card-desc{font-size:11px;color:#6a88a8;line-height:1.6;margin-bottom:12px;}
+.hf-metric{background:#182c48;padding:12px 10px;text-align:center;}
+.hf-metric-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#4a6888;margin-bottom:3px;}
+.hf-metric-val{font-size:18px;font-weight:800;font-family:'Courier New',monospace;}
+.hf-card-desc{font-size:14px;color:#6a88a8;line-height:1.6;margin-bottom:14px;}
 .hf-tags{display:flex;flex-wrap:wrap;gap:5px;}
 .hf-tag{
-  font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
-  padding:3px 8px;border-radius:3px;border:1px solid;
+  font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  padding:4px 9px;border-radius:3px;border:1px solid;
 }
 
 /* card footer */
 .hf-card-footer{
-  padding:11px 20px 11px 24px;
+  padding:16px 24px 16px 28px;
   border-top:1px solid #1e3050;
   display:flex;align-items:center;justify-content:space-between;
   background:#142038;
 }
-.hf-card-footer-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#4a6888;text-transform:uppercase;}
+.hf-card-footer-label{font-size:12px;font-weight:700;letter-spacing:2px;color:#4a6888;text-transform:uppercase;}
 .hf-allocate-btn{
-  font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
-  padding:6px 16px;border-radius:4px;border:none;cursor:pointer;
+  font-size:14px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  padding:8px 18px;border-radius:4px;border:none;cursor:pointer;
   transition:all .2s;
 }
 
@@ -1916,7 +1916,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
       <div class="hf-card-top" style="padding:22px 24px 22px 28px;">
         <div class="hf-card-main">
           <div class="hf-card-num-row">
-            <span class="hf-card-roman" style="color:#1d4ed8;">VIII</span>
+            <span class="hf-card-roman" style="color:#1d4ed8;">VII</span>
             <span class="hf-card-class" style="background:rgba(29,78,216,.12);color:#1d4ed8;border:1px solid rgba(29,78,216,.3);">CROSS-BORDER &middot; FX AWARE</span>
           </div>
           <div class="hf-card-title">VOO vs V500 on Stake</div>
@@ -9814,98 +9814,121 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
 <!-- ═══════════════════════════════════════════════════════════════
      STRATEGY IX — Mortgage & ETF Investment
 ══════════════════════════════════════════════════════════════════ -->
-<section id="meiSection" style="display:none;padding:28px 32px;max-width:1400px;margin:0 auto;">
+<section id="meiSection" style="display:none;padding:36px 48px;max-width:1440px;margin:0 auto;background:linear-gradient(160deg,#edfcfa 0%,#f5fffe 80px,#f8fafc 100%);">
 
   <!-- Header -->
-  <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
-    <div style="background:linear-gradient(135deg,#0d9488,#0f766e);border-radius:14px;padding:12px 18px;display:flex;align-items:center;gap:10px;flex:1;">
-      <div style="font-size:22px;">⚖️</div>
-      <div>
-        <div style="font-size:22px;font-weight:900;color:#fff;">Strategy II — Mortgage &amp; ETF Investment</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.8);">6 scenarios — base mortgage · accelerated payoff · ETF side-by-side · payoff first · equity recycling · lump-sum payoff year analysis</div>
+  <div style="background:linear-gradient(135deg,#0a5c57 0%,#0d9488 50%,#0f766e 100%);border-radius:22px;padding:32px 40px;margin-bottom:28px;position:relative;overflow:hidden;box-shadow:0 12px 40px rgba(13,148,136,.22);">
+    <div style="position:absolute;right:-80px;top:-80px;width:340px;height:340px;background:rgba(255,255,255,.04);border-radius:50%;pointer-events:none;"></div>
+    <div style="position:absolute;right:80px;bottom:-100px;width:220px;height:220px;background:rgba(255,255,255,.03);border-radius:50%;pointer-events:none;"></div>
+    <div style="position:absolute;left:38%;top:0;bottom:0;width:1px;background:rgba(255,255,255,.07);pointer-events:none;"></div>
+    <div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;position:relative;">
+      <div style="width:64px;height:64px;min-width:64px;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.3);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:32px;">⚖️</div>
+      <div style="flex:1;min-width:300px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+          <div style="font-size:10px;font-weight:800;color:rgba(255,255,255,.7);background:rgba(255,255,255,.15);padding:3px 12px;border-radius:20px;letter-spacing:.8px;text-transform:uppercase;border:1px solid rgba(255,255,255,.2);">Strategy II</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.4);">·</div>
+          <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.65);">6 Scenarios</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.4);">·</div>
+          <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.65);">Live Calculations</div>
+        </div>
+        <div style="font-size:30px;font-weight:900;color:#fff;letter-spacing:-.5px;line-height:1.1;margin-bottom:10px;">Mortgage &amp; ETF Investment</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.78);line-height:1.7;max-width:580px;margin-bottom:16px;">Model your mortgage against parallel ETF investing — compare every payoff strategy, quantify interest saved, and project post-payoff wealth growth. Find your optimal path to financial freedom.</div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <div style="background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);border-radius:9px;padding:6px 12px;font-size:10px;font-weight:700;color:rgba(255,255,255,.9);">1 · Base Mortgage</div>
+          <div style="background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);border-radius:9px;padding:6px 12px;font-size:10px;font-weight:700;color:rgba(255,255,255,.9);">2 · Accelerated Payoff</div>
+          <div style="background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);border-radius:9px;padding:6px 12px;font-size:10px;font-weight:700;color:rgba(255,255,255,.9);">3 · ETF + Payoff Year</div>
+          <div style="background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);border-radius:9px;padding:6px 12px;font-size:10px;font-weight:700;color:rgba(255,255,255,.9);">4 · ETF Side-by-Side</div>
+          <div style="background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);border-radius:9px;padding:6px 12px;font-size:10px;font-weight:700;color:rgba(255,255,255,.9);">5 · Payoff First</div>
+          <div style="background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);border-radius:9px;padding:6px 12px;font-size:10px;font-weight:700;color:rgba(255,255,255,.9);">6 · Equity Recycling</div>
+        </div>
       </div>
-      <button onclick="meiReset()" style="margin-left:auto;padding:8px 16px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);border-radius:8px;color:#fff;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:.3px;">↺ Reset to Zero</button>
-      <button onclick="if(window.s2Guide){s2Guide.reset();setTimeout(function(){s2Guide.check();},50);}" style="padding:8px 14px;background:rgba(255,255,255,.1);border:1.5px solid rgba(165,180,252,.6);border-radius:8px;color:#a5b4fc;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:.3px;">🧭 Show Guide</button>
+      <div style="display:flex;flex-direction:column;gap:10px;align-items:stretch;min-width:160px;">
+        <button onclick="meiReset()" style="padding:12px 22px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.4);border-radius:11px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;letter-spacing:.3px;white-space:nowrap;">↺ Reset to Zero</button>
+        <button onclick="if(window.s2Guide){s2Guide.reset();setTimeout(function(){s2Guide.check();},50);}" style="padding:12px 18px;background:rgba(255,255,255,.08);border:1.5px solid rgba(165,180,252,.5);border-radius:11px;color:#a5b4fc;font-size:12px;font-weight:800;cursor:pointer;letter-spacing:.3px;white-space:nowrap;">🧭 Show Guide</button>
+        <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:11px;padding:10px 14px;text-align:center;">
+          <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px;">Scenarios</div>
+          <div style="font-size:26px;font-weight:900;color:#fff;line-height:1.1;">6</div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <!-- ─── 6 Always-Visible Tiles ──────────────────────────────────── -->
-  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:16px;">
-    <div style="background:#fff;border:1.5px solid #99f6e4;border-radius:14px;padding:14px;text-align:center;box-shadow:0 0 16px rgba(13,148,136,.15);">
-      <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#0d9488;margin-bottom:4px;">Sc1 · Base Interest</div>
-      <div style="font-size:19px;font-weight:900;color:#0f172a;" id="meiT1a">—</div>
-      <div style="font-size:10px;color:#64748b;margin-top:2px;" id="meiT1b">—</div>
+    <!-- ─── 6 Always-Visible Tiles ──────────────────────────────────── -->
+  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:24px;">
+    <div style="background:linear-gradient(160deg,#f0fdfb,#fff);border:1.5px solid #99f6e4;border-radius:18px;padding:20px 14px;text-align:center;box-shadow:0 4px 20px rgba(13,148,136,.13),0 1px 4px rgba(0,0,0,.04);">
+      <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#0d9488;margin-bottom:7px;">Sc1 · Base Interest</div>
+      <div style="font-size:26px;font-weight:900;color:#0f172a;line-height:1;" id="meiT1a">—</div>
+      <div style="font-size:11px;color:#64748b;margin-top:6px;" id="meiT1b">—</div>
     </div>
-    <div style="background:#fff;border:1.5px solid #ddd6fe;border-radius:14px;padding:14px;text-align:center;box-shadow:0 0 16px rgba(139,92,246,.15);">
-      <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#8b5cf6;margin-bottom:4px;">Sc2 · Interest Saved</div>
-      <div style="font-size:19px;font-weight:900;color:#0f172a;" id="meiT2a">—</div>
-      <div style="font-size:10px;color:#64748b;margin-top:2px;" id="meiT2b">—</div>
+    <div style="background:linear-gradient(160deg,#faf5ff,#fff);border:1.5px solid #ddd6fe;border-radius:18px;padding:20px 14px;text-align:center;box-shadow:0 4px 20px rgba(139,92,246,.13),0 1px 4px rgba(0,0,0,.04);">
+      <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#8b5cf6;margin-bottom:7px;">Sc2 · Interest Saved</div>
+      <div style="font-size:26px;font-weight:900;color:#0f172a;line-height:1;" id="meiT2a">—</div>
+      <div style="font-size:11px;color:#64748b;margin-top:6px;" id="meiT2b">—</div>
     </div>
-    <div style="background:#fff;border:1.5px solid #fde68a;border-radius:14px;padding:14px;text-align:center;box-shadow:0 0 16px rgba(217,119,6,.15);">
-      <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#d97706;margin-bottom:4px;">Sc3 · ETF Portfolio</div>
-      <div style="font-size:19px;font-weight:900;color:#0f172a;" id="meiT3a">—</div>
-      <div style="font-size:10px;color:#64748b;margin-top:2px;" id="meiT3b">—</div>
+    <div style="background:linear-gradient(160deg,#fffbeb,#fff);border:1.5px solid #fde68a;border-radius:18px;padding:20px 14px;text-align:center;box-shadow:0 4px 20px rgba(217,119,6,.13),0 1px 4px rgba(0,0,0,.04);">
+      <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#d97706;margin-bottom:7px;">Sc3 · ETF Portfolio</div>
+      <div style="font-size:26px;font-weight:900;color:#0f172a;line-height:1;" id="meiT3a">—</div>
+      <div style="font-size:11px;color:#64748b;margin-top:6px;" id="meiT3b">—</div>
     </div>
-    <div style="background:#fff;border:1.5px solid #bae6fd;border-radius:14px;padding:14px;text-align:center;box-shadow:0 0 16px rgba(2,132,199,.15);">
-      <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#0284c7;margin-bottom:4px;">Sc4 · Payoff First</div>
-      <div style="font-size:19px;font-weight:900;color:#0f172a;" id="meiT4a">—</div>
-      <div style="font-size:10px;color:#64748b;margin-top:2px;" id="meiT4b">—</div>
+    <div style="background:linear-gradient(160deg,#f0f9ff,#fff);border:1.5px solid #bae6fd;border-radius:18px;padding:20px 14px;text-align:center;box-shadow:0 4px 20px rgba(2,132,199,.13),0 1px 4px rgba(0,0,0,.04);">
+      <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#0284c7;margin-bottom:7px;">Sc4 · Payoff First</div>
+      <div style="font-size:26px;font-weight:900;color:#0f172a;line-height:1;" id="meiT4a">—</div>
+      <div style="font-size:11px;color:#64748b;margin-top:6px;" id="meiT4b">—</div>
     </div>
-    <div style="background:#fff;border:1.5px solid #fecaca;border-radius:14px;padding:14px;text-align:center;box-shadow:0 0 16px rgba(220,38,38,.15);">
-      <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#dc2626;margin-bottom:4px;">Sc5 · Equity Recycle</div>
-      <div style="font-size:19px;font-weight:900;color:#0f172a;" id="meiT5a">—</div>
-      <div style="font-size:10px;color:#64748b;margin-top:2px;" id="meiT5b">—</div>
+    <div style="background:linear-gradient(160deg,#fff5f5,#fff);border:1.5px solid #fecaca;border-radius:18px;padding:20px 14px;text-align:center;box-shadow:0 4px 20px rgba(220,38,38,.13),0 1px 4px rgba(0,0,0,.04);">
+      <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#dc2626;margin-bottom:7px;">Sc5 · Equity Recycle</div>
+      <div style="font-size:26px;font-weight:900;color:#0f172a;line-height:1;" id="meiT5a">—</div>
+      <div style="font-size:11px;color:#64748b;margin-top:6px;" id="meiT5b">—</div>
     </div>
-    <div style="background:#fff;border:1.5px solid #c4b5fd;border-radius:14px;padding:14px;text-align:center;box-shadow:0 0 16px rgba(124,58,237,.15);">
-      <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#7c3aed;margin-bottom:4px;">Sc6 · Payoff Year ETF</div>
-      <div style="font-size:19px;font-weight:900;color:#0f172a;" id="meiT6a">—</div>
-      <div style="font-size:10px;color:#64748b;margin-top:2px;" id="meiT6b">—</div>
+    <div style="background:linear-gradient(160deg,#f5f3ff,#fff);border:1.5px solid #c4b5fd;border-radius:18px;padding:20px 14px;text-align:center;box-shadow:0 4px 20px rgba(124,58,237,.13),0 1px 4px rgba(0,0,0,.04);">
+      <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#7c3aed;margin-bottom:7px;">Sc6 · Payoff Year ETF</div>
+      <div style="font-size:26px;font-weight:900;color:#0f172a;line-height:1;" id="meiT6a">—</div>
+      <div style="font-size:11px;color:#64748b;margin-top:6px;" id="meiT6b">—</div>
     </div>
   </div>
 
   <!-- ─── What you can calculate ───────────────────────────────────── -->
-  <div style="background:linear-gradient(135deg,#f8faff,#f0f4ff);border:1px solid #c7d2fe;border-radius:14px;padding:14px 18px;margin-bottom:20px;">
-    <div style="font-size:11px;font-weight:800;color:#4f46e5;text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px;">📋 What you can calculate in this section</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
-      <div style="display:flex;align-items:flex-start;gap:8px;background:#fff;border-radius:9px;padding:9px 11px;border:1px solid #e0e7ff;">
-        <div style="width:22px;height:22px;min-width:22px;background:#ccfbf1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">1</div>
+  <div style="background:linear-gradient(135deg,#f4f7ff,#eef2ff);border:1.5px solid #c7d2fe;border-radius:18px;padding:22px 28px;margin-bottom:26px;box-shadow:0 4px 18px rgba(79,70,229,.07);">
+    <div style="font-size:12px;font-weight:800;color:#4f46e5;text-transform:uppercase;letter-spacing:.7px;margin-bottom:16px;">📋 What you can calculate in this section</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+      <div style="display:flex;align-items:flex-start;gap:10px;background:#fff;border-radius:11px;padding:13px 14px;border:1.5px solid #e0e7ff;box-shadow:0 2px 8px rgba(79,70,229,.05);">
+        <div style="width:26px;height:26px;min-width:26px;background:#ccfbf1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">1</div>
         <div><div style="font-size:11px;font-weight:700;color:#0f172a;">Base Mortgage</div><div style="font-size:10px;color:#64748b;margin-top:1px;">Total interest, yearly P&amp;I breakdown, balance trajectory</div></div>
       </div>
-      <div style="display:flex;align-items:flex-start;gap:8px;background:#fff;border-radius:9px;padding:9px 11px;border:1px solid #e0e7ff;">
-        <div style="width:22px;height:22px;min-width:22px;background:#ede9fe;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">2</div>
+      <div style="display:flex;align-items:flex-start;gap:10px;background:#fff;border-radius:11px;padding:13px 14px;border:1.5px solid #e0e7ff;box-shadow:0 2px 8px rgba(79,70,229,.05);">
+        <div style="width:26px;height:26px;min-width:26px;background:#ede9fe;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">2</div>
         <div><div style="font-size:11px;font-weight:700;color:#0f172a;">Accelerated Payoff</div><div style="font-size:10px;color:#64748b;margin-top:1px;">Extra monthly + up to 10 lump-sums — interest saved, years cut</div></div>
       </div>
-      <div style="display:flex;align-items:flex-start;gap:8px;background:#fff;border-radius:9px;padding:9px 11px;border:1px solid #ddd6fe;box-shadow:0 0 10px rgba(124,58,237,.08);">
-        <div style="width:22px;height:22px;min-width:22px;background:#f5f3ff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">3</div>
+      <div style="display:flex;align-items:flex-start;gap:10px;background:#fff;border-radius:11px;padding:13px 14px;border:1.5px solid #ddd6fe;box-shadow:0 4px 14px rgba(124,58,237,.1);">
+        <div style="width:26px;height:26px;min-width:26px;background:#f5f3ff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">3</div>
         <div><div style="font-size:11px;font-weight:700;color:#7c3aed;">ETF Investment with Pay-Off ↑</div><div style="font-size:10px;color:#64748b;margin-top:1px;">At year X, lump-sum clear the mortgage from ETF — see remaining portfolio &amp; check any year</div></div>
       </div>
-      <div style="display:flex;align-items:flex-start;gap:8px;background:#fff;border-radius:9px;padding:9px 11px;border:1px solid #e0e7ff;">
-        <div style="width:22px;height:22px;min-width:22px;background:#fef9c3;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">4</div>
+      <div style="display:flex;align-items:flex-start;gap:10px;background:#fff;border-radius:11px;padding:13px 14px;border:1.5px solid #e0e7ff;box-shadow:0 2px 8px rgba(79,70,229,.05);">
+        <div style="width:26px;height:26px;min-width:26px;background:#fef9c3;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">4</div>
         <div><div style="font-size:11px;font-weight:700;color:#0f172a;">ETF Side-by-Side</div><div style="font-size:10px;color:#64748b;margin-top:1px;">Pay mortgage AND DCA into ETFs simultaneously — net wealth growth</div></div>
       </div>
-      <div style="display:flex;align-items:flex-start;gap:8px;background:#fff;border-radius:9px;padding:9px 11px;border:1px solid #e0e7ff;">
-        <div style="width:22px;height:22px;min-width:22px;background:#e0f2fe;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">5</div>
+      <div style="display:flex;align-items:flex-start;gap:10px;background:#fff;border-radius:11px;padding:13px 14px;border:1.5px solid #e0e7ff;box-shadow:0 2px 8px rgba(79,70,229,.05);">
+        <div style="width:26px;height:26px;min-width:26px;background:#e0f2fe;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">5</div>
         <div><div style="font-size:11px;font-weight:700;color:#0f172a;">Payoff First, Then Invest</div><div style="font-size:10px;color:#64748b;margin-top:1px;">Clear debt aggressively, then redirect full freed payment to ETFs</div></div>
       </div>
-      <div style="display:flex;align-items:flex-start;gap:8px;background:#fff;border-radius:9px;padding:9px 11px;border:1px solid #e0e7ff;">
-        <div style="width:22px;height:22px;min-width:22px;background:#fee2e2;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">6</div>
+      <div style="display:flex;align-items:flex-start;gap:10px;background:#fff;border-radius:11px;padding:13px 14px;border:1.5px solid #e0e7ff;box-shadow:0 2px 8px rgba(79,70,229,.05);">
+        <div style="width:26px;height:26px;min-width:26px;background:#fee2e2;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">6</div>
         <div><div style="font-size:11px;font-weight:700;color:#0f172a;">Equity Recycling</div><div style="font-size:10px;color:#64748b;margin-top:1px;">Minimum payments + periodic lump-sum equity injections into ETFs</div></div>
       </div>
     </div>
   </div>
 
   <!-- ─── BLOCK 1: Base Mortgage ───────────────────────────────────── -->
-  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);margin-bottom:18px;">
-    <div style="background:linear-gradient(90deg,#0f766e,#0d9488);padding:13px 20px;display:flex;align-items:center;gap:12px;">
-      <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">1</div>
+  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,.07),0 1px 4px rgba(0,0,0,.03);margin-bottom:24px;">
+    <div style="background:linear-gradient(90deg,#0f766e,#0d9488);padding:20px 26px;display:flex;align-items:center;gap:14px;">
+      <div style="width:38px;height:38px;min-width:38px;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.38);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;">1</div>
       <div>
         <div style="font-size:22px;font-weight:800;color:#fff;">Base Mortgage</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.85);">Loan amount, interest rate and term — the foundation of all scenarios</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.85);">Loan amount, interest rate and term — the foundation of all scenarios</div>
       </div>
-      <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;">Updates live as you type</div>
+      <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.85);background:rgba(255,255,255,.18);padding:5px 14px;border-radius:20px;font-weight:700;">Updates live as you type</div>
     </div>
-    <div style="display:grid;grid-template-columns:310px 1fr 310px;min-height:220px;">
-      <div style="padding:18px 16px;border-right:1px solid #f1f5f9;">
+    <div style="display:grid;grid-template-columns:340px 1fr 340px;min-height:240px;">
+      <div style="padding:20px 18px;border-right:1px solid #f1f5f9;background:linear-gradient(180deg,#f0fdfb,#fafffe);">
         <div style="display:flex;flex-direction:column;gap:12px;">
           <div><label style="font-size:12px;font-weight:600;color:#64748b;display:block;margin-bottom:4px;">Outstanding Loan ($)</label><input id="mei_principal" type="number" placeholder="e.g. 600000" min="0" step="10000" oninput="meiUpdateBase()" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;font-weight:700;" onfocus="this.style.border='1.5px solid #0d9488'" onblur="this.style.border='1.5px solid #e2e8f0'"></div>
           <div><label style="font-size:12px;font-weight:600;color:#64748b;display:block;margin-bottom:4px;">Annual Interest Rate (%)</label><input id="mei_rate" type="number" placeholder="e.g. 6.2" min="0" max="25" step="0.05" oninput="meiUpdateBase()" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;font-weight:700;" onfocus="this.style.border='1.5px solid #0d9488'" onblur="this.style.border='1.5px solid #e2e8f0'"></div>
@@ -9916,9 +9939,9 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         </div>
       </div>
       <div style="padding:18px;">
-        <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:2px;">Annual Principal vs Interest Paid</div>
-        <div style="font-size:10px;color:#94a3b8;margin-bottom:10px;">Updates live as you enter values</div>
-        <div style="position:relative;height:210px;"><canvas id="meiChartBase"></canvas></div>
+        <div style="font-size:16px;font-weight:800;color:#0f172a;margin-bottom:4px;">Annual Principal vs Interest Paid</div>
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:12px;">Updates live as you enter values</div>
+        <div style="position:relative;height:270px;"><canvas id="meiChartBase"></canvas></div>
       </div>
       <div style="border-left:1px solid #f1f5f9;overflow:auto;">
         <div id="meiSc1Result"></div>
@@ -9957,7 +9980,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
           </div>
         </div>
       </div>
-      <div style="position:relative;height:210px;"><canvas id="meiChartBalBase"></canvas></div>
+      <div style="position:relative;height:250px;"><canvas id="meiChartBalBase"></canvas></div>
     </div>
     <!-- ─── Yearly Cash Flow Table ─────────────────────────── -->
     <div id="meiCFTableWrap" style="display:none;border-top:1px solid #f1f5f9;">
@@ -9980,7 +10003,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         </table>
       </div>
     </div>
-    <div style="padding:12px 18px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fafafa;">
+    <div style="padding:14px 22px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#f8fafc;">
       <div style="font-size:10px;color:#94a3b8;">Baseline used by all 5 scenarios</div>
       <button onclick="meiRunSc1()" style="padding:9px 20px;background:linear-gradient(135deg,#0f766e,#0d9488);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(13,148,136,.3);">▶ Run Scenario 1</button>
       <button onclick="meiResetSc1()" style="padding:9px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Sc1</button>
@@ -9988,16 +10011,16 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
   </div>
 
   <!-- ─── BLOCK 2: Accelerated ─────────────────────────────────────── -->
-  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);margin-bottom:18px;">
-    <div style="background:linear-gradient(90deg,#6d28d9,#8b5cf6);padding:13px 20px;display:flex;align-items:center;gap:12px;">
-      <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">2</div>
+  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,.07),0 1px 4px rgba(0,0,0,.03);margin-bottom:24px;">
+    <div style="background:linear-gradient(90deg,#6d28d9,#8b5cf6);padding:20px 26px;display:flex;align-items:center;gap:14px;">
+      <div style="width:38px;height:38px;min-width:38px;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.38);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;">2</div>
       <div>
         <div style="font-size:22px;font-weight:800;color:#fff;">Accelerated Payoff</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.85);">Extra monthly payment + up to 10 lump-sum injections to slash interest</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.85);">Extra monthly payment + up to 10 lump-sum injections to slash interest</div>
       </div>
-      <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;">Builds on Scenario 1</div>
+      <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.85);background:rgba(255,255,255,.18);padding:5px 14px;border-radius:20px;font-weight:700;">Builds on Scenario 1</div>
     </div>
-    <div style="display:grid;grid-template-columns:310px 1fr 310px;min-height:220px;">
+    <div style="display:grid;grid-template-columns:340px 1fr 340px;min-height:240px;">
       <div style="padding:18px 16px;border-right:1px solid #f1f5f9;">
         <div style="display:flex;flex-direction:column;gap:12px;">
           <div><label style="font-size:12px;font-weight:600;color:#64748b;display:block;margin-bottom:4px;">Extra Monthly Payment ($)</label><input id="mei_extraMort" type="number" value="0" min="0" step="100" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;font-weight:700;" onfocus="this.style.border='1.5px solid #8b5cf6'" onblur="this.style.border='1.5px solid #e2e8f0'"></div>
@@ -10013,9 +10036,9 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         </div>
       </div>
       <div style="padding:18px;">
-        <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:2px;">Accelerated vs Base Payoff</div>
-        <div style="font-size:10px;color:#94a3b8;margin-bottom:10px;">Compare principal/interest with acceleration</div>
-        <div style="position:relative;height:200px;"><canvas id="meiChartSc2"></canvas></div>
+        <div style="font-size:16px;font-weight:800;color:#0f172a;margin-bottom:4px;">Accelerated vs Base Payoff</div>
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:12px;">Compare principal/interest with acceleration</div>
+        <div style="position:relative;height:260px;"><canvas id="meiChartSc2"></canvas></div>
       </div>
       <div style="border-left:1px solid #f1f5f9;overflow:auto;">
         <div id="meiSc2Result"></div>
@@ -10086,7 +10109,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
       <!-- Chart -->
       <div style="padding:14px 18px;border-top:1px solid #ede9fe;">
         <div style="font-size:12px;font-weight:700;color:#1e293b;margin-bottom:8px;">Post-Payoff ETF Growth</div>
-        <div style="position:relative;height:160px;"><canvas id="meiChartSc2P"></canvas></div>
+        <div style="position:relative;height:210px;"><canvas id="meiChartSc2P"></canvas></div>
       </div>
       <!-- View Final Result toggle -->
       <div id="meiSc2PResultWrap" style="display:none;border-top:1px solid #ede9fe;">
@@ -10101,7 +10124,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
   </div>
 
   <!-- ─── Sub-section divider: ETF Investment with Pay-Off ──────────── -->
-  <div style="display:flex;align-items:center;gap:12px;margin:8px 0 16px;">
+  <div style="display:flex;align-items:center;gap:14px;margin:10px 0 20px;">
     <div style="flex:1;height:1px;background:linear-gradient(90deg,#ddd6fe,#c4b5fd);"></div>
     <div style="display:flex;align-items:center;gap:8px;background:linear-gradient(90deg,#f5f3ff,#ede9fe);border:1.5px solid #c4b5fd;border-radius:20px;padding:5px 14px;">
       <span style="font-size:13px;">💜</span>
@@ -10116,14 +10139,14 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
   </div>
 
   <!-- ─── BLOCK 3: ETF Investment with Pay-Off Mortgage at one Point ─── -->
-  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);margin-bottom:18px;">
-    <div style="background:linear-gradient(90deg,#7c3aed,#8b5cf6);padding:13px 20px;display:flex;align-items:center;gap:12px;">
-      <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">3</div>
+  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,.07),0 1px 4px rgba(0,0,0,.03);margin-bottom:24px;">
+    <div style="background:linear-gradient(90deg,#7c3aed,#8b5cf6);padding:20px 26px;display:flex;align-items:center;gap:14px;">
+      <div style="width:38px;height:38px;min-width:38px;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.38);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;">3</div>
       <div>
         <div style="font-size:22px;font-weight:800;color:#fff;">ETF Investment with Pay-Off Mortgage at one Point</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.85);">Invest in ETFs for X years — at year Y, lump-sum clear the mortgage. See what your portfolio has grown to at the end of your DCA duration.</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.85);">Invest in ETFs for X years — at year Y, lump-sum clear the mortgage. See what your portfolio has grown to at the end of your DCA duration.</div>
       </div>
-      <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;">Own fund selection</div>
+      <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.85);background:rgba(255,255,255,.18);padding:5px 14px;border-radius:20px;font-weight:700;">Own fund selection</div>
     </div>
     <!-- Inputs row -->
     <div style="padding:14px 18px;border-bottom:1px solid #f1f5f9;display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;">
@@ -10144,7 +10167,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
       </div>
     </div>
     <!-- 3-col body -->
-    <div style="display:grid;grid-template-columns:310px 1fr 310px;min-height:220px;">
+    <div style="display:grid;grid-template-columns:340px 1fr 340px;min-height:240px;">
       <!-- Left: Fund list -->
       <div style="padding:18px 16px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;gap:10px;">
         <div style="font-size:12px;font-weight:700;color:#64748b;">Sc6 ETF Funds (own selection, up to 6)</div>
@@ -10154,9 +10177,9 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
       </div>
       <!-- Center: Chart + year-check -->
       <div style="padding:18px;">
-        <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:2px;">ETF Portfolio — with Payoff Withdrawal</div>
-        <div style="font-size:10px;color:#94a3b8;margin-bottom:10px;">Portfolio dips at payoff year, then resumes growth (boosted if freed payment is redirected)</div>
-        <div style="position:relative;height:200px;"><canvas id="meiChartSc6"></canvas></div>
+        <div style="font-size:16px;font-weight:800;color:#0f172a;margin-bottom:4px;">ETF Portfolio — with Payoff Withdrawal</div>
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:12px;">Portfolio dips at payoff year, then resumes growth (boosted if freed payment is redirected)</div>
+        <div style="position:relative;height:260px;"><canvas id="meiChartSc6"></canvas></div>
         <!-- Year-check slider — hidden until first run -->
         <div id="meiSc6YearCheckPanel" style="display:none;margin-top:12px;align-items:center;gap:10px;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:9px;padding:8px 14px;">
           <div style="font-size:11px;font-weight:700;color:#5b21b6;white-space:nowrap;">Check ETF at Year:</div>
@@ -10170,7 +10193,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         <div id="meiSc6Result"></div>
       </div>
     </div>
-    <div style="padding:12px 18px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fafafa;">
+    <div style="padding:14px 22px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#f8fafc;">
       <div style="font-size:10px;color:#94a3b8;">Falls back to Sc3 funds if no Sc6 funds added</div>
       <button onclick="meiRunSc6()" style="padding:9px 20px;background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(124,58,237,.3);">▶ Run Scenario 6</button>
       <button onclick="meiResetSc6()" style="padding:9px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Sc6</button>
@@ -10178,7 +10201,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
   </div>
 
   <!-- ─── Sub-section divider: Mortgage + ETF Side-by-Side ───────────── -->
-  <div style="display:flex;align-items:center;gap:12px;margin:8px 0 16px;">
+  <div style="display:flex;align-items:center;gap:14px;margin:10px 0 20px;">
     <div style="flex:1;height:1px;background:linear-gradient(90deg,#fde68a,#fcd34d);"></div>
     <div style="display:flex;align-items:center;gap:8px;background:linear-gradient(90deg,#fffbeb,#fef3c7);border:1.5px solid #fcd34d;border-radius:20px;padding:5px 14px;">
       <span style="font-size:13px;">📊</span>
@@ -10189,14 +10212,14 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
   </div>
 
   <!-- ─── BLOCK 4: Mortgage + ETF Side-by-Side ─────────────────────── -->
-  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);margin-bottom:18px;">
-    <div style="background:linear-gradient(90deg,#d97706,#f59e0b);padding:13px 20px;display:flex;align-items:center;gap:12px;">
-      <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">4</div>
+  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,.07),0 1px 4px rgba(0,0,0,.03);margin-bottom:24px;">
+    <div style="background:linear-gradient(90deg,#d97706,#f59e0b);padding:20px 26px;display:flex;align-items:center;gap:14px;">
+      <div style="width:38px;height:38px;min-width:38px;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.38);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;">4</div>
       <div>
         <div style="font-size:22px;font-weight:800;color:#fff;">Mortgage + ETF Side-by-Side</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.85);">Pay mortgage AND invest in ETFs simultaneously — watch both grow</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.85);">Pay mortgage AND invest in ETFs simultaneously — watch both grow</div>
       </div>
-      <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;">Builds on Scenario 2</div>
+      <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.85);background:rgba(255,255,255,.18);padding:5px 14px;border-radius:20px;font-weight:700;">Builds on Scenario 2</div>
     </div>
     <div style="padding:18px;border-bottom:1px solid #f1f5f9;">
       <!-- Duration input row -->
@@ -10217,16 +10240,16 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         <div id="meiDcaTotal" style="font-size:16px;font-weight:800;color:#d97706;">$0/mo</div>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 310px;">
+    <div style="display:grid;grid-template-columns:1fr 340px;">
       <div style="padding:0 18px 18px;">
         <div style="font-size:14px;font-weight:700;color:#1e293b;margin:14px 0 6px;">ETF Portfolio vs Mortgage Balance</div>
-        <div style="position:relative;height:220px;"><canvas id="meiChartSc3"></canvas></div>
+        <div style="position:relative;height:270px;"><canvas id="meiChartSc3"></canvas></div>
       </div>
       <div style="border-left:1px solid #f1f5f9;overflow:auto;">
         <div id="meiSc3Result"></div>
       </div>
     </div>
-    <div style="padding:12px 18px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fafafa;">
+    <div style="padding:14px 22px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#f8fafc;">
       <div style="font-size:10px;color:#94a3b8;">Sc3 funds also available to Sc4 &amp; Sc5 if they have no own funds set</div>
       <button onclick="meiRunSc3()" style="padding:9px 20px;background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(217,119,6,.3);">▶ Run Scenario 3</button>
       <button onclick="meiResetSc3()" style="padding:9px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Sc3</button>
@@ -10234,16 +10257,16 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
   </div>
 
   <!-- ─── BLOCK 4: Payoff First Then ETF ──────────────────────────────── -->
-  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);margin-bottom:18px;">
-    <div style="background:linear-gradient(90deg,#0284c7,#0ea5e9);padding:13px 20px;display:flex;align-items:center;gap:12px;">
-      <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">5</div>
+  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,.07),0 1px 4px rgba(0,0,0,.03);margin-bottom:24px;">
+    <div style="background:linear-gradient(90deg,#0284c7,#0ea5e9);padding:20px 26px;display:flex;align-items:center;gap:14px;">
+      <div style="width:38px;height:38px;min-width:38px;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.38);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;">5</div>
       <div>
         <div style="font-size:22px;font-weight:800;color:#fff;">Payoff Mortgage First, Then Invest</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.85);">Aggressively eliminate debt, then redirect full freed payment into ETFs</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.85);">Aggressively eliminate debt, then redirect full freed payment into ETFs</div>
       </div>
-      <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;">Own fund selection</div>
+      <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.85);background:rgba(255,255,255,.18);padding:5px 14px;border-radius:20px;font-weight:700;">Own fund selection</div>
     </div>
-    <div style="display:grid;grid-template-columns:310px 1fr 310px;min-height:220px;">
+    <div style="display:grid;grid-template-columns:340px 1fr 340px;min-height:240px;">
       <div style="padding:18px 16px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;gap:12px;">
         <div><label style="font-size:12px;font-weight:600;color:#64748b;display:block;margin-bottom:4px;">Years to Keep Investing After Payoff</label><input id="mei_postPayoffYrs" type="number" value="10" min="1" max="30" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;font-weight:700;" onfocus="this.style.border='1.5px solid #0284c7'" onblur="this.style.border='1.5px solid #e2e8f0'"></div>
         <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:8px 12px;font-size:11px;color:#0369a1;" id="meiSc4Preview">Fill loan details + run Sc1 first</div>
@@ -10255,15 +10278,15 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         </div>
       </div>
       <div style="padding:18px;">
-        <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:2px;">Payoff Phase → Investment Phase</div>
-        <div style="font-size:10px;color:#94a3b8;margin-bottom:10px;">Mortgage clears, freed cash surges into ETF</div>
-        <div style="position:relative;height:220px;"><canvas id="meiChartSc4"></canvas></div>
+        <div style="font-size:16px;font-weight:800;color:#0f172a;margin-bottom:4px;">Payoff Phase → Investment Phase</div>
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:12px;">Mortgage clears, freed cash surges into ETF</div>
+        <div style="position:relative;height:270px;"><canvas id="meiChartSc4"></canvas></div>
       </div>
       <div style="border-left:1px solid #f1f5f9;overflow:auto;">
         <div id="meiSc4Result"></div>
       </div>
     </div>
-    <div style="padding:12px 18px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fafafa;">
+    <div style="padding:14px 22px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#f8fafc;">
       <div style="font-size:10px;color:#94a3b8;">Falls back to Sc3 funds if no Sc4 funds added</div>
       <button onclick="meiRunSc4()" style="padding:9px 20px;background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(2,132,199,.3);">▶ Run Scenario 4</button>
       <button onclick="meiResetSc4()" style="padding:9px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Sc4</button>
@@ -10271,16 +10294,16 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
   </div>
 
   <!-- ─── BLOCK 6: Equity Recycling ───────────────────────────────────── -->
-  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);margin-bottom:24px;">
-    <div style="background:linear-gradient(90deg,#dc2626,#ef4444);padding:13px 20px;display:flex;align-items:center;gap:12px;">
-      <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">6</div>
+  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,.07),0 1px 4px rgba(0,0,0,.03);margin-bottom:28px;">
+    <div style="background:linear-gradient(90deg,#dc2626,#ef4444);padding:20px 26px;display:flex;align-items:center;gap:14px;">
+      <div style="width:38px;height:38px;min-width:38px;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.38);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;">6</div>
       <div>
         <div style="font-size:22px;font-weight:800;color:#fff;">Minimum Payments + Equity Recycling</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.85);">Keep minimum mortgage, pull equity every few years as ETF lump-sum injections</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.85);">Keep minimum mortgage, pull equity every few years as ETF lump-sum injections</div>
       </div>
-      <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;">Own fund selection</div>
+      <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.85);background:rgba(255,255,255,.18);padding:5px 14px;border-radius:20px;font-weight:700;">Own fund selection</div>
     </div>
-    <div style="display:grid;grid-template-columns:310px 1fr 310px;min-height:220px;">
+    <div style="display:grid;grid-template-columns:340px 1fr 340px;min-height:240px;">
       <div style="padding:18px 16px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;gap:12px;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
           <div><label style="font-size:12px;font-weight:600;color:#64748b;display:block;margin-bottom:4px;">Recycle Interval</label>
@@ -10300,15 +10323,15 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         </div>
       </div>
       <div style="padding:18px;">
-        <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:2px;">Equity Recycling Growth</div>
-        <div style="font-size:10px;color:#94a3b8;margin-bottom:10px;">ETF portfolio builds through periodic lump-sum injections</div>
-        <div style="position:relative;height:220px;"><canvas id="meiChartSc5"></canvas></div>
+        <div style="font-size:16px;font-weight:800;color:#0f172a;margin-bottom:4px;">Equity Recycling Growth</div>
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:12px;">ETF portfolio builds through periodic lump-sum injections</div>
+        <div style="position:relative;height:270px;"><canvas id="meiChartSc5"></canvas></div>
       </div>
       <div style="border-left:1px solid #f1f5f9;overflow:auto;">
         <div id="meiSc5Result"></div>
       </div>
     </div>
-    <div style="padding:12px 18px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fafafa;">
+    <div style="padding:14px 22px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#f8fafc;">
       <div style="font-size:10px;color:#94a3b8;">Falls back to Sc3 funds if no Sc5 funds added</div>
       <button onclick="meiRunSc5()" style="padding:9px 20px;background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(220,38,38,.3);">▶ Run Scenario 5</button>
       <button onclick="meiResetSc5()" style="padding:9px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Sc5</button>
@@ -10317,9 +10340,9 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
 
 
   <!-- ─── COMPARISON CHARTS ────────────────────────────────────────────── -->
-  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.04);">
-    <div style="font-size:14px;font-weight:800;color:#1e293b;margin-bottom:4px;">📊 Scenario Comparison</div>
-    <div style="font-size:10px;color:#94a3b8;margin-bottom:18px;">Run any scenario above to populate these comparison charts</div>
+  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:28px 36px;box-shadow:0 6px 28px rgba(0,0,0,.06);">
+    <div style="font-size:20px;font-weight:900;color:#0f172a;margin-bottom:6px;">📊 Scenario Comparison</div>
+    <div style="font-size:13px;color:#64748b;margin-bottom:24px;">Run any scenario above to populate these comparison charts</div>
     <div style="display:grid;grid-template-columns:1fr;gap:18px;">
       <div>
         <div style="font-size:11px;font-weight:700;color:#64748b;margin-bottom:6px;">ETF Portfolio Growth — Sc3 (side-by-side) vs Sc4 (payoff first) vs Sc5 (equity recycle) vs Sc6 (payoff year)</div>

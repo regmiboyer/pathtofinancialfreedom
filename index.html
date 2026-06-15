@@ -1581,12 +1581,13 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
 
 /* hero */
 #hf-hero{
-  padding:32px 36px 24px;flex-shrink:0;
+  padding:36px 36px 28px;flex-shrink:0;
   border-bottom:1px solid #1e3050;
+  text-align:center;
 }
 .hf-hero-eyebrow{
-  font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
-  color:#d4a523;margin-bottom:10px;display:flex;align-items:center;gap:8px;
+  font-size:15px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  color:#d4a523;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;
 }
 .hf-hero-eyebrow::before{content:'';display:inline-block;width:20px;height:1px;background:#d4a523;}
 .hf-hero-title{
@@ -1594,25 +1595,22 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
   line-height:1.15;margin-bottom:6px;
 }
 .hf-hero-title em{color:#d4a523;font-style:normal;}
-.hf-hero-sub{font-size:13px;color:#6a88a8;max-width:580px;line-height:1.6;}
+.hf-hero-sub{font-size:17px;color:#6a88a8;max-width:none;line-height:1.6;}
 .hf-hero-meta{
-  display:flex;align-items:center;gap:20px;margin-top:16px;flex-wrap:wrap;
+  display:flex;align-items:center;justify-content:center;gap:20px;margin-top:18px;flex-wrap:wrap;
 }
-.hf-meta-item{display:flex;align-items:center;gap:6px;font-size:11px;color:#6a88a8;font-weight:600;}
+.hf-meta-item{display:flex;align-items:center;gap:8px;font-size:15px;color:#9ab4cc;font-weight:600;}
 .hf-meta-dot{width:5px;height:5px;border-radius:50%;}
 
 /* grid */
 #hf-grid{
   flex:1;padding:24px 36px 36px;
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:16px;align-content:start;align-items:start;
   overflow-y:auto;
 }
-/* cards 7+ span full row (voo500 strategy VII + hf-fun bonus) */
-#hf-grid .hf-card:nth-child(n+7){
-  grid-column:1/-1;
-}
+/* all 8 cards in 4×2 grid — uniform tiles */
 
 /* card */
 .hf-card{
@@ -1667,20 +1665,18 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
 
 /* 7th card (fun) special styling */
 .hf-card.hf-fun{
-  flex-direction:row;align-items:center;
+  flex-direction:column;
   background:linear-gradient(135deg,#182c48 0%,#1e1230 50%,#281414 100%);
 }
-.hf-card.hf-fun .hf-card-top{display:flex;align-items:center;gap:20px;}
+.hf-card.hf-fun .hf-card-top{display:block;position:relative;overflow:hidden;}
 .hf-card.hf-fun .hf-card-main{flex:1;}
 .hf-card.hf-fun .hf-fun-number{
   font-size:64px;font-weight:900;font-family:'Courier New',monospace;
   color:rgba(255,255,255,.08);line-height:1;flex-shrink:0;
 }
 .hf-card.hf-fun .hf-card-footer{
-  background:transparent;border-top:none;
-  border-left:1px solid #3a2040;
-  padding:18px 22px;flex-direction:column;align-items:flex-end;gap:8px;
-  min-width:160px;flex-shrink:0;
+  background:#142038;border-top:1px solid #1e3050;border-left:none;
+  padding:14px 24px;flex-direction:row;align-items:center;justify-content:space-between;
 }
 </style>
 
@@ -1947,25 +1943,22 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
         <div class="hf-card-main">
           <div class="hf-card-num-row">
             <span class="hf-card-roman" style="color:#ef4444;">VII</span>
-            <span class="hf-card-class" style="background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3);">HIGH CONVICTION · SPECULATIVE</span>
+            <span class="hf-card-class" style="background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3);">💸 GALAXY BRAIN · UNHINGED</span>
           </div>
-          <div class="hf-card-title" style="font-size:18px;">Fastest Path to Billionaire</div>
-          <div class="hf-card-ticker">CONCENTRATED · HIGH BETA · NO DIVERSIFICATION</div>
-          <div class="hf-card-desc" style="margin-top:8px;max-width:600px;">Maximum aggression, minimum patience. Model concentrated bets across high-growth assets. Not recommended by any compliance department in existence — but the model runs locally, so nobody's watching.</div>
+          <div class="hf-card-title" style="font-size:22px;line-height:1.2;">🚀 Fastest Path to Billionaire</div>
+          <div class="hf-card-ticker">YOLO · MOON OR BUST · 💎🙌 SEND IT</div>
+          <div class="hf-card-desc" style="margin-top:8px;">Warning: side effects include refreshing your portfolio every 90 seconds, explaining "it's a long-term hold" to your spouse, and crying softly near Lamborghini dealerships. Not financial advice. Not even close. Your therapist will hear about this.</div>
           <div class="hf-tags" style="margin-top:8px;">
-            <span class="hf-tag" style="color:#ef4444;border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.1);">🚀 ASYMMETRIC</span>
-            <span class="hf-tag" style="color:#f97316;border-color:rgba(249,115,22,.3);background:rgba(249,115,22,.1);">💸 HIGH BETA</span>
-            <span class="hf-tag" style="color:#eab308;border-color:rgba(234,179,8,.3);background:rgba(234,179,8,.1);">📈 NO HEDGE</span>
-            <span class="hf-tag" style="color:#ef4444;border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.1);">DISCLAIMER: FOR FUN</span>
+            <span class="hf-tag" style="color:#ef4444;border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.1);">🚀 TO THE MOON</span>
+            <span class="hf-tag" style="color:#f97316;border-color:rgba(249,115,22,.3);background:rgba(249,115,22,.1);">💎 DIAMOND HANDS</span>
+            <span class="hf-tag" style="color:#eab308;border-color:rgba(234,179,8,.3);background:rgba(234,179,8,.1);">🔥 SEND IT</span>
+            <span class="hf-tag" style="color:#10b981;border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.1);">⚠️ NOT ADVICE</span>
           </div>
         </div>
       </div>
-      <div class="hf-card-footer" style="padding:18px 24px;min-width:180px;flex-direction:column;align-items:flex-end;gap:10px;border-left:1px solid #1a1015;border-top:none;background:transparent;">
-        <span class="hf-card-footer-label">Strategy VII</span>
-        <div class="hf-metrics" style="width:150px;margin:0;">
-          <div class="hf-metric" style="width:100%;grid-column:1/-1;"><div class="hf-metric-label">Target</div><div class="hf-metric-val" style="color:#ef4444;">∞%</div></div>
-        </div>
-        <button class="hf-allocate-btn" style="background:linear-gradient(135deg,#ef4444,#f97316);color:#fff;width:100%;">OPEN ↗</button>
+      <div class="hf-card-footer">
+        <span class="hf-card-footer-label">Bonus Strategy VII</span>
+        <button class="hf-allocate-btn" style="background:linear-gradient(135deg,#ef4444,#f97316);color:#fff;">🚀 LET'S GO ↗</button>
       </div>
     </div>
 

@@ -131,6 +131,26 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .add-lump-wd:hover{background:#ffe4e6;}
 .lump-wd-summary{font-size:12px;color:#f87171;margin-top:4px;padding:4px 8px;background:rgba(225,29,72,.07);border-radius:5px;border-left:2px solid #e11d48;}
 .lump-inv-summary{font-size:12px;color:#86efac;margin-top:4px;padding:4px 8px;background:rgba(5,150,105,.1);border-radius:5px;border-left:2px solid #059669;}
+/* ── Per-fund invest event cards (JIRA-67) ── */
+.lie-event{background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:0;margin-bottom:7px;overflow:hidden;}
+.lie-hdr{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:6px 8px 5px;background:rgba(5,150,105,.06);border-bottom:1px solid #bbf7d0;}
+.lie-yr-lbl{font-size:9px;color:#065f46;font-weight:700;white-space:nowrap;}
+.lie-yr-in{width:42px;font-size:12px;font-weight:700;padding:3px 5px;border-radius:5px;border:1px solid #86efac;background:#fff;color:#065f46;text-align:center;}
+.lie-of{font-size:9px;color:#94a3b8;white-space:nowrap;}
+.lie-pf{font-size:9px;color:#64748b;white-space:nowrap;margin-left:auto;background:#dcfce7;padding:2px 7px;border-radius:5px;font-weight:600;}
+.lie-del-evt{margin-left:4px;background:#fef2f2;border:1px solid #fecaca;color:#dc2626;border-radius:5px;padding:2px 7px;font-size:10px;cursor:pointer;font-weight:700;line-height:1;}
+.lie-del-evt:hover{background:#fee2e2;}
+.lie-allocs{padding:5px 8px 3px;}
+.lie-alloc-row{display:flex;align-items:center;gap:4px;margin-bottom:4px;flex-wrap:wrap;}
+.lie-fund-sel{font-size:11px;padding:3px 5px;border-radius:6px;border:1px solid #86efac;background:#fff;color:#065f46;cursor:pointer;flex:1;min-width:80px;max-width:140px;font-weight:600;}
+.lie-alloc-sep{font-size:9px;color:#94a3b8;}
+.lie-alloc-amt{width:72px;font-size:12px;padding:3px 5px;border-radius:6px;border:1px solid #86efac;background:#fff;color:#0f172a;}
+.lie-del-alloc{background:#fef2f2;border:1px solid #fecaca;color:#dc2626;border-radius:4px;padding:1px 6px;font-size:10px;cursor:pointer;line-height:1.4;font-weight:700;}
+.lie-del-alloc:hover{background:#fee2e2;}
+.lie-add-alloc{width:calc(100% - 4px);margin:2px 2px 5px;padding:4px;border-radius:6px;font-size:10px;font-weight:700;background:#dcfce7;border:1px dashed #86efac;color:#065f46;cursor:pointer;letter-spacing:.2px;}
+.lie-add-alloc:hover{background:#bbf7d0;}
+.lie-total{font-size:10px;color:#065f46;font-weight:700;background:#dcfce7;padding:3px 8px;border-top:1px solid #bbf7d0;text-align:right;}
+body.is-mobile .lie-yr-in,body.is-mobile .lie-alloc-amt{font-size:max(16px,1em)!important;}
 .reset-btn{width:100%;padding:6px;border-radius:7px;font-size:21.1px;font-weight:600;background:#ede9fe;border:1px solid #c4b5fd;color:#4f46e5;cursor:pointer;}
 .reset-btn:hover{background:#ddd6fe;}
 .disc{font-size:17.9px;color:#94a3b8;line-height:1.6;}
@@ -388,6 +408,109 @@ input[type="range"], .range-in { display: none !important; }
   font-weight:700;letter-spacing:.3px;margin-left:6px;
 }
 .s-guide-trigger:hover{background:#6366f1;color:#fff;}
+
+/* ══════════════════════════════════════════════════
+   DEVICE-ADAPTIVE UI — Mobile / Desktop
+══════════════════════════════════════════════════ */
+
+/* ── Sidebar drawer (mobile) ── */
+body.is-mobile .sidebar{
+  position:fixed;top:0;left:-310px;width:296px;height:100vh;z-index:8000;
+  transition:left .28s cubic-bezier(.4,0,.2,1);
+  box-shadow:none;border-right:1px solid rgba(91,94,244,.12);
+}
+body.is-mobile .sidebar.drawer-open{
+  left:0;
+  box-shadow:6px 0 40px rgba(15,23,42,.22);
+}
+
+/* ── Backdrop overlay ── */
+#sidebarBackdrop{
+  display:none;position:fixed;inset:0;z-index:7999;
+  background:rgba(15,23,42,.42);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
+  transition:opacity .25s;
+}
+body.is-mobile #sidebarBackdrop.open{display:block;}
+
+/* ── Hamburger button ── */
+.sb-hamburger{
+  display:none;align-items:center;justify-content:center;
+  background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;
+  padding:7px 11px;cursor:pointer;color:#4f46e5;font-size:18px;line-height:1;
+  -webkit-tap-highlight-color:transparent;flex-shrink:0;
+}
+body.is-mobile .sb-hamburger{display:flex;}
+body.is-mobile .sb-name{display:none;}
+body.is-mobile .sb-badge{display:none;}
+
+/* ── Minimum 44px touch targets on mobile ── */
+body.is-mobile .sb-back,
+body.is-mobile .sb-save,
+body.is-mobile .sb-tax-btn,
+body.is-mobile .sb-compare-btn,
+body.is-mobile .sb-hamburger{
+  min-height:44px;
+}
+body.is-mobile .add-fund-btn,
+body.is-mobile .add-lump,
+body.is-mobile .add-lump-wd,
+body.is-mobile .reset-btn,
+body.is-mobile .change-btn,
+body.is-mobile .remove-btn{
+  min-height:38px;font-size:max(13px,1em);
+}
+
+/* ── Single-column layout on mobile ── */
+body.is-mobile .layout{
+  grid-template-columns:1fr !important;
+  padding-bottom:72px;
+}
+body.is-mobile .main{padding:10px;}
+
+/* ── Strategy picker — full-width cards on narrow screens ── */
+@media(max-width:500px){
+  .p2-cards{grid-template-columns:1fr !important;}
+  #p2-content{padding:10px 12px 14px !important;}
+}
+
+/* ── Bottom nav bar ── */
+#mobileBottomNav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;z-index:7000;
+  background:rgba(255,255,255,.97);border-top:1px solid #e2e8f0;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 -2px 20px rgba(15,23,42,.09);
+  padding:5px 6px calc(5px + env(safe-area-inset-bottom));
+  overflow-x:auto;scrollbar-width:none;
+}
+#mobileBottomNav::-webkit-scrollbar{display:none;}
+.mbn-inner{display:flex;gap:2px;min-width:max-content;margin:0 auto;}
+.mbn-btn{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:5px 9px;border-radius:10px;border:none;background:none;
+  cursor:pointer;color:#64748b;font-family:inherit;min-width:52px;
+  transition:background .15s,color .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.mbn-btn:active,.mbn-btn.mbn-active{background:#eef2ff;color:#4f46e5;}
+.mbn-icon{font-size:19px;line-height:1;}
+.mbn-label{font-size:9.5px;font-weight:600;letter-spacing:.2px;white-space:nowrap;}
+body.is-mobile #mobileBottomNav{display:block;}
+body.is-mobile #strategyOverlay{padding-bottom:72px;}
+
+/* ── Prevent iOS input zoom (font < 16px triggers zoom) ── */
+body.is-mobile input,
+body.is-mobile select,
+body.is-mobile textarea{font-size:max(16px,1em) !important;}
+
+/* ── Desktop hover states ── */
+body.is-desktop .p2-card:hover{
+  transform:translateY(-6px) scale(1.015);
+  box-shadow:0 16px 48px rgba(13,20,36,.13),0 4px 16px rgba(13,20,36,.08);
+  border-color:rgba(91,94,244,.3);
+}
+body.is-desktop .card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
+body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
 </style>
 
 <!-- ══════════════════ LANDING + STRATEGY STYLES ══════════════════ -->
@@ -937,7 +1060,8 @@ input[type="range"], .range-in { display: none !important; }
    PDF / PRINT EXPORT
 ═══════════════════════════════════════════════ */
 @media print{
-  #strategyBar,#landingOverlay,#strategyOverlay,.sb-back,.sb-save{display:none!important;}
+  #strategyBar,#landingOverlay,#strategyOverlay,.sb-back,.sb-save,
+  #mobileBottomNav,.sb-hamburger,#sidebarBackdrop{display:none!important;}
   body{background:#fff!important;font-size:12px!important;}
   .layout{grid-template-columns:1fr!important;}
   .sidebar{display:none!important;}
@@ -1220,10 +1344,22 @@ input[type="range"], .range-in { display: none !important; }
 </style>
 </head>
 <body>
+<script>
+/* Synchronous device detection — applied before first paint */
+(function(){
+  var coarse = window.matchMedia('(pointer:coarse)').matches;
+  var narrow = window.innerWidth <= 860;
+  document.body.classList.add((coarse || narrow) ? 'is-mobile' : 'is-desktop');
+})();
+</script>
+
+<!-- Sidebar backdrop overlay (mobile) -->
+<div id="sidebarBackdrop" onclick="window.closeMobileSidebar&&window.closeMobileSidebar()"></div>
 
 <!-- ══════════════════ STRATEGY BAR (inside app) ══════════════════ -->
 <div id="strategyBar">
   <div class="sb-left">
+    <button class="sb-hamburger" id="sidebarToggle" onclick="window.toggleMobileSidebar&&window.toggleMobileSidebar()" aria-label="Open settings panel">☰</button>
     <button class="sb-back" onclick="backToStrategies()">← Strategy Menu</button>
     <span class="sb-name" id="strategyBarName">Strategy I — Invest in ETFs</span>
     <span class="sb-badge" id="strategyBarBadge">ETFs</span>
@@ -1902,16 +2038,92 @@ window.showPage1 = function(){
 
 // ← Strategy Menu button inside any strategy → return to picker
 window.backToStrategies = function(){
+  window.closeMobileSidebar && window.closeMobileSidebar();
   var pick = document.getElementById('strategyOverlay');
   if(pick) pick.classList.remove('hidden');
   hideAllSections();
   setStratBar('','',false);
+  window.updateMobileBottomNav && window.updateMobileBottomNav(null);
+};
+
+// ══════════════════════════════════════════════════
+// DEVICE DETECTION — re-evaluated on resize
+// ══════════════════════════════════════════════════
+(function(){
+  function detectDevice(){
+    var coarse = window.matchMedia('(pointer:coarse)').matches;
+    var narrow = window.innerWidth <= 860;
+    return (coarse || narrow) ? 'mobile' : 'desktop';
+  }
+  function applyDeviceClass(){
+    var d = detectDevice();
+    document.body.classList.remove('is-mobile','is-desktop');
+    document.body.classList.add('is-'+d);
+  }
+  window.applyDeviceClass = applyDeviceClass;
+  window.addEventListener('resize', function(){
+    clearTimeout(window._devResizeTimer);
+    window._devResizeTimer = setTimeout(applyDeviceClass, 160);
+  });
+  // Also re-apply on orientation change (iOS)
+  window.addEventListener('orientationchange', function(){
+    setTimeout(applyDeviceClass, 300);
+  });
+})();
+
+// ══════════════════════════════════════════════════
+// MOBILE SIDEBAR DRAWER
+// ══════════════════════════════════════════════════
+window.toggleMobileSidebar = function(){
+  // Find the first sidebar that is actually rendered (offsetParent !== null)
+  var activeSidebar = null;
+  var allSidebars = document.querySelectorAll('.sidebar');
+  allSidebars.forEach(function(sb){
+    if(!activeSidebar && sb.offsetParent !== null) activeSidebar = sb;
+  });
+  // Fallback: use first sidebar in DOM
+  if(!activeSidebar && allSidebars.length) activeSidebar = allSidebars[0];
+  if(!activeSidebar) return;
+  var backdrop = document.getElementById('sidebarBackdrop');
+  var isOpen   = activeSidebar.classList.contains('drawer-open');
+  if(isOpen){
+    activeSidebar.classList.remove('drawer-open');
+    if(backdrop) backdrop.classList.remove('open');
+  } else {
+    // Close all others first
+    allSidebars.forEach(function(sb){ sb.classList.remove('drawer-open'); });
+    activeSidebar.classList.add('drawer-open');
+    if(backdrop) backdrop.classList.add('open');
+  }
+};
+
+window.closeMobileSidebar = function(){
+  document.querySelectorAll('.sidebar').forEach(function(sb){
+    sb.classList.remove('drawer-open');
+  });
+  var backdrop = document.getElementById('sidebarBackdrop');
+  if(backdrop) backdrop.classList.remove('open');
+};
+
+// ══════════════════════════════════════════════════
+// MOBILE BOTTOM NAV — highlight active strategy
+// ══════════════════════════════════════════════════
+window.updateMobileBottomNav = function(strategyKey){
+  document.querySelectorAll('.mbn-btn').forEach(function(btn){
+    btn.classList.remove('mbn-active');
+    if(btn.dataset.strategy === strategyKey) btn.classList.add('mbn-active');
+  });
 };
 
 // Card click on strategy picker → open a strategy
 window.enterApp = function(strategyKey){
   var meta = STRATEGY_META[strategyKey];
   if(!meta){ console.warn('Unknown strategy:', strategyKey); return; }
+
+  // Close mobile sidebar if open
+  window.closeMobileSidebar && window.closeMobileSidebar();
+  // Update bottom nav active state
+  window.updateMobileBottomNav && window.updateMobileBottomNav(strategyKey);
 
   // Hide picker
   var pick = document.getElementById('strategyOverlay');
@@ -2382,11 +2594,26 @@ function simulate(){
  const mRates = funds.map(f=>(f.rate/100)/12);
  const dcas = funds.map(f=>f.dca||0);
  const totalDCApm = dcas.reduce((s,v)=>s+v,0);
- const lumpInMap={}, lumpOutMap={};
+ const lumpInMap={}, lumpOutMap={}, lumpInByFund={};
  lumpSums.forEach(l=>{
- if(l.yr>=1&&l.yr<=TOTAL&&l.amt>0){
- if((l.type||'withdraw')==='invest') lumpInMap[l.yr]=(lumpInMap[l.yr]||0)+l.amt;
- else lumpOutMap[l.yr]=(lumpOutMap[l.yr]||0)+l.amt;
+ if(l.yr>=1&&l.yr<=TOTAL){
+   if(l.type==='invest'){
+     if(l.allocations&&l.allocations.length){
+       l.allocations.forEach(a=>{
+         if(!(a.amt>0)) return;
+         const fi=funds.findIndex(f=>f.sym===a.fundSym);
+         if(fi>=0){
+           if(!lumpInByFund[l.yr]) lumpInByFund[l.yr]={};
+           lumpInByFund[l.yr][fi]=(lumpInByFund[l.yr][fi]||0)+a.amt;
+         }
+         lumpInMap[l.yr]=(lumpInMap[l.yr]||0)+a.amt;
+       });
+     } else if(l.amt>0){
+       lumpInMap[l.yr]=(lumpInMap[l.yr]||0)+l.amt; // legacy format
+     }
+   } else if(l.amt>0){
+     lumpOutMap[l.yr]=(lumpOutMap[l.yr]||0)+l.amt;
+   }
  }
  });
 
@@ -2410,13 +2637,20 @@ function simulate(){
  vals = vals.map((v,i)=>v*(1+mRates[i]));
 
  if(m%12===0){
- // Lump invest: add money to portfolio proportionally
+ // Lump invest: add money to specific funds (JIRA-67) or proportionally (legacy)
  let lumpIn=0; const lumpInAmt=lumpInMap[yr]||0;
  if(lumpInAmt>0){
- const tot0=vals.reduce((s,v)=>s+v,0);
- if(tot0>0) vals=vals.map(v=>v+lumpInAmt*(v/tot0));
- else { const eq=lumpInAmt/(N||1); vals=vals.map(()=>eq); }
- cumInv+=lumpInAmt; lumpIn=lumpInAmt;
+   const fundAllocs=lumpInByFund[yr];
+   if(fundAllocs){
+     Object.entries(fundAllocs).forEach(([fi,amt])=>{ if(vals[+fi]!==undefined) vals[+fi]+=amt; });
+     const unalloc=lumpInAmt-Object.values(fundAllocs).reduce((s,v)=>s+v,0);
+     if(unalloc>0){ const tot0=vals.reduce((s,v)=>s+v,0); if(tot0>0) vals=vals.map(v=>v+unalloc*(v/tot0)); else vals[0]=(vals[0]||0)+unalloc; }
+   } else {
+     const tot0=vals.reduce((s,v)=>s+v,0);
+     if(tot0>0) vals=vals.map(v=>v+lumpInAmt*(v/tot0));
+     else { const eq=lumpInAmt/(N||1); vals=vals.map(()=>eq); }
+   }
+   cumInv+=lumpInAmt; lumpIn=lumpInAmt;
  }
  // Lump withdraw: take money out proportionally
  let lump=0; const lumpAmt=lumpOutMap[yr]||0;
@@ -2531,7 +2765,9 @@ function initCharts(sim){
  {label:'Regular Flow',data:data.map(r=>r.regFlow),
  backgroundColor:data.map(r=>r.phase===1?'rgba(79,70,229,.7)':r.phase===2?'rgba(5,150,105,.4)':'rgba(190,24,93,.6)'),borderRadius:3},
  {label:'Lump Withdrawal',data:data.map(r=>r.lump?-r.lump:null),backgroundColor:'rgba(202,138,4,.8)',borderRadius:3},
+ {label:'💸 Withdraw Event',type:'scatter',data:data.reduce((a,r,i)=>{if(r.isLump)a.push({x:i,y:-r.lump});return a;},[]),pointStyle:'triangle',rotation:180,pointRadius:7,pointHoverRadius:10,backgroundColor:'rgba(202,138,4,.95)',borderColor:'#ca8a04',borderWidth:2,showLine:false,order:0},
   {label:'Lump Investment',data:data.map(r=>r.lumpIn?r.lumpIn:null),backgroundColor:'rgba(5,150,105,.75)',borderRadius:3},
+ {label:'💰 Invest Event',type:'scatter',data:data.reduce((a,r,i)=>{if(r.isLumpIn)a.push({x:i,y:r.lumpIn});return a;},[]),pointStyle:'triangle',pointRadius:7,pointHoverRadius:10,backgroundColor:'rgba(5,150,105,.95)',borderColor:'#059669',borderWidth:2,showLine:false,order:0},
  ]},
  options:{responsive:true,maintainAspectRatio:true,
  plugins:{legend:{labels:{color:'#64748b',font:{size:10},padding:8,boxWidth:10}},
@@ -2747,7 +2983,7 @@ function render(){
  const atDraw=data[dcaYrs+coast-1]||data[0];
  const totalInv=dcaYrs*12*totalDCApm;
  const totalLumpOut=lumpSums.filter(l=>(l.type||'withdraw')==='withdraw').reduce((s,l)=>s+l.amt,0);
- const totalLumpIn=lumpSums.filter(l=>l.type==='invest').reduce((s,l)=>s+l.amt,0);
+ const totalLumpIn=lumpSums.filter(l=>l.type==='invest').reduce((s,l)=>l.allocations?l.allocations.reduce((a,x)=>a+(x.amt||0),0)+s:s+(l.amt||0),0);
  const totalLumps=totalLumpOut; // backward compat
  const lastMW=wdraw*Math.pow(1+(+g('v_winc').value/100||.03),wYrs-1);
 
@@ -2813,7 +3049,7 @@ function render(){
  })() : '';
 
  g('cards').innerHTML = bigTile + `<div class="cards-row">${tiles}${longevityTile}</div>`;
- renderLumps(); // refresh year max inputs to match current TOTAL
+ updateLumpDisplays(); // refresh year max + PF hints without destroying DOM (JIRA-68)
 
  initCharts(sim);
 
@@ -2935,6 +3171,37 @@ function buildTable(f){
 // ═══════════════════════════════════════
 // LUMP-SUM UI
 // ═══════════════════════════════════════
+// ── Lightweight updater — patches max/text/PF without rebuilding DOM (JIRA-68) ──
+function updateLumpDisplays(){
+ const {dcaYrs:_ld,coast:_lc,wYrs:_lw}=getBase();
+ const lTOTAL=Math.max(1,_ld+_lc+_lw);
+ // Invest: year max + "of N" text
+ document.querySelectorAll('.lie-yr-in').forEach(inp=>{ inp.max=lTOTAL; });
+ document.querySelectorAll('.lie-of').forEach(el=>{ el.textContent='of '+lTOTAL; });
+ // Invest: PF hints
+ document.querySelectorAll('#lumpInvestList .lie-event').forEach(card=>{
+   const yearInp=card.querySelector('.lie-yr-in');
+   const pfEl=card.querySelector('.lie-pf');
+   if(!yearInp||!pfEl) return;
+   const yr=+yearInp.value;
+   const r=rows&&rows.length?rows[Math.min(Math.max(1,yr),rows.length)-1]:null;
+   pfEl.textContent=r?'PF: '+fmtM(r.comb):'';
+ });
+ // Withdraw: year max + "of N" spans + PF hints
+ document.querySelectorAll('.lump-yr-in').forEach(inp=>{ inp.max=lTOTAL; });
+ document.querySelectorAll('#lumpWithdrawList span').forEach(el=>{
+   if(/^of \d+$/.test(el.textContent)) el.textContent='of '+lTOTAL;
+ });
+ document.querySelectorAll('#lumpWithdrawList > div').forEach(row=>{
+   const yearInp=row.querySelector('.lump-yr-in');
+   const pfEl=row.querySelector('.lie-pf');
+   if(!yearInp||!pfEl) return;
+   const yr=+yearInp.value;
+   const r=rows&&rows.length?rows[Math.min(Math.max(1,yr),rows.length)-1]:null;
+   pfEl.textContent=r?'PF: '+fmtM(r.comb):'';
+ });
+}
+
 function renderLumps(){
  const {dcaYrs:_ld,coast:_lc,wYrs:_lw}=getBase();
  const lTOTAL=Math.max(1,_ld+_lc+_lw);
@@ -2942,87 +3209,159 @@ function renderLumps(){
  const iSumEl=g('lumpInvSummary'), wSumEl=g('lumpWdSummary');
  if(!iListEl||!wListEl) return;
 
- // Tag each entry with its original index before filtering
- const tagged = lumpSums.map((l,i)=>({...l,i}));
+ const tagged = lumpSums.map((l,i)=>({...l,_i:i}));
  const investEvts  = tagged.filter(l=>l.type==='invest');
  const withdrawEvts= tagged.filter(l=>(l.type||'withdraw')==='withdraw');
 
- function pfHint(yr){
-   if(!rows||!rows.length) return '';
-   const r=rows[Math.min(yr,rows.length)-1];
-   if(!r) return '';
-   return `<span style="font-size:9px;color:#64748b;white-space:nowrap;margin-left:auto;">PF: <strong style="color:#4f46e5">${fmtM(r.comb)}</strong></span>`;
+ // ── Fund options HTML (built from active funds array) ──
+ function fundOpts(selectedSym){
+   return funds.map(f=>`<option value="${f.sym}"${f.sym===selectedSym?' selected':''}>${f.sym}</option>`).join('');
  }
 
- function makeRow(l, isInvest){
+ // ── PF hint for a given year ──
+ function pfHint(yr){
+   if(!rows||!rows.length) return '';
+   const r=rows[Math.min(Math.max(1,yr),rows.length)-1];
+   return r?`<span class="lie-pf">PF: ${fmtM(r.comb)}</span>`:'';
+ }
+
+ // ── Build invest event card ──
+ function makeInvestCard(l){
    const clampedYr=Math.max(1,Math.min(l.yr,lTOTAL));
-   const borderC=isInvest?'#86efac':'#fca5a5';
-   const bg=isInvest?'rgba(5,150,105,.04)':'rgba(225,29,72,.04)';
-   const delC=isInvest?'#065f46':'#be123c';
-   return `<div style="display:flex;align-items:center;gap:4px;padding:5px 7px;border:1px solid ${borderC};border-radius:8px;background:${bg};margin-bottom:5px;">
+   const allocs=l.allocations&&l.allocations.length?l.allocations:[{fundSym:(funds[0]||{sym:'VOO'}).sym,amt:50000}];
+   const evtTotal=allocs.reduce((s,a)=>s+(a.amt||0),0);
+   const canAddAlloc=allocs.length<5;
+   const allocsHtml=allocs.map((a,ai)=>`
+     <div class="lie-alloc-row">
+       <select class="lie-fund-sel" onchange="window.lumpInvestSetFund(${l._i},${ai},this.value)">${fundOpts(a.fundSym)}</select>
+       <span class="lie-alloc-sep">$</span>
+       <input class="lie-alloc-amt" type="number" value="${a.amt||0}" min="0" max="10000000" step="1000"
+         oninput="window.lumpInvestSetAmt(${l._i},${ai},+this.value)">
+       ${allocs.length>1?`<button class="lie-del-alloc" onclick="window.lumpInvestDelAlloc(${l._i},${ai})">✕</button>`:''}
+     </div>`).join('');
+   return `<div class="lie-event">
+     <div class="lie-hdr">
+       <span class="lie-yr-lbl">Year</span>
+       <input class="lie-yr-in" type="number" value="${clampedYr}" min="1" max="${lTOTAL}" step="1"
+         oninput="window.lumpInvestSetYr(${l._i},+this.value)">
+       <span class="lie-of">of ${lTOTAL}</span>
+       ${pfHint(clampedYr)}
+       <button class="lie-del-evt" onclick="window.lumpInvestDelEvent(${l._i})">✕ Remove</button>
+     </div>
+     <div class="lie-allocs">${allocsHtml}</div>
+     ${canAddAlloc?`<button class="lie-add-alloc" onclick="window.lumpInvestAddAlloc(${l._i})">＋ Add fund allocation</button>`:''}
+     <div class="lie-total">Event total: ${fmt(evtTotal)}</div>
+   </div>`;
+ }
+
+ // ── Build withdraw event row (unchanged) ──
+ function makeWdRow(l){
+   const clampedYr=Math.max(1,Math.min(l.yr,lTOTAL));
+   const pfH=pfHint(clampedYr);
+   return `<div style="display:flex;align-items:center;gap:4px;padding:5px 7px;border:1px solid #fca5a5;border-radius:8px;background:rgba(225,29,72,.04);margin-bottom:5px;">
  <span style="font-size:9px;color:#94a3b8;white-space:nowrap;">Year</span>
- <div class="num-wrap" style="flex:0 0 auto;"><input class="num-in lump-yr-in" style="width:40px;" type="number" data-li="${l.i}" data-field="yr" value="${clampedYr}" min="1" max="${lTOTAL}" step="1"></div>
+ <div class="num-wrap" style="flex:0 0 auto;"><input class="num-in lump-yr-in" style="width:40px;" type="number" data-li="${l._i}" data-field="yr" value="${clampedYr}" min="1" max="${lTOTAL}" step="1"></div>
  <span style="font-size:9px;color:#94a3b8;">of ${lTOTAL}</span>
- <div class="num-wrap" style="flex:1;"><span class="num-prefix">$</span><input class="num-in lump-amt-in" style="width:68px;" type="number" data-li="${l.i}" data-field="amt" value="${l.amt}" min="0" max="10000000" step="5000"></div>
- ${pfHint(clampedYr)}
- <button class="lump-del" data-li="${l.i}" style="color:${delC};border-color:${delC}22;background:${isInvest?'#dcfce7':'#ffe4e6'};">✕</button>
+ <div class="num-wrap" style="flex:1;"><span class="num-prefix">$</span><input class="num-in lump-amt-in" style="width:68px;" type="number" data-li="${l._i}" data-field="amt" value="${l.amt}" min="0" max="10000000" step="5000"></div>
+ ${pfH}
+ <button class="lump-del" data-li="${l._i}" style="color:#be123c;border-color:#be123c22;background:#ffe4e6;">✕</button>
  </div>`;
  }
 
  const emptyInvest='<div style="font-size:9px;color:#94a3b8;padding:6px 4px;text-align:center;">No invest events · click + Add above</div>';
  const emptyWithdraw='<div style="font-size:9px;color:#94a3b8;padding:6px 4px;text-align:center;">No withdraw events · click + Add above</div>';
 
- iListEl.innerHTML=investEvts.length ? investEvts.map(l=>makeRow(l,true)).join('') : emptyInvest;
- wListEl.innerHTML=withdrawEvts.length ? withdrawEvts.map(l=>makeRow(l,false)).join('') : emptyWithdraw;
+ iListEl.innerHTML=investEvts.length ? investEvts.map(l=>makeInvestCard(l)).join('') : emptyInvest;
+ wListEl.innerHTML=withdrawEvts.length ? withdrawEvts.map(l=>makeWdRow(l)).join('') : emptyWithdraw;
 
  // Summaries
  if(iSumEl){
-   const tot=investEvts.reduce((s,l)=>s+l.amt,0);
+   const tot=investEvts.reduce((s,l)=>s+(l.allocations?l.allocations.reduce((a,x)=>a+(x.amt||0),0):(l.amt||0)),0);
    iSumEl.innerHTML=tot>0?`<div class="lump-inv-summary">+${fmt(tot)} total across ${investEvts.length} event${investEvts.length===1?'':'s'}</div>`:'';
  }
  if(wSumEl){
-   const tot=withdrawEvts.reduce((s,l)=>s+l.amt,0);
+   const tot=withdrawEvts.reduce((s,l)=>s+(l.amt||0),0);
    wSumEl.innerHTML=tot>0?`<div class="lump-wd-summary">-${fmt(tot)} total across ${withdrawEvts.length} event${withdrawEvts.length===1?'':'s'}</div>`:'';
  }
 
- // Wire inputs — update on change and refresh PF hint
- [iListEl,wListEl].forEach(el=>{
-   el.querySelectorAll('.num-in').forEach(inp=>{
-     inp.addEventListener('input',()=>{
-       const li=+inp.dataset.li;
-       lumpSums[li][inp.dataset.field]=+inp.value;
-       // live-refresh just the PF hint without full re-render
-       if(inp.dataset.field==='yr'){
-         const row=inp.closest('div[style]');
-         if(row){
-           const hint=row.querySelector('span[style*="PF"]');
-           const hNew=document.createElement('span');
-           const yr=Math.max(1,Math.min(+inp.value,lTOTAL));
-           const r=rows&&rows.length?rows[Math.min(yr,rows.length)-1]:null;
-           const hStr=r?`<span style="font-size:9px;color:#64748b;white-space:nowrap;margin-left:auto;">PF: <strong style="color:#4f46e5">${fmtM(r.comb)}</strong></span>`:'';
-           if(hint) hint.outerHTML=hStr;
-         }
-       }
-       debounce();
-     });
-   });
-   el.querySelectorAll('.lump-del').forEach(btn=>{
-     btn.addEventListener('click',()=>{ lumpSums.splice(+btn.dataset.li,1); renderLumps(); debounce(); });
+ // Wire withdraw inputs (invest events use inline oninput handlers)
+ wListEl.querySelectorAll('.num-in').forEach(inp=>{
+   inp.addEventListener('input',()=>{
+     const li=+inp.dataset.li;
+     lumpSums[li][inp.dataset.field]=+inp.value;
+     debounce();
    });
  });
+ wListEl.querySelectorAll('.lump-del').forEach(btn=>{
+   btn.addEventListener('click',()=>{ lumpSums.splice(+btn.dataset.li,1); renderLumps(); debounce(); });
+ });
 }
+
+// ── Per-fund invest event helpers (JIRA-67) ──────────────────
+window.lumpInvestSetYr=function(i,yr){
+ if(!lumpSums[i]) return;
+ lumpSums[i].yr=yr;
+ // Update only this card's PF hint — no full re-render (JIRA-68 focus fix)
+ const cards=document.querySelectorAll('#lumpInvestList .lie-event');
+ const investIdxs=lumpSums.map((l,x)=>l.type==='invest'?x:-1).filter(x=>x>=0);
+ const evtPos=investIdxs.indexOf(i);
+ if(cards[evtPos]){
+   const pfEl=cards[evtPos].querySelector('.lie-pf');
+   if(pfEl&&rows&&rows.length){
+     const r=rows[Math.min(Math.max(1,yr),rows.length)-1];
+     pfEl.textContent=r?'PF: '+fmtM(r.comb):'';
+   }
+ }
+ debounce();
+};
+window.lumpInvestDelEvent=function(i){
+ lumpSums.splice(i,1); renderLumps(); debounce();
+};
+window.lumpInvestSetFund=function(i,ai,sym){
+ if(!lumpSums[i]||!lumpSums[i].allocations) return;
+ lumpSums[i].allocations[ai].fundSym=sym; debounce();
+};
+window.lumpInvestSetAmt=function(i,ai,amt){
+ if(!lumpSums[i]||!lumpSums[i].allocations) return;
+ lumpSums[i].allocations[ai].amt=amt;
+ // Live-update the event total shown in card
+ const cards=document.querySelectorAll('#lumpInvestList .lie-event');
+ const investIdxs=lumpSums.map((l,x)=>l.type==='invest'?x:-1).filter(x=>x>=0);
+ const evtPos=investIdxs.indexOf(i);
+ if(cards[evtPos]){
+   const tot=lumpSums[i].allocations.reduce((s,a)=>s+(a.amt||0),0);
+   const totEl=cards[evtPos].querySelector('.lie-total');
+   if(totEl) totEl.textContent='Event total: '+fmt(tot);
+ }
+ debounce();
+};
+window.lumpInvestAddAlloc=function(i){
+ if(!lumpSums[i]) return;
+ if(!lumpSums[i].allocations) lumpSums[i].allocations=[];
+ if(lumpSums[i].allocations.length>=5) return;
+ const usedSyms=lumpSums[i].allocations.map(a=>a.fundSym);
+ const nextFund=funds.find(f=>!usedSyms.includes(f.sym))||(funds[0]||{sym:'VOO'});
+ lumpSums[i].allocations.push({fundSym:nextFund.sym,amt:10000});
+ renderLumps(); debounce();
+};
+window.lumpInvestDelAlloc=function(i,ai){
+ if(!lumpSums[i]||!lumpSums[i].allocations) return;
+ lumpSums[i].allocations.splice(ai,1);
+ if(lumpSums[i].allocations.length===0) lumpSums.splice(i,1);
+ renderLumps(); debounce();
+};
+
 g('addLumpInvest').addEventListener('click',()=>{
  const {dcaYrs,coast,wYrs}=getBase();
  const TOTAL=Math.max(1,dcaYrs+coast+wYrs);
- // Default to midpoint of DCA, or year 1 if no DCA
  const nextYr=Math.max(1,Math.min(dcaYrs>0?Math.round(dcaYrs/2):1, TOTAL));
- lumpSums.push({yr:nextYr,amt:50000,type:'invest'});
+ const defaultFund=(funds[0]||{sym:'VOO'}).sym;
+ lumpSums.push({yr:nextYr,type:'invest',allocations:[{fundSym:defaultFund,amt:50000}]});
  renderLumps(); debounce();
 });
 g('addLumpWithdraw').addEventListener('click',()=>{
  const {dcaYrs,coast,wYrs}=getBase();
  const TOTAL=Math.max(1,dcaYrs+coast+wYrs);
- // Default to first year of withdrawal phase, or TOTAL if no withdrawal configured
  const defaultYr=Math.min(Math.max(1, dcaYrs+coast+(wYrs>0?1:0)), TOTAL);
  lumpSums.push({yr:defaultYr,amt:100000,type:'withdraw'});
  renderLumps(); debounce();
@@ -8849,14 +9188,14 @@ window.voo500OnEnter=(function(){var d=false;return function(){if(!d){d=true;win
 .he-change-btn{font-size:9px;font-weight:600;padding:2px 7px;border-radius:5px;border:1px solid #bae6fd;background:#e0f2fe;color:#0369a1;cursor:pointer;}
 .he-remove-btn{font-size:10px;font-weight:700;padding:2px 6px;border-radius:5px;border:1px solid #fecaca;background:#fef2f2;color:#dc2626;cursor:pointer;}
 /* ═══ Strategy IX — Mortgage & ETF Investment ═══ */
-.mei-hdr-title{font-size:20px;font-weight:700;letter-spacing:-.2px;color:#fff;}
+.mei-hdr-title{font-size:24px;font-weight:700;letter-spacing:-.2px;color:#fff;}
 .mei-hdr-sub{font-size:11px;color:rgba(255,255,255,.82);margin-top:3px;}
 .mei-tile{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:14px 16px;text-align:center;transition:box-shadow .2s;}
 .mei-tile:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);}
 .mei-tile-eyebrow{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;}
 .mei-tile-val{font-size:20px;font-weight:800;letter-spacing:-.3px;}
 .mei-tile-sub{font-size:10px;color:#94a3b8;margin-top:2px;}
-.mei-ch-title{font-size:13px;font-weight:700;color:#1e293b;margin-bottom:2px;}
+.mei-ch-title{font-size:16px;font-weight:700;color:#1e293b;margin-bottom:2px;}
 .mei-ch-sub{font-size:10px;color:#94a3b8;}
 .mei-fund-row{background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;padding:10px 12px;margin-bottom:8px;border-left:3px solid #0d9488;}
 .mei-fund-hdr{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
@@ -9476,7 +9815,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
     <div style="background:linear-gradient(135deg,#0d9488,#0f766e);border-radius:14px;padding:12px 18px;display:flex;align-items:center;gap:10px;flex:1;">
       <div style="font-size:22px;">⚖️</div>
       <div>
-        <div style="font-size:16px;font-weight:900;color:#fff;">Strategy II — Mortgage &amp; ETF Investment</div>
+        <div style="font-size:22px;font-weight:900;color:#fff;">Strategy II — Mortgage &amp; ETF Investment</div>
         <div style="font-size:10px;color:rgba(255,255,255,.8);">5 progressive scenarios — compare every path from debt to wealth</div>
       </div>
       <button onclick="meiReset()" style="margin-left:auto;padding:8px 16px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);border-radius:8px;color:#fff;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:.3px;">↺ Reset to Zero</button>
@@ -9518,7 +9857,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
     <div style="background:linear-gradient(90deg,#0f766e,#0d9488);padding:13px 20px;display:flex;align-items:center;gap:12px;">
       <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">1</div>
       <div>
-        <div style="font-size:13px;font-weight:800;color:#fff;">Base Mortgage</div>
+        <div style="font-size:17px;font-weight:800;color:#fff;">Base Mortgage</div>
         <div style="font-size:10px;color:rgba(255,255,255,.85);">Loan amount, interest rate and term — the foundation of all scenarios</div>
       </div>
       <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;">Updates live as you type</div>
@@ -9535,7 +9874,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         </div>
       </div>
       <div style="padding:18px;">
-        <div style="font-size:12px;font-weight:700;color:#1e293b;margin-bottom:2px;">Annual Principal vs Interest Paid</div>
+        <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:2px;">Annual Principal vs Interest Paid</div>
         <div style="font-size:10px;color:#94a3b8;margin-bottom:10px;">Updates live as you enter values</div>
         <div style="position:relative;height:210px;"><canvas id="meiChartBase"></canvas></div>
       </div>
@@ -9547,7 +9886,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
     <div id="meiBalChartWrap" style="display:none;padding:16px 20px 18px;border-top:1px solid #f1f5f9;background:#f8fafc;">
       <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
         <div>
-          <div style="font-size:13px;font-weight:800;color:#0f172a;">&#x1F4C9; Remaining Mortgage Balance — Year by Year</div>
+          <div style="font-size:16px;font-weight:800;color:#0f172a;">&#x1F4C9; Remaining Mortgage Balance — Year by Year</div>
           <div style="font-size:10px;color:#94a3b8;margin-top:2px;">Hover any year to inspect balance, equity built, % paid off &amp; cumulative interest</div>
         </div>
         <div id="meiBalHoverStats" style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
@@ -9585,7 +9924,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         <div style="display:flex;align-items:center;gap:8px;">
           <span id="meiCFArrow1" style="font-size:10px;color:#0d9488;font-weight:700;">▼</span>
           <div>
-            <div style="font-size:13px;font-weight:800;color:#0f172a;">📋 Yearly Cumulative Cash Flow</div>
+            <div style="font-size:16px;font-weight:800;color:#0f172a;">📋 Yearly Cumulative Cash Flow</div>
             <div style="font-size:10px;color:#94a3b8;margin-top:1px;">Every dollar paid — principal, interest, and running totals year by year</div>
           </div>
         </div>
@@ -9611,7 +9950,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
     <div style="background:linear-gradient(90deg,#6d28d9,#8b5cf6);padding:13px 20px;display:flex;align-items:center;gap:12px;">
       <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">2</div>
       <div>
-        <div style="font-size:13px;font-weight:800;color:#fff;">Accelerated Payoff</div>
+        <div style="font-size:17px;font-weight:800;color:#fff;">Accelerated Payoff</div>
         <div style="font-size:10px;color:rgba(255,255,255,.85);">Extra monthly payment + up to 10 lump-sum injections to slash interest</div>
       </div>
       <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;">Builds on Scenario 1</div>
@@ -9632,7 +9971,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         </div>
       </div>
       <div style="padding:18px;">
-        <div style="font-size:12px;font-weight:700;color:#1e293b;margin-bottom:2px;">Accelerated vs Base Payoff</div>
+        <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:2px;">Accelerated vs Base Payoff</div>
         <div style="font-size:10px;color:#94a3b8;margin-bottom:10px;">Compare principal/interest with acceleration</div>
         <div style="position:relative;height:200px;"><canvas id="meiChartSc2"></canvas></div>
       </div>
@@ -9646,7 +9985,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         <div style="display:flex;align-items:center;gap:8px;">
           <span id="meiCFArrow2" style="font-size:10px;color:#8b5cf6;font-weight:700;">▼</span>
           <div>
-            <div style="font-size:13px;font-weight:800;color:#0f172a;">📋 Yearly Cumulative Cash Flow — Accelerated</div>
+            <div style="font-size:16px;font-weight:800;color:#0f172a;">📋 Yearly Cumulative Cash Flow — Accelerated</div>
             <div style="font-size:10px;color:#94a3b8;margin-top:1px;">Accelerated schedule with extra payments &amp; lump sums</div>
           </div>
         </div>
@@ -9671,7 +10010,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
     <div style="background:linear-gradient(90deg,#d97706,#f59e0b);padding:13px 20px;display:flex;align-items:center;gap:12px;">
       <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">3</div>
       <div>
-        <div style="font-size:13px;font-weight:800;color:#fff;">Mortgage + ETF Side-by-Side</div>
+        <div style="font-size:17px;font-weight:800;color:#fff;">Mortgage + ETF Side-by-Side</div>
         <div style="font-size:10px;color:rgba(255,255,255,.85);">Pay mortgage AND invest in ETFs simultaneously — watch both grow</div>
       </div>
       <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;">Builds on Scenario 2</div>
@@ -9687,7 +10026,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         </div>
         <div style="font-size:10px;color:#b45309;background:#fef3c7;padding:3px 9px;border-radius:6px;">Mortgage runs for its full term in parallel</div>
       </div>
-      <div style="font-size:11px;font-weight:700;color:#1e293b;margin-bottom:10px;">ETF Funds &amp; Monthly DCA — configure up to 6 funds</div>
+      <div style="font-size:14px;font-weight:700;color:#1e293b;margin-bottom:10px;">ETF Funds &amp; Monthly DCA — configure up to 6 funds</div>
       <div id="meiFundsList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-bottom:10px;"></div>
       <div style="display:flex;align-items:center;gap:12px;margin-top:6px;">
         <button id="mei_addFundBtn" onclick="meiAddFund()" style="padding:8px 16px;border:1.5px dashed #fcd34d;border-radius:8px;background:transparent;color:#b45309;font-size:11px;font-weight:700;cursor:pointer;">+ Add Fund (0/6)</button>
@@ -9697,7 +10036,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
     </div>
     <div style="display:grid;grid-template-columns:1fr 310px;">
       <div style="padding:0 18px 18px;">
-        <div style="font-size:11px;font-weight:700;color:#1e293b;margin:14px 0 6px;">ETF Portfolio vs Mortgage Balance</div>
+        <div style="font-size:14px;font-weight:700;color:#1e293b;margin:14px 0 6px;">ETF Portfolio vs Mortgage Balance</div>
         <div style="position:relative;height:220px;"><canvas id="meiChartSc3"></canvas></div>
       </div>
       <div style="border-left:1px solid #f1f5f9;overflow:auto;">
@@ -9716,7 +10055,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
     <div style="background:linear-gradient(90deg,#0284c7,#0ea5e9);padding:13px 20px;display:flex;align-items:center;gap:12px;">
       <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">4</div>
       <div>
-        <div style="font-size:13px;font-weight:800;color:#fff;">Payoff Mortgage First, Then Invest</div>
+        <div style="font-size:17px;font-weight:800;color:#fff;">Payoff Mortgage First, Then Invest</div>
         <div style="font-size:10px;color:rgba(255,255,255,.85);">Aggressively eliminate debt, then redirect full freed payment into ETFs</div>
       </div>
       <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;">Own fund selection</div>
@@ -9733,7 +10072,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         </div>
       </div>
       <div style="padding:18px;">
-        <div style="font-size:12px;font-weight:700;color:#1e293b;margin-bottom:2px;">Payoff Phase → Investment Phase</div>
+        <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:2px;">Payoff Phase → Investment Phase</div>
         <div style="font-size:10px;color:#94a3b8;margin-bottom:10px;">Mortgage clears, freed cash surges into ETF</div>
         <div style="position:relative;height:220px;"><canvas id="meiChartSc4"></canvas></div>
       </div>
@@ -9753,7 +10092,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
     <div style="background:linear-gradient(90deg,#dc2626,#ef4444);padding:13px 20px;display:flex;align-items:center;gap:12px;">
       <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">5</div>
       <div>
-        <div style="font-size:13px;font-weight:800;color:#fff;">Minimum Payments + Equity Recycling</div>
+        <div style="font-size:17px;font-weight:800;color:#fff;">Minimum Payments + Equity Recycling</div>
         <div style="font-size:10px;color:rgba(255,255,255,.85);">Keep minimum mortgage, pull equity every few years as ETF lump-sum injections</div>
       </div>
       <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;">Own fund selection</div>
@@ -9778,7 +10117,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         </div>
       </div>
       <div style="padding:18px;">
-        <div style="font-size:12px;font-weight:700;color:#1e293b;margin-bottom:2px;">Equity Recycling Growth</div>
+        <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:2px;">Equity Recycling Growth</div>
         <div style="font-size:10px;color:#94a3b8;margin-bottom:10px;">ETF portfolio builds through periodic lump-sum injections</div>
         <div style="position:relative;height:220px;"><canvas id="meiChartSc5"></canvas></div>
       </div>
@@ -11275,5 +11614,38 @@ window.strategyResetToZero = function(sectionId){
   });
 };
 </script>
+
+<!-- ══════════════════ MOBILE BOTTOM NAV ══════════════════ -->
+<nav id="mobileBottomNav" role="navigation" aria-label="Strategy shortcuts">
+  <div class="mbn-inner">
+    <button class="mbn-btn" data-strategy="" onclick="backToStrategies()">
+      <span class="mbn-icon">🏠</span><span class="mbn-label">Home</span>
+    </button>
+    <button class="mbn-btn" data-strategy="etf" onclick="enterApp('etf')">
+      <span class="mbn-icon">📊</span><span class="mbn-label">ETF</span>
+    </button>
+    <button class="mbn-btn" data-strategy="mei" onclick="enterApp('mei')">
+      <span class="mbn-icon">🏠</span><span class="mbn-label">Mortgage</span>
+    </button>
+    <button class="mbn-btn" data-strategy="super" onclick="enterApp('super')">
+      <span class="mbn-icon">💼</span><span class="mbn-label">Super</span>
+    </button>
+    <button class="mbn-btn" data-strategy="compare" onclick="enterApp('compare')">
+      <span class="mbn-icon">🏘</span><span class="mbn-label">Property</span>
+    </button>
+    <button class="mbn-btn" data-strategy="precious" onclick="enterApp('precious')">
+      <span class="mbn-icon">🥇</span><span class="mbn-label">Metals</span>
+    </button>
+    <button class="mbn-btn" data-strategy="dca" onclick="enterApp('dca')">
+      <span class="mbn-icon">📈</span><span class="mbn-label">DCA</span>
+    </button>
+    <button class="mbn-btn" data-strategy="meme" onclick="enterApp('meme')">
+      <span class="mbn-icon">🚀</span><span class="mbn-label">Meme</span>
+    </button>
+    <button class="mbn-btn" data-strategy="voo500" onclick="enterApp('voo500')">
+      <span class="mbn-icon">🇦🇺</span><span class="mbn-label">VOO/V500</span>
+    </button>
+  </div>
+</nav>
 </body>
 </html>

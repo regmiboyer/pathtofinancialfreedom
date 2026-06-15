@@ -2557,7 +2557,7 @@ let lumpSums = DEFAULT_LUMPS.map(l=>({...l}));
 let rows = [];
 let tableFilter = 'all';
 let activePicker = null; // fund index
-let activePickerMode = null; // 'mi','su','he','mei','mei4','mei5' or null for Strategy I
+let activePickerMode = null; // 'mi','su','he','mei','mei4','mei5','mei6' or null for Strategy I
 let currentCat = 'All';
 
 // ═══════════════════════════════════════
@@ -2921,6 +2921,12 @@ function selectETF(sym){
  } else if(mode==='mei5'){
    // Strategy II — MEI Scenario 5
    if(window.MEI_FUNDS_SC5){const p=(window.MEI_FUNDS_SC5[fi]||{}).dca||500;window.MEI_FUNDS_SC5[fi]={...etf,rate:etf.cagr,dca:p};if(window.meiRenderFundsSc5)window.meiRenderFundsSc5();}
+ } else if(mode==='mei6'){
+   // Strategy II — MEI Scenario 6 (ETF Lump-Sum Payoff)
+   if(window.MEI_FUNDS_SC6){const p=(window.MEI_FUNDS_SC6[fi]||{}).dca||500;window.MEI_FUNDS_SC6[fi]={...etf,rate:etf.cagr,dca:p};if(window.meiRenderFundsSc6)window.meiRenderFundsSc6();}
+ } else if(mode==='mei2p'){
+   // Strategy II — Sc2 Post-Payoff Investment
+   if(window.MEI_FUNDS_SC2P){const p=(window.MEI_FUNDS_SC2P[fi]||{}).dca||1000;window.MEI_FUNDS_SC2P[fi]={...etf,rate:etf.cagr,dca:p};if(window.meiRenderFundsSc2P)window.meiRenderFundsSc2P();}
  }
 }
 
@@ -9816,15 +9822,15 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
       <div style="font-size:22px;">⚖️</div>
       <div>
         <div style="font-size:22px;font-weight:900;color:#fff;">Strategy II — Mortgage &amp; ETF Investment</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.8);">5 progressive scenarios — compare every path from debt to wealth</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.8);">6 scenarios — base mortgage · accelerated payoff · ETF side-by-side · payoff first · equity recycling · lump-sum payoff year analysis</div>
       </div>
       <button onclick="meiReset()" style="margin-left:auto;padding:8px 16px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);border-radius:8px;color:#fff;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:.3px;">↺ Reset to Zero</button>
       <button onclick="if(window.s2Guide){s2Guide.reset();setTimeout(function(){s2Guide.check();},50);}" style="padding:8px 14px;background:rgba(255,255,255,.1);border:1.5px solid rgba(165,180,252,.6);border-radius:8px;color:#a5b4fc;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:.3px;">🧭 Show Guide</button>
     </div>
   </div>
 
-  <!-- ─── 5 Always-Visible Tiles ──────────────────────────────────── -->
-  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:24px;">
+  <!-- ─── 6 Always-Visible Tiles ──────────────────────────────────── -->
+  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:16px;">
     <div style="background:#fff;border:1.5px solid #99f6e4;border-radius:14px;padding:14px;text-align:center;box-shadow:0 0 16px rgba(13,148,136,.15);">
       <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#0d9488;margin-bottom:4px;">Sc1 · Base Interest</div>
       <div style="font-size:19px;font-weight:900;color:#0f172a;" id="meiT1a">—</div>
@@ -9850,6 +9856,42 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
       <div style="font-size:19px;font-weight:900;color:#0f172a;" id="meiT5a">—</div>
       <div style="font-size:10px;color:#64748b;margin-top:2px;" id="meiT5b">—</div>
     </div>
+    <div style="background:#fff;border:1.5px solid #c4b5fd;border-radius:14px;padding:14px;text-align:center;box-shadow:0 0 16px rgba(124,58,237,.15);">
+      <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#7c3aed;margin-bottom:4px;">Sc6 · Payoff Year ETF</div>
+      <div style="font-size:19px;font-weight:900;color:#0f172a;" id="meiT6a">—</div>
+      <div style="font-size:10px;color:#64748b;margin-top:2px;" id="meiT6b">—</div>
+    </div>
+  </div>
+
+  <!-- ─── What you can calculate ───────────────────────────────────── -->
+  <div style="background:linear-gradient(135deg,#f8faff,#f0f4ff);border:1px solid #c7d2fe;border-radius:14px;padding:14px 18px;margin-bottom:20px;">
+    <div style="font-size:11px;font-weight:800;color:#4f46e5;text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px;">📋 What you can calculate in this section</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+      <div style="display:flex;align-items:flex-start;gap:8px;background:#fff;border-radius:9px;padding:9px 11px;border:1px solid #e0e7ff;">
+        <div style="width:22px;height:22px;min-width:22px;background:#ccfbf1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">1</div>
+        <div><div style="font-size:11px;font-weight:700;color:#0f172a;">Base Mortgage</div><div style="font-size:10px;color:#64748b;margin-top:1px;">Total interest, yearly P&amp;I breakdown, balance trajectory</div></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:8px;background:#fff;border-radius:9px;padding:9px 11px;border:1px solid #e0e7ff;">
+        <div style="width:22px;height:22px;min-width:22px;background:#ede9fe;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">2</div>
+        <div><div style="font-size:11px;font-weight:700;color:#0f172a;">Accelerated Payoff</div><div style="font-size:10px;color:#64748b;margin-top:1px;">Extra monthly + up to 10 lump-sums — interest saved, years cut</div></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:8px;background:#fff;border-radius:9px;padding:9px 11px;border:1px solid #ddd6fe;box-shadow:0 0 10px rgba(124,58,237,.08);">
+        <div style="width:22px;height:22px;min-width:22px;background:#f5f3ff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">3</div>
+        <div><div style="font-size:11px;font-weight:700;color:#7c3aed;">ETF Investment with Pay-Off ↑</div><div style="font-size:10px;color:#64748b;margin-top:1px;">At year X, lump-sum clear the mortgage from ETF — see remaining portfolio &amp; check any year</div></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:8px;background:#fff;border-radius:9px;padding:9px 11px;border:1px solid #e0e7ff;">
+        <div style="width:22px;height:22px;min-width:22px;background:#fef9c3;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">4</div>
+        <div><div style="font-size:11px;font-weight:700;color:#0f172a;">ETF Side-by-Side</div><div style="font-size:10px;color:#64748b;margin-top:1px;">Pay mortgage AND DCA into ETFs simultaneously — net wealth growth</div></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:8px;background:#fff;border-radius:9px;padding:9px 11px;border:1px solid #e0e7ff;">
+        <div style="width:22px;height:22px;min-width:22px;background:#e0f2fe;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">5</div>
+        <div><div style="font-size:11px;font-weight:700;color:#0f172a;">Payoff First, Then Invest</div><div style="font-size:10px;color:#64748b;margin-top:1px;">Clear debt aggressively, then redirect full freed payment to ETFs</div></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:8px;background:#fff;border-radius:9px;padding:9px 11px;border:1px solid #e0e7ff;">
+        <div style="width:22px;height:22px;min-width:22px;background:#fee2e2;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">6</div>
+        <div><div style="font-size:11px;font-weight:700;color:#0f172a;">Equity Recycling</div><div style="font-size:10px;color:#64748b;margin-top:1px;">Minimum payments + periodic lump-sum equity injections into ETFs</div></div>
+      </div>
+    </div>
   </div>
 
   <!-- ─── BLOCK 1: Base Mortgage ───────────────────────────────────── -->
@@ -9857,7 +9899,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
     <div style="background:linear-gradient(90deg,#0f766e,#0d9488);padding:13px 20px;display:flex;align-items:center;gap:12px;">
       <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">1</div>
       <div>
-        <div style="font-size:17px;font-weight:800;color:#fff;">Base Mortgage</div>
+        <div style="font-size:22px;font-weight:800;color:#fff;">Base Mortgage</div>
         <div style="font-size:10px;color:rgba(255,255,255,.85);">Loan amount, interest rate and term — the foundation of all scenarios</div>
       </div>
       <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;">Updates live as you type</div>
@@ -9950,7 +9992,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
     <div style="background:linear-gradient(90deg,#6d28d9,#8b5cf6);padding:13px 20px;display:flex;align-items:center;gap:12px;">
       <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">2</div>
       <div>
-        <div style="font-size:17px;font-weight:800;color:#fff;">Accelerated Payoff</div>
+        <div style="font-size:22px;font-weight:800;color:#fff;">Accelerated Payoff</div>
         <div style="font-size:10px;color:rgba(255,255,255,.85);">Extra monthly payment + up to 10 lump-sum injections to slash interest</div>
       </div>
       <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;">Builds on Scenario 1</div>
@@ -9998,19 +10040,160 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         </table>
       </div>
     </div>
-    <div style="padding:12px 18px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fafafa;">
-      <div style="font-size:10px;color:#94a3b8;">Extra payments from Sc2 flow into Sc4</div>
-      <button onclick="meiRunSc2()" style="padding:9px 20px;background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(109,40,217,.3);">▶ Run Scenario 2</button>
-      <button onclick="meiResetSc2()" style="padding:9px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Sc2</button>
+    <!-- ─── Sc2 Run / Reset ──────────────────────────────────────────── -->
+    <div style="padding:12px 18px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;background:#fafafa;">
+      <div style="font-size:10px;color:#94a3b8;">Extra payments feed into Sc4 side-by-side · lump sums above</div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="meiRunSc2()" style="padding:9px 20px;background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(109,40,217,.3);">▶ Run Scenario 2</button>
+        <button onclick="meiResetSc2()" style="padding:9px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Sc2</button>
+      </div>
+    </div>
+    <!-- ─── Post-Payoff Investment Extension ─────────────────────────── -->
+    <div style="border-top:2px dashed #ddd6fe;background:linear-gradient(135deg,#faf5ff,#f5f3ff);">
+      <div style="padding:12px 20px 8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span style="font-size:16px;">💡</span>
+        <div>
+          <div style="font-size:14px;font-weight:800;color:#5b21b6;">After Mortgage Clears — Keep Investing</div>
+          <div style="font-size:10px;color:#7c3aed;margin-top:1px;">Redirect your freed monthly repayment (base + extra) into ETFs for additional years</div>
+        </div>
+        <div id="meiSc2PostFreedBadge" style="margin-left:auto;background:#ede9fe;border:1px solid #ddd6fe;border-radius:8px;padding:4px 12px;font-size:11px;font-weight:800;color:#5b21b6;display:none;">
+          Freed: <span id="meiSc2PostFreedAmt">—</span>/mo
+        </div>
+      </div>
+      <!-- Inputs row -->
+      <div style="padding:8px 18px 14px;display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;border-top:1px solid #ede9fe;">
+        <div>
+          <label style="font-size:11px;font-weight:700;color:#5b21b6;display:block;margin-bottom:4px;">Invest for years after payoff</label>
+          <input id="mei_sc2p_yrs" type="number" value="10" min="1" max="30" style="width:90px;padding:7px 10px;border:1.5px solid #ddd6fe;border-radius:8px;font-size:14px;font-weight:800;text-align:center;background:#fff;" onfocus="this.style.border='1.5px solid #7c3aed'" onblur="this.style.border='1.5px solid #ddd6fe'">
+        </div>
+        <div style="flex:1;min-width:200px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:6px;">
+            <div style="font-size:11px;font-weight:700;color:#64748b;">ETF Funds — freed payment splits equally (up to 6)</div>
+            <div style="font-size:11px;font-weight:800;color:#7c3aed;background:#ede9fe;border-radius:6px;padding:2px 10px;">Total: <span id="meiDcaTotalSc2P">$0/mo</span></div>
+          </div>
+          <div id="meiFundsSc2PList" style="display:flex;flex-direction:column;gap:5px;margin-bottom:7px;"></div>
+          <button id="mei_addFundBtnSc2P" onclick="meiAddFundSc2P()" style="padding:5px 12px;border:1.5px dashed #c4b5fd;border-radius:7px;background:transparent;color:#7c3aed;font-size:11px;font-weight:700;cursor:pointer;">+ Add Fund</button>
+        </div>
+      </div>
+      <!-- Run / Reset row -->
+      <div style="padding:10px 18px;border-top:1px solid #ede9fe;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;background:#f5f3ff;">
+        <div style="font-size:10px;color:#94a3b8;">DCA = (base repayment + extra) ÷ number of funds · Run Sc2 first</div>
+        <div style="display:flex;gap:8px;">
+          <button onclick="meiRunSc2PostPayoff()" style="padding:9px 20px;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(124,58,237,.3);">▶ Run Post-Payoff Phase</button>
+          <button onclick="meiResetSc2P()" style="padding:9px 14px;background:#fff;border:1.5px solid #ddd6fe;color:#7c3aed;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset</button>
+        </div>
+      </div>
+      <!-- Chart -->
+      <div style="padding:14px 18px;border-top:1px solid #ede9fe;">
+        <div style="font-size:12px;font-weight:700;color:#1e293b;margin-bottom:8px;">Post-Payoff ETF Growth</div>
+        <div style="position:relative;height:160px;"><canvas id="meiChartSc2P"></canvas></div>
+      </div>
+      <!-- View Final Result toggle -->
+      <div id="meiSc2PResultWrap" style="display:none;border-top:1px solid #ede9fe;">
+        <div style="padding:12px 18px;display:flex;justify-content:center;">
+          <button onclick="(function(){var p=document.getElementById('meiSc2PResultPanel');var btn=document.getElementById('meiSc2PViewBtn');var open=p.style.display!=='none';p.style.display=open?'none':'block';btn.textContent=open?'📊 View Final Result':'▲ Hide Result';})()" id="meiSc2PViewBtn" style="padding:11px 28px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 3px 12px rgba(79,70,229,.3);letter-spacing:.2px;">📊 View Final Result</button>
+        </div>
+        <div id="meiSc2PResultPanel" style="display:none;">
+          <div id="meiSc2PResult"></div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- ─── BLOCK 3: Mortgage + ETF Side-by-Side ─────────────────────── -->
+  <!-- ─── Sub-section divider: ETF Investment with Pay-Off ──────────── -->
+  <div style="display:flex;align-items:center;gap:12px;margin:8px 0 16px;">
+    <div style="flex:1;height:1px;background:linear-gradient(90deg,#ddd6fe,#c4b5fd);"></div>
+    <div style="display:flex;align-items:center;gap:8px;background:linear-gradient(90deg,#f5f3ff,#ede9fe);border:1.5px solid #c4b5fd;border-radius:20px;padding:5px 14px;">
+      <span style="font-size:13px;">💜</span>
+      <span style="font-size:11px;font-weight:800;color:#5b21b6;text-transform:uppercase;letter-spacing:.6px;">ETF Investment with Pay-Off Mortgage at one Point</span>
+      <span style="font-size:10px;color:#6d28d9;background:#ddd6fe;padding:2px 8px;border-radius:10px;">Sc3 · Payoff Tool</span>
+    </div>
+    <div style="flex:1;height:1px;background:linear-gradient(90deg,#c4b5fd,#ddd6fe);"></div>
+  </div>
+  <div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:12px;padding:10px 16px;margin-bottom:14px;font-size:11px;color:#5b21b6;line-height:1.6;">
+    <strong>At what year in my mortgage should I use my ETF portfolio to clear the remaining balance — and how much will my portfolio have grown at the end of my DCA duration?</strong><br>
+    <span style="color:#6d28d9;">Set your DCA investing duration and choose the mortgage year at which you want to lump-sum withdraw the outstanding balance. The simulation shows the portfolio kink, what remains after payoff, and lets you check the ETF value at any year along the way.</span>
+  </div>
+
+  <!-- ─── BLOCK 3: ETF Investment with Pay-Off Mortgage at one Point ─── -->
   <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);margin-bottom:18px;">
-    <div style="background:linear-gradient(90deg,#d97706,#f59e0b);padding:13px 20px;display:flex;align-items:center;gap:12px;">
+    <div style="background:linear-gradient(90deg,#7c3aed,#8b5cf6);padding:13px 20px;display:flex;align-items:center;gap:12px;">
       <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">3</div>
       <div>
-        <div style="font-size:17px;font-weight:800;color:#fff;">Mortgage + ETF Side-by-Side</div>
+        <div style="font-size:22px;font-weight:800;color:#fff;">ETF Investment with Pay-Off Mortgage at one Point</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.85);">Invest in ETFs for X years — at year Y, lump-sum clear the mortgage. See what your portfolio has grown to at the end of your DCA duration.</div>
+      </div>
+      <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;">Own fund selection</div>
+    </div>
+    <!-- Inputs row -->
+    <div style="padding:14px 18px;border-bottom:1px solid #f1f5f9;display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;">
+      <div>
+        <label style="font-size:11px;font-weight:700;color:#5b21b6;display:block;margin-bottom:4px;">DCA Duration (years)</label>
+        <input id="mei_sc6_dur" type="number" value="20" min="2" max="29" style="width:80px;padding:7px 10px;border:1.5px solid #ddd6fe;border-radius:8px;font-size:14px;font-weight:800;text-align:center;background:#fff;" onfocus="this.style.border='1.5px solid #7c3aed'" onblur="this.style.border='1.5px solid #ddd6fe'">
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:700;color:#5b21b6;display:block;margin-bottom:4px;">Payoff at Year</label>
+        <input id="mei_sc6_payoff_yr" type="number" value="13" min="1" max="28" style="width:80px;padding:7px 10px;border:1.5px solid #ddd6fe;border-radius:8px;font-size:14px;font-weight:800;text-align:center;background:#fff;" onfocus="this.style.border='1.5px solid #7c3aed'" onblur="this.style.border='1.5px solid #ddd6fe'">
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 14px;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:9px;">
+        <input type="checkbox" id="mei_sc6_redirect" checked style="width:15px;height:15px;cursor:pointer;accent-color:#7c3aed;">
+        <label for="mei_sc6_redirect" style="font-size:11px;font-weight:700;color:#5b21b6;cursor:pointer;">Redirect freed mortgage payment to ETF after payoff</label>
+      </div>
+      <div style="flex:1;min-width:180px;background:#f5f3ff;border:1px solid #c4b5fd;border-radius:9px;padding:7px 12px;font-size:10px;color:#5b21b6;line-height:1.5;">
+        At the payoff year, outstanding mortgage balance is lump-sum withdrawn from the ETF. Simulation continues for remaining years with an optional DCA boost.
+      </div>
+    </div>
+    <!-- 3-col body -->
+    <div style="display:grid;grid-template-columns:310px 1fr 310px;min-height:220px;">
+      <!-- Left: Fund list -->
+      <div style="padding:18px 16px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;gap:10px;">
+        <div style="font-size:12px;font-weight:700;color:#64748b;">Sc6 ETF Funds (own selection, up to 6)</div>
+        <div id="meiFundsSc6List" style="display:flex;flex-direction:column;gap:6px;"></div>
+        <button id="mei_addFundBtnSc6" onclick="meiAddFundSc6()" style="padding:6px 12px;border:1.5px dashed #c4b5fd;border-radius:7px;background:transparent;color:#7c3aed;font-size:11px;font-weight:700;cursor:pointer;width:100%;">+ Add Fund (0/6)</button>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#64748b;">Total DCA: <span id="meiDcaTotalSc6" style="font-weight:800;color:#7c3aed;">$0/mo</span></div>
+      </div>
+      <!-- Center: Chart + year-check -->
+      <div style="padding:18px;">
+        <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:2px;">ETF Portfolio — with Payoff Withdrawal</div>
+        <div style="font-size:10px;color:#94a3b8;margin-bottom:10px;">Portfolio dips at payoff year, then resumes growth (boosted if freed payment is redirected)</div>
+        <div style="position:relative;height:200px;"><canvas id="meiChartSc6"></canvas></div>
+        <!-- Year-check slider — hidden until first run -->
+        <div id="meiSc6YearCheckPanel" style="display:none;margin-top:12px;align-items:center;gap:10px;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:9px;padding:8px 14px;">
+          <div style="font-size:11px;font-weight:700;color:#5b21b6;white-space:nowrap;">Check ETF at Year:</div>
+          <input type="range" id="mei_sc6_yr_slider" min="1" max="20" value="20" style="flex:1;accent-color:#7c3aed;" oninput="meiSc6YearCheck()">
+          <div style="font-size:12px;font-weight:800;color:#5b21b6;white-space:nowrap;min-width:36px;" id="mei_sc6_yr_label">Yr 20</div>
+          <div style="font-size:15px;font-weight:900;color:#7c3aed;min-width:90px;text-align:right;" id="mei_sc6_yr_val">—</div>
+        </div>
+      </div>
+      <!-- Right: Tiles -->
+      <div style="border-left:1px solid #f1f5f9;overflow:auto;">
+        <div id="meiSc6Result"></div>
+      </div>
+    </div>
+    <div style="padding:12px 18px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fafafa;">
+      <div style="font-size:10px;color:#94a3b8;">Falls back to Sc3 funds if no Sc6 funds added</div>
+      <button onclick="meiRunSc6()" style="padding:9px 20px;background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(124,58,237,.3);">▶ Run Scenario 6</button>
+      <button onclick="meiResetSc6()" style="padding:9px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Sc6</button>
+    </div>
+  </div>
+
+  <!-- ─── Sub-section divider: Mortgage + ETF Side-by-Side ───────────── -->
+  <div style="display:flex;align-items:center;gap:12px;margin:8px 0 16px;">
+    <div style="flex:1;height:1px;background:linear-gradient(90deg,#fde68a,#fcd34d);"></div>
+    <div style="display:flex;align-items:center;gap:8px;background:linear-gradient(90deg,#fffbeb,#fef3c7);border:1.5px solid #fcd34d;border-radius:20px;padding:5px 14px;">
+      <span style="font-size:13px;">📊</span>
+      <span style="font-size:11px;font-weight:800;color:#b45309;text-transform:uppercase;letter-spacing:.6px;">Mortgage + ETF Side-by-Side Strategies</span>
+      <span style="font-size:10px;color:#92400e;background:#fde68a;padding:2px 8px;border-radius:10px;">Sc4 · Sc5 · Sc6</span>
+    </div>
+    <div style="flex:1;height:1px;background:linear-gradient(90deg,#fcd34d,#fde68a);"></div>
+  </div>
+
+  <!-- ─── BLOCK 4: Mortgage + ETF Side-by-Side ─────────────────────── -->
+  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);margin-bottom:18px;">
+    <div style="background:linear-gradient(90deg,#d97706,#f59e0b);padding:13px 20px;display:flex;align-items:center;gap:12px;">
+      <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">4</div>
+      <div>
+        <div style="font-size:22px;font-weight:800;color:#fff;">Mortgage + ETF Side-by-Side</div>
         <div style="font-size:10px;color:rgba(255,255,255,.85);">Pay mortgage AND invest in ETFs simultaneously — watch both grow</div>
       </div>
       <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;">Builds on Scenario 2</div>
@@ -10053,9 +10236,9 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
   <!-- ─── BLOCK 4: Payoff First Then ETF ──────────────────────────────── -->
   <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);margin-bottom:18px;">
     <div style="background:linear-gradient(90deg,#0284c7,#0ea5e9);padding:13px 20px;display:flex;align-items:center;gap:12px;">
-      <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">4</div>
+      <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">5</div>
       <div>
-        <div style="font-size:17px;font-weight:800;color:#fff;">Payoff Mortgage First, Then Invest</div>
+        <div style="font-size:22px;font-weight:800;color:#fff;">Payoff Mortgage First, Then Invest</div>
         <div style="font-size:10px;color:rgba(255,255,255,.85);">Aggressively eliminate debt, then redirect full freed payment into ETFs</div>
       </div>
       <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;">Own fund selection</div>
@@ -10087,12 +10270,12 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
     </div>
   </div>
 
-  <!-- ─── BLOCK 5: Equity Recycling ───────────────────────────────────── -->
+  <!-- ─── BLOCK 6: Equity Recycling ───────────────────────────────────── -->
   <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);margin-bottom:24px;">
     <div style="background:linear-gradient(90deg,#dc2626,#ef4444);padding:13px 20px;display:flex;align-items:center;gap:12px;">
-      <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">5</div>
+      <div style="width:28px;height:28px;min-width:28px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;">6</div>
       <div>
-        <div style="font-size:17px;font-weight:800;color:#fff;">Minimum Payments + Equity Recycling</div>
+        <div style="font-size:22px;font-weight:800;color:#fff;">Minimum Payments + Equity Recycling</div>
         <div style="font-size:10px;color:rgba(255,255,255,.85);">Keep minimum mortgage, pull equity every few years as ETF lump-sum injections</div>
       </div>
       <div style="margin-left:auto;font-size:10px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;">Own fund selection</div>
@@ -10132,13 +10315,14 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
     </div>
   </div>
 
+
   <!-- ─── COMPARISON CHARTS ────────────────────────────────────────────── -->
   <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.04);">
     <div style="font-size:14px;font-weight:800;color:#1e293b;margin-bottom:4px;">📊 Scenario Comparison</div>
     <div style="font-size:10px;color:#94a3b8;margin-bottom:18px;">Run any scenario above to populate these comparison charts</div>
     <div style="display:grid;grid-template-columns:1fr;gap:18px;">
       <div>
-        <div style="font-size:11px;font-weight:700;color:#64748b;margin-bottom:6px;">ETF Portfolio Growth — Sc3 vs Sc4 vs Sc5</div>
+        <div style="font-size:11px;font-weight:700;color:#64748b;margin-bottom:6px;">ETF Portfolio Growth — Sc3 (side-by-side) vs Sc4 (payoff first) vs Sc5 (equity recycle) vs Sc6 (payoff year)</div>
         <div style="position:relative;height:220px;"><canvas id="meiChartComp1"></canvas></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
@@ -10164,8 +10348,10 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
 window.MEI_FUNDS     = [];   // Sc3 funds
 window.MEI_FUNDS_SC4 = [];   // Sc4 funds (own selection)
 window.MEI_FUNDS_SC5 = [];   // Sc5 funds (own selection)
+window.MEI_FUNDS_SC6 = [];   // Sc6 funds (own selection)
+window.MEI_FUNDS_SC2P = [];  // Sc2 post-payoff funds
 window.MEI_LUMP_MORT = [];
-window.MEI_RESULTS   = {sc1:null,sc2:null,sc3:null,sc4:null,sc5:null};
+window.MEI_RESULTS   = {sc1:null,sc2:null,sc2p:null,sc3:null,sc4:null,sc5:null,sc6:null};
 var MEI_CHARTS = {};
 var FUND_COLORS = ['#0d9488','#8b5cf6','#f59e0b','#0ea5e9','#ef4444','#ec4899'];
 
@@ -10183,7 +10369,7 @@ function yrLabel(m){ var y=Math.floor(m/12),mo=m%12; return y+(mo>0?'y '+mo+'m':
 
 /* ── Glowing output tiles ─────────────────────────────── */
 function meiEmptyState(n){
-  var labels=['','Base Mortgage','Accelerated Payoff','ETF Side-by-Side','Payoff First','Equity Recycling'];
+  var labels=['','Base Mortgage','Accelerated Payoff','ETF Side-by-Side','Payoff First','Equity Recycling','ETF Lump-Sum Payoff'];
   return '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;padding:20px;gap:8px;color:#94a3b8;text-align:center;">'+
     '<div style="font-size:28px;opacity:.35;">📊</div>'+
     '<div style="font-size:12px;font-weight:700;color:#64748b;">Scenario '+(n)+' Results</div>'+
@@ -10213,8 +10399,11 @@ function meiCalcSchedule(loan, annualRate, years, extraMonthly, lumps, opts){
   (lumps||[]).forEach(function(l){ lumpMap[l.yr]=(lumpMap[l.yr]||0)+l.amt; });
   var o = opts||{};
   var etfR12 = (o.etfR||10)/12/100;
+  // Per-fund ETF tracking: when fundsArray provided, simulate each fund independently (JIRA-69)
+  var etfFunds = (o.fundsArray&&o.fundsArray.length) ? o.fundsArray.map(function(f){return {r12:(f.rate||10)/1200,dca:f.dca||0,v:0};}) : null;
   var balance=loan, cumInt=0, payoffMonth=0, etf=0;
-  var result={labels:[],principalByYr:[],interestByYr:[],balanceByYr:[loan],cumIntByYr:[0],etfByYr:[0],payoffMonth:0,totalInterest:0,basePmt:base};
+  // etfByYr starts empty (no initial [0]) so index N-1 = year N (JIRA-69 off-by-one fix)
+  var result={labels:[],principalByYr:[],interestByYr:[],balanceByYr:[loan],cumIntByYr:[0],etfByYr:[],payoffMonth:0,totalInterest:0,basePmt:base};
   var maxYrs = Math.max(years, o.simYrs||0, (o.extraYrs||0)+years, 2);
   maxYrs = Math.min(maxYrs, 50);
 
@@ -10237,7 +10426,11 @@ function meiCalcSchedule(loan, annualRate, years, extraMonthly, lumps, opts){
       } else if(o.type==='invest_after'){
         etf=etf*(1+etfR12)+o.monthlyInvest;
       }
-      if(o.type==='dca_with_mort'&&yr<=(o.simYrs||years)){ etf=etf*(1+etfR12)+(o.monthlyCDA||0); }
+      // dca_with_mort: per-fund annuity-due when fundsArray provided (JIRA-69), else blended ordinary
+      if(o.type==='dca_with_mort'&&yr<=(o.simYrs||years)){
+        if(etfFunds){ etfFunds.forEach(function(f){f.v=(f.v+f.dca)*(1+f.r12);}); etf=etfFunds.reduce(function(s,f){return s+f.v;},0); }
+        else{ etf=etf*(1+etfR12)+(o.monthlyCDA||0); }
+      }
       if(o.type==='recycle'&&yr<=(o.simYrs||years)){ etf=etf*(1+etfR12)+(o.monthlyCDA||0); }
     }
     result.labels.push('Yr '+yr);
@@ -10458,7 +10651,7 @@ window.meiRunSc2 = function(){
   var loan=gn('mei_principal',0),rate=gn('mei_rate',0),yrs=gn('mei_years',0);
   if(!loan||!rate||!yrs){alert('Fill in Loan, Rate and Years first.');return;}
   var extra=gn('mei_extraMort',0);
-  var sch2=meiCalcSchedule(loan,rate,yrs,extra,window.MEI_LUMP_MORT);
+  var sch2=meiCalcSchedule(loan,rate,yrs,extra,window.MEI_LUMP_MORT); sch2.extra=extra;
   var sch1=window.MEI_RESULTS.sc1||meiCalcSchedule(loan,rate,yrs,0,[]);
   window.MEI_RESULTS.sc2=sch2;
   var saved=sch1.totalInterest-sch2.totalInterest;
@@ -10526,6 +10719,8 @@ window.meiRunSc2 = function(){
       +'<div style="background:#fff7ed;border:1px solid #fdba74;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:#9a3412;">💸 Total interest: '+fmtF(sch2.totalInterest)+'</div>'
       +'<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:#065f46;">💰 Saved: '+fmtF(saved)+'</div>';
   })();
+  // Refresh post-payoff fund list so auto-DCA shows confirmed freed amount
+  if(window.meiRenderFundsSc2P) window.meiRenderFundsSc2P();
 };
 
 /* ── Fund UI (Sc3) ────────────────────────────────────── */
@@ -10587,6 +10782,7 @@ function meiRenderFundsMini(funds, listId, addBtnId, dcaTotalId, pickMode, remov
 }
 window.meiRenderFundsSc4 = function(){ meiRenderFundsMini(window.MEI_FUNDS_SC4,'meiFundsSc4List','mei_addFundBtnSc4','meiDcaTotalSc4','mei4','meiRemoveFundSc4'); };
 window.meiRenderFundsSc5 = function(){ meiRenderFundsMini(window.MEI_FUNDS_SC5,'meiFundsSc5List','mei_addFundBtnSc5','meiDcaTotalSc5','mei5','meiRemoveFundSc5'); };
+window.meiRenderFundsSc6 = function(){ meiRenderFundsMini(window.MEI_FUNDS_SC6,'meiFundsSc6List','mei_addFundBtnSc6','meiDcaTotalSc6','mei6','meiRemoveFundSc6'); };
 window.meiAddFundSc4 = function(){
   if(window.MEI_FUNDS_SC4.length>=6) return;
   window.MEI_FUNDS_SC4.push({sym:'IVV',name:'iShares S&P 500 ETF',rate:13.2,cagr:13.2,dca:500,divYield:1.3});
@@ -10599,6 +10795,179 @@ window.meiAddFundSc5 = function(){
 };
 window.meiRemoveFundSc4 = function(fi){ window.MEI_FUNDS_SC4.splice(fi,1); window.meiRenderFundsSc4(); };
 window.meiRemoveFundSc5 = function(fi){ window.MEI_FUNDS_SC5.splice(fi,1); window.meiRenderFundsSc5(); };
+window.meiRemoveFundSc6 = function(fi){ window.MEI_FUNDS_SC6.splice(fi,1); window.meiRenderFundsSc6(); };
+window.meiAddFundSc6 = function(){
+  if(window.MEI_FUNDS_SC6.length>=6) return;
+  window.MEI_FUNDS_SC6.push({sym:'VOO',name:'Vanguard S&P 500 ETF',rate:13.8,cagr:13.8,dca:1000,divYield:1.4});
+  window.meiRenderFundsSc6();
+};
+
+/* ── Sc2 Post-Payoff ─────────────────────────────────── */
+function meiGetFreedPreview(){
+  var sc2=window.MEI_RESULTS&&window.MEI_RESULTS.sc2;
+  if(sc2) return sc2.basePmt+(sc2.extra||0);
+  var P=gn('mei_principal',0),r=gn('mei_rate',0)/100,y=gn('mei_years',0),ex=gn('mei_extraMort',0);
+  if(!P||!r||!y) return 0;
+  var r12=r/12,n=y*12;
+  return Math.round(P*r12/(1-Math.pow(1+r12,-n)))+ex;
+}
+window.meiRenderFundsSc2P = function(){
+  var freed=meiGetFreedPreview();
+  var funds=window.MEI_FUNDS_SC2P;
+  var n=funds.length||1;
+  var perFund=freed?Math.round(freed/n):0;
+  var list=document.getElementById('meiFundsSc2PList');
+  var totEl=document.getElementById('meiDcaTotalSc2P');
+  var addBtn=document.getElementById('mei_addFundBtnSc2P');
+  if(!list) return;
+  if(addBtn) addBtn.style.display=funds.length>=6?'none':'inline-block';
+  if(!funds.length){
+    list.innerHTML='<div style="font-size:10px;color:#94a3b8;padding:4px 0;">No funds added — click + Add Fund</div>';
+    if(totEl) totEl.textContent='$0/mo';
+    return;
+  }
+  list.innerHTML=funds.map(function(f,i){
+    return '<div style="display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #ddd6fe;border-radius:8px;padding:7px 10px;">'
+      +'<div style="flex:1;min-width:0;">'
+        +'<div style="font-size:11px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+f.sym+'</div>'
+        +'<div style="font-size:9px;color:#64748b;">'+f.name+'</div>'
+      +'</div>'
+      +'<div style="text-align:right;min-width:80px;">'
+        +(perFund?'<div style="font-size:12px;font-weight:800;color:#7c3aed;">'+fmtF(perFund)+'/mo</div>':'<div style="font-size:11px;color:#94a3b8;">Run Sc2 first</div>')
+        +'<div style="font-size:9px;color:#94a3b8;">Auto · '+(f.rate||10)+'% CAGR</div>'
+      +'</div>'
+      +'<button onclick="openPicker('+i+',\'mei2p\')" style="padding:3px 8px;border:1px solid #ddd6fe;border-radius:6px;background:#f5f3ff;color:#7c3aed;font-size:10px;font-weight:700;cursor:pointer;">Change</button>'
+      +'<button onclick="meiRemoveFundSc2P('+i+')" style="padding:3px 7px;border:1px solid #fecaca;border-radius:6px;background:#fff5f5;color:#dc2626;font-size:10px;font-weight:700;cursor:pointer;">✕</button>'
+      +'</div>';
+  }).join('');
+  if(totEl) totEl.textContent=freed?fmtF(freed)+'/mo (auto-split)':'$0/mo';
+};
+window.meiRemoveFundSc2P = function(fi){ window.MEI_FUNDS_SC2P.splice(fi,1); window.meiRenderFundsSc2P(); };
+window.meiAddFundSc2P = function(){
+  if(window.MEI_FUNDS_SC2P.length>=6){ alert('Max 6 funds'); return; }
+  window.MEI_FUNDS_SC2P.push({sym:'VOO',name:'Vanguard S&P 500 ETF',rate:13.8,cagr:13.8,dca:1000,divYield:1.4});
+  window.meiRenderFundsSc2P();
+};
+
+window.meiRunSc2PostPayoff = function(){
+  var sc2 = window.MEI_RESULTS.sc2;
+  if(!sc2){ alert('Run Scenario 2 first to establish the payoff timeline.'); return; }
+  var funds = window.MEI_FUNDS_SC2P;
+  if(!funds.length){ alert('Add at least one ETF fund for the post-payoff investment.'); return; }
+  var postYrs = Math.min(30, Math.max(1, gn('mei_sc2p_yrs', 10)));
+  var freed = sc2.basePmt + (sc2.extra || 0);
+  var perFundDca = freed / funds.length;          // always split equally
+  var fundSims = funds.map(function(f){
+    return { r12: (f.rate || 10) / 1200, dca: perFundDca, v: 0 };
+  });
+  var etfByYr = [], labels = [];
+  for(var yr = 1; yr <= postYrs; yr++){
+    for(var m = 0; m < 12; m++){
+      fundSims.forEach(function(f){ f.v = (f.v + f.dca) * (1 + f.r12); });
+    }
+    etfByYr.push(Math.round(fundSims.reduce(function(s,f){ return s + f.v; }, 0)));
+    labels.push('Yr ' + yr);
+  }
+  var finalETF = etfByYr[postYrs - 1] || 0;
+  var totalInvested = Math.round(freed * 12 * postYrs);
+  window.MEI_RESULTS.sc2p = { etfByYr: etfByYr, labels: labels, freed: freed, postYrs: postYrs, finalETF: finalETF };
+  var badge = document.getElementById('meiSc2PostFreedBadge');
+  var freeda = document.getElementById('meiSc2PostFreedAmt');
+  if(badge) badge.style.display = 'block';
+  if(freeda) freeda.textContent = fmtF(freed);
+  meiBar('meiChartSc2P','sc2p',labels,[dsBar('ETF Value',etfByYr,'#8b5cf6')]);
+  var el = document.getElementById('meiSc2PResult');
+  if(el){ el.innerHTML = meiResultHTML([
+    {label:'Final ETF',val:fmt(finalETF),color:'#7c3aed',border:'#ddd6fe',glow:'rgba(124,58,237,.2)'},
+    {label:'Freed Monthly',val:fmtF(freed),color:'#0d9488',border:'#99f6e4',glow:'rgba(13,148,136,.2)'},
+    {label:'Total Invested',val:fmtF(totalInvested),color:'#4f46e5',border:'#c7d2fe',glow:'rgba(79,70,229,.18)'},
+    {label:'Invest Period',val:postYrs+' yrs',color:'#ea580c',border:'#fed7aa',glow:'rgba(234,88,12,.18)'}
+  ],'#faf5ff','#ede9fe'); }
+  // Show "View Final Result" wrapper; keep panel hidden until button clicked
+  var wrap = document.getElementById('meiSc2PResultWrap');
+  var panel = document.getElementById('meiSc2PResultPanel');
+  var btn = document.getElementById('meiSc2PViewBtn');
+  if(wrap){ wrap.style.display='block'; }
+  if(panel){ panel.style.display='none'; }
+  if(btn){ btn.textContent='📊 View Final Result'; }
+  // Update fund list to show confirmed per-fund amounts
+  window.meiRenderFundsSc2P();
+};
+
+window.meiResetSc2P = function(){
+  window.MEI_FUNDS_SC2P = [];
+  window.meiRenderFundsSc2P();
+  window.MEI_RESULTS.sc2p = null;
+  var yr = document.getElementById('mei_sc2p_yrs'); if(yr) yr.value = '10';
+  var r = document.getElementById('meiSc2PResult'); if(r) r.innerHTML = '';
+  var badge = document.getElementById('meiSc2PostFreedBadge'); if(badge) badge.style.display = 'none';
+  var wrap = document.getElementById('meiSc2PResultWrap'); if(wrap) wrap.style.display = 'none';
+  var panel = document.getElementById('meiSc2PResultPanel'); if(panel) panel.style.display = 'none';
+  var btn = document.getElementById('meiSc2PViewBtn'); if(btn) btn.textContent = '📊 View Final Result';
+  meiDestroy('sc2p');
+};
+
+/* ── Scenario 6 calculation engine ───────────────────── */
+// Standalone month-by-month simulation for ETF Lump-Sum Payoff.
+// Phase 1 (yr 1..payoffYr): pay mortgage + DCA ETF per-fund (annuity-due, same as Sc3 JIRA-69 fix).
+// End of payoffYr: withdraw outstanding mortgage balance from ETF as lump sum.
+// Phase 2 (yr payoffYr+1..dcaDur): no mortgage; if redirectFreed, boost DCA by freed monthly payment.
+function meiCalcSc6(loan, mortRate, mortYrs, extra, funds, dcaDur, payoffYr, redirectFreed){
+  var r12  = mortRate/12/100;
+  var n    = mortYrs*12;
+  var base = r12>0 ? loan*r12*Math.pow(1+r12,n)/(Math.pow(1+r12,n)-1) : loan/n;
+  // Per-fund ETF (annuity-due: deposit + grow same step)
+  var ef = funds.map(function(f){ return {r12:(f.rate||10)/1200, dca:f.dca||0, v:0}; });
+  var totalDca0 = ef.reduce(function(s,f){ return s+f.dca; }, 0);
+  var balance = loan;
+  var etfByYr=[], balByYr=[], labels=[];
+  var balAtPayoff=0, etfBeforePayoff=0, etfAfterPayoff=0;
+  for(var yr=1; yr<=dcaDur; yr++){
+    for(var m=0; m<12; m++){
+      // Mortgage payment (guard: skip if already paid off)
+      if(balance>0.005){
+        var intC=balance*r12;
+        var prin=Math.min(balance, Math.max(0, base+extra-intC));
+        balance=Math.max(0, balance-prin);
+      }
+      // ETF DCA annuity-due: deposit then compound (consistent with JIRA-69 Sc3 fix)
+      ef.forEach(function(f){ f.v=(f.v+f.dca)*(1+f.r12); });
+    }
+    // ── End-of-year payoff event ──
+    if(yr===payoffYr){
+      balAtPayoff=balance;
+      var etfTotal=ef.reduce(function(s,f){ return s+f.v; }, 0);
+      etfBeforePayoff=etfTotal;
+      if(balAtPayoff>0.01 && etfTotal>0){
+        var ratio=balAtPayoff/etfTotal;
+        if(ratio>=1){
+          // ETF insufficient — partial payoff, ETF goes to zero
+          ef.forEach(function(f){ f.v=0; });
+          balance=balAtPayoff-etfTotal;
+        } else {
+          // Full payoff: reduce each fund proportionally
+          ef.forEach(function(f){ f.v=f.v*(1-ratio); });
+          balance=0;
+        }
+      }
+      etfAfterPayoff=ef.reduce(function(s,f){ return s+f.v; }, 0);
+      // Redirect freed mortgage payment (base + extra) to ETF DCA
+      if(redirectFreed && balAtPayoff>0.01){
+        var freed=base+(extra||0);
+        if(totalDca0>0){
+          ef.forEach(function(f){ f.dca+=f.dca/totalDca0*freed; });
+        } else if(ef.length>0){
+          var share=freed/ef.length;
+          ef.forEach(function(f){ f.dca+=share; });
+        }
+      }
+    }
+    etfByYr.push(Math.round(ef.reduce(function(s,f){ return s+f.v; }, 0)));
+    balByYr.push(Math.round(Math.max(0, balance)));
+    labels.push('Yr '+yr);
+  }
+  return {labels:labels, etfByYr:etfByYr, balByYr:balByYr, balAtPayoff:balAtPayoff, etfBeforePayoff:etfBeforePayoff, etfAfterPayoff:etfAfterPayoff, basePmt:base};
+}
 
 /* ── Scenario 3 ───────────────────────────────────────── */
 window.meiRunSc3 = function(){
@@ -10607,8 +10976,9 @@ window.meiRunSc3 = function(){
   if(!window.MEI_FUNDS.length){alert('Add at least one ETF fund.');return;}
   var extra=gn('mei_extraMort',0);
   var dur=Math.min(30,Math.max(1,gn('mei_sc3_dur',30)));
-  var etf=meiBlend(window.MEI_FUNDS);
-  var sch=meiCalcSchedule(loan,rate,yrs,extra,window.MEI_LUMP_MORT,{type:'dca_with_mort',monthlyCDA:etf.dca,etfR:etf.r,simYrs:dur});
+  var etfBlend=meiBlend(window.MEI_FUNDS); // kept for Blended CAGR + Monthly DCA display tiles only
+  // Pass fundsArray for per-fund simulation — eliminates blended-rate Jensen's inequality error (JIRA-69)
+  var sch=meiCalcSchedule(loan,rate,yrs,extra,window.MEI_LUMP_MORT,{type:'dca_with_mort',fundsArray:meiFundsFor(window.MEI_FUNDS),simYrs:dur});
   window.MEI_RESULTS.sc3=sch;
   var finalETF=sch.etfByYr[Math.min(dur,sch.etfByYr.length)-1]||sch.etfByYr[sch.etfByYr.length-1];
   var finalLoan=sch.balanceByYr[Math.min(dur,sch.balanceByYr.length-1)]||0;
@@ -10625,8 +10995,8 @@ window.meiRunSc3 = function(){
     {label:'ETF @ Yr '+dur,val:fmt(finalETF),color:'#d97706',border:'#fde68a',glow:'rgba(217,119,6,.3)'},
     {label:'Net Position',val:fmt(netPos),sub:netPos>0?'Positive net worth':'In debt',color:netPos>=0?'#0d9488':'#dc2626',border:netPos>=0?'#99f6e4':'#fecaca',glow:netPos>=0?'rgba(13,148,136,.25)':'rgba(220,38,38,.2)'},
     {label:'Total Interest',val:fmt(sch.totalInterest),color:'#64748b',border:'#e2e8f0',glow:'rgba(100,116,139,.15)'},
-    {label:'Monthly DCA',val:fmtF(etf.dca),color:'#d97706',border:'#fde68a',glow:'rgba(217,119,6,.2)'},
-    {label:'Blended CAGR',val:etf.r.toFixed(1)+'%',color:'#0d9488',border:'#99f6e4',glow:'rgba(13,148,136,.2)'}
+    {label:'Monthly DCA',val:fmtF(etfBlend.dca),color:'#d97706',border:'#fde68a',glow:'rgba(217,119,6,.2)'},
+    {label:'Blended CAGR',val:etfBlend.r.toFixed(1)+'%',color:'#0d9488',border:'#99f6e4',glow:'rgba(13,148,136,.2)'}
   ],'#fffbeb','#fde68a'); }
   meiUpdateComparison();
 };
@@ -10699,6 +11069,64 @@ window.meiRunSc5 = function(){
   meiUpdateComparison();
 };
 
+/* ── Scenario 6 ───────────────────────────────────────── */
+window.meiRunSc6 = function(){
+  var loan=gn('mei_principal',0),rate=gn('mei_rate',0),yrs=gn('mei_years',0);
+  if(!loan||!rate||!yrs){alert('Fill in Loan, Rate and Years first.');return;}
+  var extra=gn('mei_extraMort',0);
+  var dcaDur=Math.min(29,Math.max(2,gn('mei_sc6_dur',20)));
+  var payoffYr=Math.min(dcaDur-1,Math.max(1,gn('mei_sc6_payoff_yr',13)));
+  if(payoffYr>=dcaDur){alert('Payoff year must be less than DCA duration.');return;}
+  var redirectEl=document.getElementById('mei_sc6_redirect');
+  var redirect=redirectEl?redirectEl.checked:true;
+  var funds=meiFundsFor(window.MEI_FUNDS_SC6);
+  if(!funds.length){alert('Add at least one ETF fund (or ensure Sc3 funds are configured).');return;}
+  var r=meiCalcSc6(loan,rate,yrs,extra,funds,dcaDur,payoffYr,redirect);
+  window.MEI_RESULTS.sc6=r;
+  var finalETF=r.etfByYr[dcaDur-1];
+  var t6a=document.getElementById('meiT6a'),t6b=document.getElementById('meiT6b');
+  if(t6a) t6a.textContent=fmt(finalETF);
+  if(t6b) t6b.textContent=fmt(r.balAtPayoff);
+  // Chart: ETF portfolio + mortgage balance (balance drops to 0 at payoff year)
+  meiLine('meiChartSc6','sc6',r.labels,[
+    ds('ETF Portfolio',r.etfByYr,'#8b5cf6',true),
+    ds('Mortgage Balance',r.balByYr,'#94a3b8',false,[4,3])
+  ],'Value ($)');
+  // Year-check slider
+  var panel=document.getElementById('meiSc6YearCheckPanel');
+  if(panel){
+    panel.style.display='flex';
+    var slider=document.getElementById('mei_sc6_yr_slider');
+    if(slider){slider.max=String(dcaDur);slider.value=String(dcaDur);}
+    meiSc6YearCheck();
+  }
+  // Result tiles
+  var sc3r=window.MEI_RESULTS.sc3;
+  var sc3Val=sc3r?(sc3r.etfByYr[Math.min(dcaDur,sc3r.etfByYr.length)-1]||sc3r.etfByYr[sc3r.etfByYr.length-1]):null;
+  var tiles=[
+    {label:'ETF Before Payoff (Yr '+payoffYr+')',val:fmt(r.etfBeforePayoff),color:'#b45309',border:'#fde68a',glow:'rgba(180,83,9,.25)'},
+    {label:'Mortgage Cleared',val:fmt(r.balAtPayoff),sub:'Lump sum at Yr '+payoffYr,color:'#dc2626',border:'#fecaca',glow:'rgba(220,38,38,.25)'},
+    {label:'ETF After Payoff',val:fmt(r.etfAfterPayoff),sub:'Immediately after withdrawal',color:'#0d9488',border:'#99f6e4',glow:'rgba(13,148,136,.25)'},
+    {label:'Final ETF @ Yr '+dcaDur,val:fmt(finalETF),color:'#7c3aed',border:'#ddd6fe',glow:'rgba(124,58,237,.3)'}
+  ];
+  if(sc3Val!==null){
+    var diff=finalETF-sc3Val;
+    tiles.push({label:'Sc3 (no payoff) @ Yr '+dcaDur,val:fmt(sc3Val),sub:diff>0?'Sc6 wins +'+fmt(diff):diff<0?'Sc3 wins +'+fmt(-diff):'Equal',color:'#64748b',border:'#e2e8f0',glow:'rgba(100,116,139,.15)'});
+  }
+  var el=document.getElementById('meiSc6Result');
+  if(el){ el.style.display='block'; el.innerHTML=meiResultHTML(tiles,'#f5f3ff','#ddd6fe'); }
+  meiUpdateComparison();
+};
+window.meiSc6YearCheck = function(){
+  var r=window.MEI_RESULTS.sc6; if(!r) return;
+  var slider=document.getElementById('mei_sc6_yr_slider');
+  var yr=slider?parseInt(slider.value,10):1;
+  var lbl=document.getElementById('mei_sc6_yr_label');
+  var val=document.getElementById('mei_sc6_yr_val');
+  if(lbl) lbl.textContent='Yr '+yr;
+  if(val) val.textContent=fmt(r.etfByYr[yr-1]||0);
+};
+
 /* ── Comparison ───────────────────────────────────────── */
 function meiUpdateComparison(){
   var r=window.MEI_RESULTS;
@@ -10706,13 +11134,14 @@ function meiUpdateComparison(){
   if(r.sc3){compLabels=r.sc3.labels;compDatasets.push(ds('Sc3: Mortgage+ETF',r.sc3.etfByYr,'#f59e0b'));}
   if(r.sc4){if(!compLabels)compLabels=r.sc4.labels;compDatasets.push(ds('Sc4: Payoff First',r.sc4.etfByYr,'#0ea5e9'));}
   if(r.sc5){if(!compLabels)compLabels=r.sc5.labels;compDatasets.push(ds('Sc5: Equity Recycle',r.sc5.etfByYr,'#ef4444'));}
+  if(r.sc6){if(!compLabels)compLabels=r.sc6.labels;compDatasets.push(ds('Sc6: ETF Payoff',r.sc6.etfByYr,'#8b5cf6'));}
   if(compDatasets.length) meiLine('meiChartComp1','comp1',compLabels,compDatasets,'ETF Portfolio ($)');
-  var intVals=[r.sc1?Math.round(r.sc1.totalInterest):0,r.sc2?Math.round(r.sc2.totalInterest):0,r.sc3?Math.round(r.sc3.totalInterest):0,r.sc4?Math.round(r.sc4.totalInterest):0,r.sc5?Math.round(r.sc5.totalInterest):0];
+  var intVals=[r.sc1?Math.round(r.sc1.totalInterest):0,r.sc2?Math.round(r.sc2.totalInterest):0,r.sc3?Math.round(r.sc3.totalInterest):0,r.sc4?Math.round(r.sc4.totalInterest):0,r.sc5?Math.round(r.sc5.totalInterest):0,0];
   meiDestroy('comp2');
   var ctx2=document.getElementById('meiChartComp2');
   if(ctx2&&(r.sc1||r.sc2||r.sc3||r.sc4||r.sc5)){
     MEI_CHARTS.comp2=new Chart(ctx2.getContext('2d'),{type:'bar',
-      data:{labels:['Sc1','Sc2','Sc3','Sc4','Sc5'],datasets:[{data:intVals,backgroundColor:['#0d9488cc','#8b5cf6cc','#f59e0bcc','#0ea5e9cc','#ef4444cc'],borderRadius:5}]},
+      data:{labels:['Sc1','Sc2','Sc3','Sc4','Sc5'],datasets:[{data:intVals.slice(0,5),backgroundColor:['#0d9488cc','#8b5cf6cc','#f59e0bcc','#0ea5e9cc','#ef4444cc'],borderRadius:5}]},
       options:{responsive:true,maintainAspectRatio:false,animation:{duration:300},
         plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+fmtF(c.raw);}}}},
         scales:{x:{ticks:{font:{size:9}},grid:{display:false}},y:{ticks:{font:{size:9},callback:function(v){return fmt(v);}},grid:{color:'rgba(0,0,0,.05)'}}}}});
@@ -10727,15 +11156,17 @@ function meiUpdateComparison(){
 
 /* ── Reset ────────────────────────────────────────────── */
 window.meiReset = function(){
-  ['mei_principal','mei_rate','mei_years','mei_extraMort','mei_eq_amt','mei_eq_start','mei_postPayoffYrs','mei_sc3_dur','mei_sc5_dur'].forEach(function(id){
-    var e=document.getElementById(id); if(e){e.value=id==='mei_sc3_dur'||id==='mei_sc5_dur'?'30':id==='mei_postPayoffYrs'?'10':id==='mei_eq_amt'?'100000':id==='mei_eq_start'?'4':'0';}
+  ['mei_principal','mei_rate','mei_years','mei_extraMort','mei_eq_amt','mei_eq_start','mei_postPayoffYrs','mei_sc3_dur','mei_sc5_dur','mei_sc6_dur','mei_sc6_payoff_yr'].forEach(function(id){
+    var e=document.getElementById(id); if(e){e.value=id==='mei_sc3_dur'||id==='mei_sc5_dur'?'30':id==='mei_sc6_dur'?'20':id==='mei_sc6_payoff_yr'?'13':id==='mei_postPayoffYrs'?'10':id==='mei_eq_amt'?'100000':id==='mei_eq_start'?'4':'0';}
   });
-  window.MEI_FUNDS=[];window.MEI_FUNDS_SC4=[];window.MEI_FUNDS_SC5=[];
-  window.MEI_LUMP_MORT=[];window.MEI_RESULTS={sc1:null,sc2:null,sc3:null,sc4:null,sc5:null};
-  ['meiT1a','meiT1b','meiT2a','meiT2b','meiT3a','meiT3b','meiT4a','meiT4b','meiT5a','meiT5b'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='—';});
-  [1,2,3,4,5].forEach(function(n){var e=document.getElementById('meiSc'+n+'Result');if(e)e.innerHTML=meiEmptyState(n);});
+  var redir=document.getElementById('mei_sc6_redirect'); if(redir)redir.checked=true;
+  window.MEI_FUNDS=[];window.MEI_FUNDS_SC4=[];window.MEI_FUNDS_SC5=[];window.MEI_FUNDS_SC6=[];window.MEI_FUNDS_SC2P=[];
+  window.MEI_LUMP_MORT=[];window.MEI_RESULTS={sc1:null,sc2:null,sc2p:null,sc3:null,sc4:null,sc5:null,sc6:null};
+  ['meiT1a','meiT1b','meiT2a','meiT2b','meiT3a','meiT3b','meiT4a','meiT4b','meiT5a','meiT5b','meiT6a','meiT6b'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='—';});
+  [1,2,3,4,5,6].forEach(function(n){var e=document.getElementById('meiSc'+n+'Result');if(e)e.innerHTML=meiEmptyState(n);});
   Object.keys(MEI_CHARTS).forEach(function(k){MEI_CHARTS[k].destroy();delete MEI_CHARTS[k];});
-  window.meiRenderFunds();window.meiRenderFundsSc4();window.meiRenderFundsSc5();meiRenderLumps();
+  var sc6Panel=document.getElementById('meiSc6YearCheckPanel');if(sc6Panel)sc6Panel.style.display='none';
+  window.meiRenderFunds();window.meiRenderFundsSc4();window.meiRenderFundsSc5();window.meiRenderFundsSc6();window.meiRenderFundsSc2P();meiRenderLumps();
   var sum=document.getElementById('meiBaseSummary');if(sum)sum.innerHTML='<div style="font-size:10px;color:#94a3b8;text-align:center;">Fill in loan details above</div>';
   var prev=document.getElementById('meiSc4Preview');if(prev)prev.innerHTML='Fill loan details + run Sc1 first';
   if(window.s2Guide){s2Guide.reset();setTimeout(function(){s2Guide.check();},50);}
@@ -10747,9 +11178,9 @@ window.meiInit = function(){
     window.MEI_FUNDS.push({sym:'VGS',name:'Vanguard MSCI Index Intl Shares ETF',rate:11.5,cagr:11.5,dca:500,divYield:2.1});
     window.MEI_FUNDS.push({sym:'NDQ',name:'BetaShares NASDAQ 100 ETF',rate:16.2,cagr:16.2,dca:300,divYield:0.5});
   }
-  window.meiRenderFunds();window.meiRenderFundsSc4();window.meiRenderFundsSc5();meiRenderLumps();meiUpdateBase();
+  window.meiRenderFunds();window.meiRenderFundsSc4();window.meiRenderFundsSc5();window.meiRenderFundsSc6();window.meiRenderFundsSc2P();meiRenderLumps();meiUpdateBase();
   // Seed result panels with empty-state placeholder
-  [1,2,3,4,5].forEach(function(n){var e=document.getElementById('meiSc'+n+'Result');if(e&&!e.innerHTML.trim())e.innerHTML=meiEmptyState(n);});
+  [1,2,3,4,5,6].forEach(function(n){var e=document.getElementById('meiSc'+n+'Result');if(e&&!e.innerHTML.trim())e.innerHTML=meiEmptyState(n);});
   if(window.s2Guide) s2Guide.check();
 };
 
@@ -10813,6 +11244,19 @@ window.meiResetSc5 = function(){
   var t2=document.getElementById('meiT5b'); if(t2)t2.textContent='—';
   var r=document.getElementById('meiSc5Result'); if(r)r.innerHTML=meiEmptyState(5);
   meiDestroy('sc5'); meiUpdateComparison();
+};
+window.meiResetSc6 = function(){
+  var e;
+  e=document.getElementById('mei_sc6_dur'); if(e)e.value='20';
+  e=document.getElementById('mei_sc6_payoff_yr'); if(e)e.value='13';
+  e=document.getElementById('mei_sc6_redirect'); if(e)e.checked=true;
+  window.MEI_FUNDS_SC6=[]; window.meiRenderFundsSc6();
+  window.MEI_RESULTS.sc6=null;
+  var t6a=document.getElementById('meiT6a'),t6b=document.getElementById('meiT6b');
+  if(t6a)t6a.textContent='—'; if(t6b)t6b.textContent='—';
+  var r=document.getElementById('meiSc6Result'); if(r)r.innerHTML=meiEmptyState(6);
+  var panel=document.getElementById('meiSc6YearCheckPanel'); if(panel)panel.style.display='none';
+  meiDestroy('sc6'); meiUpdateComparison();
 };
 
 // ── Strategy II entry point ───────────────────────────────────

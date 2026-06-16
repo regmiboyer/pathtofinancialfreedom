@@ -1535,71 +1535,71 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
 <style>
 /* ── Hedge Fund Picker ─────────────────────────────────── */
 #hf-page{
-  min-height:100vh;background:#111e35;color:#e2e8f0;
+  min-height:100vh;background:#f8fafc;color:#1e293b;
   font-family:'Inter',system-ui,sans-serif;
   display:flex;flex-direction:column;
 }
 #hf-topbar{
   display:flex;align-items:center;gap:0;
-  background:#162540;border-bottom:1px solid #2a3f60;
+  background:#ffffff;border-bottom:1px solid #e2e8f0;
   padding:0 36px;height:56px;flex-shrink:0;
 }
 .hf-tb-logo{
-  font-size:15px;font-weight:900;letter-spacing:3px;color:#fff;
+  font-size:15px;font-weight:900;letter-spacing:3px;color:#0f172a;
   text-transform:uppercase;padding-right:22px;margin-right:22px;
-  border-right:1px solid #2a3f60;
+  border-right:1px solid #e2e8f0;
 }
-.hf-tb-label{font-size:11px;color:#6a88a8;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-right:6px;}
-.hf-tb-val{font-size:12px;color:#b0c4d8;font-weight:600;margin-right:22px;}
-.hf-tb-divider{width:1px;height:22px;background:#2a3f60;margin-right:22px;}
+.hf-tb-label{font-size:11px;color:#64748b;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-right:6px;}
+.hf-tb-val{font-size:12px;color:#334155;font-weight:600;margin-right:22px;}
+.hf-tb-divider{width:1px;height:22px;background:#e2e8f0;margin-right:22px;}
 .hf-tb-right{margin-left:auto;display:flex;align-items:center;gap:14px;}
 .hf-tb-badge{
   font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
   padding:4px 12px;border-radius:3px;
 }
 .hf-tb-badge.live{background:rgba(16,185,129,.18);color:#10b981;border:1px solid rgba(16,185,129,.35);}
-.hf-tb-badge.priv{background:rgba(148,163,184,.1);color:#7a94aa;border:1px solid rgba(100,116,139,.3);}
+.hf-tb-badge.priv{background:rgba(100,116,139,.08);color:#64748b;border:1px solid rgba(100,116,139,.25);}
 .hf-back-btn{
   font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
-  color:#7a94aa;background:transparent;border:1px solid #2a3f60;
+  color:#64748b;background:transparent;border:1px solid #cbd5e1;
   padding:6px 16px;border-radius:4px;cursor:pointer;
   transition:all .2s;
 }
-.hf-back-btn:hover{color:#b0c4d8;border-color:#3a5278;}
+.hf-back-btn:hover{color:#0f172a;border-color:#94a3b8;}
 
 /* ticker tape */
 #hf-ticker{
-  background:#142035;border-bottom:1px solid #1e3050;
+  background:#f1f5f9;border-bottom:1px solid #e2e8f0;
   padding:0 36px;height:32px;display:flex;align-items:center;gap:28px;overflow:hidden;
   flex-shrink:0;
 }
 .hf-tick{font-size:11px;font-weight:700;letter-spacing:.3px;display:flex;align-items:center;gap:5px;}
-.hf-tick-sym{color:#94a3b8;}
+.hf-tick-sym{color:#64748b;}
 .hf-tick-up{color:#10b981;}
 .hf-tick-dn{color:#ef4444;}
-.hf-tick-sep{color:#2a3f60;font-size:14px;}
+.hf-tick-sep{color:#cbd5e1;font-size:14px;}
 
 /* hero */
 #hf-hero{
   padding:36px 36px 28px;flex-shrink:0;
-  border-bottom:1px solid #1e3050;
+  border-bottom:1px solid #e2e8f0;
   text-align:center;
 }
 .hf-hero-eyebrow{
   font-size:15px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
-  color:#d4a523;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;
+  color:#4f46e5;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;
 }
-.hf-hero-eyebrow::before{content:'';display:inline-block;width:20px;height:1px;background:#d4a523;}
+.hf-hero-eyebrow::before{content:'';display:inline-block;width:20px;height:1px;background:#4f46e5;}
 .hf-hero-title{
-  font-size:32px;font-weight:900;color:#fff;letter-spacing:-1px;
+  font-size:32px;font-weight:900;color:#0f172a;letter-spacing:-1px;
   line-height:1.15;margin-bottom:6px;
 }
-.hf-hero-title em{color:#d4a523;font-style:normal;}
-.hf-hero-sub{font-size:17px;color:#6a88a8;max-width:none;line-height:1.6;}
+.hf-hero-title em{color:#4f46e5;font-style:normal;}
+.hf-hero-sub{font-size:17px;color:#64748b;max-width:none;line-height:1.6;}
 .hf-hero-meta{
   display:flex;align-items:center;justify-content:center;gap:20px;margin-top:18px;flex-wrap:wrap;
 }
-.hf-meta-item{display:flex;align-items:center;gap:8px;font-size:15px;color:#9ab4cc;font-weight:600;}
+.hf-meta-item{display:flex;align-items:center;gap:8px;font-size:15px;color:#475569;font-weight:600;}
 .hf-meta-dot{width:5px;height:5px;border-radius:50%;}
 
 /* grid */
@@ -1614,11 +1614,12 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
 
 /* card */
 .hf-card{
-  background:#182c48;border:1px solid #263f60;border-radius:8px;
+  background:#ffffff;border:1px solid #e2e8f0;border-radius:8px;
   cursor:pointer;transition:all .22s;position:relative;overflow:hidden;
   display:flex;flex-direction:column;
+  box-shadow:0 1px 3px rgba(0,0,0,.04);
 }
-.hf-card:hover{border-color:#3a5888;background:#1e3555;transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4);}
+.hf-card:hover{border-color:#c7d2fe;background:#f8fafc;transform:translateY(-2px);box-shadow:0 8px 32px rgba(79,70,229,.12);}
 .hf-card-stripe{position:absolute;left:0;top:0;bottom:0;width:4px;}
 
 .hf-card-top{padding:24px 24px 18px 28px;flex:1;}
@@ -1631,18 +1632,18 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
   font-size:15px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
   padding:4px 11px;border-radius:3px;
 }
-.hf-card-title{font-size:32px;font-weight:800;color:#fff;letter-spacing:-.3px;margin-bottom:8px;line-height:1.3;}
-.hf-card-ticker{font-size:14px;font-weight:700;letter-spacing:2px;color:#5a7898;font-family:'Courier New',monospace;margin-bottom:14px;}
+.hf-card-title{font-size:32px;font-weight:800;color:#0f172a;letter-spacing:-.3px;margin-bottom:8px;line-height:1.3;}
+.hf-card-ticker{font-size:14px;font-weight:700;letter-spacing:2px;color:#64748b;font-family:'Courier New',monospace;margin-bottom:14px;}
 /* metrics row */
 .hf-metrics{
   display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1px;background:#1e3050;border:1px solid #1e3050;border-radius:5px;
+  gap:1px;background:#e2e8f0;border:1px solid #e2e8f0;border-radius:5px;
   overflow:hidden;margin-bottom:16px;
 }
-.hf-metric{background:#182c48;padding:12px 10px;text-align:center;}
-.hf-metric-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#4a6888;margin-bottom:3px;}
+.hf-metric{background:#ffffff;padding:12px 10px;text-align:center;}
+.hf-metric-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#64748b;margin-bottom:3px;}
 .hf-metric-val{font-size:18px;font-weight:800;font-family:'Courier New',monospace;}
-.hf-card-desc{font-size:14px;color:#6a88a8;line-height:1.6;margin-bottom:14px;}
+.hf-card-desc{font-size:14px;color:#64748b;line-height:1.6;margin-bottom:14px;}
 .hf-tags{display:flex;flex-wrap:wrap;gap:5px;}
 .hf-tag{
   font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
@@ -1652,11 +1653,11 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
 /* card footer */
 .hf-card-footer{
   padding:16px 24px 16px 28px;
-  border-top:1px solid #1e3050;
+  border-top:1px solid #e2e8f0;
   display:flex;align-items:center;justify-content:space-between;
-  background:#142038;
+  background:#f8fafc;
 }
-.hf-card-footer-label{font-size:12px;font-weight:700;letter-spacing:2px;color:#4a6888;text-transform:uppercase;}
+.hf-card-footer-label{font-size:12px;font-weight:700;letter-spacing:2px;color:#64748b;text-transform:uppercase;}
 .hf-allocate-btn{
   font-size:14px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
   padding:8px 18px;border-radius:4px;border:none;cursor:pointer;
@@ -1666,16 +1667,16 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
 /* 7th card (fun) special styling */
 .hf-card.hf-fun{
   flex-direction:column;
-  background:linear-gradient(135deg,#182c48 0%,#1e1230 50%,#281414 100%);
+  background:linear-gradient(135deg,#ffffff 0%,#f3e8ff 50%,#fee2e2 100%);
 }
 .hf-card.hf-fun .hf-card-top{display:block;position:relative;overflow:hidden;}
 .hf-card.hf-fun .hf-card-main{flex:1;}
 .hf-card.hf-fun .hf-fun-number{
   font-size:64px;font-weight:900;font-family:'Courier New',monospace;
-  color:rgba(255,255,255,.08);line-height:1;flex-shrink:0;
+  color:rgba(15,23,42,.06);line-height:1;flex-shrink:0;
 }
 .hf-card.hf-fun .hf-card-footer{
-  background:#142038;border-top:1px solid #1e3050;border-left:none;
+  background:#f8fafc;border-top:1px solid #e2e8f0;border-left:none;
   padding:14px 24px;flex-direction:row;align-items:center;justify-content:space-between;
 }
 </style>
@@ -1740,7 +1741,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
   <div id="hf-grid">
 
     <!-- I: Invest in ETF -->
-    <div class="hf-card" onclick="enterApp('s1')">
+    <div class="hf-card" onclick="enterApp('s1')" style="box-shadow:0 0 0 1px rgba(59,130,246,.45),0 0 18px rgba(59,130,246,.30);">
       <div class="hf-card-stripe" style="background:#3b82f6;"></div>
       <div class="hf-card-top">
         <div class="hf-card-num-row">
@@ -1768,7 +1769,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
     </div>
 
     <!-- II: Mortgage & ETF Investment -->
-    <div class="hf-card" onclick="enterApp('mei')">
+    <div class="hf-card" onclick="enterApp('mei')" style="box-shadow:0 0 0 1px rgba(13,148,136,.45),0 0 18px rgba(13,148,136,.30);">
       <div class="hf-card-stripe" style="background:#0d9488;"></div>
       <div class="hf-card-top">
         <div class="hf-card-num-row">
@@ -1796,7 +1797,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
     </div>
 
     <!-- III: Super Salary Sacrifice -->
-    <div class="hf-card" onclick="enterApp('super')">
+    <div class="hf-card" onclick="enterApp('super')" style="box-shadow:0 0 0 1px rgba(16,185,129,.45),0 0 18px rgba(16,185,129,.30);">
       <div class="hf-card-stripe" style="background:#10b981;"></div>
       <div class="hf-card-top">
         <div class="hf-card-num-row">
@@ -1824,7 +1825,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
     </div>
 
     <!-- IV: High Touch Property Portfolio -->
-    <div class="hf-card" onclick="enterApp('compare')">
+    <div class="hf-card" onclick="enterApp('compare')" style="box-shadow:0 0 0 1px rgba(245,158,11,.45),0 0 18px rgba(245,158,11,.30);">
       <div class="hf-card-stripe" style="background:#f59e0b;"></div>
       <div class="hf-card-top">
         <div class="hf-card-num-row">
@@ -1852,7 +1853,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
     </div>
 
     <!-- V: Precious Metals -->
-    <div class="hf-card" onclick="enterApp('precious')">
+    <div class="hf-card" onclick="enterApp('precious')" style="box-shadow:0 0 0 1px rgba(212,165,35,.45),0 0 18px rgba(212,165,35,.30);">
       <div class="hf-card-stripe" style="background:#d4a523;"></div>
       <div class="hf-card-top">
         <div class="hf-card-num-row">
@@ -1880,7 +1881,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
     </div>
 
     <!-- VI: DCA vs Market Timing -->
-    <div class="hf-card" onclick="enterApp('dca')">
+    <div class="hf-card" onclick="enterApp('dca')" style="box-shadow:0 0 0 1px rgba(139,92,246,.45),0 0 18px rgba(139,92,246,.30);">
       <div class="hf-card-stripe" style="background:#8b5cf6;"></div>
       <div class="hf-card-top">
         <div class="hf-card-num-row">
@@ -1907,7 +1908,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
       </div>
     </div>
 
-    <div class="hf-card" onclick="enterApp('voo500')" style="border-top:3px solid #1d4ed8;">
+    <div class="hf-card" onclick="enterApp('voo500')" style="border-top:3px solid #1d4ed8;box-shadow:0 0 0 1px rgba(29,78,216,.45),0 0 18px rgba(29,78,216,.30);">
       <div class="hf-card-stripe" style="background:linear-gradient(180deg,#1d4ed8,#d97706);"></div>
       <div class="hf-card-top" style="padding:22px 24px 22px 28px;">
         <div class="hf-card-main">
@@ -1917,7 +1918,12 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
           </div>
           <div class="hf-card-title">VOO vs V500 on Stake</div>
           <div class="hf-card-ticker">NYSE:VOO (USD) &middot; ASX:V500 (AUD) &middot; AUSTRALIAN INVESTOR</div>
-          <div class="hf-card-desc" style="margin-top:8px;max-width:600px;">Same index. Two currencies. Two exchanges. Which delivers more for Australian investors after Stake's FX fees, brokerage, and MER differences? 15-year monthly DCA simulation.</div>
+          <div class="hf-metrics">
+            <div class="hf-metric"><div class="hf-metric-label">Horizon</div><div class="hf-metric-val" style="color:#94a3b8;">15Y</div></div>
+            <div class="hf-metric"><div class="hf-metric-label">Currencies</div><div class="hf-metric-val" style="color:#1d4ed8;">2</div></div>
+            <div class="hf-metric"><div class="hf-metric-label">FX Fee</div><div class="hf-metric-val" style="color:#d97706;">0.55%</div></div>
+          </div>
+          <div class="hf-card-desc" style="max-width:600px;">Same index. Two currencies. Two exchanges. Which delivers more for Australian investors after Stake's FX fees, brokerage, and MER differences? 15-year monthly DCA simulation.</div>
           <div class="hf-tags" style="margin-top:8px;">
             <span class="hf-tag" style="color:#1d4ed8;border-color:rgba(29,78,216,.3);background:rgba(29,78,216,.1);">&#x1F1FA;&#x1F1F8; VOO &middot; 0.03% MER</span>
             <span class="hf-tag" style="color:#d97706;border-color:rgba(217,119,6,.3);background:rgba(217,119,6,.1);">&#x1F1E6;&#x1F1FA; V500 &middot; 0.07% MER</span>
@@ -1925,18 +1931,14 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
           </div>
         </div>
       </div>
-      <div class="hf-card-footer" style="padding:18px 24px;min-width:180px;flex-direction:column;align-items:flex-end;gap:10px;border-left:1px solid rgba(0,0,0,.06);border-top:none;background:transparent;">
+      <div class="hf-card-footer">
         <span class="hf-card-footer-label">Strategy VIII</span>
-        <div class="hf-metrics" style="width:150px;margin:0;">
-          <div class="hf-metric"><div class="hf-metric-label">VOO MER</div><div class="hf-metric-val" style="color:#1d4ed8;">0.03%</div></div>
-          <div class="hf-metric"><div class="hf-metric-label">V500 MER</div><div class="hf-metric-val" style="color:#d97706;">0.07%</div></div>
-        </div>
-        <button class="hf-allocate-btn" style="background:linear-gradient(135deg,#1d4ed8,#d97706);color:#fff;width:100%;">COMPARE &#x2197;</button>
+        <button class="hf-allocate-btn" style="background:linear-gradient(135deg,#1d4ed8,#d97706);color:#fff;">COMPARE &#x2197;</button>
       </div>
     </div>
 
     <!-- VII: Fastest path to Billionaire — full width feature card -->
-    <div class="hf-card hf-fun" onclick="enterApp('meme')">
+    <div class="hf-card hf-fun" onclick="enterApp('meme')" style="box-shadow:0 0 0 1px rgba(249,115,22,.45),0 0 18px rgba(249,115,22,.30);">
       <div class="hf-card-stripe" style="background:linear-gradient(180deg,#ef4444,#f97316,#eab308);"></div>
       <div class="hf-card-top" style="padding:22px 24px 22px 28px;">
         <div class="hf-fun-number">VII</div>
@@ -9858,22 +9860,22 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
       <div style="font-size:11px;color:#64748b;margin-top:6px;" id="meiT2b">—</div>
     </div>
     <div style="background:linear-gradient(160deg,#fffbeb,#fff);border:1.5px solid #fde68a;border-radius:18px;padding:20px 14px;text-align:center;box-shadow:0 4px 20px rgba(217,119,6,.13),0 1px 4px rgba(0,0,0,.04);">
-      <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#d97706;margin-bottom:7px;">Sc3 · ETF Portfolio</div>
+      <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#d97706;margin-bottom:7px;">Sc4 · ETF Portfolio</div>
       <div style="font-size:26px;font-weight:900;color:#0f172a;line-height:1;" id="meiT3a">—</div>
       <div style="font-size:11px;color:#64748b;margin-top:6px;" id="meiT3b">—</div>
     </div>
     <div style="background:linear-gradient(160deg,#f0f9ff,#fff);border:1.5px solid #bae6fd;border-radius:18px;padding:20px 14px;text-align:center;box-shadow:0 4px 20px rgba(2,132,199,.13),0 1px 4px rgba(0,0,0,.04);">
-      <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#0284c7;margin-bottom:7px;">Sc4 · Payoff First</div>
+      <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#0284c7;margin-bottom:7px;">Sc5 · Payoff First</div>
       <div style="font-size:26px;font-weight:900;color:#0f172a;line-height:1;" id="meiT4a">—</div>
       <div style="font-size:11px;color:#64748b;margin-top:6px;" id="meiT4b">—</div>
     </div>
     <div style="background:linear-gradient(160deg,#fff5f5,#fff);border:1.5px solid #fecaca;border-radius:18px;padding:20px 14px;text-align:center;box-shadow:0 4px 20px rgba(220,38,38,.13),0 1px 4px rgba(0,0,0,.04);">
-      <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#dc2626;margin-bottom:7px;">Sc5 · Equity Recycle</div>
+      <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#dc2626;margin-bottom:7px;">Sc6 · Equity Recycle</div>
       <div style="font-size:26px;font-weight:900;color:#0f172a;line-height:1;" id="meiT5a">—</div>
       <div style="font-size:11px;color:#64748b;margin-top:6px;" id="meiT5b">—</div>
     </div>
     <div style="background:linear-gradient(160deg,#f5f3ff,#fff);border:1.5px solid #c4b5fd;border-radius:18px;padding:20px 14px;text-align:center;box-shadow:0 4px 20px rgba(124,58,237,.13),0 1px 4px rgba(0,0,0,.04);">
-      <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#7c3aed;margin-bottom:7px;">Sc6 · Payoff Year ETF</div>
+      <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#7c3aed;margin-bottom:7px;">Sc3 · Payoff Year ETF</div>
       <div style="font-size:26px;font-weight:900;color:#0f172a;line-height:1;" id="meiT6a">—</div>
       <div style="font-size:11px;color:#64748b;margin-top:6px;" id="meiT6b">—</div>
     </div>
@@ -10026,6 +10028,10 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
               <button onclick="meiAddLumpMort()" style="background:#8b5cf6;color:#fff;border:none;border-radius:7px;font-size:14px;font-weight:900;cursor:pointer;">+</button>
             </div>
           </div>
+          <div style="border-top:1px solid #f1f5f9;padding-top:10px;display:flex;gap:8px;">
+            <button onclick="meiRunSc2()" style="flex:1;padding:9px 14px;background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(109,40,217,.3);">▶ Run Scenario 2</button>
+            <button onclick="meiResetSc2()" style="padding:9px 12px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset</button>
+          </div>
         </div>
       </div>
       <div style="padding:18px;">
@@ -10056,13 +10062,9 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         </table>
       </div>
     </div>
-    <!-- ─── Sc2 Run / Reset ──────────────────────────────────────────── -->
-    <div style="padding:12px 18px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;background:#fafafa;">
+    <!-- ─── Sc2 note (buttons moved up to input column) ───────────────── -->
+    <div style="padding:8px 18px;border-top:1px solid #f1f5f9;background:#fafafa;">
       <div style="font-size:10px;color:#94a3b8;">Extra payments feed into Sc4 side-by-side · lump sums above</div>
-      <div style="display:flex;gap:8px;">
-        <button onclick="meiRunSc2()" style="padding:9px 20px;background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(109,40,217,.3);">▶ Run Scenario 2</button>
-        <button onclick="meiResetSc2()" style="padding:9px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Sc2</button>
-      </div>
     </div>
     <!-- ─── Post-Payoff Investment Extension ─────────────────────────── -->
     <div style="border-top:2px dashed #ddd6fe;background:linear-gradient(135deg,#faf5ff,#f5f3ff);">
@@ -10163,7 +10165,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
     <div style="display:grid;grid-template-columns:340px 1fr 340px;min-height:240px;">
       <!-- Left: Fund list -->
       <div style="padding:18px 16px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;gap:10px;">
-        <div style="font-size:12px;font-weight:700;color:#64748b;">Sc6 ETF Funds (own selection, up to 6)</div>
+        <div style="font-size:12px;font-weight:700;color:#64748b;">Sc3 ETF Funds (own selection, up to 6)</div>
         <div id="meiFundsSc6List" style="display:flex;flex-direction:column;gap:6px;"></div>
         <button id="mei_addFundBtnSc6" onclick="meiAddFundSc6()" style="padding:6px 12px;border:1.5px dashed #c4b5fd;border-radius:7px;background:transparent;color:#7c3aed;font-size:11px;font-weight:700;cursor:pointer;width:100%;">+ Add Fund (0/6)</button>
         <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#64748b;">Total DCA: <span id="meiDcaTotalSc6" style="font-weight:800;color:#7c3aed;">$0/mo</span></div>
@@ -10187,9 +10189,9 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
       </div>
     </div>
     <div style="padding:14px 22px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#f8fafc;">
-      <div style="font-size:10px;color:#94a3b8;">Falls back to Sc3 funds if no Sc6 funds added</div>
-      <button onclick="meiRunSc6()" style="padding:9px 20px;background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(124,58,237,.3);">▶ Run Scenario 6</button>
-      <button onclick="meiResetSc6()" style="padding:9px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Sc6</button>
+      <div style="font-size:10px;color:#94a3b8;">Falls back to Sc4 funds if no Sc3 funds added</div>
+      <button onclick="meiRunSc6()" style="padding:9px 20px;background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(124,58,237,.3);">▶ Run Scenario 3</button>
+      <button onclick="meiResetSc6()" style="padding:9px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Sc3</button>
     </div>
   </div>
 
@@ -10243,9 +10245,9 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
       </div>
     </div>
     <div style="padding:14px 22px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#f8fafc;">
-      <div style="font-size:10px;color:#94a3b8;">Sc3 funds also available to Sc4 &amp; Sc5 if they have no own funds set</div>
-      <button onclick="meiRunSc3()" style="padding:9px 20px;background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(217,119,6,.3);">▶ Run Scenario 3</button>
-      <button onclick="meiResetSc3()" style="padding:9px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Sc3</button>
+      <div style="font-size:10px;color:#94a3b8;">Sc4 funds also available to Sc5 &amp; Sc6 if they have no own funds set</div>
+      <button onclick="meiRunSc3()" style="padding:9px 20px;background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(217,119,6,.3);">▶ Run Scenario 4</button>
+      <button onclick="meiResetSc3()" style="padding:9px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Sc4</button>
     </div>
   </div>
 
@@ -10264,7 +10266,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         <div><label style="font-size:12px;font-weight:600;color:#64748b;display:block;margin-bottom:4px;">Years to Keep Investing After Payoff</label><input id="mei_postPayoffYrs" type="number" value="10" min="1" max="30" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;font-weight:700;" onfocus="this.style.border='1.5px solid #0284c7'" onblur="this.style.border='1.5px solid #e2e8f0'"></div>
         <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:8px 12px;font-size:11px;color:#0369a1;" id="meiSc4Preview">Fill loan details + run Sc1 first</div>
         <div style="border-top:1px solid #f1f5f9;padding-top:10px;">
-          <div style="font-size:12px;font-weight:700;color:#64748b;margin-bottom:6px;">Sc4 ETF Funds (own selection, up to 6)</div>
+          <div style="font-size:12px;font-weight:700;color:#64748b;margin-bottom:6px;">Sc5 ETF Funds (own selection, up to 6)</div>
           <div id="meiFundsSc4List" style="display:flex;flex-direction:column;gap:6px;margin-bottom:8px;"></div>
           <button id="mei_addFundBtnSc4" onclick="meiAddFundSc4()" style="padding:6px 12px;border:1.5px dashed #7dd3fc;border-radius:7px;background:transparent;color:#0284c7;font-size:11px;font-weight:700;cursor:pointer;width:100%;">+ Add Fund (0/6)</button>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:11px;color:#64748b;">Total DCA: <span id="meiDcaTotalSc4" style="font-weight:800;color:#0284c7;">$0/mo</span></div>
@@ -10280,9 +10282,9 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
       </div>
     </div>
     <div style="padding:14px 22px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#f8fafc;">
-      <div style="font-size:10px;color:#94a3b8;">Falls back to Sc3 funds if no Sc4 funds added</div>
-      <button onclick="meiRunSc4()" style="padding:9px 20px;background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(2,132,199,.3);">▶ Run Scenario 4</button>
-      <button onclick="meiResetSc4()" style="padding:9px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Sc4</button>
+      <div style="font-size:10px;color:#94a3b8;">Falls back to Sc4 funds if no Sc5 funds added</div>
+      <button onclick="meiRunSc4()" style="padding:9px 20px;background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(2,132,199,.3);">▶ Run Scenario 5</button>
+      <button onclick="meiResetSc4()" style="padding:9px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Sc5</button>
     </div>
   </div>
 
@@ -10309,7 +10311,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
         <div><label style="font-size:12px;font-weight:600;color:#64748b;display:block;margin-bottom:4px;">Amount Each Recycle ($)</label><input id="mei_eq_amt" type="number" value="100000" step="10000" min="0" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;font-weight:700;" onfocus="this.style.border='1.5px solid #dc2626'" onblur="this.style.border='1.5px solid #e2e8f0'"></div>
         <div><label style="font-size:12px;font-weight:600;color:#64748b;display:block;margin-bottom:4px;">Simulation Duration (years, max 30)</label><input id="mei_sc5_dur" type="number" value="30" min="1" max="30" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;font-weight:700;" onfocus="this.style.border='1.5px solid #dc2626'" onblur="this.style.border='1.5px solid #e2e8f0'"></div>
         <div style="border-top:1px solid #f1f5f9;padding-top:10px;">
-          <div style="font-size:12px;font-weight:700;color:#64748b;margin-bottom:6px;">Sc5 ETF Funds (own selection, up to 6)</div>
+          <div style="font-size:12px;font-weight:700;color:#64748b;margin-bottom:6px;">Sc6 ETF Funds (own selection, up to 6)</div>
           <div id="meiFundsSc5List" style="display:flex;flex-direction:column;gap:6px;margin-bottom:8px;"></div>
           <button id="mei_addFundBtnSc5" onclick="meiAddFundSc5()" style="padding:6px 12px;border:1.5px dashed #fca5a5;border-radius:7px;background:transparent;color:#dc2626;font-size:11px;font-weight:700;cursor:pointer;width:100%;">+ Add Fund (0/6)</button>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:11px;color:#64748b;">Total DCA: <span id="meiDcaTotalSc5" style="font-weight:800;color:#dc2626;">$0/mo</span></div>
@@ -10325,9 +10327,9 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
       </div>
     </div>
     <div style="padding:14px 22px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#f8fafc;">
-      <div style="font-size:10px;color:#94a3b8;">Falls back to Sc3 funds if no Sc5 funds added</div>
-      <button onclick="meiRunSc5()" style="padding:9px 20px;background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(220,38,38,.3);">▶ Run Scenario 5</button>
-      <button onclick="meiResetSc5()" style="padding:9px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Sc5</button>
+      <div style="font-size:10px;color:#94a3b8;">Falls back to Sc4 funds if no Sc6 funds added</div>
+      <button onclick="meiRunSc5()" style="padding:9px 20px;background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(220,38,38,.3);">▶ Run Scenario 6</button>
+      <button onclick="meiResetSc5()" style="padding:9px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;">↺ Reset Sc6</button>
     </div>
   </div>
 
@@ -10338,7 +10340,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
     <div style="font-size:13px;color:#64748b;margin-bottom:24px;">Run any scenario above to populate these comparison charts</div>
     <div style="display:grid;grid-template-columns:1fr;gap:18px;">
       <div>
-        <div style="font-size:11px;font-weight:700;color:#64748b;margin-bottom:6px;">ETF Portfolio Growth — Sc3 (side-by-side) vs Sc4 (payoff first) vs Sc5 (equity recycle) vs Sc6 (payoff year)</div>
+        <div style="font-size:11px;font-weight:700;color:#64748b;margin-bottom:6px;">ETF Portfolio Growth — Sc4 (side-by-side) vs Sc5 (payoff first) vs Sc6 (equity recycle) vs Sc3 (payoff year)</div>
         <div style="position:relative;height:220px;"><canvas id="meiChartComp1"></canvas></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
@@ -10347,7 +10349,7 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
           <div style="position:relative;height:200px;"><canvas id="meiChartComp2"></canvas></div>
         </div>
         <div>
-          <div style="font-size:11px;font-weight:700;color:#64748b;margin-bottom:6px;">Loan Balance Trajectory — Sc1 vs Sc2 vs Sc4 vs Sc5</div>
+          <div style="font-size:11px;font-weight:700;color:#64748b;margin-bottom:6px;">Loan Balance Trajectory — Sc1 vs Sc2 vs Sc5 vs Sc6</div>
           <div style="position:relative;height:200px;"><canvas id="meiChartComp3"></canvas></div>
         </div>
       </div>
@@ -10383,14 +10385,56 @@ function fmt(v){
 function fmtF(v){ return '$'+Math.round(v).toLocaleString(); }
 function yrLabel(m){ var y=Math.floor(m/12),mo=m%12; return y+(mo>0?'y '+mo+'m':'y'); }
 
+/* ── Error handling ───────────────────────────────────── */
+function MeiInputError(message, pathForward){
+  this.name = 'MeiInputError';
+  this.message = message;
+  this.pathForward = pathForward || 'Check the highlighted inputs above and try again.';
+}
+MeiInputError.prototype = Object.create(Error.prototype);
+MeiInputError.prototype.constructor = MeiInputError;
+
+function meiRequire(cond, message, pathForward){
+  if(!cond) throw new MeiInputError(message, pathForward);
+}
+
+function meiShowError(err){
+  var message = err && err.message ? err.message : 'Something went wrong.';
+  var pathForward = (err && err.pathForward) ? err.pathForward : 'Check the highlighted inputs above and try again.';
+  var box = document.getElementById('meiErrorBanner');
+  if(!box){
+    box = document.createElement('div');
+    box.id = 'meiErrorBanner';
+    box.style.cssText = 'position:fixed;top:16px;right:16px;z-index:99999;max-width:360px;background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:14px 16px;box-shadow:0 8px 24px rgba(220,38,38,.18);font-family:inherit;';
+    document.body.appendChild(box);
+  }
+  box.innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">'+
+      '<div style="font-size:13px;font-weight:800;color:#b91c1c;">⚠ '+message+'</div>'+
+      '<button onclick="document.getElementById(\'meiErrorBanner\').remove()" style="background:none;border:none;color:#b91c1c;font-size:14px;font-weight:800;cursor:pointer;line-height:1;padding:0 2px;">×</button>'+
+    '</div>'+
+    '<div style="font-size:12px;color:#7f1d1d;margin-top:6px;line-height:1.4;">➜ '+pathForward+'</div>';
+  if(box._meiTimer) clearTimeout(box._meiTimer);
+  box._meiTimer = setTimeout(function(){ var b=document.getElementById('meiErrorBanner'); if(b) b.remove(); }, 9000);
+  if(typeof console!=='undefined' && console.error) console.error('[MEI]', message, err);
+}
+
+function meiTry(fn){
+  return function(){
+    try{ return fn.apply(this, arguments); }
+    catch(err){ meiShowError(err); return undefined; }
+  };
+}
+
 /* ── Glowing output tiles ─────────────────────────────── */
 function meiEmptyState(n){
   var labels=['','Base Mortgage','Accelerated Payoff','ETF Side-by-Side','Payoff First','Equity Recycling','ETF Lump-Sum Payoff'];
+  var disp={1:1,2:2,3:4,4:5,5:6,6:3}[n]||n;
   return '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;padding:20px;gap:8px;color:#94a3b8;text-align:center;">'+
     '<div style="font-size:28px;opacity:.35;">📊</div>'+
-    '<div style="font-size:12px;font-weight:700;color:#64748b;">Scenario '+(n)+' Results</div>'+
+    '<div style="font-size:12px;font-weight:700;color:#64748b;">Scenario '+(disp)+' Results</div>'+
     '<div style="font-size:11px;color:#94a3b8;line-height:1.4;">'+(labels[n]||'')+'</div>'+
-    '<div style="margin-top:4px;font-size:10px;color:#cbd5e1;background:#f8fafc;border:1px dashed #e2e8f0;border-radius:6px;padding:4px 10px;">▶ Run Scenario '+n+' to see results</div>'+
+    '<div style="margin-top:4px;font-size:10px;color:#cbd5e1;background:#f8fafc;border:1px dashed #e2e8f0;border-radius:6px;padding:4px 10px;">▶ Run Scenario '+disp+' to see results</div>'+
     '</div>';
 }
 
@@ -10620,9 +10664,9 @@ window.meiUpdateBase = function(){
 };
 
 /* ── Scenario 1 ───────────────────────────────────────── */
-window.meiRunSc1 = function(){
+window.meiRunSc1 = meiTry(function(){
   var loan=gn('mei_principal',0),rate=gn('mei_rate',0),yrs=gn('mei_years',0);
-  if(!loan||!rate||!yrs){alert('Fill in Loan, Rate and Years first.');return;}
+  meiRequire(loan&&rate&&yrs,'Loan, Rate and Years are required for Scenario 1.','Fill in Loan Amount, Interest Rate and Loan Term at the top of the page, then click Run Scenario 1 again.');
   var sch=meiCalcSchedule(loan,rate,yrs,0,[]);
   window.MEI_RESULTS.sc1=sch;
   var t1a=document.getElementById('meiT1a'),t1b=document.getElementById('meiT1b');
@@ -10636,7 +10680,7 @@ window.meiRunSc1 = function(){
     {label:'Loan Term',val:yrLabel(yrs*12),color:'#0d9488',border:'#99f6e4',glow:'rgba(13,148,136,.2)'}
   ],'#f0fdf4','#bbf7d0'); }
   meiUpdateComparison();
-};
+});
 
 /* ── Lump UI ──────────────────────────────────────────── */
 function meiRenderLumps(){
@@ -10650,22 +10694,26 @@ function meiRenderLumps(){
     '</div>';
   }).join('');
 }
-window.meiAddLumpMort = function(){
-  if(window.MEI_LUMP_MORT.length>=10){alert('Max 10 lump payments');return;}
+function meiMaybeRunSc2(){
+  if(gn('mei_principal',0)&&gn('mei_rate',0)&&gn('mei_years',0)) meiRunSc2();
+}
+window.meiAddLumpMort = meiTry(function(){
+  meiRequire(window.MEI_LUMP_MORT.length<10,'Max 10 lump payments reached.','Remove an existing lump payment below before adding a new one.');
   var yr=parseInt(gv('mei_lump_mort_yr')),amt=parseFloat(gv('mei_lump_mort_amt'));
-  if(!yr||!amt||amt<=0) return;
+  meiRequire(yr&&amt&&amt>0,'Lump payment needs a valid Year and Amount.','Enter a Year (1 or greater) and an Amount greater than $0 for the lump payment, then click Add again.');
   window.MEI_LUMP_MORT.push({yr:yr,amt:amt});
   window.MEI_LUMP_MORT.sort(function(a,b){return a.yr-b.yr;});
   meiRenderLumps();
   document.getElementById('mei_lump_mort_yr').value='';
   document.getElementById('mei_lump_mort_amt').value='';
-};
-window.meiDelLump = function(i){ window.MEI_LUMP_MORT.splice(i,1); meiRenderLumps(); };
+  meiMaybeRunSc2();
+});
+window.meiDelLump = meiTry(function(i){ window.MEI_LUMP_MORT.splice(i,1); meiRenderLumps(); meiMaybeRunSc2(); });
 
 /* ── Scenario 2 ───────────────────────────────────────── */
-window.meiRunSc2 = function(){
+window.meiRunSc2 = meiTry(function(){
   var loan=gn('mei_principal',0),rate=gn('mei_rate',0),yrs=gn('mei_years',0);
-  if(!loan||!rate||!yrs){alert('Fill in Loan, Rate and Years first.');return;}
+  meiRequire(loan&&rate&&yrs,'Loan, Rate and Years are required for Scenario 2.','Fill in Loan Amount, Interest Rate and Loan Term at the top of the page, then click Run Scenario 2 again.');
   var extra=gn('mei_extraMort',0);
   var sch2=meiCalcSchedule(loan,rate,yrs,extra,window.MEI_LUMP_MORT); sch2.extra=extra;
   var sch1=window.MEI_RESULTS.sc1||meiCalcSchedule(loan,rate,yrs,0,[]);
@@ -10737,7 +10785,7 @@ window.meiRunSc2 = function(){
   })();
   // Refresh post-payoff fund list so auto-DCA shows confirmed freed amount
   if(window.meiRenderFundsSc2P) window.meiRenderFundsSc2P();
-};
+});
 
 /* ── Fund UI (Sc3) ────────────────────────────────────── */
 window.meiRenderFunds = function(){
@@ -10764,12 +10812,12 @@ window.meiRenderFunds = function(){
       '</div></div>';
   }).join('');
 };
-window.meiAddFund = function(){
-  if(window.MEI_FUNDS.length>=6) return;
+window.meiAddFund = meiTry(function(){
+  meiRequire(window.MEI_FUNDS.length<6,'Max 6 funds reached for Sc4 ETF Funds.','Remove an existing fund below before adding a new one, or use "Change" to swap a fund instead.');
   window.MEI_FUNDS.push({sym:'VGS',name:'Vanguard MSCI Index Intl Shares ETF',rate:11.5,cagr:11.5,dca:500,divYield:2.1});
   window.meiRenderFunds();
-};
-window.meiRemoveFund = function(fi){ window.MEI_FUNDS.splice(fi,1); window.meiRenderFunds(); };
+});
+window.meiRemoveFund = meiTry(function(fi){ window.MEI_FUNDS.splice(fi,1); window.meiRenderFunds(); });
 
 /* ── Fund UI (Sc4) ────────────────────────────────────── */
 function meiRenderFundsMini(funds, listId, addBtnId, dcaTotalId, pickMode, removeFn){
@@ -10799,24 +10847,24 @@ function meiRenderFundsMini(funds, listId, addBtnId, dcaTotalId, pickMode, remov
 window.meiRenderFundsSc4 = function(){ meiRenderFundsMini(window.MEI_FUNDS_SC4,'meiFundsSc4List','mei_addFundBtnSc4','meiDcaTotalSc4','mei4','meiRemoveFundSc4'); };
 window.meiRenderFundsSc5 = function(){ meiRenderFundsMini(window.MEI_FUNDS_SC5,'meiFundsSc5List','mei_addFundBtnSc5','meiDcaTotalSc5','mei5','meiRemoveFundSc5'); };
 window.meiRenderFundsSc6 = function(){ meiRenderFundsMini(window.MEI_FUNDS_SC6,'meiFundsSc6List','mei_addFundBtnSc6','meiDcaTotalSc6','mei6','meiRemoveFundSc6'); };
-window.meiAddFundSc4 = function(){
-  if(window.MEI_FUNDS_SC4.length>=6) return;
+window.meiAddFundSc4 = meiTry(function(){
+  meiRequire(window.MEI_FUNDS_SC4.length<6,'Max 6 funds reached for Sc5 ETF Funds.','Remove an existing fund below before adding a new one, or use "Change" to swap a fund instead.');
   window.MEI_FUNDS_SC4.push({sym:'IVV',name:'iShares S&P 500 ETF',rate:13.2,cagr:13.2,dca:500,divYield:1.3});
   window.meiRenderFundsSc4();
-};
-window.meiAddFundSc5 = function(){
-  if(window.MEI_FUNDS_SC5.length>=6) return;
+});
+window.meiAddFundSc5 = meiTry(function(){
+  meiRequire(window.MEI_FUNDS_SC5.length<6,'Max 6 funds reached for Sc6 ETF Funds.','Remove an existing fund below before adding a new one, or use "Change" to swap a fund instead.');
   window.MEI_FUNDS_SC5.push({sym:'VAS',name:'Vanguard Australian Shares ETF',rate:9.8,cagr:9.8,dca:500,divYield:4.2});
   window.meiRenderFundsSc5();
-};
-window.meiRemoveFundSc4 = function(fi){ window.MEI_FUNDS_SC4.splice(fi,1); window.meiRenderFundsSc4(); };
-window.meiRemoveFundSc5 = function(fi){ window.MEI_FUNDS_SC5.splice(fi,1); window.meiRenderFundsSc5(); };
-window.meiRemoveFundSc6 = function(fi){ window.MEI_FUNDS_SC6.splice(fi,1); window.meiRenderFundsSc6(); };
-window.meiAddFundSc6 = function(){
-  if(window.MEI_FUNDS_SC6.length>=6) return;
+});
+window.meiRemoveFundSc4 = meiTry(function(fi){ window.MEI_FUNDS_SC4.splice(fi,1); window.meiRenderFundsSc4(); });
+window.meiRemoveFundSc5 = meiTry(function(fi){ window.MEI_FUNDS_SC5.splice(fi,1); window.meiRenderFundsSc5(); });
+window.meiRemoveFundSc6 = meiTry(function(fi){ window.MEI_FUNDS_SC6.splice(fi,1); window.meiRenderFundsSc6(); });
+window.meiAddFundSc6 = meiTry(function(){
+  meiRequire(window.MEI_FUNDS_SC6.length<6,'Max 6 funds reached for Sc3 ETF Funds.','Remove an existing fund below before adding a new one, or use "Change" to swap a fund instead.');
   window.MEI_FUNDS_SC6.push({sym:'VOO',name:'Vanguard S&P 500 ETF',rate:13.8,cagr:13.8,dca:1000,divYield:1.4});
   window.meiRenderFundsSc6();
-};
+});
 
 /* ── Sc2 Post-Payoff ─────────────────────────────────── */
 function meiGetFreedPreview(){
@@ -10858,18 +10906,18 @@ window.meiRenderFundsSc2P = function(){
   }).join('');
   if(totEl) totEl.textContent=freed?fmtF(freed)+'/mo (auto-split)':'$0/mo';
 };
-window.meiRemoveFundSc2P = function(fi){ window.MEI_FUNDS_SC2P.splice(fi,1); window.meiRenderFundsSc2P(); };
-window.meiAddFundSc2P = function(){
-  if(window.MEI_FUNDS_SC2P.length>=6){ alert('Max 6 funds'); return; }
+window.meiRemoveFundSc2P = meiTry(function(fi){ window.MEI_FUNDS_SC2P.splice(fi,1); window.meiRenderFundsSc2P(); });
+window.meiAddFundSc2P = meiTry(function(){
+  meiRequire(window.MEI_FUNDS_SC2P.length<6,'Max 6 funds reached for the Post-Payoff ETF Investment.','Remove an existing fund below before adding a new one.');
   window.MEI_FUNDS_SC2P.push({sym:'VOO',name:'Vanguard S&P 500 ETF',rate:13.8,cagr:13.8,dca:1000,divYield:1.4});
   window.meiRenderFundsSc2P();
-};
+});
 
-window.meiRunSc2PostPayoff = function(){
+window.meiRunSc2PostPayoff = meiTry(function(){
   var sc2 = window.MEI_RESULTS.sc2;
-  if(!sc2){ alert('Run Scenario 2 first to establish the payoff timeline.'); return; }
+  meiRequire(sc2,'Run Scenario 2 first to establish the payoff timeline.','Scroll up to the Accelerated Payoff section and click "▶ Run Scenario 2", then come back and run the post-payoff investment.');
   var funds = window.MEI_FUNDS_SC2P;
-  if(!funds.length){ alert('Add at least one ETF fund for the post-payoff investment.'); return; }
+  meiRequire(funds.length,'Add at least one ETF fund for the post-payoff investment.','Click "+ Add Fund" above to add an ETF fund, then click Run again.');
   var postYrs = Math.min(30, Math.max(1, gn('mei_sc2p_yrs', 10)));
   var freed = sc2.basePmt + (sc2.extra || 0);
   var perFundDca = freed / funds.length;          // always split equally
@@ -10908,9 +10956,9 @@ window.meiRunSc2PostPayoff = function(){
   if(btn){ btn.textContent='📊 View Final Result'; }
   // Update fund list to show confirmed per-fund amounts
   window.meiRenderFundsSc2P();
-};
+});
 
-window.meiResetSc2P = function(){
+window.meiResetSc2P = meiTry(function(){
   window.MEI_FUNDS_SC2P = [];
   window.meiRenderFundsSc2P();
   window.MEI_RESULTS.sc2p = null;
@@ -10921,7 +10969,7 @@ window.meiResetSc2P = function(){
   var panel = document.getElementById('meiSc2PResultPanel'); if(panel) panel.style.display = 'none';
   var btn = document.getElementById('meiSc2PViewBtn'); if(btn) btn.textContent = '📊 View Final Result';
   meiDestroy('sc2p');
-};
+});
 
 /* ── Scenario 6 calculation engine ───────────────────── */
 // Standalone month-by-month simulation for ETF Lump-Sum Payoff.
@@ -10986,10 +11034,10 @@ function meiCalcSc6(loan, mortRate, mortYrs, extra, funds, dcaDur, payoffYr, red
 }
 
 /* ── Scenario 3 ───────────────────────────────────────── */
-window.meiRunSc3 = function(){
+window.meiRunSc3 = meiTry(function(){
   var loan=gn('mei_principal',0),rate=gn('mei_rate',0),yrs=gn('mei_years',0);
-  if(!loan||!rate||!yrs){alert('Fill in Loan, Rate and Years first.');return;}
-  if(!window.MEI_FUNDS.length){alert('Add at least one ETF fund.');return;}
+  meiRequire(loan&&rate&&yrs,'Loan, Rate and Years are required for Scenario 4.','Fill in Loan Amount, Interest Rate and Loan Term at the top of the page, then click Run Scenario 4 again.');
+  meiRequire(window.MEI_FUNDS.length,'Add at least one ETF fund for Scenario 4.','Click "+ Add Fund" in the ETF Funds list above, then click Run Scenario 4 again.');
   var extra=gn('mei_extraMort',0);
   var dur=Math.min(30,Math.max(1,gn('mei_sc3_dur',30)));
   var etfBlend=meiBlend(window.MEI_FUNDS); // kept for Blended CAGR + Monthly DCA display tiles only
@@ -11015,12 +11063,12 @@ window.meiRunSc3 = function(){
     {label:'Blended CAGR',val:etfBlend.r.toFixed(1)+'%',color:'#0d9488',border:'#99f6e4',glow:'rgba(13,148,136,.2)'}
   ],'#fffbeb','#fde68a'); }
   meiUpdateComparison();
-};
+});
 
 /* ── Scenario 4 ───────────────────────────────────────── */
-window.meiRunSc4 = function(){
+window.meiRunSc4 = meiTry(function(){
   var loan=gn('mei_principal',0),rate=gn('mei_rate',0),yrs=gn('mei_years',0);
-  if(!loan||!rate||!yrs){alert('Fill in Loan, Rate and Years first.');return;}
+  meiRequire(loan&&rate&&yrs,'Loan, Rate and Years are required for Scenario 5.','Fill in Loan Amount, Interest Rate and Loan Term at the top of the page, then click Run Scenario 5 again.');
   var extra=gn('mei_extraMort',0);
   var postYrs=Math.max(1,gn('mei_postPayoffYrs',10));
   var funds=meiFundsFor(window.MEI_FUNDS_SC4);
@@ -11050,12 +11098,12 @@ window.meiRunSc4 = function(){
     {label:'Blended CAGR',val:etf.r.toFixed(1)+'%',color:'#0284c7',border:'#bae6fd',glow:'rgba(2,132,199,.2)'}
   ],'#f0f9ff','#bae6fd'); }
   meiUpdateComparison();
-};
+});
 
 /* ── Scenario 5 ───────────────────────────────────────── */
-window.meiRunSc5 = function(){
+window.meiRunSc5 = meiTry(function(){
   var loan=gn('mei_principal',0),rate=gn('mei_rate',0),yrs=gn('mei_years',0);
-  if(!loan||!rate||!yrs){alert('Fill in Loan, Rate and Years first.');return;}
+  meiRequire(loan&&rate&&yrs,'Loan, Rate and Years are required for Scenario 6.','Fill in Loan Amount, Interest Rate and Loan Term at the top of the page, then click Run Scenario 6 again.');
   var funds=meiFundsFor(window.MEI_FUNDS_SC5);
   var etf=meiBlend(funds);
   var eqInterval=parseInt(gv('mei_eq_interval')||'4');
@@ -11083,20 +11131,20 @@ window.meiRunSc5 = function(){
     {label:'Blended CAGR',val:etf.r.toFixed(1)+'%',color:'#0d9488',border:'#99f6e4',glow:'rgba(13,148,136,.2)'}
   ],'#fef2f2','#fecaca'); }
   meiUpdateComparison();
-};
+});
 
 /* ── Scenario 6 ───────────────────────────────────────── */
-window.meiRunSc6 = function(){
+window.meiRunSc6 = meiTry(function(){
   var loan=gn('mei_principal',0),rate=gn('mei_rate',0),yrs=gn('mei_years',0);
-  if(!loan||!rate||!yrs){alert('Fill in Loan, Rate and Years first.');return;}
+  meiRequire(loan&&rate&&yrs,'Loan, Rate and Years are required for Scenario 3.','Fill in Loan Amount, Interest Rate and Loan Term at the top of the page, then click Run Scenario 3 again.');
   var extra=gn('mei_extraMort',0);
   var dcaDur=Math.min(29,Math.max(2,gn('mei_sc6_dur',20)));
   var payoffYr=Math.min(dcaDur-1,Math.max(1,gn('mei_sc6_payoff_yr',13)));
-  if(payoffYr>=dcaDur){alert('Payoff year must be less than DCA duration.');return;}
+  meiRequire(payoffYr<dcaDur,'Payoff year must be less than the DCA duration for Scenario 3.','Lower the Payoff Year field (or raise the DCA Duration field) so Payoff Year is smaller, then click Run Scenario 3 again.');
   var redirectEl=document.getElementById('mei_sc6_redirect');
   var redirect=redirectEl?redirectEl.checked:true;
   var funds=meiFundsFor(window.MEI_FUNDS_SC6);
-  if(!funds.length){alert('Add at least one ETF fund (or ensure Sc3 funds are configured).');return;}
+  meiRequire(funds.length,'Add at least one ETF fund for Scenario 3 (or ensure Sc4 funds are configured).','Click "+ Add Fund" in the Sc3 ETF Funds list above, then click Run Scenario 3 again.');
   var r=meiCalcSc6(loan,rate,yrs,extra,funds,dcaDur,payoffYr,redirect);
   window.MEI_RESULTS.sc6=r;
   var finalETF=r.etfByYr[dcaDur-1];
@@ -11127,13 +11175,13 @@ window.meiRunSc6 = function(){
   ];
   if(sc3Val!==null){
     var diff=finalETF-sc3Val;
-    tiles.push({label:'Sc3 (no payoff) @ Yr '+dcaDur,val:fmt(sc3Val),sub:diff>0?'Sc6 wins +'+fmt(diff):diff<0?'Sc3 wins +'+fmt(-diff):'Equal',color:'#64748b',border:'#e2e8f0',glow:'rgba(100,116,139,.15)'});
+    tiles.push({label:'Sc4 (no payoff) @ Yr '+dcaDur,val:fmt(sc3Val),sub:diff>0?'Sc3 wins +'+fmt(diff):diff<0?'Sc4 wins +'+fmt(-diff):'Equal',color:'#64748b',border:'#e2e8f0',glow:'rgba(100,116,139,.15)'});
   }
   var el=document.getElementById('meiSc6Result');
   if(el){ el.style.display='block'; el.innerHTML=meiResultHTML(tiles,'#f5f3ff','#ddd6fe'); }
   meiUpdateComparison();
-};
-window.meiSc6YearCheck = function(){
+});
+window.meiSc6YearCheck = meiTry(function(){
   var r=window.MEI_RESULTS.sc6; if(!r) return;
   var slider=document.getElementById('mei_sc6_yr_slider');
   var yr=slider?parseInt(slider.value,10):1;
@@ -11141,23 +11189,23 @@ window.meiSc6YearCheck = function(){
   var val=document.getElementById('mei_sc6_yr_val');
   if(lbl) lbl.textContent='Yr '+yr;
   if(val) val.textContent=fmt(r.etfByYr[yr-1]||0);
-};
+});
 
 /* ── Comparison ───────────────────────────────────────── */
 function meiUpdateComparison(){
   var r=window.MEI_RESULTS;
   var compDatasets=[],compLabels=null;
-  if(r.sc3){compLabels=r.sc3.labels;compDatasets.push(ds('Sc3: Mortgage+ETF',r.sc3.etfByYr,'#f59e0b'));}
-  if(r.sc4){if(!compLabels)compLabels=r.sc4.labels;compDatasets.push(ds('Sc4: Payoff First',r.sc4.etfByYr,'#0ea5e9'));}
-  if(r.sc5){if(!compLabels)compLabels=r.sc5.labels;compDatasets.push(ds('Sc5: Equity Recycle',r.sc5.etfByYr,'#ef4444'));}
-  if(r.sc6){if(!compLabels)compLabels=r.sc6.labels;compDatasets.push(ds('Sc6: ETF Payoff',r.sc6.etfByYr,'#8b5cf6'));}
+  if(r.sc3){compLabels=r.sc3.labels;compDatasets.push(ds('Sc4: Mortgage+ETF',r.sc3.etfByYr,'#f59e0b'));}
+  if(r.sc4){if(!compLabels)compLabels=r.sc4.labels;compDatasets.push(ds('Sc5: Payoff First',r.sc4.etfByYr,'#0ea5e9'));}
+  if(r.sc5){if(!compLabels)compLabels=r.sc5.labels;compDatasets.push(ds('Sc6: Equity Recycle',r.sc5.etfByYr,'#ef4444'));}
+  if(r.sc6){if(!compLabels)compLabels=r.sc6.labels;compDatasets.push(ds('Sc3: ETF Payoff',r.sc6.etfByYr,'#8b5cf6'));}
   if(compDatasets.length) meiLine('meiChartComp1','comp1',compLabels,compDatasets,'ETF Portfolio ($)');
   var intVals=[r.sc1?Math.round(r.sc1.totalInterest):0,r.sc2?Math.round(r.sc2.totalInterest):0,r.sc3?Math.round(r.sc3.totalInterest):0,r.sc4?Math.round(r.sc4.totalInterest):0,r.sc5?Math.round(r.sc5.totalInterest):0,0];
   meiDestroy('comp2');
   var ctx2=document.getElementById('meiChartComp2');
   if(ctx2&&(r.sc1||r.sc2||r.sc3||r.sc4||r.sc5)){
     MEI_CHARTS.comp2=new Chart(ctx2.getContext('2d'),{type:'bar',
-      data:{labels:['Sc1','Sc2','Sc3','Sc4','Sc5'],datasets:[{data:intVals.slice(0,5),backgroundColor:['#0d9488cc','#8b5cf6cc','#f59e0bcc','#0ea5e9cc','#ef4444cc'],borderRadius:5}]},
+      data:{labels:['Sc1','Sc2','Sc4','Sc5','Sc6'],datasets:[{data:intVals.slice(0,5),backgroundColor:['#0d9488cc','#8b5cf6cc','#f59e0bcc','#0ea5e9cc','#ef4444cc'],borderRadius:5}]},
       options:{responsive:true,maintainAspectRatio:false,animation:{duration:300},
         plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+fmtF(c.raw);}}}},
         scales:{x:{ticks:{font:{size:9}},grid:{display:false}},y:{ticks:{font:{size:9},callback:function(v){return fmt(v);}},grid:{color:'rgba(0,0,0,.05)'}}}}});
@@ -11165,13 +11213,13 @@ function meiUpdateComparison(){
   var loanDs=[],loanLabels=null;
   if(r.sc1){loanLabels=r.sc1.labels;loanDs.push(ds('Sc1',r.sc1.balanceByYr.slice(1),'#0d9488'));}
   if(r.sc2){if(!loanLabels)loanLabels=r.sc2.labels;loanDs.push(ds('Sc2',r.sc2.balanceByYr.slice(1),'#8b5cf6'));}
-  if(r.sc4){if(!loanLabels)loanLabels=r.sc4.labels;loanDs.push(ds('Sc4',r.sc4.balanceByYr.slice(1),'#0ea5e9'));}
-  if(r.sc5){if(!loanLabels)loanLabels=r.sc5.labels;loanDs.push(ds('Sc5',r.sc5.balanceByYr.slice(1),'#ef4444'));}
+  if(r.sc4){if(!loanLabels)loanLabels=r.sc4.labels;loanDs.push(ds('Sc5',r.sc4.balanceByYr.slice(1),'#0ea5e9'));}
+  if(r.sc5){if(!loanLabels)loanLabels=r.sc5.labels;loanDs.push(ds('Sc6',r.sc5.balanceByYr.slice(1),'#ef4444'));}
   if(loanDs.length) meiLine('meiChartComp3','comp3',loanLabels,loanDs,'Loan Balance ($)');
 }
 
 /* ── Reset ────────────────────────────────────────────── */
-window.meiReset = function(){
+window.meiReset = meiTry(function(){
   ['mei_principal','mei_rate','mei_years','mei_extraMort','mei_eq_amt','mei_eq_start','mei_postPayoffYrs','mei_sc3_dur','mei_sc5_dur','mei_sc6_dur','mei_sc6_payoff_yr'].forEach(function(id){
     var e=document.getElementById(id); if(e){e.value=id==='mei_sc3_dur'||id==='mei_sc5_dur'?'30':id==='mei_sc6_dur'?'20':id==='mei_sc6_payoff_yr'?'13':id==='mei_postPayoffYrs'?'10':id==='mei_eq_amt'?'100000':id==='mei_eq_start'?'4':'0';}
   });
@@ -11186,10 +11234,10 @@ window.meiReset = function(){
   var sum=document.getElementById('meiBaseSummary');if(sum)sum.innerHTML='<div style="font-size:10px;color:#94a3b8;text-align:center;">Fill in loan details above</div>';
   var prev=document.getElementById('meiSc4Preview');if(prev)prev.innerHTML='Fill loan details + run Sc1 first';
   if(window.s2Guide){s2Guide.reset();setTimeout(function(){s2Guide.check();},50);}
-};
+});
 
 /* ── Init ─────────────────────────────────────────────── */
-window.meiInit = function(){
+window.meiInit = meiTry(function(){
   if(!window.MEI_FUNDS.length){
     window.MEI_FUNDS.push({sym:'VGS',name:'Vanguard MSCI Index Intl Shares ETF',rate:11.5,cagr:11.5,dca:500,divYield:2.1});
     window.MEI_FUNDS.push({sym:'NDQ',name:'BetaShares NASDAQ 100 ETF',rate:16.2,cagr:16.2,dca:300,divYield:0.5});
@@ -11198,10 +11246,10 @@ window.meiInit = function(){
   // Seed result panels with empty-state placeholder
   [1,2,3,4,5,6].forEach(function(n){var e=document.getElementById('meiSc'+n+'Result');if(e&&!e.innerHTML.trim())e.innerHTML=meiEmptyState(n);});
   if(window.s2Guide) s2Guide.check();
-};
+});
 
 /* ── Per-scenario resets ──────────────────────────────── */
-window.meiResetSc1 = function(){
+window.meiResetSc1 = meiTry(function(){
   ['mei_principal','mei_rate','mei_years'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
   window.MEI_RESULTS.sc1=null;
   var t=document.getElementById('meiT1a'); if(t)t.textContent='—';
@@ -11213,8 +11261,8 @@ window.meiResetSc1 = function(){
   var hBar=document.getElementById('meiBalHoverBar'); if(hBar)hBar.style.width='0%';
   var s=document.getElementById('meiBaseSummary'); if(s)s.innerHTML='<div style="font-size:10px;color:#94a3b8;text-align:center;">Fill in loan details above</div>';
   meiUpdateComparison();
-};
-window.meiResetSc2 = function(){
+});
+window.meiResetSc2 = meiTry(function(){
   var e=document.getElementById('mei_extraMort'); if(e)e.value='0';
   window.MEI_LUMP_MORT=[]; meiRenderLumps();
   window.MEI_RESULTS.sc2=null;
@@ -11231,8 +11279,8 @@ window.meiResetSc2 = function(){
     var bd=document.getElementById('meiCFBody2');if(bd)bd.style.display='block';
   })();
   meiUpdateComparison();
-};
-window.meiResetSc3 = function(){
+});
+window.meiResetSc3 = meiTry(function(){
   var e=document.getElementById('mei_sc3_dur'); if(e)e.value='30';
   window.MEI_FUNDS=[]; window.meiRenderFunds();
   window.MEI_RESULTS.sc3=null;
@@ -11240,8 +11288,8 @@ window.meiResetSc3 = function(){
   var t2=document.getElementById('meiT3b'); if(t2)t2.textContent='—';
   var r=document.getElementById('meiSc3Result'); if(r)r.innerHTML=meiEmptyState(3);
   meiDestroy('sc3'); meiUpdateComparison();
-};
-window.meiResetSc4 = function(){
+});
+window.meiResetSc4 = meiTry(function(){
   var e=document.getElementById('mei_postPayoffYrs'); if(e)e.value='10';
   window.MEI_FUNDS_SC4=[]; window.meiRenderFundsSc4();
   window.MEI_RESULTS.sc4=null;
@@ -11250,8 +11298,8 @@ window.meiResetSc4 = function(){
   var r=document.getElementById('meiSc4Result'); if(r)r.innerHTML=meiEmptyState(4);
   var p=document.getElementById('meiSc4Preview'); if(p)p.innerHTML='Fill loan details + run Sc1 first';
   meiDestroy('sc4'); meiUpdateComparison();
-};
-window.meiResetSc5 = function(){
+});
+window.meiResetSc5 = meiTry(function(){
   var fields={mei_sc5_dur:'30',mei_eq_interval:'4',mei_eq_amt:'100000',mei_eq_start:'4'};
   Object.keys(fields).forEach(function(id){var e=document.getElementById(id);if(e)e.value=fields[id];});
   window.MEI_FUNDS_SC5=[]; window.meiRenderFundsSc5();
@@ -11260,8 +11308,8 @@ window.meiResetSc5 = function(){
   var t2=document.getElementById('meiT5b'); if(t2)t2.textContent='—';
   var r=document.getElementById('meiSc5Result'); if(r)r.innerHTML=meiEmptyState(5);
   meiDestroy('sc5'); meiUpdateComparison();
-};
-window.meiResetSc6 = function(){
+});
+window.meiResetSc6 = meiTry(function(){
   var e;
   e=document.getElementById('mei_sc6_dur'); if(e)e.value='20';
   e=document.getElementById('mei_sc6_payoff_yr'); if(e)e.value='13';
@@ -11273,7 +11321,7 @@ window.meiResetSc6 = function(){
   var r=document.getElementById('meiSc6Result'); if(r)r.innerHTML=meiEmptyState(6);
   var panel=document.getElementById('meiSc6YearCheckPanel'); if(panel)panel.style.display='none';
   meiDestroy('sc6'); meiUpdateComparison();
-};
+});
 
 // ── Strategy II entry point ───────────────────────────────────
 window.meiOnEnter=(function(){var d=false;return function(){if(!d){d=true;if(typeof window.meiInit==='function')window.meiInit();}else{window.dispatchEvent(new Event('resize'));}};})();

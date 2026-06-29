@@ -538,6 +538,210 @@ body.is-desktop .p2-card:hover{
 }
 body.is-desktop .card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
 body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
+
+/* ═══════════════════════════════════════════════════════
+   FLUID MOTION ENHANCEMENT LAYER
+   CSS-only UI polish: smooth transitions, micro-interactions,
+   entrance animations, spring-like motion. No JS changes.
+═══════════════════════════════════════════════════════ */
+
+/* -- Global smooth transitions on interactive elements -- */
+button,
+.tg,.fb,.cat-chip,
+.change-btn,.remove-btn,.add-fund-btn,.add-lump,.add-lump-wd,.reset-btn,
+.lump-del,.lump-wd-del,
+.lie-del-evt,.lie-del-alloc,.lie-add-alloc,
+.sb-back,.sb-save,
+input[type="number"],select{
+  transition: all .2s cubic-bezier(.4,0,.2,1);
+}
+
+/* -- Button press spring effect -- */
+button:active:not(:disabled),
+.change-btn:active,.remove-btn:active,
+.add-fund-btn:active,.add-lump:active,.reset-btn:active,
+.sb-back:active,.sb-save:active,
+.tg:active,.fb:active,.cat-chip:active{
+  transform:scale(.96);
+  transition-duration:.1s;
+}
+
+/* -- Input focus glow -- */
+.num-in:focus,.num-wrap:focus-within{
+  border-color:#4f46e5;
+  box-shadow:0 0 0 3px rgba(79,70,229,.1);
+  transition:border-color .2s,box-shadow .2s;
+}
+select:focus{
+  border-color:#4f46e5;
+  box-shadow:0 0 0 3px rgba(79,70,229,.1);
+  outline:none;
+}
+
+/* -- Card entrance animation -- */
+@keyframes cardFadeUp{
+  from{opacity:0;transform:translateY(12px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.card,.ptile,.pftile,.fund-subtile,.sus-stat{
+  animation:cardFadeUp .4s cubic-bezier(.4,0,.2,1) both;
+}
+.cards-row .card:nth-child(1){animation-delay:.02s;}
+.cards-row .card:nth-child(2){animation-delay:.05s;}
+.cards-row .card:nth-child(3){animation-delay:.08s;}
+.cards-row .card:nth-child(4){animation-delay:.11s;}
+.cards-row .card:nth-child(5){animation-delay:.14s;}
+.cards-row .card:nth-child(6){animation-delay:.17s;}
+.cards-row .card:nth-child(7){animation-delay:.20s;}
+.cards-row .card:nth-child(8){animation-delay:.23s;}
+
+/* -- Chart box subtle entrance -- */
+@keyframes chartSlideIn{
+  from{opacity:0;transform:translateY(16px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.chart-box{
+  animation:chartSlideIn .5s cubic-bezier(.4,0,.2,1) both;
+  animation-delay:.15s;
+}
+
+/* -- Sidebar control groups stagger -- */
+.ctrl-group{
+  animation:cardFadeUp .35s cubic-bezier(.4,0,.2,1) both;
+}
+.sidebar .ctrl-group:nth-child(2){animation-delay:.04s;}
+.sidebar .ctrl-group:nth-child(3){animation-delay:.08s;}
+.sidebar .ctrl-group:nth-child(4){animation-delay:.12s;}
+.sidebar .ctrl-group:nth-child(5){animation-delay:.16s;}
+.sidebar .ctrl-group:nth-child(6){animation-delay:.20s;}
+
+/* -- Fund row hover lift -- */
+.fund-row{
+  transition:transform .2s cubic-bezier(.4,0,.2,1),box-shadow .2s cubic-bezier(.4,0,.2,1),border-color .2s;
+}
+.fund-row:hover{
+  transform:translateY(-1px);
+  border-color:rgba(79,70,229,.2);
+}
+
+/* -- Lump sum entries subtle pulse on add -- */
+@keyframes lumpPulse{
+  0%{box-shadow:0 0 0 0 rgba(253,230,138,.5);}
+  70%{box-shadow:0 0 0 6px rgba(253,230,138,0);}
+  100%{box-shadow:0 0 0 0 rgba(253,230,138,0);}
+}
+.lump-entry:last-child{animation:lumpPulse .6s ease-out;}
+
+/* -- Phase bar segments smooth resize -- */
+.pb-phase{transition:flex .4s cubic-bezier(.4,0,.2,1);}
+
+/* -- Table row hover -- */
+tbody tr{transition:background .15s ease-out;}
+tbody tr:hover td{background:rgba(79,70,229,.03);}
+
+/* -- Toggle buttons smooth state change -- */
+.tg,.fb,.cat-chip{
+  transition:background .2s,color .2s,border-color .2s,transform .15s,box-shadow .2s;
+}
+.tg.on,.fb.on,.cat-chip.on{
+  box-shadow:0 2px 8px rgba(79,70,229,.25);
+}
+
+/* -- Strategy bar slide-in -- */
+@keyframes barSlideDown{
+  from{transform:translateY(-100%);opacity:0;}
+  to{transform:translateY(0);opacity:1;}
+}
+#strategyBar[style*="flex"],
+#strategyBar[style*="display: flex"]{
+  animation:barSlideDown .3s cubic-bezier(.4,0,.2,1);
+}
+
+/* -- Modal overlay fade -- */
+.etf-overlay,.lo-screen,#strategyOverlay{
+  transition:opacity .3s cubic-bezier(.4,0,.2,1);
+}
+
+/* -- Tooltip appear with subtle scale -- */
+.tip-box{
+  transform-origin:top left;
+  animation:tipPop .2s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes tipPop{
+  from{opacity:0;transform:scale(.92) translateY(-4px);}
+  to{opacity:1;transform:scale(1) translateY(0);}
+}
+
+/* -- Scrollbar styling (all scrollable areas) -- */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(100,116,139,.25);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:rgba(100,116,139,.4);}
+
+/* -- Smooth scroll behavior -- */
+html{scroll-behavior:smooth;}
+.tscroll,.prop-tscroll,.pf-tscroll,.etf-list{scroll-behavior:smooth;}
+
+/* -- Range input smooth thumb -- */
+.range-in::-webkit-slider-thumb{
+  transition:transform .15s,box-shadow .15s;
+}
+.range-in::-webkit-slider-thumb:hover{
+  transform:scale(1.2);
+  box-shadow:0 0 0 4px rgba(79,70,229,.15);
+}
+.range-in::-webkit-slider-thumb:active{
+  transform:scale(1.1);
+  box-shadow:0 0 0 6px rgba(79,70,229,.2);
+}
+
+/* -- Big summary tile shimmer on value change (visual polish) -- */
+@keyframes valueShimmer{
+  0%{background-position:200% center;}
+  100%{background-position:-200% center;}
+}
+
+/* -- Sustainability bar animated fill -- */
+.sus-bar{transition:width .6s cubic-bezier(.4,0,.2,1);}
+
+/* -- App header subtle breathing glow -- */
+.app-header{
+  transition:box-shadow .3s;
+}
+.app-header:hover{
+  box-shadow:0 4px 24px rgba(79,70,229,.1);
+}
+
+/* -- ETF picker items stagger -- */
+.etf-item{
+  transition:background .15s,transform .15s,box-shadow .15s;
+}
+.etf-item:hover{
+  transform:translateX(3px);
+  box-shadow:-3px 0 0 0 #4f46e5;
+}
+.etf-item.sel{
+  box-shadow:-3px 0 0 0 #4f46e5;
+}
+
+/* -- Pill/badge hover effect -- */
+.pill,.sb-badge{
+  transition:transform .2s,box-shadow .2s;
+}
+.pill:hover,.sb-badge:hover{
+  transform:translateY(-1px);
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
+
+/* -- Respect reduced motion -- */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:0.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.01ms !important;
+    scroll-behavior:auto !important;
+  }
+}
 </style>
 
 <!-- ══════════════════ LANDING + STRATEGY STYLES ══════════════════ -->
@@ -582,15 +786,15 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
   50%{box-shadow:0 8px 28px rgba(79,70,229,.2);}
 }
 .lo-privacy-float{
-  display:inline-flex;align-items:center;gap:10px;
-  padding:11px 26px;border-radius:32px;
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 16px;border-radius:32px;
   background:rgba(255,255,255,.9);
   border:1px solid rgba(79,70,229,.2);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  font-size:19px;font-weight:700;letter-spacing:1.3px;
+  font-size:11px;font-weight:700;letter-spacing:1px;
   text-transform:uppercase;color:#4f46e5;
   animation:privacyFloat 3.4s ease-in-out infinite,privacyGlow 3.4s ease-in-out infinite;
-  margin-bottom:20px;cursor:default;user-select:none;
+  margin-bottom:0;cursor:default;user-select:none;
   white-space:nowrap;
 }
 .lo-privacy-dot{
@@ -603,43 +807,42 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
    PAGE 1 — DISCLOSURE
 ═══════════════════════════════════════════════ */
 #landingOverlay{
-  background:linear-gradient(160deg,#f8faff 0%,#eff1ff 40%,#f3f0ff 70%,#faf8ff 100%);
+  background:#0f172a url('https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1920&q=80&auto=format') center/cover no-repeat;
+  position:relative;
+  overflow:hidden;
 }
+#landingOverlay::before{
+  content:'';position:fixed;inset:0;
+  background:linear-gradient(160deg,rgba(248,250,255,.92) 0%,rgba(239,241,255,.88) 40%,rgba(243,240,255,.9) 70%,rgba(250,248,255,.92) 100%);
+  z-index:0;
+}
+#landingOverlay>*{position:relative;z-index:1;}
 
-/* in-flow background title — just above eyebrow, floating + glowing */
+/* in-flow background title — top of page, prominent */
 .lo-center-title{
-  font-size:clamp(40px,6.5vw,100px);
+  font-size:clamp(28px,4.5vw,56px);
   font-weight:900;
-  background:linear-gradient(135deg,rgba(79,70,229,.12),rgba(124,58,237,.08));
+  background:linear-gradient(135deg,#4f46e5,#7c3aed);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  letter-spacing:-2px;
+  letter-spacing:-1px;
   text-align:center;
-  line-height:1.05;
+  line-height:1.1;
   pointer-events:none;user-select:none;
-  margin-bottom:4px;
-  white-space:nowrap;
-  animation:bigFloat 3.6s ease-in-out infinite;
+  margin:0;
+  padding:clamp(14px,3vh,28px) 0 clamp(8px,1.5vh,16px);
 }
-@keyframes bigFloat{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-20px);}
-}
-@keyframes titleGlow{
-  0%,100%{opacity:.5;}
-  50%{opacity:1;}
-}
-/* scale floating badge down when it lives inside the nav */
+/* scale floating badge inside nav */
 .lo-nav .lo-privacy-float{
-  padding:6px 16px;font-size:13px;letter-spacing:.8px;
-  margin-bottom:0;animation-duration:3.4s;
+  animation-duration:3.4s;
 }
 
 #p1-content{
-  flex:1;display:flex;flex-direction:column;
+  position:absolute;inset:0;z-index:1;
+  display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  position:relative;z-index:1;
-  padding:24px 48px 32px;
-  gap:22px;min-height:0;
+  padding:20px 48px;
+  gap:clamp(10px,2vh,18px);
+  overflow:hidden;
 }
 .lo-eyebrow{
   font-size:11px;font-weight:700;letter-spacing:2.5px;
@@ -647,19 +850,19 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
   background:var(--brand-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
 .lo-headline{
-  font-size:clamp(30px,4vw,52px);font-weight:800;
+  font-size:clamp(22px,3vw,38px);font-weight:800;
   color:#0f172a;line-height:1.08;letter-spacing:-.5px;
   text-align:center;margin:0;
 }
 .lo-headline em{font-style:italic;background:var(--brand-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 
-/* disclosure box — 3:1 width:height ratio */
+/* disclosure box */
 .lo-disc{
-  width:100%;max-width:960px;
+  width:100%;max-width:720px;
   background:#ffffff;
   border:1.5px solid #e2e8f0;
-  border-radius:24px;
-  padding:15px 44px 14px;
+  border-radius:16px;
+  padding:clamp(10px,1.5vh,18px) 32px;
   box-shadow:0 4px 32px rgba(79,70,229,.08),0 1px 3px rgba(0,0,0,.04);
 }
 @keyframes discGlow{
@@ -667,19 +870,19 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
   50%{box-shadow:0 8px 48px rgba(79,70,229,.16),0 2px 8px rgba(0,0,0,.06);}
 }
 .lo-disc-hdr{
-  font-size:22px;font-weight:800;letter-spacing:1.5px;
+  font-size:16px;font-weight:800;letter-spacing:1.5px;
   background:var(--brand-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   text-transform:uppercase;text-align:center;
   border-bottom:1px solid #e2e8f0;
-  padding-bottom:8px;margin-bottom:12px;
+  padding-bottom:6px;margin-bottom:8px;
 }
-.lo-disc p{font-size:16px;color:#475569;line-height:1.55;margin-bottom:9px;}
+.lo-disc p{font-size:14px;color:#475569;line-height:1.45;margin-bottom:6px;}
 .lo-disc p:last-of-type{margin-bottom:0;}
 .lo-disc strong{color:#0f172a;font-weight:600;}
 .lo-disc-note{
-  font-size:26px;font-style:italic;color:#94a3b8;
+  font-size:15px;font-style:italic;color:#94a3b8;
   border-top:1px solid #f1f5f9;
-  padding-top:10px;margin-top:10px;
+  padding-top:6px;margin-top:6px;
 }
 
 /* CTA — centered */
@@ -687,9 +890,9 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
   background:var(--brand-gradient);
   border:none;
   color:#ffffff;
-  font-size:15px;font-weight:700;letter-spacing:1.2px;
+  font-size:14px;font-weight:700;letter-spacing:1.2px;
   text-transform:uppercase;
-  padding:16px 52px;
+  padding:14px 40px;
   border-radius:12px;cursor:pointer;
   box-shadow:0 4px 20px rgba(79,70,229,.35);
   transition:opacity .2s,transform .15s,box-shadow .2s;
@@ -705,12 +908,8 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
    PAGE 2 — STRATEGY PICKER  (McKinsey / Bain)
 ═══════════════════════════════════════════════ */
 #strategyOverlay{
-  background:#f0f4fe;
-  background-image:
-    radial-gradient(ellipse 80% 60% at 20% -10%, rgba(91,94,244,.12) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 110%, rgba(34,211,238,.10) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 40% at 60% 50%, rgba(16,185,129,.06) 0%, transparent 55%),
-    linear-gradient(180deg, #ecf0fd 0%, #f4f6fc 70%);
+  background:#0f172a;
+  overflow-y:auto;
 }
 
 #p2-content{
@@ -1527,23 +1726,16 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
   </svg>
   </div>
 
-  <div class="lo-nav">
-    <div class="lo-nav-left">
-      <div class="lo-logo">P</div>
-      <span class="lo-nav-title">Path to Financial Freedom</span>
-    </div>
-    <div class="lo-privacy-float">
-      <span class="lo-privacy-dot"></span>
-      Personal &nbsp;·&nbsp; Browser Only &nbsp;·&nbsp; No Data Collection
-      <span class="lo-privacy-dot"></span>
-    </div>
-  </div>
-
   <div id="p1-content">
     <div class="lo-center-title">Path To Financial Freedom</div>
-    <div class="lo-eyebrow">Your Wealth, Your Strategy</div>
+    <div style="display:flex;align-items:center;gap:8px;justify-content:center;">
+      <div class="lo-privacy-float">
+        <span class="lo-privacy-dot"></span>
+        Personal · Browser Only · No Data Collection
+        <span class="lo-privacy-dot"></span>
+      </div>
+    </div>
     <h1 class="lo-headline">What's your next <em>brilliant</em> move?</h1>
-
     <div class="lo-disc">
       <div class="lo-disc-hdr">Disclosure - Please Read</div>
       <p>I am <strong>not a financial adviser</strong>. This is a <strong>personal hobby project</strong> built to model and compare wealth strategies — not investment guidance.</p>
@@ -1551,8 +1743,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
       <p>Please <strong>read the PDS of any ETF</strong> and <strong>consult a licensed financial adviser</strong> before investing.</p>
       <div class="lo-disc-note">"This tool is for thinking, not deciding. Pick a legend. Build your future."</div>
     </div>
-
-    <button class="lo-btn" onclick="showStrategyPicker()">I Acknowledge, Help Me Choose My Strategy &nbsp;→</button>
+    <button class="lo-btn" onclick="showStrategyPicker()">I Acknowledge, Help Me Choose My Strategy →</button>
   </div>
 </div>
 
@@ -1562,10 +1753,18 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
 <style>
 /* ── Pinnacle Capital Strategy Picker ─────────────────── */
 #hf-page{
-  min-height:100vh;background:#f8f9fb;color:#1e293b;
+  min-height:100vh;color:#1e293b;
   font-family:'Inter',system-ui,-apple-system,sans-serif;
   display:flex;flex-direction:column;
+  background:#0f172a url('https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1920&q=80&auto=format') center/cover no-repeat fixed;
+  position:relative;
 }
+#hf-page::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(15,23,42,.88) 0%,rgba(15,23,42,.75) 40%,rgba(15,23,42,.85) 100%);
+  z-index:0;
+}
+#hf-page>*{position:relative;z-index:1;}
 #hf-topbar{
   display:flex;align-items:center;
   background:#0f172a;
@@ -1594,10 +1793,12 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
 
 /* ticker tape */
 #hf-ticker{
-  background:#f1f3f5;border-bottom:1px solid #e8ecf0;
+  background:rgba(15,23,42,.6);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.1);
   padding:0 32px;height:26px;display:flex;align-items:center;gap:24px;overflow:hidden;
   flex-shrink:0;
 }
+#hf-ticker .hf-tick-sym{color:#cbd5e1;}
+#hf-ticker .hf-tick-sep{color:rgba(255,255,255,.2);}
 .hf-tick{font-size:10px;font-weight:600;letter-spacing:.3px;display:flex;align-items:center;gap:4px;}
 .hf-tick-sym{color:#64748b;}
 .hf-tick-up{color:#10b981;}
@@ -1606,50 +1807,55 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
 
 /* grid */
 #hf-grid{
-  flex:1;padding:28px 32px 32px;
+  flex:1;padding:24px 40px;
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:18px;align-content:start;align-items:start;
+  grid-template-rows:repeat(3,auto);
+  gap:18px;
+  align-content:center;justify-content:center;
   overflow-y:auto;
+  background:transparent;
 }
 
 /* card */
 .hf-card{
-  background:#ffffff;border:2px solid #d1d5db;border-radius:10px;
-  cursor:pointer;transition:all .2s;position:relative;overflow:hidden;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.6);border-radius:12px;
+  cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,border-color .2s;position:relative;overflow:hidden;
   display:flex;flex-direction:column;
-  box-shadow:0 2px 8px rgba(0,0,0,.06);
-  min-height:200px;
+  box-shadow:0 4px 20px rgba(0,0,0,.15),0 0 0 1px rgba(255,255,255,.1);
+  transform-style:preserve-3d;
+  will-change:transform;
 }
-.hf-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(15,23,42,.12);border-color:#94a3b8;}
+.hf-card:hover{box-shadow:0 16px 48px rgba(0,0,0,.3),0 0 24px rgba(99,102,241,.2);border-color:rgba(255,255,255,.9);z-index:10;}
 .hf-card-stripe{position:absolute;left:0;top:0;bottom:0;width:4px;transition:box-shadow .2s;}
 .hf-card:hover .hf-card-stripe{box-shadow:0 0 8px 1px currentColor;}
 
-.hf-card-top{padding:18px 18px 12px 22px;flex:1;display:flex;flex-direction:column;min-height:0;}
-.hf-card-head{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
-.hf-card-roman{font-size:26px;font-weight:900;opacity:.25;font-family:'Courier New',monospace;line-height:1;}
-.hf-card-title{font-size:17px;font-weight:700;color:#0f172a;letter-spacing:-.2px;line-height:1.3;}
-.hf-card-desc{font-size:13px;color:#64748b;line-height:1.5;margin-bottom:10px;}
+.hf-card-top{padding:14px 14px 10px 16px;flex:1;display:flex;flex-direction:column;min-height:0;position:relative;}
+.hf-card-icon{position:absolute;top:12px;right:12px;width:40px;height:40px;opacity:.15;pointer-events:none;}
+.hf-card-head{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.hf-card-roman{font-size:24px;font-weight:900;opacity:.3;font-family:'Courier New',monospace;line-height:1;}
+.hf-card-title{font-size:15px;font-weight:800;color:#0f172a;letter-spacing:-.2px;line-height:1.2;}
+.hf-card-desc{font-size:13px;color:#64748b;line-height:1.4;margin-bottom:6px;}
 
 /* metrics row */
 .hf-metrics{
-  display:flex;gap:0;border:1px solid #e8ecf0;border-radius:4px;overflow:hidden;margin-bottom:8px;
+  display:flex;gap:0;border:1px solid #e8ecf0;border-radius:4px;overflow:hidden;margin-top:auto;
 }
-.hf-metric{flex:1;padding:7px 8px;text-align:center;border-right:1px solid #e8ecf0;background:#fafbfc;}
+.hf-metric{flex:1;padding:5px 6px;text-align:center;border-right:1px solid #e8ecf0;background:#fafbfc;}
 .hf-metric:last-child{border-right:none;}
-.hf-metric-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#94a3b8;margin-bottom:2px;}
-.hf-metric-val{font-size:14px;font-weight:800;font-family:'Courier New',monospace;color:#334155;}
+.hf-metric-label{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#94a3b8;margin-bottom:1px;}
+.hf-metric-val{font-size:13px;font-weight:800;font-family:'Courier New',monospace;color:#334155;}
 
 /* card footer */
 .hf-card-footer{
-  padding:10px 18px 10px 22px;
+  padding:7px 14px;
   border-top:1px solid #e8ecf0;
   display:flex;align-items:center;justify-content:flex-end;
   background:#fafbfc;
 }
 .hf-allocate-btn{
   font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-  padding:7px 18px;border-radius:4px;border:none;cursor:pointer;
+  padding:6px 16px;border-radius:4px;border:none;cursor:pointer;
   transition:all .15s;color:#fff;
 }
 .hf-allocate-btn:hover{filter:brightness(1.1);}
@@ -1679,8 +1885,8 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
 
   <!-- Top bar -->
   <div id="hf-topbar">
-    <div class="hf-tb-logo">Pinnacle Capital</div>
-    <span class="hf-tb-subtitle">Private Wealth Intelligence Platform</span>
+    <div class="hf-tb-logo" style="font-size:clamp(14px,2.2vw,22px);font-weight:800;letter-spacing:-.3px;">Choose Your Potential Path to Financial Freedom</div>
+    <span class="hf-tb-subtitle"></span>
     <div class="hf-tb-right">
       <span class="hf-tb-counter">9 Active Strategies</span>
       <span class="hf-tb-badge">&#9679; LIVE MODELS</span>
@@ -1714,6 +1920,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
     <div class="hf-card" onclick="enterApp('s1')">
       <div class="hf-card-stripe" style="background:#3b82f6;color:#3b82f6;"></div>
       <div class="hf-card-top">
+        <svg class="hf-card-icon" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5"><path d="M3 17l6-6 4 4 8-8M14 7h7v7"/></svg>
         <div class="hf-card-head">
           <span class="hf-card-roman" style="color:#3b82f6;">I</span>
           <span class="hf-card-title">Invest in ETFs</span>
@@ -1734,6 +1941,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
     <div class="hf-card" onclick="enterApp('mei')">
       <div class="hf-card-stripe" style="background:#0d9488;color:#0d9488;"></div>
       <div class="hf-card-top">
+        <svg class="hf-card-icon" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="1.5"><path d="M3 21h18M3 10l9-7 9 7M5 10v11M19 10v11M9 21v-6h6v6"/></svg>
         <div class="hf-card-head">
           <span class="hf-card-roman" style="color:#0d9488;">II</span>
           <span class="hf-card-title">Mortgage &amp; ETF Investment</span>
@@ -1754,6 +1962,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
     <div class="hf-card" onclick="enterApp('super')">
       <div class="hf-card-stripe" style="background:#10b981;color:#10b981;"></div>
       <div class="hf-card-top">
+        <svg class="hf-card-icon" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
         <div class="hf-card-head">
           <span class="hf-card-roman" style="color:#10b981;">III</span>
           <span class="hf-card-title">Super Salary Sacrifice</span>
@@ -1774,6 +1983,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
     <div class="hf-card" onclick="enterApp('order')">
       <div class="hf-card-stripe" style="background:#059669;color:#059669;"></div>
       <div class="hf-card-top">
+        <svg class="hf-card-icon" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="1.5"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M16.24 16.24l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M17.66 6.34l1.41-1.41"/><circle cx="12" cy="12" r="4"/><path d="M12 10v2l1 1"/></svg>
         <div class="hf-card-head">
           <span class="hf-card-roman" style="color:#059669;">IV</span>
           <span class="hf-card-title">US Investment Strategy Calculator</span>
@@ -1794,6 +2004,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
     <div class="hf-card" onclick="enterApp('compare')">
       <div class="hf-card-stripe" style="background:#f59e0b;color:#f59e0b;"></div>
       <div class="hf-card-top">
+        <svg class="hf-card-icon" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.5"><rect x="2" y="10" width="8" height="12" rx="1"/><rect x="14" y="4" width="8" height="18" rx="1"/><path d="M5 14h2M5 17h2M17 8h2M17 11h2M17 14h2M17 17h2"/></svg>
         <div class="hf-card-head">
           <span class="hf-card-roman" style="color:#f59e0b;">V</span>
           <span class="hf-card-title">High Touch Property Portfolio</span>
@@ -1814,6 +2025,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
     <div class="hf-card" onclick="enterApp('precious')">
       <div class="hf-card-stripe" style="background:#d4a523;color:#d4a523;"></div>
       <div class="hf-card-top">
+        <svg class="hf-card-icon" viewBox="0 0 24 24" fill="none" stroke="#d4a523" stroke-width="1.5"><path d="M4 18l4-8h8l4 8H4zM8 10l2-5h4l2 5"/><path d="M12 10v8M7 18l5-8 5 8"/></svg>
         <div class="hf-card-head">
           <span class="hf-card-roman" style="color:#d4a523;">VI</span>
           <span class="hf-card-title">Precious Metals Portfolio</span>
@@ -1834,6 +2046,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
     <div class="hf-card" onclick="enterApp('dca')">
       <div class="hf-card-stripe" style="background:#8b5cf6;color:#8b5cf6;"></div>
       <div class="hf-card-top">
+        <svg class="hf-card-icon" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.5"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
         <div class="hf-card-head">
           <span class="hf-card-roman" style="color:#8b5cf6;">VII</span>
           <span class="hf-card-title">DCA vs Timing the Market</span>
@@ -1854,6 +2067,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
     <div class="hf-card" onclick="enterApp('voo500')">
       <div class="hf-card-stripe" style="background:#1d4ed8;color:#1d4ed8;"></div>
       <div class="hf-card-top">
+        <svg class="hf-card-icon" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="1.5"><circle cx="8" cy="12" r="5"/><circle cx="16" cy="12" r="5"/><path d="M12 9v6"/></svg>
         <div class="hf-card-head">
           <span class="hf-card-roman" style="color:#1d4ed8;">VIII</span>
           <span class="hf-card-title">VOO vs V500 on Stake</span>
@@ -1874,6 +2088,7 @@ body.is-desktop .fund-row:hover{box-shadow:var(--shadow-sm);}
     <div class="hf-card hf-bonus" onclick="enterApp('meme')">
       <div class="hf-card-stripe" style="background:linear-gradient(180deg,#ef4444,#f97316);color:#ef4444;"></div>
       <div class="hf-card-top">
+        <svg class="hf-card-icon" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5"><path d="M12 2l3 6h6l-5 4 2 7-6-4-6 4 2-7-5-4h6l3-6z"/></svg>
         <div class="hf-card-head">
           <span class="hf-card-roman" style="color:#ef4444;">IX</span>
           <span class="hf-card-title">Fastest Path to Billionaire</span>
@@ -2084,6 +2299,32 @@ window.saveResults = function(){
     window.print();
   }catch(e){ console.log('Print not available'); }
 };
+
+// 3D tilt effect on strategy cards
+(function(){
+  var grid = document.getElementById('hf-grid');
+  if(!grid) return;
+  grid.addEventListener('mousemove', function(e){
+    var card = e.target.closest('.hf-card');
+    if(!card) return;
+    var rect = card.getBoundingClientRect();
+    var x = (e.clientX - rect.left) / rect.width;
+    var y = (e.clientY - rect.top) / rect.height;
+    var rotY = (x - 0.5) * 12;
+    var rotX = (0.5 - y) * 12;
+    card.style.transform = 'perspective(600px) rotateX('+rotX+'deg) rotateY('+rotY+'deg) scale(1.04)';
+  });
+  grid.addEventListener('mouseleave', function(){
+    var cards = grid.querySelectorAll('.hf-card');
+    cards.forEach(function(c){ c.style.transform = ''; });
+  });
+  grid.addEventListener('mouseout', function(e){
+    var card = e.target.closest('.hf-card');
+    if(card && !card.contains(e.relatedTarget)){
+      card.style.transform = '';
+    }
+  });
+})();
 
 })();
 </script>
@@ -3125,7 +3366,7 @@ function render(){
  if(wYrs>0){g('pb3v').textContent=wYrs+'yr';g('pb3').style.flex=wYrs;g('pb3').style.display='';}else{g('pb3').style.display='none';}
 
  // cards
- const at20 = data.find(r=>r.yr===20)||null;
+ const at20 = data.find(r=>r.yr===dcaYrs)||null;
  const regularWd = fin.cumWd - totalLumps;
 
  // 1. Big tile — Total Invested with per-fund breakdown
@@ -3148,7 +3389,7 @@ function render(){
 
  // 2-7. Individual stat tiles
  const tiles = [
- {lbl:'Portfolio at Year 20', val:at20?fmtM(at20.comb):'—', sub: at20?`Real: ${fmtM(at20.real)}`:'Beyond timeline', cls:'i'},
+ {lbl:`Portfolio at Year ${dcaYrs}`, val:at20?fmtM(at20.comb):'—', sub: at20?`Real: ${fmtM(at20.real)}`:'Beyond timeline', cls:'i'},
  {lbl:'Portfolio at End (Nominal)', val:fmtM(fin.comb), sub:`After all ${TOTAL} years`, cls:'g', hi:'hi-g'},
  {lbl:'Portfolio at End (Real)', val:fmtM(fin.real), sub:"In today's dollars", cls:'s'},
  {lbl:'Lump Sum Withdrawals', val:fmt(totalLumpOut), sub:`${lumpSums.filter(l=>(l.type||'withdraw')==='withdraw').length} events`,cls:'y', hi:'hi-y'},
@@ -3768,7 +4009,7 @@ window.s2Guide=new StrategyGuide(STEPS_S2);
 .prop-tscroll tr.neg-cf td:first-child{color:#dc2626;}
 </style>
 
-<section class="prop-wrap" id="propSection">
+<section class="prop-wrap" id="propSection" style="display:none">
  <!-- Header -->
  <div class="prop-sec-hdr">
  <div class="prop-sec-title">Strategy IV: Rental Property Investment — Sydney Comparison</div>
@@ -10674,10 +10915,11 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
 
     <!-- ═══ Sc1: Base Mortgage ═══ -->
     <div class="mei-row">
-      <div class="mei-row-hdr" style="background:linear-gradient(90deg,#0f766e,#0d9488);">
+      <div class="mei-row-hdr" style="background:linear-gradient(90deg,#0f766e,#0d9488);flex-wrap:wrap;">
         <div class="mei-row-num" style="background:rgba(255,255,255,.25);">1</div>
         <div class="mei-row-title" style="color:#fff;">Base Mortgage</div>
         <div class="mei-row-badge" style="background:rgba(255,255,255,.2);color:#fff;">Foundation for all scenarios</div>
+        <div style="width:100%;padding:8px 0 2px;font-size:clamp(13px,1.4vw,16px);font-weight:600;color:rgba(255,255,255,.92);line-height:1.4;">This is your baseline — straight minimum mortgage payments over the full loan term with no extra contributions. All other scenarios build on top of this foundation.</div>
       </div>
       <div class="mei-row-input">
         <div><label class="mei-input-label">Outstanding Loan ($)</label><input id="mei_principal" class="mei-input" type="number" placeholder="e.g. 600000" min="0" step="10000" oninput="meiUpdateBase()" onfocus="this.style.borderColor='#0d9488'" onblur="this.style.borderColor='#e2e8f0'"></div>
@@ -10722,10 +10964,11 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
 
     <!-- ═══ Sc2: Accelerated Payoff ═══ -->
     <div class="mei-row">
-      <div class="mei-row-hdr">
-        <div class="mei-row-num" style="background:#8b5cf6;">2</div>
-        <div class="mei-row-title">Accelerated Payoff</div>
-        <div class="mei-row-badge">Extra payments + lump sums</div>
+      <div class="mei-row-hdr" style="background:linear-gradient(90deg,#6d28d9,#8b5cf6);flex-wrap:wrap;">
+        <div class="mei-row-num" style="background:rgba(255,255,255,.25);">2</div>
+        <div class="mei-row-title" style="color:#fff;">Accelerated Payoff</div>
+        <div class="mei-row-badge" style="background:rgba(255,255,255,.2);color:#fff;">Extra payments + lump sums</div>
+        <div style="width:100%;padding:8px 0 2px;font-size:clamp(13px,1.4vw,16px);font-weight:600;color:rgba(255,255,255,.92);line-height:1.4;">In this strategy you pay base mortgage plus a fixed additional amount every month towards principal — meant to reduce your payment period to lower than 30 years and save significantly on total interest.</div>
       </div>
       <div class="mei-row-input">
         <div><label class="mei-input-label">Extra Monthly Payment ($)</label><input id="mei_extraMort" class="mei-input" type="number" value="0" min="0" step="100" onfocus="this.style.borderColor='#8b5cf6'" onblur="this.style.borderColor='#e2e8f0'"></div>
@@ -10763,10 +11006,11 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
 
     <!-- ═══ Sc2+: Post-Payoff Invest ═══ -->
     <div class="mei-row">
-      <div class="mei-row-hdr">
-        <div class="mei-row-num" style="background:#5b21b6;">2+</div>
-        <div class="mei-row-title">Post-Payoff Invest</div>
-        <div class="mei-row-badge">Redirect freed payment to ETFs</div>
+      <div class="mei-row-hdr" style="background:linear-gradient(90deg,#5b21b6,#7c3aed);flex-wrap:wrap;">
+        <div class="mei-row-num" style="background:rgba(255,255,255,.25);">2+</div>
+        <div class="mei-row-title" style="color:#fff;">Post-Payoff Invest</div>
+        <div class="mei-row-badge" style="background:rgba(255,255,255,.2);color:#fff;">Redirect freed payment to ETFs</div>
+        <div style="width:100%;padding:8px 0 2px;font-size:clamp(13px,1.4vw,16px);font-weight:600;color:rgba(255,255,255,.92);line-height:1.4;">Once your mortgage is paid off early (from Scenario 2), the freed monthly payment is redirected entirely into ETF investments — showing how quickly wealth compounds when debt is eliminated first.</div>
       </div>
       <div class="mei-row-input">
         <div id="meiSc2PostFreedBadge" style="background:#ede9fe;border:1px solid #ddd6fe;border-radius:8px;padding:4px 10px;font-size:10px;font-weight:800;color:#5b21b6;display:none;">Freed: <span id="meiSc2PostFreedAmt">—</span>/mo</div>
@@ -10799,10 +11043,11 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
 
     <!-- ═══ Sc3: ETF + Payoff Year ═══ -->
     <div class="mei-row">
-      <div class="mei-row-hdr">
-        <div class="mei-row-num" style="background:#7c3aed;">3</div>
-        <div class="mei-row-title">ETF + Payoff Year</div>
-        <div class="mei-row-badge">DCA + lump-sum mortgage payoff</div>
+      <div class="mei-row-hdr" style="background:linear-gradient(90deg,#7c3aed,#a78bfa);flex-wrap:wrap;">
+        <div class="mei-row-num" style="background:rgba(255,255,255,.25);">3</div>
+        <div class="mei-row-title" style="color:#fff;">ETF + Payoff Year</div>
+        <div class="mei-row-badge" style="background:rgba(255,255,255,.2);color:#fff;">DCA + lump-sum mortgage payoff</div>
+        <div style="width:100%;padding:8px 0 2px;font-size:clamp(13px,1.4vw,16px);font-weight:600;color:rgba(255,255,255,.92);line-height:1.4;">Instead of paying extra towards your mortgage, invest that money into ETFs via DCA. At a chosen year, withdraw from your portfolio to pay off the remaining mortgage in one lump sum — then continue investing with the freed payment.</div>
       </div>
       <div class="mei-row-input">
         <div><label class="mei-input-label">DCA Duration (years)</label><input id="mei_sc6_dur" class="mei-input" type="number" value="20" min="2" max="29" onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='#e2e8f0'"></div>
@@ -10840,10 +11085,11 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
 
     <!-- ═══ Sc4: ETF Side-by-Side ═══ -->
     <div class="mei-row">
-      <div class="mei-row-hdr">
-        <div class="mei-row-num" style="background:#d97706;">4</div>
-        <div class="mei-row-title">ETF Side-by-Side</div>
-        <div class="mei-row-badge">Pay mortgage + DCA simultaneously</div>
+      <div class="mei-row-hdr" style="background:linear-gradient(90deg,#b45309,#d97706);flex-wrap:wrap;">
+        <div class="mei-row-num" style="background:rgba(255,255,255,.25);">4</div>
+        <div class="mei-row-title" style="color:#fff;">ETF Side-by-Side</div>
+        <div class="mei-row-badge" style="background:rgba(255,255,255,.2);color:#fff;">Pay mortgage + DCA simultaneously</div>
+        <div style="width:100%;padding:8px 0 2px;font-size:clamp(13px,1.4vw,16px);font-weight:600;color:rgba(255,255,255,.92);line-height:1.4;">Pay regular mortgage minimum and simultaneously invest extra money into ETFs every month. No early payoff — let the mortgage run its full term while building an investment portfolio alongside it. Tests whether market returns beat your mortgage interest rate.</div>
       </div>
       <div class="mei-row-input">
         <div><label class="mei-input-label">ETF Duration (years, max 30)</label><input id="mei_sc3_dur" class="mei-input" type="number" value="30" min="1" max="30" onfocus="this.style.borderColor='#d97706'" onblur="this.style.borderColor='#e2e8f0'"></div>
@@ -10870,10 +11116,11 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
 
     <!-- ═══ Sc5: Payoff First, Then Invest ═══ -->
     <div class="mei-row">
-      <div class="mei-row-hdr">
-        <div class="mei-row-num" style="background:#0284c7;">5</div>
-        <div class="mei-row-title">Payoff First, Then Invest</div>
-        <div class="mei-row-badge">Clear mortgage → redirect to ETFs</div>
+      <div class="mei-row-hdr" style="background:linear-gradient(90deg,#0369a1,#0284c7);flex-wrap:wrap;">
+        <div class="mei-row-num" style="background:rgba(255,255,255,.25);">5</div>
+        <div class="mei-row-title" style="color:#fff;">Payoff First, Then Invest</div>
+        <div class="mei-row-badge" style="background:rgba(255,255,255,.2);color:#fff;">Clear mortgage → redirect to ETFs</div>
+        <div style="width:100%;padding:8px 0 2px;font-size:clamp(13px,1.4vw,16px);font-weight:600;color:rgba(255,255,255,.92);line-height:1.4;">A disciplined two-phase approach: aggressively pay off the mortgage as fast as possible, then once debt-free, redirect the entire freed monthly payment into ETF investments. Peace of mind first, then wealth building.</div>
       </div>
       <div class="mei-row-input">
         <div><label class="mei-input-label">Years to Invest After Payoff</label><input id="mei_postPayoffYrs" class="mei-input" type="number" value="10" min="1" max="30" onfocus="this.style.borderColor='#0284c7'" onblur="this.style.borderColor='#e2e8f0'"></div>
@@ -10901,10 +11148,11 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
 
     <!-- ═══ Sc6: Equity Recycling ═══ -->
     <div class="mei-row">
-      <div class="mei-row-hdr">
-        <div class="mei-row-num" style="background:#dc2626;">6</div>
-        <div class="mei-row-title">Equity Recycling</div>
-        <div class="mei-row-badge">Periodic lump-sum ETF injections</div>
+      <div class="mei-row-hdr" style="background:linear-gradient(90deg,#b91c1c,#dc2626);flex-wrap:wrap;">
+        <div class="mei-row-num" style="background:rgba(255,255,255,.25);">6</div>
+        <div class="mei-row-title" style="color:#fff;">Equity Recycling</div>
+        <div class="mei-row-badge" style="background:rgba(255,255,255,.2);color:#fff;">Periodic lump-sum ETF injections</div>
+        <div style="width:100%;padding:8px 0 2px;font-size:clamp(13px,1.4vw,16px);font-weight:600;color:rgba(255,255,255,.92);line-height:1.4;">Periodically pull equity from your property (via refinance or offset redraw) and inject it as lump-sum investments into ETFs. Leverages the growth differential between idle property equity and compounding market returns.</div>
       </div>
       <div class="mei-row-input">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">

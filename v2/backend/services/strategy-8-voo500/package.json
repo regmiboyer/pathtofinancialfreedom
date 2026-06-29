@@ -1,0 +1,16 @@
+{
+  "name": "investment-planner-strategy-8-voo500",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Strategy VIII — VOO vs V500 on Stake — stub microservice. See PORT-TODO.md before implementing.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "investment-planner-strategy-4-property",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Strategy IV — High Touch Property Portfolio — stub microservice. See PORT-TODO.md before implementing.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}

@@ -2281,7 +2281,7 @@ window.enterApp = function(strategyKey){
   var initFns = {
     etfSection:        window.initEtfOnce,
     meiSection:        window.meiOnEnter,
-    superSection:      window.suOnEnter,
+    superSection:      window.su3OnEnter,
     pfSection:         window.pfOnEnter,
     preciousSection:   window.pmOnEnter,
     dcaSection:        window.dcaOnEnter,
@@ -2986,15 +2986,15 @@ function makePhasePlugin(dcaYrs,coast){
  };
 }
 const baseOpts=(dcaYrs,coast)=>({
- responsive:true,maintainAspectRatio:true,interaction:{mode:'index',intersect:false},
+ responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
  plugins:{
  legend:{labels:{color:'#64748b',font:{size:11},padding:10,boxWidth:12}},
- tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',borderColor:'#e2e8f0',borderWidth:1,padding:10,
+ tooltip:{backgroundColor:'#0f172a',titleColor:'#f8fafc',bodyColor:'#94a3b8',borderColor:'#334155',borderWidth:1,padding:10,
  callbacks:{label:c=>` ${c.dataset.label}: ${fmtM(c.parsed.y)}`}}
  },
  scales:{
- x:{ticks:{color:c=>{const i=c.index;return i>=(dcaYrs+coast)?'#be185d':i>=dcaYrs?'#059669':'#64748b';},font:{size:10},maxTicksLimit:26},grid:{color:'#f1f5f9'}},
- y:{ticks:{color:'#94a3b8',font:{size:11},callback:v=>fmtM(v)},grid:{color:'#f8fafc'}}
+ x:{ticks:{color:c=>{const i=c.index;return i>=(dcaYrs+coast)?'#be185d':i>=dcaYrs?'#059669':'#64748b';},font:{size:10},maxTicksLimit:26},grid:{color:'rgba(0,0,0,.04)'}},
+ y:{ticks:{color:'#94a3b8',font:{size:11},callback:v=>fmtM(v)},grid:{color:'rgba(0,0,0,.04)'}}
  }
 });
 
@@ -3048,26 +3048,26 @@ function initCharts(sim){
   {label:'Lump Investment',data:data.map(r=>r.lumpIn?r.lumpIn:null),backgroundColor:'rgba(5,150,105,.75)',borderRadius:3},
  {label:'💰 Invest Event',type:'scatter',data:data.reduce((a,r,i)=>{if(r.isLumpIn)a.push({x:i,y:r.lumpIn});return a;},[]),pointStyle:'triangle',pointRadius:7,pointHoverRadius:10,backgroundColor:'rgba(5,150,105,.95)',borderColor:'#059669',borderWidth:2,showLine:false,order:0},
  ]},
- options:{responsive:true,maintainAspectRatio:true,
- plugins:{legend:{labels:{color:'#64748b',font:{size:10},padding:8,boxWidth:10}},
- tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',borderColor:'#e2e8f0',borderWidth:1,padding:8,
+ options:{responsive:true,maintainAspectRatio:false,
+ plugins:{legend:{position:'bottom',labels:{color:'#64748b',font:{size:10},padding:10,boxWidth:10,usePointStyle:true}},
+ tooltip:{backgroundColor:'#0f172a',titleColor:'#f8fafc',bodyColor:'#94a3b8',borderColor:'#334155',borderWidth:1,padding:10,
  callbacks:{label:c=>{const v=c.parsed.y;return v>0?` +${fmtM(v)} in`:` −${fmtM(-v)} out`;}}}},
- scales:{x:{stacked:true,ticks:{color:'#94a3b8',font:{size:9},maxTicksLimit:18},grid:{color:'#f8fafc'}},
- y:{stacked:true,ticks:{color:'#94a3b8',font:{size:10},callback:v=>fmtM(Math.abs(v))},grid:{color:'#f8fafc'},
+ scales:{x:{stacked:true,ticks:{color:'#94a3b8',font:{size:9},maxTicksLimit:18},grid:{color:'rgba(0,0,0,.04)'}},
+ y:{stacked:true,ticks:{color:'#94a3b8',font:{size:10},callback:v=>fmtM(Math.abs(v))},grid:{color:'rgba(0,0,0,.04)'},
  title:{display:true,text:'In (+) / Out (−)',color:'#94a3b8',font:{size:10}}}}}});
 
  if(cumChart) cumChart.destroy();
  cumChart=new Chart(g('cumChart').getContext('2d'),{type:'line',
  data:{labels,datasets:[
- {label:'Cumulative Invested',data:data.map(r=>r.cumInv),borderColor:'#4f46e5',backgroundColor:'rgba(79,70,229,.08)',borderWidth:2,fill:true,tension:.3,pointRadius:1},
- {label:'Cumulative Withdrawn',data:data.map(r=>r.cumWd),borderColor:'#be185d',backgroundColor:'rgba(190,24,93,.08)',borderWidth:2,fill:true,tension:.3,pointRadius:1},
+ {label:'Cumulative Invested',data:data.map(r=>r.cumInv),borderColor:'#4f46e5',backgroundColor:'rgba(79,70,229,.08)',borderWidth:2,fill:true,tension:.35,pointRadius:1},
+ {label:'Cumulative Withdrawn',data:data.map(r=>r.cumWd),borderColor:'#be185d',backgroundColor:'rgba(190,24,93,.08)',borderWidth:2,fill:true,tension:.35,pointRadius:1},
  ]},
- options:{responsive:true,maintainAspectRatio:true,
- plugins:{legend:{labels:{color:'#64748b',font:{size:10},padding:8,boxWidth:10}},
- tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',borderColor:'#e2e8f0',borderWidth:1,padding:8,
+ options:{responsive:true,maintainAspectRatio:false,
+ plugins:{legend:{position:'bottom',labels:{color:'#64748b',font:{size:10},padding:10,boxWidth:10,usePointStyle:true}},
+ tooltip:{backgroundColor:'#0f172a',titleColor:'#f8fafc',bodyColor:'#94a3b8',borderColor:'#334155',borderWidth:1,padding:10,
  callbacks:{label:c=>` ${c.dataset.label}: ${fmtM(c.parsed.y)}`}}},
- scales:{x:{ticks:{color:'#94a3b8',font:{size:9},maxTicksLimit:18},grid:{color:'#f8fafc'}},
- y:{ticks:{color:'#94a3b8',font:{size:10},callback:v=>fmtM(v)},grid:{color:'#f8fafc'}}}}});
+ scales:{x:{ticks:{color:'#94a3b8',font:{size:9},maxTicksLimit:18},grid:{color:'rgba(0,0,0,.04)'}},
+ y:{ticks:{color:'#94a3b8',font:{size:10},callback:v=>fmtM(v)},grid:{color:'rgba(0,0,0,.04)'}}}}});
 }
 
 // ═══════════════════════════════════════
@@ -3234,8 +3234,11 @@ async function selectETF(sym){
  } else if(mode==='mi'){
    // Strategy IV — Property
    if(window.MI_FUNDS){const p=(window.MI_FUNDS[fi]||{}).dca||500;window.MI_FUNDS[fi]={...etf,rate:etf.cagr,dca:p};if(window.miRenderFunds)window.miRenderFunds();if(window.miRender)window.miRender();}
+ } else if(mode==='su3'){
+   // Strategy III — Super (rebuilt)
+   if(window.SU3_ETF_FUNDS){var prevDca=(window.SU3_ETF_FUNDS[fi]||{}).dca||500;window.SU3_ETF_FUNDS[fi]={ticker:etf.sym,name:etf.name,ret:etf.cagr||10,dca:prevDca};if(window.su3RenderFunds)window.su3RenderFunds();}
  } else if(mode==='su'){
-   // Strategy III — Super
+   // Strategy III — Super (legacy, kept for compat)
    if(window.SU_ETF_FUNDS){const p=(window.SU_ETF_FUNDS[fi]||{}).dca||500;window.SU_ETF_FUNDS[fi]={...etf,rate:etf.cagr,dca:p};if(window.suRenderFunds)window.suRenderFunds();if(window.suCalculate)window.suCalculate();}
  } else if(mode==='he'){
    // Strategy VIII — Home Equity
@@ -4494,13 +4497,13 @@ function renderProperty(){
  {label:'Cum. Cash Flow (Real)', data:data.map(r=>r.realCumCF), borderColor:'#fbbf24', backgroundColor:'transparent', borderWidth:1.5, borderDash:[3,3], fill:false, tension:.35, pointRadius:0, yAxisID:'y'},
  {label:'Remaining Loans', data:data.map(r=>r.totalBal), borderColor:'#dc2626', backgroundColor:'transparent', borderWidth:1.5, borderDash:[4,3], fill:false, tension:.2, pointRadius:1, yAxisID:'y'},
  ]},
- options:{responsive:true,maintainAspectRatio:true,interaction:{mode:'index',intersect:false},
+ options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
  plugins:{legend:{labels:{color:'#64748b',font:{size:11},padding:10,boxWidth:12}},
- tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',borderColor:'#e2e8f0',borderWidth:1,padding:10,
+ tooltip:{backgroundColor:'#0f172a',titleColor:'#f8fafc',bodyColor:'#94a3b8',borderColor:'#334155',borderWidth:1,padding:10,
  callbacks:{label:c=>` ${c.dataset.label}: ${pfmtM(c.parsed.y)}`}}},
  scales:{
- x:{ticks:{color:'#94a3b8',font:{size:10},maxTicksLimit:16},grid:{color:'#f1f5f9'}},
- y:{ticks:{color:'#94a3b8',font:{size:11},callback:v=>pfmtM(v)},grid:{color:'#f8fafc'}}
+ x:{ticks:{color:'#94a3b8',font:{size:10},maxTicksLimit:16},grid:{color:'rgba(0,0,0,.04)'}},
+ y:{ticks:{color:'#94a3b8',font:{size:11},callback:v=>pfmtM(v)},grid:{color:'rgba(0,0,0,.04)'}}
  }}
  });
 
@@ -4544,12 +4547,12 @@ function renderProperty(){
  borderWidth:2, borderDash:[5,3], tension:.35, pointRadius:1,
  fill:false, yAxisID:'y'},
  ]},
- options:{responsive:true, maintainAspectRatio:true,
+ options:{responsive:true, maintainAspectRatio:false,
  interaction:{mode:'index',intersect:false},
  plugins:{
  legend:{labels:{color:'#64748b',font:{size:11},padding:10,boxWidth:12}},
- tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',
- borderColor:'#e2e8f0',borderWidth:1,padding:10,
+ tooltip:{backgroundColor:'#0f172a',titleColor:'#f8fafc',bodyColor:'#94a3b8',
+ borderColor:'#334155',borderWidth:1,padding:10,
  callbacks:{
  label:c=>{
  const lbl=c.dataset.label; const v=c.parsed.y;
@@ -4569,11 +4572,11 @@ function renderProperty(){
  scales:{
  x:{stacked:true,
  ticks:{color:'#94a3b8',font:{size:9},maxTicksLimit:16},
- grid:{color:'#f1f5f9'}},
+ grid:{color:'rgba(0,0,0,.04)'}},
  y:{stacked:true,
  ticks:{color:'#94a3b8',font:{size:10},
  callback:v=>{const a=Math.abs(v);return (v<0?'−':'')+pfmtM(a);}},
- grid:{color:'#f8fafc'},
+ grid:{color:'rgba(0,0,0,.04)'},
  title:{display:true,text:'Income (+) / Outgoings (−)',color:'#94a3b8',font:{size:10}}}
  }}});
  }
@@ -4620,8 +4623,8 @@ function renderProperty(){
       interaction:{mode:'index',intersect:false},
       plugins:{
         legend:{labels:{color:'#64748b',font:{size:11},boxWidth:11,padding:10}},
-        tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',
-          borderColor:'#e2e8f0',borderWidth:1,padding:9,
+        tooltip:{backgroundColor:'#0f172a',titleColor:'#f8fafc',bodyColor:'#94a3b8',
+          borderColor:'#334155',borderWidth:1,padding:10,
           callbacks:{
             label:c=>` ${c.dataset.label}: ${pfmtM(c.parsed.y)}`,
             afterBody(items){
@@ -5181,14 +5184,14 @@ function renderPortfolio(){
  fill:true, yAxisID:'y2'},
  pfPurchaseMarker,
  ]},
- options:{responsive:true, maintainAspectRatio:true,
+ options:{responsive:true, maintainAspectRatio:false,
  interaction:{mode:'index',intersect:false},
  plugins:{
  legend:{labels:{color:'#64748b',font:{size:10},padding:8,boxWidth:10,
  filter:item=>item.text!=='Property Purchased'
  }},
- tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',
- borderColor:'#e2e8f0',borderWidth:1,padding:10,
+ tooltip:{backgroundColor:'#0f172a',titleColor:'#f8fafc',bodyColor:'#94a3b8',
+ borderColor:'#334155',borderWidth:1,padding:10,
  callbacks:{
  label:c=>{
  const lbl=c.dataset.label; const v=c.parsed.y;
@@ -5211,11 +5214,11 @@ function renderPortfolio(){
  }
  }}},
  scales:{
- x:{stacked:true, ticks:{color:'#94a3b8',font:{size:9},maxTicksLimit:16}, grid:{color:'#f1f5f9'}},
+ x:{stacked:true, ticks:{color:'#94a3b8',font:{size:9},maxTicksLimit:16}, grid:{color:'rgba(0,0,0,.04)'}},
  y:{stacked:true,
  ticks:{color:'#94a3b8',font:{size:10},
  callback:v=>{const a=Math.abs(v);return (v<0?'−':'')+pffmtM(a);}},
- grid:{color:'#f8fafc'},
+ grid:{color:'rgba(0,0,0,.04)'},
  title:{display:true,text:'Income (+) / Outgoings (−)',color:'#94a3b8',font:{size:10}}},
  y2:{type:'linear',position:'right', min:0, max:maxNumProps+2,
  ticks:{color:'#a78bfa',font:{size:10},stepSize:1}, grid:{display:false},
@@ -6083,7 +6086,7 @@ window.miRender=function(){
       ]
     },
     options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{position:'top',labels:{font:{size:11},boxWidth:14}}},
+      plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:14}}},
       scales:{
         x:{ticks:{font:{size:10},maxTicksLimit:12},grid:{color:'rgba(0,0,0,.04)'}},
         y:{ticks:{font:{size:10},callback:function(v){return '$'+(v/1000).toFixed(0)+'k';}},grid:{color:'rgba(0,0,0,.04)'}}
@@ -6117,8 +6120,8 @@ window.miRender=function(){
       interaction:{mode:'index',intersect:false},
       plugins:{
         legend:{labels:{color:'#64748b',font:{size:11},boxWidth:11,padding:10}},
-        tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',
-          borderColor:'#e2e8f0',borderWidth:1,padding:8,
+        tooltip:{backgroundColor:'#0f172a',titleColor:'#f8fafc',bodyColor:'#94a3b8',
+          borderColor:'#334155',borderWidth:1,padding:10,
           callbacks:{
             label:function(c){return ' '+c.dataset.label+': '+fmt(c.parsed.y);},
             afterBody:function(items){
@@ -6145,11 +6148,11 @@ window.miRender=function(){
         data:etfVals,
         borderColor:'#059669',
         backgroundColor:'rgba(5,150,105,.12)',
-        fill:true,tension:.4,pointRadius:0,borderWidth:2.5
+        fill:true,tension:.35,pointRadius:0,borderWidth:2.5
       }]
     },
     options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{position:'top',labels:{font:{size:11},boxWidth:14}}},
+      plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:14}}},
       scales:{
         x:{ticks:{font:{size:10},maxTicksLimit:14},grid:{color:'rgba(0,0,0,.04)'}},
         y:{ticks:{font:{size:10},callback:function(v){return v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+(v/1000).toFixed(0)+'k';}},grid:{color:'rgba(0,0,0,.04)'}}
@@ -6850,13 +6853,13 @@ window.pmRender = function(){
 
   var datasets = [];
   if(pmMetal==='gold'||pmMetal==='both'){
-    datasets.push({label:'Gold Value',data:goldData,borderColor:'#f5d060',backgroundColor:'rgba(245,208,96,.08)',tension:.4,borderWidth:2,pointRadius:0});
+    datasets.push({label:'Gold Value',data:goldData,borderColor:'#f5d060',backgroundColor:'rgba(245,208,96,.08)',tension:.35,borderWidth:2,pointRadius:0});
   }
   if(pmMetal==='silver'||pmMetal==='both'){
-    datasets.push({label:'Silver Value',data:silverData,borderColor:'#c8d8e8',backgroundColor:'rgba(200,216,232,.08)',tension:.4,borderWidth:2,pointRadius:0});
+    datasets.push({label:'Silver Value',data:silverData,borderColor:'#c8d8e8',backgroundColor:'rgba(200,216,232,.08)',tension:.35,borderWidth:2,pointRadius:0});
   }
-  datasets.push({label:'Combined Nominal',data:nomData,borderColor:'#50dc78',backgroundColor:'rgba(80,220,120,.07)',tension:.4,borderWidth:2.5,pointRadius:0,fill:true});
-  datasets.push({label:'Combined Real',data:realData,borderColor:'#3cd2c8',backgroundColor:'transparent',tension:.4,borderWidth:2,pointRadius:0,borderDash:[5,3]});
+  datasets.push({label:'Combined Nominal',data:nomData,borderColor:'#50dc78',backgroundColor:'rgba(80,220,120,.07)',tension:.35,borderWidth:2.5,pointRadius:0,fill:true});
+  datasets.push({label:'Combined Real',data:realData,borderColor:'#3cd2c8',backgroundColor:'transparent',tension:.35,borderWidth:2,pointRadius:0,borderDash:[5,3]});
   datasets.push({label:'Total Invested',data:invData,borderColor:'#7ab4f8',backgroundColor:'transparent',tension:.2,borderWidth:1.5,pointRadius:0,borderDash:[3,4]});
 
   pmChart = new Chart(ctx, {
@@ -6864,7 +6867,7 @@ window.pmRender = function(){
     data:{ labels:labels, datasets:datasets },
     options:{
       responsive:true,
-      maintainAspectRatio:true,
+      maintainAspectRatio:false,
       animation:{ duration:400 },
       plugins:{
         legend:{ display:false },
@@ -7797,7 +7800,7 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
       options:{
         responsive:true,maintainAspectRatio:false,
         plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>fmt(ctx.raw)}}},
-        scales:{y:{ticks:{callback:v=>v>=1e6?'$'+(v/1e6).toFixed(1)+'M':fmt(v)},grid:{color:'#f1f5f9'}},x:{grid:{display:false}}}
+        scales:{y:{ticks:{callback:v=>v>=1e6?'$'+(v/1e6).toFixed(1)+'M':fmt(v)},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}
       }
     });
   }
@@ -7845,1165 +7848,1280 @@ window.memeOnEnter = (function(){
 })();
 </script>
 
+
 <!-- ════════════════════════════════════════════════════════
-     SECTION VII — Australian Super / Salary Sacrifice
+     SECTION VII — Australian Super / Salary Sacrifice (Rebuilt)
 ════════════════════════════════════════════════════════ -->
-<section id="superSection" style="display:none;">
-  <!-- Header — Australian themed -->
-  <div class="pm-hdr">
-    <div style="font-size:32px;">🇦🇺</div>
-    <div class="pm-hdr-badge">Strategy III · AU Super</div>
-    <div>
-      <div class="pm-hdr-title">🦘 Salary Sacrifice &amp; Super</div>
-      <div class="pm-hdr-sub">🏦 Model every extra dollar into super + ETF investing · Full ATO tax treatment · 🌏 Australian retirement wealth builder</div>
+<!-- Strategy III: Super Salary Sacrifice — combined HTML + JS -->
+<style>
+/* ═══════════════════════════════════════════════
+   Strategy III — Super Salary Sacrifice (3-column MEI pattern)
+   ═══════════════════════════════════════════════ */
+.su3-row{display:grid;grid-template-columns:260px 1fr 280px;gap:0;background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.04);margin-bottom:16px;}
+@media(max-width:1100px){.su3-row{grid-template-columns:220px 1fr 220px;}}
+@media(max-width:860px){.su3-row{grid-template-columns:1fr;}}
+.su3-row-input{padding:14px;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;gap:10px;background:linear-gradient(180deg,#eff6ff,#fafeff);}
+@media(max-width:860px){.su3-row-input{border-right:none;border-bottom:1px solid #f1f5f9;}}
+.su3-row-chart{padding:16px;display:flex;flex-direction:column;}
+.su3-row-output{padding:14px;border-left:1px solid #f1f5f9;background:#f8fafc;display:flex;flex-direction:column;}
+@media(max-width:860px){.su3-row-output{border-left:none;border-top:1px solid #f1f5f9;}}
+.su3-row-hdr{grid-column:1/-1;padding:14px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #f1f5f9;}
+.su3-row-num{width:28px;height:28px;min-width:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;}
+.su3-row-title{font-size:16px;font-weight:800;color:#0f172a;}
+.su3-row-badge{margin-left:auto;font-size:10px;color:#64748b;background:#f1f5f9;padding:4px 12px;border-radius:20px;font-weight:700;}
+.su3-input-label{font-size:11px;font-weight:600;color:#64748b;display:block;margin-bottom:4px;}
+.su3-input{width:100%;box-sizing:border-box;padding:8px 11px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;font-weight:700;}
+.su3-input:focus{border-color:#3b82f6;outline:none;}
+.su3-apply-btn{width:100%;padding:9px 14px;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;color:#fff;margin-top:auto;}
+.su3-reset-btn{width:100%;padding:7px 12px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;margin-top:4px;}
+.su3-chart-title{font-size:14px;font-weight:800;color:#0f172a;margin-bottom:3px;}
+.su3-chart-sub{font-size:10px;color:#94a3b8;margin-bottom:10px;}
+.su3-fullwidth{grid-column:1/-1;padding:16px 18px;border-top:1px solid #f1f5f9;background:#f8fafc;}
+.su3-hint{font-size:10px;color:#3b82f6;margin-top:3px;font-style:italic;}
+.su3-cap-badge{background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:4px 8px;font-size:10px;font-weight:700;color:#1e40af;margin-top:6px;display:inline-block;}
+.su3-use-max-btn{width:100%;padding:6px 10px;background:#eff6ff;border:1.5px solid #3b82f6;color:#1e40af;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;margin-top:4px;}
+</style>
+
+<section id="superSection" style="display:none">
+
+  <!-- Header -->
+  <div style="background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 50%,#3b82f6 100%);border-radius:14px;padding:18px 24px;margin-bottom:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;box-shadow:0 8px 28px rgba(37,99,235,.18);">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="font-size:28px;">🇦🇺</span>
+      <div style="font-size:24px;font-weight:900;color:#fff;letter-spacing:-.3px;">Super Salary Sacrifice</div>
     </div>
-    <button onclick="strategyResetToZero('superSection')" style="margin-left:auto;padding:8px 16px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);border-radius:8px;color:#fff;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:.3px;">↺ Reset to Zero</button>
+    <div style="font-size:13px;color:rgba(255,255,255,.9);font-weight:600;">Australian superannuation maximisation · tax savings · wealth compounding</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-left:auto;">
+      <button onclick="su3Reset()" style="padding:8px 16px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.4);border-radius:9px;color:#fff;font-size:11px;font-weight:800;cursor:pointer;">Reset All</button>
+    </div>
   </div>
 
-  <!-- Layout — mirrors pm-layout -->
-  <div class="pm-layout">
-
-    <!-- ── SIDEBAR ── -->
-    <aside class="pm-sidebar">
-
-      <!-- Tax Profile -->
-      <div class="pm-ctrl-group">
-        <div class="pm-ctrl-title">👤 Your Profile</div>
-
-        <div class="pm-ctrl-item">
-          <div class="pm-ctrl-label">Your Current Age</div>
-          <div class="pm-ctrl-row">
-            <div class="pm-num-wrap"><input id="su_age" class="pm-num-in" type="number" value="35" min="18" max="70" step="1" style="width:62px"><span class="pm-num-suffix">yrs</span></div>
-            <input id="su_age_r" class="pm-range" type="range" min="18" max="70" step="1" value="35">
-          </div>
-          <div class="su-hint">Preservation age (first super access): <strong>60</strong> · <span id="su_yrs_to_pres">25 yrs away · </span><span id="su_pres_cal_yr">2060</span></div>
-        </div>
-
-        <div class="pm-ctrl-item">
-          <div class="pm-ctrl-label">Annual Salary (pre-tax)</div>
-          <div class="pm-ctrl-row">
-            <div class="pm-num-wrap"><span class="pm-num-prefix">$</span><input id="su_salary" class="pm-num-in" type="number" value="150000" min="50000" max="500000" step="5000"></div>
-            <input id="su_salary_r" class="pm-range" type="range" min="50000" max="500000" step="5000" value="150000">
-          </div>
-        </div>
-
-        <div class="pm-ctrl-item">
-          <div class="pm-ctrl-label">Family Size</div>
-          <select id="su_family" class="su-in" style="max-width:220px">
-            <option value="1">Single</option>
-            <option value="2">Couple (no kids)</option>
-            <option value="4" selected>Family of 4</option>
-            <option value="5">Family of 5+</option>
-          </select>
-        </div>
-
-        <div id="su_tax_summary" class="su-tax-bar"></div>
-
-        <!-- Government Co-contribution badge — shown when income < $58,445 -->
-        <div id="su_cocontrib" class="co-contrib-badge" style="display:none">
-          <div class="co-title">🎁 Govt Co-Contribution Eligible</div>
-          <div class="co-val" id="su_cocontrib_val">Up to $500 / yr</div>
-          <div class="co-sub" id="su_cocontrib_sub">Income under $43,445 — contribute $1k after-tax to super → Govt adds $0.50 per $1 (max $500). Phase-out ends at $58,445.</div>
-        </div>
-
-        <!-- Retirement Readiness score -->
-        <div class="rr-widget" id="su_rr_widget">
-          <div class="rr-title">🎯 Retirement Readiness</div>
-          <div style="display:flex;align-items:baseline;gap:8px;">
-            <div class="rr-score-big" id="su_rr_pct">—</div>
-            <div style="font-size:13px;color:#047857;font-weight:700" id="su_rr_label">of ASFA Comfortable target</div>
-          </div>
-          <div class="rr-bar-wrap"><div class="rr-bar" id="su_rr_bar" style="width:0%"></div></div>
-          <div class="rr-labels"><span>$0</span><span id="su_rr_target_lbl">Target: $71k/yr</span></div>
-          <div class="rr-detail" id="su_rr_detail">Projected super + drawdown vs ASFA comfortable retirement standard (couple). Update inputs above to see your readiness score.</div>
-        </div>
-
-      </div>
-
-      <!-- Super Contributions -->
-      <div class="pm-ctrl-group">
-        <div class="pm-ctrl-title">🏦 Super Contributions</div>
-
-        <!-- Job type — sets employer SG % -->
-        <div class="pm-ctrl-item">
-          <div class="pm-ctrl-label">Job Type / Employer</div>
-          <select id="su_job_type" class="su-in" onchange="suOnJobTypeChange()" style="max-width:100%;font-size:12px">
-            <option value="12.0">Private Sector (Standard) — 12%</option>
-            <option value="17.0">University / Higher Education — 17%</option>
-            <option value="13.5">State Government — 13.5%</option>
-            <option value="15.4">Federal Gov (PSSap) — 15.4%</option>
-            <option value="13.0">Mining &amp; Resources — 13%</option>
-            <option value="12.0" data-sector="health">Healthcare / NFP — 12%</option>
-            <option value="custom">Custom Rate ✏</option>
-          </select>
-          <div id="su_custom_sg_wrap" style="display:none;margin-top:5px">
-            <div class="pm-ctrl-row">
-              <div class="pm-num-wrap"><input id="su_sg_rate" class="pm-num-in" type="number" value="12.0" min="9" max="30" step="0.5" style="width:62px"><span class="pm-num-suffix">%</span></div>
-            </div>
-          </div>
-          <input type="hidden" id="su_sg_rate_hidden" value="12.0">
-          <div style="margin-top:5px;padding:7px 10px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border:1px solid #93c5fd;border-radius:8px">
-            <div style="font-size:10px;color:#64748b;font-weight:500;margin-bottom:2px">Mandatory Employer Super (SGC)</div>
-            <div style="font-size:20px;font-weight:800;color:#1d4ed8" id="su_emp_sg_dollar">$18,000 / yr</div>
-            <div style="font-size:10px;color:#3b82f6" id="su_emp_sg_subtext">12% of $150,000 · goes direct to your super fund</div>
-          </div>
-        </div>
-
-        <!-- Pre-tax (Concessional) Sacrifice -->
-        <div class="pm-ctrl-item">
-          <div class="pm-ctrl-label" style="display:flex;align-items:center;gap:6px">
-            Pre-Tax Sacrifice / yr
-            <span style="background:#eef2ff;color:#4338ca;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:700">CONCESSIONAL</span>
-            <span style="font-size:10px;color:#059669;font-weight:600" id="su_ss_max_label"></span>
-          </div>
-          <div class="pm-ctrl-row">
-            <div class="pm-num-wrap"><span class="pm-num-prefix">$</span><input id="su_ss_amt" class="pm-num-in" type="number" value="10000" min="0" max="30000" step="500"></div>
-            <input id="su_ss_r" class="pm-range" type="range" min="0" max="30000" step="500" value="10000">
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap">
-            <div id="su_cap_note" class="su-cap-ok" style="flex:1"></div>
-            <button id="su_max_btn" style="font-size:10px;padding:2px 8px;border-radius:5px;background:#f0fdf4;border:1px solid #a7f3d0;color:#047857;cursor:pointer;white-space:nowrap;font-weight:600">Use Max</button>
-          </div>
-          <div class="su-hint">Taxed at 15% inside super — saves your marginal rate vs 15%</div>
-        </div>
-
-        <!-- Post-tax (Non-Concessional) Sacrifice -->
-        <div class="pm-ctrl-item">
-          <div class="pm-ctrl-label" style="display:flex;align-items:center;gap:6px">
-            Post-Tax Sacrifice / yr
-            <span style="background:#fdf4ff;color:#7c3aed;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:700">NON-CONC.</span>
-            <span style="font-size:10px;color:#7c3aed;font-weight:600" id="su_nc_max_label">(max $120,000/yr)</span>
-          </div>
-          <div class="pm-ctrl-row">
-            <div class="pm-num-wrap"><span class="pm-num-prefix">$</span><input id="su_nc_amt" class="pm-num-in" type="number" value="0" min="0" max="120000" step="1000"></div>
-            <input id="su_nc_r" class="pm-range" type="range" min="0" max="120000" step="1000" value="0">
-          </div>
-          <div id="su_nc_note" class="su-cap-ok" style="margin-top:4px"></div>
-          <div class="su-hint">Already-taxed money → no contributions tax · grows tax-free inside super · tax-free withdrawal after 60</div>
-        </div>
-
-        <div class="pm-ctrl-item">
-          <div class="pm-ctrl-label">Super Fund Return (% p.a.)</div>
-          <div class="pm-ctrl-row">
-            <div class="pm-num-wrap"><input id="su_return" class="pm-num-in" type="number" value="7.8" min="1" max="20" step="0.1" style="width:62px"><span class="pm-num-suffix">%</span></div>
-            <input id="su_return_r" class="pm-range" type="range" min="1" max="20" step="0.1" value="7.8">
-          </div>
-          <div class="su-hint">AU balanced fund 20-yr avg ≈ 7.8% p.a. (gross, before 15% earnings tax)</div>
-        </div>
-
-        <div class="pm-ctrl-item">
-          <div class="pm-ctrl-label">Years of Salary Sacrifice</div>
-          <div class="pm-ctrl-row">
-            <div class="pm-num-wrap"><input id="su_dur" class="pm-num-in" type="number" value="25" min="1" max="45" step="1" style="width:52px"><span class="pm-num-suffix">yrs</span></div>
-            <input id="su_dur_r" class="pm-range" type="range" min="1" max="45" step="1" value="25">
-          </div>
-          <div class="su-hint" id="su_dur_hint">Sacrifice until age 60 · funds locked until preservation age</div>
-        </div>
-      </div>
-
-      <!-- Funds & Returns -->
-      <div class="pm-ctrl-group">
-        <div class="pm-ctrl-title" style="color:#d97706">Funds &amp; Returns <span id="su_fundCountLabel" style="color:#94a3b8;font-weight:400;font-size:9px;text-transform:none;letter-spacing:0"></span></div>
-        <div class="su-hint" style="margin-bottom:8px">Separate brokerage account · outside super · up to 6 funds</div>
-        <div class="funds-list" id="su_fundsList"></div>
-        <button class="add-fund-btn" id="su_addFundBtn" onclick="suAddFund()">＋ Add Fund (1/6)</button>
-      </div>
-
-      <!-- Phase 1 — Build -->
-      <div class="pm-ctrl-group">
-        <div class="pm-ctrl-title" style="color:#4f46e5">Phase 1 — Build (DCA)</div>
-        <div class="pm-ctrl-item">
-          <div class="pm-ctrl-label">ETF Investment Duration</div>
-          <div class="pm-ctrl-row">
-            <div class="pm-num-wrap"><input id="su_etf_dur" class="pm-num-in" type="number" value="20" min="1" max="45" step="1" style="width:52px"><span class="pm-num-suffix">yrs</span></div>
-            <input id="su_etf_dur_r" class="pm-range" type="range" min="1" max="45" step="1" value="20">
-          </div>
-        </div>
-        <div class="pm-ctrl-item">
-          <div class="pm-ctrl-label">Coast Duration</div>
-          <div class="pm-ctrl-row">
-            <div class="pm-num-wrap"><input id="su_etf_coast" class="pm-num-in" type="number" value="0" min="0" max="20" step="1" style="width:52px"><span class="pm-num-suffix">yrs</span></div>
-            <input id="su_etf_coast_r" class="pm-range" type="range" min="0" max="20" step="1" value="0">
-          </div>
-        </div>
-        <div class="pm-ctrl-item">
-          <div class="pm-ctrl-label">Inflation Adjustment (% p.a.)</div>
-          <div class="pm-ctrl-row">
-            <div class="pm-num-wrap"><input id="su_etf_inf" class="pm-num-in" type="number" value="3" min="0" max="10" step="0.1" style="width:52px"><span class="pm-num-suffix">%</span></div>
-            <input id="su_etf_inf_r" class="pm-range" type="range" min="0" max="10" step="0.1" value="3">
-          </div>
-        </div>
-      </div>
-
-      <!-- Phase 3 — Withdrawal -->
-      <div class="pm-ctrl-group">
-        <div class="pm-ctrl-title" style="color:#be185d">Phase 3 — Withdrawal</div>
-        <div class="su-hint" style="margin-bottom:12px">Super: tax-free after 60 · ETF: CGT applies</div>
-        <div class="pm-ctrl-item">
-          <div class="pm-ctrl-label">Base monthly withdrawal</div>
-          <div class="pm-ctrl-row">
-            <div class="pm-num-wrap"><span class="pm-num-prefix">$</span><input id="su_wdraw" class="pm-num-in" type="number" value="8000" min="0" max="100000" step="500"></div>
-            <input id="su_wdraw_r" class="pm-range" type="range" min="0" max="100000" step="500" value="8000">
-          </div>
-        </div>
-        <div class="pm-ctrl-item">
-          <div class="pm-ctrl-label">Annual withdrawal increase</div>
-          <div class="pm-ctrl-row">
-            <div class="pm-num-wrap"><input id="su_wdraw_inc" class="pm-num-in" type="number" value="3.0" min="0" max="10" step="0.1" style="width:52px"><span class="pm-num-suffix">%</span></div>
-            <input id="su_wdraw_inc_r" class="pm-range" type="range" min="0" max="10" step="0.1" value="3.0">
-          </div>
-        </div>
-        <div class="pm-ctrl-item">
-          <div class="pm-ctrl-label">Withdrawal duration</div>
-          <div class="pm-ctrl-row">
-            <div class="pm-num-wrap"><input id="su_wdraw_yrs" class="pm-num-in" type="number" value="25" min="0" max="50" step="1" style="width:52px"><span class="pm-num-suffix">yrs</span></div>
-            <input id="su_wdraw_yrs_r" class="pm-range" type="range" min="0" max="50" step="1" value="25">
-          </div>
-        </div>
-      </div>
-
-      <!-- Lump-Sum Investments -->
-      <div class="pm-ctrl-group">
-        <div class="pm-ctrl-title" style="color:#059669">Lump-Sum Investments</div>
-        <div style="font-size:11px;color:#64748b;margin-bottom:5px;">One-time deposits at specific years · up to 10 events</div>
-        <div class="lump-list" id="su_lumpList"></div>
-        <div class="lump-inv-summary" id="su_lumpInvSummary" style="display:none"></div>
-        <button class="add-lump" id="su_addLump" style="background:#f0fdf4;border-color:#86efac;color:#065f46;" onclick="suAddLump()">＋ Add lump-sum investment</button>
-      </div>
-
-      <!-- Lump-Sum Withdrawals -->
-      <div class="pm-ctrl-group">
-        <div class="pm-ctrl-title" style="color:#e11d48">Lump-Sum Withdrawals</div>
-        <div style="font-size:11px;color:#64748b;margin-bottom:5px;">One-time cash-outs · up to 10 events</div>
-        <div class="lump-wd-list" id="su_lumpWdList"></div>
-        <div class="lump-wd-summary" id="su_lumpWdSummary" style="display:none"></div>
-        <button class="add-lump-wd" id="su_addLumpWd" onclick="suAddLumpWd()">－ Add lump-sum withdrawal (0/10)</button>
-      </div>
-
-      <button class="su-calc-btn" onclick="suCalculate()">📊 Calculate Wealth Impact</button>
-    </aside>
-
-    <!-- ── MAIN RESULTS — mirrors pm-main ── -->
-    <div class="pm-main" id="su_main">
-      <div class="su-placeholder" id="su_placeholder">← Set your inputs and click <strong style="color:#059669">Calculate Wealth Impact</strong></div>
-      <div id="su_results" style="display:none"></div>
+  <!-- 6 Summary Tiles -->
+  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:18px;">
+    <div style="background:#eff6ff;border:1.5px solid #bae6fd;border-radius:12px;padding:12px 10px;text-align:center;">
+      <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#2563eb;margin-bottom:4px;">Employer SGC</div>
+      <div style="font-size:20px;font-weight:900;color:#0f172a;line-height:1;" id="su3T1a">—</div>
+      <div style="font-size:10px;color:#64748b;margin-top:4px;" id="su3T1b">—</div>
     </div>
+    <div style="background:#dbeafe;border:1.5px solid #93c5fd;border-radius:12px;padding:12px 10px;text-align:center;">
+      <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#1d4ed8;margin-bottom:4px;">Pre-Tax SS</div>
+      <div style="font-size:20px;font-weight:900;color:#0f172a;line-height:1;" id="su3T2a">—</div>
+      <div style="font-size:10px;color:#64748b;margin-top:4px;" id="su3T2b">—</div>
+    </div>
+    <div style="background:#f0f9ff;border:1.5px solid #bae6fd;border-radius:12px;padding:12px 10px;text-align:center;">
+      <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#0284c7;margin-bottom:4px;">Post-Tax NC</div>
+      <div style="font-size:20px;font-weight:900;color:#0f172a;line-height:1;" id="su3T3a">—</div>
+      <div style="font-size:10px;color:#64748b;margin-top:4px;" id="su3T3b">—</div>
+    </div>
+    <div style="background:#fef3c7;border:1.5px solid #fde68a;border-radius:12px;padding:12px 10px;text-align:center;">
+      <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#d97706;margin-bottom:4px;">ETF Alt.</div>
+      <div style="font-size:20px;font-weight:900;color:#0f172a;line-height:1;" id="su3T4a">—</div>
+      <div style="font-size:10px;color:#64748b;margin-top:4px;" id="su3T4b">—</div>
+    </div>
+    <div style="background:#f5f3ff;border:1.5px solid #ddd6fe;border-radius:12px;padding:12px 10px;text-align:center;">
+      <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#7c3aed;margin-bottom:4px;">Withdrawal</div>
+      <div style="font-size:20px;font-weight:900;color:#0f172a;line-height:1;" id="su3T5a">—</div>
+      <div style="font-size:10px;color:#64748b;margin-top:4px;" id="su3T5b">—</div>
+    </div>
+    <div style="background:#dcfce7;border:1.5px solid #86efac;border-radius:12px;padding:12px 10px;text-align:center;">
+      <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#059669;margin-bottom:4px;">Net Gain</div>
+      <div style="font-size:20px;font-weight:900;color:#0f172a;line-height:1;" id="su3T6a">—</div>
+      <div style="font-size:10px;color:#64748b;margin-top:4px;" id="su3T6b">—</div>
+    </div>
+  </div>
 
-  </div><!-- /.pm-layout -->
+  <!-- ═══ Row 1: Default Super (Employer SGC) ═══ -->
+  <div class="su3-row">
+    <div class="su3-row-hdr" style="background:linear-gradient(90deg,#065f46,#10b981);flex-wrap:wrap;">
+      <div class="su3-row-num" style="background:rgba(255,255,255,.25);">1</div>
+      <div class="su3-row-title" style="color:#fff;">Default Super (Employer SGC)</div>
+      <div class="su3-row-badge" style="background:rgba(255,255,255,.2);color:#fff;">Your baseline retirement savings</div>
+      <div style="width:100%;padding:8px 0 2px;font-size:clamp(13px,1.4vw,16px);font-weight:600;color:rgba(255,255,255,.92);line-height:1.4;">This is your baseline — only the employer Super Guarantee Contribution (SGC) over your working life. All other scenarios build on top of this foundation.</div>
+    </div>
+    <div class="su3-row-input">
+      <div>
+        <label class="su3-input-label">Current Age (years)</label>
+        <input id="su3_age" class="su3-input" type="number" value="35" min="18" max="70" step="1" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#e2e8f0'">
+      </div>
+      <div>
+        <label class="su3-input-label">Work Until Age</label>
+        <input id="su3_work_until" class="su3-input" type="number" value="65" min="55" max="75" step="1" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#e2e8f0'">
+        <div class="su3-hint">Determines contribution duration for all rows</div>
+      </div>
+      <div>
+        <label class="su3-input-label">Annual Salary (pre-tax, $)</label>
+        <input id="su3_salary" class="su3-input" type="number" value="150000" min="50000" max="500000" step="5000" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#e2e8f0'">
+      </div>
+      <div>
+        <label class="su3-input-label">Job Type / Employer SG Rate</label>
+        <select id="su3_job_type" class="su3-input" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#e2e8f0'">
+          <option value="12.0">Private Sector (12.0%)</option>
+          <option value="17.0">University (17.0%)</option>
+          <option value="13.5">State Gov (13.5%)</option>
+          <option value="15.4">Federal PSSap (15.4%)</option>
+          <option value="13.0">Mining (13.0%)</option>
+          <option value="custom">Custom Rate</option>
+        </select>
+      </div>
+      <div id="su3_custom_sg_wrap" style="display:none;">
+        <label class="su3-input-label">Custom SG Rate (%)</label>
+        <input id="su3_sg_rate" class="su3-input" type="number" value="12.0" min="9" max="30" step="0.5" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#e2e8f0'">
+      </div>
+      <div>
+        <label class="su3-input-label">Super Fund Return (% p.a.)</label>
+        <input id="su3_return" class="su3-input" type="number" value="7.8" min="1" max="20" step="0.1" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#e2e8f0'">
+        <div class="su3-hint">AU balanced fund 20-yr avg ≈ 7.8%</div>
+      </div>
+      <button onclick="su3RunSgc()" class="su3-apply-btn" style="background:linear-gradient(135deg,#065f46,#10b981);">Calculate SGC</button>
+      <button onclick="su3ResetRow(1)" class="su3-reset-btn">Reset</button>
+    </div>
+    <div class="su3-row-chart">
+      <div class="su3-chart-title" id="su3_sgc_chart_title">Employer SGC Growth to Retirement</div>
+      <div class="su3-chart-sub">Compounding super balance from employer contributions only</div>
+      <div style="position:relative;flex:1;min-height:220px;"><canvas id="su3_chart_sgc"></canvas></div>
+    </div>
+    <div class="su3-row-output">
+      <div id="su3_result_1"></div>
+    </div>
+  </div>
+
+  <!-- ═══ Row 2: Pre-Tax Salary Sacrifice (Concessional) ═══ -->
+  <div class="su3-row">
+    <div class="su3-row-hdr" style="background:linear-gradient(90deg,#1d4ed8,#2563eb);flex-wrap:wrap;">
+      <div class="su3-row-num" style="background:rgba(255,255,255,.25);">2</div>
+      <div class="su3-row-title" style="color:#fff;">Pre-Tax Salary Sacrifice (Concessional)</div>
+      <div class="su3-row-badge" style="background:rgba(255,255,255,.2);color:#fff;">Reduce taxable income · 15% vs 30-45%</div>
+      <div style="width:100%;padding:8px 0 2px;font-size:clamp(13px,1.4vw,16px);font-weight:600;color:rgba(255,255,255,.92);line-height:1.4;">Redirect pre-tax salary into super — taxed at 15% instead of your marginal rate (30-45%). Caps at $32,500/yr (including employer SGC). Lowers take-home pay but builds retirement wealth faster and saves income tax.</div>
+    </div>
+    <div class="su3-row-input">
+      <div id="su3_cap_breakdown" class="su3-cap-badge">Cap: $32,500 - $X (employer) = $Y room</div>
+      <div>
+        <label class="su3-input-label">Annual Pre-Tax Sacrifice ($)</label>
+        <input id="su3_ss_amt" class="su3-input" type="number" value="10000" min="0" max="32500" step="500" onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#e2e8f0'">
+        <div class="su3-hint">Reduces taxable income</div>
+      </div>
+      <div>
+        <label class="su3-input-label">Years to Contribute</label>
+        <input id="su3_ss_yrs" class="su3-input" type="number" value="25" min="1" max="45" step="1" onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#e2e8f0'">
+      </div>
+      <button onclick="su3UseMaxSS()" class="su3-use-max-btn">Use Max (Fill Cap)</button>
+      <button onclick="su3RunSS()" class="su3-apply-btn" style="background:linear-gradient(135deg,#1d4ed8,#2563eb);">Calculate SS Impact</button>
+      <button onclick="su3ResetRow(2)" class="su3-reset-btn">Reset</button>
+    </div>
+    <div class="su3-row-chart">
+      <div class="su3-chart-title">Salary Sacrifice vs Base SGC</div>
+      <div class="su3-chart-sub">Super balance with vs without pre-tax sacrifice</div>
+      <div style="position:relative;flex:1;min-height:220px;"><canvas id="su3_chart_ss"></canvas></div>
+    </div>
+    <div class="su3-row-output">
+      <div id="su3_result_2"></div>
+    </div>
+    <!-- Tax saving chart full-width -->
+    <div id="su3_tax_chart_wrap" class="su3-fullwidth" style="display:none;">
+      <div class="su3-chart-title">Cumulative Tax Saved</div>
+      <div class="su3-chart-sub">Income tax saved by sacrificing pre-tax vs taking as salary</div>
+      <div style="position:relative;height:200px;"><canvas id="su3_chart_tax_saved"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ═══ Row 3: Post-Tax Sacrifice (Non-Concessional) ═══ -->
+  <div class="su3-row">
+    <div class="su3-row-hdr" style="background:linear-gradient(90deg,#0284c7,#0ea5e9);flex-wrap:wrap;">
+      <div class="su3-row-num" style="background:rgba(255,255,255,.25);">3</div>
+      <div class="su3-row-title" style="color:#fff;">Post-Tax Sacrifice (Non-Concessional)</div>
+      <div class="su3-row-badge" style="background:rgba(255,255,255,.2);color:#fff;">Already taxed · no 15% contributions tax</div>
+      <div style="width:100%;padding:8px 0 2px;font-size:clamp(13px,1.4vw,16px);font-weight:600;color:rgba(255,255,255,.92);line-height:1.4;">Contribute after-tax money into super — no 15% contributions tax since it's already taxed at your marginal rate. Caps at $130,000/yr. Grows tax-free inside super. Useful for lump-sum injections or high net-worth individuals.</div>
+    </div>
+    <div class="su3-row-input">
+      <div class="su3-cap-badge">Non-concessional cap: $130,000/yr</div>
+      <div>
+        <label class="su3-input-label">Annual Post-Tax Contribution ($)</label>
+        <input id="su3_nc_amt" class="su3-input" type="number" value="0" min="0" max="130000" step="1000" onfocus="this.style.borderColor='#0ea5e9'" onblur="this.style.borderColor='#e2e8f0'">
+        <div class="su3-hint">After-tax money · no contributions tax</div>
+      </div>
+      <div>
+        <label class="su3-input-label">Years to Contribute</label>
+        <input id="su3_nc_yrs" class="su3-input" type="number" value="10" min="1" max="45" step="1" onfocus="this.style.borderColor='#0ea5e9'" onblur="this.style.borderColor='#e2e8f0'">
+      </div>
+      <div>
+        <label class="su3-input-label">Super Fund Return (% p.a.)</label>
+        <input id="su3_nc_return" class="su3-input" type="number" value="7.8" min="1" max="20" step="0.1" onfocus="this.style.borderColor='#0ea5e9'" onblur="this.style.borderColor='#e2e8f0'">
+        <div class="su3-hint">AU balanced fund 20-yr avg ≈ 7.8%</div>
+      </div>
+      <div style="background:#e0f2fe;border:1px solid #7dd3fc;border-radius:8px;padding:6px 8px;font-size:10px;color:#0369a1;font-weight:700;">Bring-forward: contribute $390k over 3 yrs if under 75</div>
+      <button onclick="su3RunNC()" class="su3-apply-btn" style="background:linear-gradient(135deg,#0284c7,#0ea5e9);">Calculate NC Impact</button>
+      <button onclick="su3ResetRow(3)" class="su3-reset-btn">Reset</button>
+    </div>
+    <div class="su3-row-chart">
+      <div class="su3-chart-title">Non-Concessional Growth</div>
+      <div class="su3-chart-sub">Post-tax contributions compounding inside super</div>
+      <div style="position:relative;flex:1;min-height:220px;"><canvas id="su3_chart_nc"></canvas></div>
+    </div>
+    <div class="su3-row-output">
+      <div id="su3_result_3"></div>
+    </div>
+  </div>
+
+  <!-- ═══ Row 4: ETF Alternative ═══ -->
+  <div class="su3-row">
+    <div class="su3-row-hdr" style="background:linear-gradient(90deg,#b45309,#d97706);flex-wrap:wrap;">
+      <div class="su3-row-num" style="background:rgba(255,255,255,.25);">4</div>
+      <div class="su3-row-title" style="color:#fff;">ETF Alternative — What If You Invested Instead?</div>
+      <div class="su3-row-badge" style="background:rgba(255,255,255,.2);color:#fff;">Same post-tax $ · super vs brokerage</div>
+      <div style="width:100%;padding:8px 0 2px;font-size:clamp(13px,1.4vw,16px);font-weight:600;color:rgba(255,255,255,.92);line-height:1.4;">Same post-tax dollars, two paths: put them into super (non-concessional, earnings taxed at 15%, locked until 60, tax-free withdrawal after 60) or into ETFs outside super (earnings taxed at marginal rate with 50% CGT discount, accessible anytime). Apples-to-apples comparison.</div>
+    </div>
+    <div class="su3-row-input">
+      <div>
+        <label class="su3-input-label">Investment Duration (years)</label>
+        <input id="su3_etf_dur" class="su3-input" type="number" value="20" min="1" max="45" step="1" onfocus="this.style.borderColor='#d97706'" onblur="this.style.borderColor='#e2e8f0'">
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+          <span class="su3-input-label" style="margin-bottom:0;">ETF Funds</span>
+          <span style="font-size:10px;font-weight:800;color:#d97706;" id="su3_dca_total">$0/mo</span>
+        </div>
+        <div id="su3_fundsList" class="funds-list" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px;"></div>
+        <button onclick="su3AddFund()" id="su3_add_fund_btn" style="padding:5px 10px;border:1.5px dashed #fbbf24;border-radius:7px;background:transparent;color:#b45309;font-size:10px;font-weight:700;cursor:pointer;width:100%;">+ Add Fund (0/6)</button>
+      </div>
+      <button onclick="su3RunCompare()" class="su3-apply-btn" style="background:linear-gradient(135deg,#b45309,#d97706);">Compare Super vs ETF</button>
+      <button onclick="su3ResetRow(4)" class="su3-reset-btn">Reset</button>
+    </div>
+    <div class="su3-row-chart">
+      <div class="su3-chart-title">Super vs ETF Side-by-Side</div>
+      <div class="su3-chart-sub">Tax-deferred super vs taxable brokerage</div>
+      <div style="position:relative;flex:1;min-height:220px;"><canvas id="su3_chart_etf_compare"></canvas></div>
+    </div>
+    <div class="su3-row-output">
+      <div id="su3_result_4"></div>
+    </div>
+  </div>
+
+  <!-- ═══ Row 5: Withdrawal Planning ═══ -->
+  <div class="su3-row">
+    <div class="su3-row-hdr" style="background:linear-gradient(90deg,#6d28d9,#7c3aed);flex-wrap:wrap;">
+      <div class="su3-row-num" style="background:rgba(255,255,255,.25);">5</div>
+      <div class="su3-row-title" style="color:#fff;">Withdrawal Planning</div>
+      <div class="su3-row-badge" style="background:rgba(255,255,255,.2);color:#fff;">Preservation · TTR · ABP · depletion</div>
+      <div style="width:100%;padding:8px 0 2px;font-size:clamp(13px,1.4vw,16px);font-weight:600;color:rgba(255,255,255,.92);line-height:1.4;">Plan your retirement withdrawal strategy — preservation age = 60, tax-free age = 60. Choose ABP (account-based pension), lump sum, or TTR (transition to retirement). Model fund longevity and net monthly income after tax.</div>
+    </div>
+    <div class="su3-row-input">
+      <div>
+        <label class="su3-input-label">Withdrawal Start Age</label>
+        <input id="su3_wd_start_age" class="su3-input" type="range" value="60" min="55" max="70" step="1" oninput="var lbl=document.getElementById('su3_wdraw_age_label');if(lbl)lbl.textContent=this.value+' yrs';">
+        <div style="text-align:center;font-size:12px;font-weight:800;color:#7c3aed;" id="su3_wdraw_age_label">60 yrs</div>
+        <div class="su3-hint">Preservation age = 60 · tax-free age = 60</div>
+      </div>
+      <div>
+        <label class="su3-input-label">Monthly Withdrawal Target ($)</label>
+        <input id="su3_wd_monthly" class="su3-input" type="number" value="8000" min="0" max="100000" step="500" onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='#e2e8f0'">
+      </div>
+      <div>
+        <label class="su3-input-label">Annual Withdrawal Increase (%)</label>
+        <input id="su3_wd_increase" class="su3-input" type="number" value="3.0" min="0" max="10" step="0.1" onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='#e2e8f0'">
+        <div class="su3-hint">Adjust for inflation</div>
+      </div>
+      <div>
+        <label class="su3-input-label">Withdrawal Type</label>
+        <select id="su3_wd_type" class="su3-input" onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='#e2e8f0'">
+          <option value="abp">Account-Based Pension (ABP)</option>
+          <option value="lump">Lump Sum</option>
+          <option value="ttr">Transition to Retirement (TTR)</option>
+        </select>
+      </div>
+      <button onclick="su3RunWithdrawal()" class="su3-apply-btn" style="background:linear-gradient(135deg,#6d28d9,#7c3aed);">Model Withdrawals</button>
+      <button onclick="su3ResetRow(5)" class="su3-reset-btn">Reset</button>
+    </div>
+    <div class="su3-row-chart">
+      <div class="su3-chart-title">Fund Depletion by Start Age</div>
+      <div class="su3-chart-sub">Balance drawdown over retirement years</div>
+      <div style="position:relative;flex:1;min-height:220px;"><canvas id="su3_chart_withdrawal"></canvas></div>
+    </div>
+    <div class="su3-row-output">
+      <div id="su3_result_5"></div>
+    </div>
+    <!-- Income chart + ATO drawdown table full-width -->
+    <div id="su3_income_chart_wrap" class="su3-fullwidth" style="display:none;">
+      <div class="su3-chart-title">Net Monthly Income After Tax</div>
+      <div class="su3-chart-sub">Post-tax income from ABP/lump sum over retirement</div>
+      <div style="position:relative;height:200px;"><canvas id="su3_chart_income"></canvas></div>
+    </div>
+    <div id="su3_ato_table_wrap" class="su3-fullwidth" style="display:none;">
+      <div style="cursor:pointer;user-select:none;margin-bottom:8px;" onclick="(function(){var b=document.getElementById('su3_ato_body');var a=document.getElementById('su3_ato_arrow');if(!b||!a)return;var open=b.style.display!=='none';b.style.display=open?'none':'block';a.textContent=open?'▶':'▼';})()">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span id="su3_ato_arrow" style="font-size:10px;color:#7c3aed;font-weight:700;">▼</span>
+          <div class="su3-chart-title" style="margin-bottom:0;">ATO Minimum Drawdown Rates</div>
+        </div>
+      </div>
+      <div id="su3_ato_body" style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:11px;">
+          <thead style="background:#f5f3ff;"><tr><th style="padding:8px;text-align:left;border-bottom:2px solid #ddd6fe;">Age</th><th style="padding:8px;text-align:right;border-bottom:2px solid #ddd6fe;">Min % of Balance</th></tr></thead>
+          <tbody>
+            <tr><td style="padding:6px 8px;border-bottom:1px solid #f1f5f9;">Under 65</td><td style="padding:6px 8px;text-align:right;border-bottom:1px solid #f1f5f9;font-weight:700;">4%</td></tr>
+            <tr><td style="padding:6px 8px;border-bottom:1px solid #f1f5f9;">65-74</td><td style="padding:6px 8px;text-align:right;border-bottom:1px solid #f1f5f9;font-weight:700;">5%</td></tr>
+            <tr><td style="padding:6px 8px;border-bottom:1px solid #f1f5f9;">75-79</td><td style="padding:6px 8px;text-align:right;border-bottom:1px solid #f1f5f9;font-weight:700;">6%</td></tr>
+            <tr><td style="padding:6px 8px;border-bottom:1px solid #f1f5f9;">80-84</td><td style="padding:6px 8px;text-align:right;border-bottom:1px solid #f1f5f9;font-weight:700;">7%</td></tr>
+            <tr><td style="padding:6px 8px;border-bottom:1px solid #f1f5f9;">85-89</td><td style="padding:6px 8px;text-align:right;border-bottom:1px solid #f1f5f9;font-weight:700;">9%</td></tr>
+            <tr><td style="padding:6px 8px;border-bottom:1px solid #f1f5f9;">90-94</td><td style="padding:6px 8px;text-align:right;border-bottom:1px solid #f1f5f9;font-weight:700;">11%</td></tr>
+            <tr><td style="padding:6px 8px;">95+</td><td style="padding:6px 8px;text-align:right;font-weight:700;">14%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <script>
 (function(){
-// ════════════════════════════════════════════════════════
-// SECTION VII — AU Super Salary Sacrifice Engine
-// Focus: ONLY what your out-of-pocket SS & ETF turns into.
-// No default super / employer SG shown in results.
-// ════════════════════════════════════════════════════════
+'use strict';
 
-var CONC_CAP = 30000;       // FY2025-26 concessional cap
-var NC_CAP   = 120000;      // FY2025-26 non-concessional cap
-var CONTRIB_TAX = 0.15;     // super contributions tax
-var EARNINGS_TAX = 0.15;    // super earnings tax (accumulation phase)
-var SAFE_WD = 0.04;         // 4% sustainable withdrawal rate
+/* ════════════════════════════════════════════════════════════════════════════
+   STRATEGY III — Super Salary Sacrifice (3-row layout)
 
-  // Returns years until balance hits 0 (Infinity = never depletes)
-  function suFundYears(startBal, annualReturn, monthlyWd, incRatePct){
-    if(!monthlyWd||monthlyWd<=0) return Infinity;
-    var bal=startBal, inc=incRatePct/100;
-    for(var yr=0;yr<=100;yr++){
-      var annualWd=monthlyWd*12*Math.pow(1+inc,yr);
-      if(annualWd>=bal*(1+annualReturn)) return yr+1; // depletes this year
-      bal=bal*(1+annualReturn)-annualWd;
-    }
-    return Infinity;
-  }
-var PRES_AGE = 60;          // Preservation age — born after 30 June 1964
-var suCharts = {};           // chart instances
+   Each row: left input panel → middle output tiles → right chart
+   Follows MEI pattern: IIFE, meiTry wrapper, lazy init via su3OnEnter
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Constants ───────────────────────────────────────────────────────────── */
+var CONC_CAP = 32500;
+var NC_CAP = 130000;
+var CONTRIB_TAX = 0.15;
+var EARNINGS_TAX = 0.15;
+var PRES_AGE = 60;
+var TAX_FREE_AGE = 60;
+var LOW_RATE_CAP = 260000;
+var SAFE_WD = 0.04;
+
+/* ── Global State ────────────────────────────────────────────────────────── */
+window.SU3_ETF_FUNDS = [];  // ETF funds for Row 4 comparison
+var SU3_CHARTS = {};        // {sgc, ss, nc, etf_compare, withdrawal, income}
+var SU3_RESULTS = {sgc:null, ss:null, nc:null, compare:null, withdrawal:null};
+
+/* ── Helpers ─────────────────────────────────────────────────────────────── */
+function gv(id){ var e=document.getElementById(id); return e?e.value:null; }
+function gn(id,def){ var v=parseFloat(gv(id)); return isNaN(v)?def:v; }
+function fmt$(v){
+  if(v===null||v===undefined||isNaN(v)) return '—';
+  var neg=v<0; v=Math.abs(v);
+  var s = v>=1e6 ? '$'+(v/1e6).toFixed(2)+'M' : v>=1e3 ? '$'+(v/1e3).toFixed(0)+'K' : '$'+Math.round(v);
+  return neg ? '-'+s : s;
+}
+function fmtDollar(v){ return '$'+Math.round(v).toLocaleString(); }
+function pct(r){ return (r*100).toFixed(1)+'%'; }
 
 function auIncomeTax(income){
-  // 2024-25 ATO brackets + 2% Medicare levy
   var tax = 0;
   if(income > 18200) tax += (Math.min(income, 45000) - 18200) * 0.19;
   if(income > 45000) tax += (Math.min(income, 120000) - 45000) * 0.325;
   if(income > 120000) tax += (Math.min(income, 180000) - 120000) * 0.37;
   if(income > 180000) tax += (income - 180000) * 0.45;
-  tax += income * 0.02; // Medicare levy
+  tax += income * 0.02; // Medicare
   return tax;
 }
 
 function auMarginalRate(income){
   var base = income <= 18200 ? 0 : income <= 45000 ? 0.19 : income <= 120000 ? 0.325 : income <= 180000 ? 0.37 : 0.45;
-  return base + 0.02; // + Medicare
+  return base + 0.02;
 }
-
-function fmt$(n){ if(n>=1e9) return '$'+(n/1e9).toFixed(2)+'B'; if(n>=1e6) return '$'+(n/1e6).toFixed(2)+'M'; if(n>=1e3) return '$'+Math.round(n/1e3)+'K'; return '$'+Math.round(n).toLocaleString(); }
-function fmtDollar(n){ return '$'+Math.round(n).toLocaleString(); }
-function pct(r){ return (r*100).toFixed(1)+'%'; }
 
 function annuityFV(annualPmt, annualRate, years){
   if(annualRate === 0) return annualPmt * years;
   return annualPmt * ((Math.pow(1 + annualRate, years) - 1) / annualRate);
 }
-function annuityFVMonthly(monthlyPmt, annualRate, years){
-  var mr = annualRate / 12;
-  var n = years * 12;
-  if(mr === 0) return monthlyPmt * n;
-  return monthlyPmt * ((Math.pow(1+mr,n)-1)/mr);
+
+/* ── Error Handling ──────────────────────────────────────────────────────── */
+function Su3InputError(message, pathForward){
+  this.name = 'Su3InputError';
+  this.message = message;
+  this.pathForward = pathForward || 'Check the highlighted inputs above and try again.';
+}
+Su3InputError.prototype = Object.create(Error.prototype);
+Su3InputError.prototype.constructor = Su3InputError;
+
+function su3Require(cond, message, pathForward){
+  if(!cond) throw new Su3InputError(message, pathForward);
 }
 
-window.suInit = function(){
-  // ── Strategy VII ETF multi-fund picker ──────────────
-  window.SU_ETF_FUNDS = [
-    {sym:'VGS',  name:'Vanguard MSCI Index Intl', cat:'International', cagr:12.5, rate:12.5, dca:500, yr:2010},
-    {sym:'NDQ',  name:'BetaShares NASDAQ 100',     cat:'Growth',        cagr:18.2, rate:18.2, dca:500, yr:2015},
-  ];
-  var SU_LUMPS=[], SU_LUMP_WDS=[], MAX_SU_LUMPS=10;
-
-  window.suRenderFunds=function(){
-    var list=document.getElementById('su_fundsList'); if(!list) return;
-    var colors=typeof FUND_COLORS!=='undefined'?FUND_COLORS:['#4f46e5','#d97706','#059669','#be185d','#7c3aed','#0891b2'];
-    var letters=typeof FUND_LETTERS!=='undefined'?FUND_LETTERS:['A','B','C','D','E','F'];
-    var N=SU_ETF_FUNDS.length;
-    list.innerHTML=SU_ETF_FUNDS.map(function(f,fi){
-      var col=colors[fi]||'#64748b', letter=letters[fi]||String.fromCharCode(65+fi);
-      var yrs=2025-(f.yr||2010), note=yrs<15?' · '+yrs+'-yr est.':'';
-      var dca=f.dca||500;
-      return '<div class="fund-row">'+
-        '<div class="fund-row-hdr">'+
-          '<div class="fund-badge" style="background:'+col+'">'+letter+'</div>'+
-          '<div style="flex:1;min-width:0">'+
-            '<div class="fund-sym">'+f.sym+'</div>'+
-            '<div class="fund-name">'+f.name+'</div>'+
-            '<div class="fund-cat">'+(f.cat||'ETF')+note+'</div>'+
-          '</div>'+
-          '<div class="fund-btns">'+
-            '<button class="change-btn" onclick="openPicker('+fi+',&quot;su&quot;)">Change ETF</button>'+
-            '<button class="remove-btn" '+(N<=1?'disabled':'')+' onclick="SU_ETF_FUNDS.splice('+fi+',1);suRenderFunds();suCalculate()">×</button>'+
-          '</div>'+
-        '</div>'+
-        '<div class="fund-input-group">'+
-          '<div class="fund-input-label">Monthly</div>'+
-          '<div class="ctrl-row">'+
-            '<div class="num-wrap"><span class="num-prefix">$</span>'+
-              '<input class="num-in" type="number" id="su_v_dca_'+fi+'" value="'+dca+'" min="0" max="50000" step="100">'+
-            '</div>'+
-            '<input class="range-in" type="range" id="su_r_dca_'+fi+'" min="0" max="20000" step="100" value="'+dca+'">'+
-          '</div>'+
-        '</div>'+
-        '<div class="fund-input-group">'+
-          '<div class="fund-input-label">Return <span style="font-size:10px;color:#94a3b8">(total return: '+(f.cagr||10)+'%)</span></div>'+
-          '<div class="ctrl-row">'+
-            '<div class="num-wrap">'+
-              '<input class="num-in" type="number" id="su_v_rate_'+fi+'" value="'+(f.rate||f.cagr||10)+'" min="-10" max="60" step="0.1">'+
-              '<span class="num-suffix">%</span>'+
-            '</div>'+
-            '<input class="range-in" type="range" id="su_r_rate_'+fi+'" min="-10" max="60" step="0.1" value="'+(f.rate||f.cagr||10)+'">'+
-          '</div>'+
-        '</div>'+
-      '</div>';
-    }).join('');
-    SU_ETF_FUNDS.forEach(function(_,fi){
-      var vd=document.getElementById('su_v_dca_'+fi),rd=document.getElementById('su_r_dca_'+fi);
-      var vr=document.getElementById('su_v_rate_'+fi),rr=document.getElementById('su_r_rate_'+fi);
-      if(vd&&rd){vd.oninput=function(){rd.value=this.value;SU_ETF_FUNDS[fi].dca=parseFloat(this.value)||0;suCalculate();};rd.oninput=function(){vd.value=this.value;SU_ETF_FUNDS[fi].dca=parseFloat(this.value)||0;suCalculate();};}
-      if(vr&&rr){vr.oninput=function(){rr.value=this.value;SU_ETF_FUNDS[fi].rate=parseFloat(this.value)||0;suCalculate();};rr.oninput=function(){vr.value=this.value;SU_ETF_FUNDS[fi].rate=parseFloat(this.value)||0;suCalculate();};}
-    });
-    var btn=document.getElementById('su_addFundBtn');
-    if(btn){btn.textContent='＋ Add Fund ('+N+'/6)';btn.disabled=N>=6;}
-    var lbl=document.getElementById('su_fundCountLabel');
-    if(lbl) lbl.textContent=N+'/6 funds';
-  };
-  // keep alias for selectETF compatibility
-  window.suRenderEtfFunds=window.suRenderFunds;
-
-  window.suAddFund=function(){
-    if(SU_ETF_FUNDS.length>=6) return;
-    var catalog=typeof ETF_DB!=='undefined'?ETF_DB:[];
-    var used=new Set(SU_ETF_FUNDS.map(function(f){return f.sym;}));
-    var next=catalog.find(function(e){return !used.has(e.sym);})||{sym:'ETF',name:'New Fund',cat:'Blend',cagr:10,rate:10,yr:2010};
-    SU_ETF_FUNDS.push({sym:next.sym,name:next.name,cat:next.cat||'ETF',cagr:next.cagr||10,rate:next.cagr||10,dca:500,yr:next.yr||2010});
-    suRenderFunds(); suCalculate();
-  };
-
-  window.suAddLump=function(){
-    if(SU_LUMPS.length>=MAX_SU_LUMPS) return;
-    SU_LUMPS.push({yr:5,amt:50000}); suRenderSuLumps(); suCalculate();
-  };
-  function suRenderSuLumps(){
-    var el=document.getElementById('su_lumpList'); if(!el) return;
-    el.innerHTML=SU_LUMPS.map(function(l,i){
-      return '<div class="lump-row"><div class="lump-yr-wrap"><span class="lump-yr-lbl">Yr</span>'+
-        '<input class="lump-yr-in" type="number" value="'+l.yr+'" min="1" max="50" step="1" oninput="SU_LUMPS['+i+'].yr=+this.value;suCalculate()"></div>'+
-        '<div class="num-wrap"><span class="num-prefix">$</span><input class="num-in" type="number" value="'+l.amt+'" min="0" max="5000000" step="5000" oninput="SU_LUMPS['+i+'].amt=+this.value;suCalculate()"></div>'+
-        '<button class="lump-del" onclick="SU_LUMPS.splice('+i+',1);suRenderSuLumps();suCalculate()">✕</button></div>';
-    }).join('');
-    var btn=document.getElementById('su_addLump');
-    if(btn) btn.textContent='＋ Add lump-sum investment ('+SU_LUMPS.length+'/'+MAX_SU_LUMPS+')';
-    var sm=document.getElementById('su_lumpInvSummary');
-    if(sm){var tot=SU_LUMPS.reduce(function(s,l){return s+l.amt;},0);sm.style.display=tot?'':'none';sm.textContent='Total: $'+tot.toLocaleString();}
+function su3ShowError(err){
+  var message = err && err.message ? err.message : 'Something went wrong.';
+  var pathForward = (err && err.pathForward) ? err.pathForward : 'Check the highlighted inputs above and try again.';
+  var box = document.getElementById('su3ErrorBanner');
+  if(!box){
+    box = document.createElement('div');
+    box.id = 'su3ErrorBanner';
+    box.style.cssText = 'position:fixed;top:16px;right:16px;z-index:99999;max-width:360px;background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:14px 16px;box-shadow:0 8px 24px rgba(220,38,38,.18);font-family:inherit;';
+    document.body.appendChild(box);
   }
-  window.suAddLumpWd=function(){
-    if(SU_LUMP_WDS.length>=MAX_SU_LUMPS) return;
-    SU_LUMP_WDS.push({yr:10,amt:20000}); suRenderSuLumpWds(); suCalculate();
-  };
-  function suRenderSuLumpWds(){
-    var el=document.getElementById('su_lumpWdList'); if(!el) return;
-    el.innerHTML=SU_LUMP_WDS.map(function(l,i){
-      return '<div class="lump-row"><div class="lump-yr-wrap"><span class="lump-yr-lbl">Yr</span>'+
-        '<input class="lump-yr-in" type="number" value="'+l.yr+'" min="1" max="50" step="1" oninput="SU_LUMP_WDS['+i+'].yr=+this.value;suCalculate()"></div>'+
-        '<div class="num-wrap"><span class="num-prefix">$</span><input class="num-in" type="number" value="'+l.amt+'" min="0" max="5000000" step="5000" oninput="SU_LUMP_WDS['+i+'].amt=+this.value;suCalculate()"></div>'+
-        '<button class="lump-del" onclick="SU_LUMP_WDS.splice('+i+',1);suRenderSuLumpWds();suCalculate()">✕</button></div>';
-    }).join('');
-    var btn=document.getElementById('su_addLumpWd');
-    if(btn) btn.textContent='－ Add lump-sum withdrawal ('+SU_LUMP_WDS.length+'/'+MAX_SU_LUMPS+')';
-    var sm=document.getElementById('su_lumpWdSummary');
-    if(sm){var tot=SU_LUMP_WDS.reduce(function(s,l){return s+l.amt;},0);sm.style.display=tot?'':'none';sm.textContent='Total: $'+tot.toLocaleString();}
-  }
-
-  suRenderFunds();
-
-  // "Use Max" button — fills SS amount to concessional cap minus employer SG
-  var _maxBtn = document.getElementById('su_max_btn');
-  if(_maxBtn) _maxBtn.addEventListener('click', function(){
-    var salary = parseFloat(document.getElementById('su_salary').value)||150000;
-    var maxSS  = Math.max(0, Math.round(CONC_CAP - salary*getSGRate()));
-    var numIn  = document.getElementById('su_ss_amt');
-    var rngIn  = document.getElementById('su_ss_r');
-    if(numIn){ numIn.max=maxSS; numIn.value=maxSS; }
-    if(rngIn){ rngIn.max=maxSS; rngIn.value=maxSS; }
-    if(typeof suRefresh==="function") suRefresh(); else { suUpdateCapNote(); suCalculate(); }
-  });
-
-  // ── Single reactive entry point ──
-  // Every input change goes through suRefresh() so the entire section stays in sync:
-  // employer $ tile, cap notes, tax bar, charts, results — all update together.
-  window.suRefresh = function(){
-    suUpdateCapNote();      // updates employer SGC $ tile + pre-tax cap note
-    suUpdateTaxSummary();   // updates tax comparison bar
-    suCalculate();          // re-renders all charts, tiles, withdrawal section
-  };
-
-  // Range ↔ number syncing — BOTH range slider and number input call suRefresh()
-  var pairs = [
-    ['su_age','su_age_r'],
-    ['su_salary','su_salary_r'],
-    ['su_ss_amt','su_ss_r'],
-    ['su_nc_amt','su_nc_r'],
-    ['su_return','su_return_r'],
-    ['su_dur','su_dur_r'],
-    ['su_etf_dur','su_etf_dur_r'],
-    ['su_etf_coast','su_etf_coast_r'],
-    ['su_etf_inf','su_etf_inf_r'],
-    ['su_wdraw','su_wdraw_r'],
-    ['su_wdraw_inc','su_wdraw_inc_r'],
-    ['su_wdraw_yrs','su_wdraw_yrs_r']
-  ];
-  pairs.forEach(function(p){
-    var num = document.getElementById(p[0]);
-    var rng = document.getElementById(p[1]);
-    if(!num || !rng) return;
-    rng.addEventListener('input', function(){ num.value = rng.value; suRefresh(); });
-    num.addEventListener('input', function(){ rng.value = num.value; suRefresh(); });
-  });
-
-  // Family size dropdown also triggers full refresh
-  var famEl = document.getElementById('su_family');
-  if(famEl) famEl.addEventListener('change', function(){ suRefresh(); });
-
-  // Initial render on section load — defer so the section is fully visible in DOM
-  setTimeout(function(){
-    try { suRefresh(); }
-    catch(e){ console.error('[Super] init error:', e); }
-  }, 80);
-};
-
-// ── Job type → SG rate ──
-window.suOnJobTypeChange = function(){
-  var sel = document.getElementById('su_job_type');
-  if(!sel) return;
-  var val = sel.value;
-  var wrap = document.getElementById('su_custom_sg_wrap');
-  if(val === 'custom'){
-    if(wrap) wrap.style.display='';
-  } else {
-    if(wrap) wrap.style.display='none';
-    var hidden = document.getElementById('su_sg_rate_hidden');
-    if(hidden) hidden.value = val;
-  }
-  if(typeof suRefresh==="function") suRefresh(); else { suUpdateCapNote(); suUpdateTaxSummary(); suCalculate(); }
-};
-
-// ── Get effective SG rate ──
-function getSGRate(){
-  var sel = document.getElementById('su_job_type');
-  if(!sel) return 0.12;
-  if(sel.value === 'custom'){
-    return (parseFloat(document.getElementById('su_sg_rate').value)||12)/100;
-  }
-  return parseFloat(sel.value)/100 || 0.12;
+  box.innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">'+
+      '<div style="font-size:13px;font-weight:800;color:#b91c1c;">⚠ '+message+'</div>'+
+      '<button onclick="document.getElementById(\'su3ErrorBanner\').remove()" style="background:none;border:none;color:#b91c1c;font-size:14px;font-weight:800;cursor:pointer;line-height:1;padding:0 2px;">×</button>'+
+    '</div>'+
+    '<div style="font-size:12px;color:#7f1d1d;margin-top:6px;line-height:1.4;">➜ '+pathForward+'</div>';
+  if(box._su3Timer) clearTimeout(box._su3Timer);
+  box._su3Timer = setTimeout(function(){ var b=document.getElementById('su3ErrorBanner'); if(b) b.remove(); }, 9000);
+  if(typeof console!=='undefined' && console.error) console.error('[SU3]', message, err);
 }
 
-// ── Preservation age hint ──
-function suUpdatePresHint(){
-  var age = parseInt(document.getElementById('su_age') ? document.getElementById('su_age').value : 35)||35;
-  var presAge = 60; // for anyone born after 30 June 1964
-  var yrsAway = Math.max(0, presAge - age);
-  var calYr = new Date().getFullYear() + yrsAway;
-  var hint = document.getElementById('su_yrs_to_pres');
-  var calEl = document.getElementById('su_pres_cal_yr');
-  if(hint) hint.textContent = yrsAway > 0 ? yrsAway+' yrs away · ' : 'Already reached · ';
-  if(calEl) calEl.textContent = calYr;
-  // update dur hint
-  var durHint = document.getElementById('su_dur_hint');
-  if(durHint) durHint.textContent = 'Contribute until age '+age+' + years = locked until age '+presAge+' ('+calYr+')';
-}
-
-function suUpdateNcNote(){
-  var ncAmt = parseFloat(document.getElementById('su_nc_amt') ? document.getElementById('su_nc_amt').value : 0)||0;
-  var NC_CAP = 120000;
-  var el = document.getElementById('su_nc_note');
-  if(!el) return;
-  if(ncAmt <= 0){ el.textContent=''; return; }
-  var rem = NC_CAP - ncAmt;
-  if(ncAmt >= NC_CAP){
-    el.className='su-cap-warn'; el.textContent='⚠ At non-concessional cap of $120,000/yr';
-  } else {
-    el.className='su-cap-ok'; el.textContent='✓ '+fmtDollar(ncAmt)+' of $120,000 cap · '+fmtDollar(rem)+' remaining';
-  }
-}
-
-function suUpdateCapNote(){
-  var salary = parseFloat(document.getElementById('su_salary').value)||150000;
-  var sgRate = getSGRate();
-  var empSG  = salary * sgRate;
-  var maxSS  = Math.max(0, CONC_CAP - empSG);  // 0 when employer SGC >= $30K
-
-  // ── Employer SGC tile — always reflects current salary × selected job type ──
-  var empDolEl = document.getElementById('su_emp_sg_dollar');
-  var empSubEl = document.getElementById('su_emp_sg_subtext');
-  if(empDolEl) empDolEl.textContent = fmtDollar(Math.round(empSG))+' / yr';
-  if(empSubEl){
-    var sgPct = (sgRate*100).toFixed(1);
-    empSubEl.textContent = sgPct+'% of '+fmtDollar(salary)+' · deposited direct to your super fund';
-  }
-
-  // ── Clamp pre-tax sacrifice to maxSS ──
-  var clampedMax = Math.round(maxSS);
-  var numIn = document.getElementById('su_ss_amt');
-  var rngIn = document.getElementById('su_ss_r');
-  if(numIn){ numIn.max = clampedMax; }
-  if(rngIn){ rngIn.max = clampedMax; rngIn.disabled = (clampedMax===0); }
-  var ssAmt = parseFloat(numIn?numIn.value:0)||0;
-  if(ssAmt > clampedMax){
-    ssAmt = clampedMax;
-    if(numIn) numIn.value = ssAmt;
-    if(rngIn) rngIn.value = ssAmt;
-  }
-
-  // ── Max label ──
-  var lbl = document.getElementById('su_ss_max_label');
-  if(lbl){
-    if(clampedMax===0){ lbl.textContent='(no room — SGC fills cap)'; lbl.style.color='#dc2626'; }
-    else { lbl.textContent='(max '+fmtDollar(clampedMax)+')'; lbl.style.color='#059669'; }
-  }
-
-  // ── Cap breakdown note ──
-  var el = document.getElementById('su_cap_note');
-  if(el){
-    if(clampedMax===0){
-      el.className='su-cap-warn';
-      el.innerHTML='⚠ <strong>No room for pre-tax sacrifice</strong> · Employer SGC <strong>'+fmtDollar(Math.round(empSG))+'</strong> already meets/exceeds the $30,000 concessional cap · You can still use post-tax (non-concessional) contributions below';
-    } else if(ssAmt >= clampedMax-1){
-      el.className='su-cap-warn';
-      el.innerHTML='⚠ At your limit · $30,000 − Employer SGC <strong>'+fmtDollar(Math.round(empSG))+'</strong> = max <strong>'+fmtDollar(clampedMax)+'</strong>';
-    } else {
-      el.className='su-cap-ok';
-      el.innerHTML='$30,000 − Employer SGC <strong>'+fmtDollar(Math.round(empSG))+'</strong> = pre-tax cap <strong style="color:#047857">'+fmtDollar(clampedMax)+'</strong> · '+fmtDollar(Math.round(clampedMax-ssAmt))+' still available';
-    }
-  }
-  suUpdateNcNote();
-  suUpdatePresHint();
-}
-
-function suUpdateTaxSummary(){
-  var salary = parseFloat(document.getElementById('su_salary').value)||150000;
-  var tax = auIncomeTax(salary);
-  var marginal = auMarginalRate(salary);
-  var takeHome = salary - tax;
-  var el = document.getElementById('su_tax_summary');
-  if(!el) return;
-  el.innerHTML =
-    '<div style="color:#059669;font-size:13px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Your Tax Position</div>'+
-    '<div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0"><span style="color:#64748b">Gross income</span><span style="color:#0f172a;font-weight:700">'+fmtDollar(salary)+'</span></div>'+
-    '<div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0"><span style="color:#64748b">Income tax + Medicare</span><span style="color:#dc2626;font-weight:700">−'+fmtDollar(tax)+'</span></div>'+
-    '<div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-top:1px solid #d1fae5;margin-top:5px"><span style="color:#64748b">Take-home pay</span><span style="color:#059669;font-weight:700">'+fmtDollar(takeHome)+'</span></div>'+
-    '<div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0"><span style="color:#64748b">Marginal rate (incl. Medicare)</span><span style="color:#d97706;font-weight:700">'+pct(marginal)+'</span></div>'+
-    '<div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0"><span style="color:#64748b">SS tax benefit vs super (15%)</span><span style="color:#059669;font-weight:700">'+pct(marginal-0.15)+' per $1</span></div>';
-}
-
-window.suCalculate = function(){
-  // Make results visible immediately so partial renders are shown even on error
-  var _res = document.getElementById('su_results');
-  var _ph  = document.getElementById('su_placeholder');
-  if(_ph) _ph.style.display = 'none';
-  if(_res) _res.style.display = 'block';
-  try {
-  var salary   = parseFloat(document.getElementById('su_salary') ? document.getElementById('su_salary').value : '150000')||150000;
-  var sgRate   = getSGRate();
-  var ssAmt    = parseFloat(document.getElementById('su_ss_amt') ? document.getElementById('su_ss_amt').value : '0')||0;
-  var ncAmt    = parseFloat(document.getElementById('su_nc_amt') ? document.getElementById('su_nc_amt').value : 0)||0;
-  var supRet   = parseFloat(document.getElementById('su_return').value)/100||0.078;
-  var dur      = parseInt(document.getElementById('su_dur').value)||25;
-  var currentAge = parseInt(document.getElementById('su_age') ? document.getElementById('su_age').value : 35)||35;
-  var PRES_AGE = 60;
-  var yrsToPreserve = Math.max(0, PRES_AGE - currentAge);
-  var nowYr = new Date().getFullYear();
-  var presCalYr = nowYr + yrsToPreserve;
-  // Multi-fund ETF: weighted average return, total monthly DCA
-  // ETF funds - use per-fund DCA from new UI
-  var etfMo    = (typeof SU_ETF_FUNDS!=='undefined'?SU_ETF_FUNDS:[]).reduce(function(s,f){return s+(f.dca||0);},0);
-  var _etfWRate= typeof suEtfWeightedRate==='function'?suEtfWeightedRate():13.8;
-  var etfRate  = _etfWRate/100;
-  var etfDur   = parseInt(document.getElementById('su_etf_dur').value)||20;
-  var etfInf   = parseFloat(document.getElementById('su_etf_inf')?document.getElementById('su_etf_inf').value:3)||3;
-  var wdraw    = parseFloat(document.getElementById('su_wdraw').value)||8000;
-
-  // ── Tax ──
-  var marginal       = auMarginalRate(salary);
-  var grossTaxSaving = ssAmt * (marginal - CONTRIB_TAX);  // annual tax saving from SS
-  var takeHomeImpact = ssAmt * (1 - marginal);             // actual annual pocket cost of SS
-
-  // ── SS-only Super: only what salary sacrifice adds ──
-  var netSupRet = supRet * (1 - EARNINGS_TAX);   // after earnings tax within super
-  var ssCPA     = ssAmt * (1 - CONTRIB_TAX);     // Concessional: after 15% contributions tax
-  var ssExtra   = annuityFV(ssCPA, netSupRet, dur); // Concessional SS growth
-  // Non-concessional: no contributions tax (already post-tax money), but earnings taxed at 15% inside super
-  var ncExtra   = annuityFV(ncAmt, netSupRet, dur); // Post-tax SS growth
-  var totalSacrifice = ssExtra + ncExtra;           // combined salary sacrifice super value
-
-  // ── ETF engine ──
-  var cgtRate    = 0.185;                          // ~18.5% effective CGT at $150k marginal
-  var etfNetRate = etfRate * (1 - cgtRate);
-  var etfRealRate = Math.max(0, etfNetRate - (etfInf/100)); // real after-inflation rate (display only)
-  var etfFV      = annuityFVMonthly(etfMo, etfNetRate, etfDur);
-
-  // ── Employer SGC (declared here so the chart loop can reference empSGNet) ──
-  var empSG    = salary * sgRate;
-  var empSGNet = empSG * (1 - CONTRIB_TAX);          // employer SGC after 15% contributions tax
-
-  // ── Build year-by-year data for charts ──
-  var totalYrs = Math.max(dur, etfDur, yrsToPreserve);
-  var labels=[], ssVals=[], ncVals=[], combSuperVals=[], etfVals=[], combVals=[], cumInvData=[], cumValData=[], empSGVals=[], grandTotalVals=[];
-  var cumInvested = 0;
-  for(var y=1; y<=totalYrs; y++){
-    var sv  = annuityFV(ssCPA, netSupRet, Math.min(y,dur));         // pre-tax SS
-    var nv  = annuityFV(ncAmt, netSupRet, Math.min(y,dur));          // post-tax SS
-    var ev  = annuityFVMonthly(etfMo, etfNetRate, Math.min(y,etfDur));
-    cumInvested += (y<=dur ? takeHomeImpact + ncAmt : 0) + (y<=etfDur ? etfMo*12 : 0);
-    var calYrLabel = (nowYr+y)+' (age '+(currentAge+y)+')';
-    labels.push(calYrLabel);
-    ssVals.push(Math.round(sv));
-    ncVals.push(Math.round(nv));
-    combSuperVals.push(Math.round(sv+nv));
-    etfVals.push(Math.round(ev));
-    combVals.push(Math.round(sv+nv+ev));
-    var egv = annuityFV(empSGNet, netSupRet, Math.min(y,dur));
-    empSGVals.push(Math.round(egv));
-    grandTotalVals.push(Math.round(sv+nv+ev+egv));
-    cumInvData.push(Math.round(cumInvested));
-    cumValData.push(Math.round(sv+nv+ev));
-  }
-
-  // ── Annual cash flow data (SS net cost + ETF) ──
-  var flowLabels=[], ssCostFlow=[], etfFlow=[];
-  for(var fy=1; fy<=totalYrs; fy++){
-    flowLabels.push('Yr '+fy);
-    ssCostFlow.push(fy<=dur ? Math.round(takeHomeImpact) : 0);
-    etfFlow.push(fy<=etfDur ? etfMo*12 : 0);
-  }
-
-  // ── Withdrawal decomposition (4% rule) ──
-  var fromSS    = ssExtra * SAFE_WD / 12;
-  var fromETF   = etfFV   * SAFE_WD / 12;
-  var fromTotal = (ssExtra + etfFV) * SAFE_WD / 12;
-  var wdFromSS  = wdraw > 0 ? wdraw * (ssExtra  / Math.max(ssExtra+etfFV,1)) : fromSS;
-  var wdFromETF = wdraw > 0 ? wdraw * (etfFV    / Math.max(ssExtra+etfFV,1)) : fromETF;
-  var canSustain = wdraw > 0 && wdraw <= fromTotal;
-  var empSG = salary * sgRate;
-  var empSGNet = empSG * (1 - CONTRIB_TAX);          // employer SGC after 15% contributions tax
-  var empSGFV  = annuityFV(empSGNet, netSupRet, dur); // employer SGC compounded over dur years
-  var grandTotal = totalSacrifice + etfFV + empSGFV;  // all streams combined
-  var ssAtPres = annuityFV(ssCPA, netSupRet, Math.min(yrsToPreserve,dur));
-  var ncAtPres = annuityFV(ncAmt, netSupRet, Math.min(yrsToPreserve,dur));
-  var superAtPres = ssAtPres + ncAtPres;
-  // Balances at preservation age (all streams reach age 60)
-  var empSGAtPres = annuityFV(empSGNet, netSupRet, Math.min(yrsToPreserve, dur));
-  var etfAtPres   = annuityFVMonthly(etfMo, etfNetRate, Math.min(yrsToPreserve, etfDur));
-  var totalAtPres = superAtPres + empSGAtPres + etfAtPres;
-  var wdrawInc    = parseFloat(document.getElementById('su_wdraw_inc') ? document.getElementById('su_wdraw_inc').value : 3) || 3;
-  // Sustainable income at 4% rule from each pool
-  var sustainSuper = totalAtPres > 0 ? (superAtPres + empSGAtPres) * SAFE_WD / 12 : 0;
-  var sustainTotal = totalAtPres > 0 ? totalAtPres * SAFE_WD / 12 : 0;
-  // Fund longevity at user-set withdrawal
-  var abpReturn = supRet;           // 0% earnings tax inside ABP
-  var totalRateBlend = totalAtPres > 0 ?
-    ((superAtPres+empSGAtPres)*abpReturn + etfAtPres*etfNetRate) / totalAtPres : abpReturn;
-  var fundYrsSuper = suFundYears(superAtPres+empSGAtPres, abpReturn, wdraw, wdrawInc);
-  var fundYrsTotal = suFundYears(totalAtPres, totalRateBlend, wdraw, wdrawInc);
-  var fundYrsLow   = suFundYears(totalAtPres, totalRateBlend, Math.round(totalAtPres*0.04/12), wdrawInc);
-  var fundYrsHigh  = suFundYears(totalAtPres, totalRateBlend, Math.round(totalAtPres*0.07/12), wdrawInc);
-  function _yrsStr(y){ return y===Infinity ? '♾ Forever' : y+' yrs'; }
-  // Build year-by-year depletion arrays (from preservation age, 55 yr horizon)
-  var depLabels=[], depBalSuper=[], depBalTotal=[], depBal4pct=[], depBal7pct=[];
-  var bSup=superAtPres+empSGAtPres, bTot=totalAtPres, bLow=totalAtPres, bHi=totalAtPres;
-  var wdInc=wdrawInc/100;
-  var wd4=Math.round(totalAtPres*0.04/12), wd7=Math.round(totalAtPres*0.07/12);
-  for(var dp=0;dp<=55;dp++){
-    depLabels.push('Age '+(PRES_AGE+dp));
-    depBalSuper.push(Math.round(Math.max(0,bSup)));
-    depBalTotal.push(Math.round(Math.max(0,bTot)));
-    depBal4pct.push(Math.round(Math.max(0,bLow)));
-    depBal7pct.push(Math.round(Math.max(0,bHi)));
-    var wdAnn=wdraw*12*Math.pow(1+wdInc,dp);
-    bSup=Math.max(0,bSup*(1+abpReturn)-wdAnn);
-    bTot=Math.max(0,bTot*(1+totalRateBlend)-wdAnn);
-    bLow=Math.max(0,bLow*(1+totalRateBlend)-(wd4*12*Math.pow(1+wdInc,dp)));
-    bHi =Math.max(0,bHi *(1+totalRateBlend)-(wd7*12*Math.pow(1+wdInc,dp)));
-  }
-
-  // ── Render HTML ──
-  var _ph=document.getElementById('su_placeholder'); if(_ph) _ph.style.display='none';
-  var res = document.getElementById('su_results');
-  res.style.display = 'block';
-
-  var presValStr = superAtPres>0 ? '<div style="margin-top:8px;padding:8px 12px;background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:1.5px solid #a78bfa;border-radius:8px;font-size:12px;color:#5b21b6;font-weight:600">🔒 At preservation age '+PRES_AGE+' ('+presCalYr+'): Super sacrifice value = '+fmt$(superAtPres)+' · Tax-free on withdrawal</div>' : '';
-
-  res.innerHTML =
-    // 1. Hero headline
-    '<div class="su-hero">'+
-    '<div class="su-hero-eyebrow">Your salary sacrifice strategy — '+presCalYr+' is when you first unlock it:</div>'+
-    '<div class="su-hero-row">'+
-    '<div><div class="su-hero-amount">'+fmt$(totalSacrifice+etfFV)+'</div>'+
-    '<div class="su-hero-sub">Total salary sacrifice wealth after '+totalYrs+' years</div></div>'+
-    '<div class="su-hero-div">'+
-    '<div class="su-hero-stat">Pre-tax SS in super: <strong>'+fmt$(ssExtra)+'</strong></div>'+
-    '<div class="su-hero-stat">Post-tax SS in super: <strong>'+fmt$(ncExtra)+'</strong></div>'+
-    '<div class="su-hero-stat">Multiplier: <strong style="color:#059669">'+((totalSacrifice+etfFV)/Math.max(cumInvested,1)).toFixed(1)+'×</strong></div>'+
-    '<div class="su-hero-stat">Annual tax saved: <strong style="color:#1d4ed8">'+fmtDollar(grossTaxSaving)+'/yr</strong></div>'+
-    '</div></div>'+
-    presValStr+
-    '</div>'+
-
-    // 2. Key Metrics
-    '<div class="pm-tiles">'+
-    _metric('Employer SGC (Mandatory)', fmt$(empSG)+'/yr', (getSGRate()*100).toFixed(1)+'% of '+fmtDollar(salary)+' · direct to super fund', 'blue')+
-    _metric('Pre-Tax SS in Super', fmt$(ssExtra), fmtDollar(ssAmt)+'/yr × '+dur+' yrs · 15% contrib tax', 'em')+
-    _metric('Post-Tax SS in Super', ncAmt>0?fmt$(ncExtra):'$0', ncAmt>0?fmtDollar(ncAmt)+'/yr × '+dur+' yrs · no contrib tax':'Set post-tax amount above', 'pur')+
-    _metric('Super at Preservation Age '+PRES_AGE, fmt$(superAtPres), presCalYr+' · age '+PRES_AGE+' · tax-free after 60', 'green')+
-    _metric('Annual Tax Saving', fmtDollar(grossTaxSaving), pct(marginal-0.15)+' benefit per $1 sacrificed', 'blue')+
-    _metric('Pocket Cost of Pre-Tax SS', fmtDollar(Math.round(takeHomeImpact))+'/yr', 'Net take-home reduction (after tax advantage)', 'rose')+
-    '</div>'+
-
-    // 2b. Total Portfolio Summary
-    '<div class="pm-chart-wrap" style="background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:20px 24px;margin-bottom:16px">'+
-    '<div style="font-size:13px;font-weight:800;color:#f8fafc;margin-bottom:16px;letter-spacing:-.4px">📊 Total Portfolio — All Streams Combined</div>'+
-    '<div class="pm-tiles" style="grid-template-columns:repeat(4,1fr)">'+
-    _metric('Employer SGC (Mandatory)', fmt$(empSGFV), (getSGRate()*100).toFixed(1)+'% of salary × '+dur+' yrs · 15% contrib tax · '+pct(supRet)+' fund return', 'blue')+
-    _metric('Your SS in Super', fmt$(totalSacrifice), 'Pre-tax '+fmt$(ssExtra)+' + Post-tax '+fmt$(ncExtra)+' · voluntary', 'pur')+
-    _metric('ETF Portfolio', fmt$(etfFV), etfMo>0?'$'+etfMo.toLocaleString()+'/mo × '+etfDur+' yrs · after CGT':'Set monthly ETF amount above', 'em')+
-    _metric('Grand Total Portfolio', fmt$(grandTotal), 'Employer SGC + SS super + ETF · after all taxes', 'green')+
-    '</div>'+
-    '<div style="margin-top:12px;font-size:11px;color:#94a3b8">Employer SGC grows tax-sheltered (earnings taxed at 15% inside super, 0% inside ABP after retirement) · ETF returns after estimated 18.5% CGT · Dollar amounts nominal (not inflation-adjusted)</div>'+
-    '<div style="position:relative;height:280px;margin-top:14px"><canvas id="su_chart_total"></canvas></div>'+
-    '</div>'+
-
-    // 3. Chart 1: Super Sacrifice Only — to preservation age
-    '<div class="pm-chart-wrap">'+
-    '<div class="pm-chart-title">Super Salary Sacrifice Growth — Pre-Tax vs Post-Tax</div>'+
-    '<div style="font-size:12px;color:#64748b;margin-bottom:6px">Excludes mandatory employer SGC · Shows only YOUR voluntary salary sacrifice · 🔒 = preservation age '+PRES_AGE+' ('+presCalYr+')</div>'+
-    '<div style="position:relative;height:300px"><canvas id="su_chart_main"></canvas></div>'+
-    '</div>'+
-
-    // 4. Tax Comparison
-    '<div class="pm-chart-wrap">'+
-    '<div class="pm-chart-title">Annual Tax Comparison — With vs Without Salary Sacrifice</div>'+
-    '<div class="su-tax-compare">'+
-    '<div class="su-tax-col without">'+
-    '<div class="su-tax-col-title">Without Salary Sacrifice</div>'+
-    _taxItem('Taxable income', fmtDollar(salary))+
-    _taxItem('Income tax + Medicare', fmtDollar(auIncomeTax(salary)))+
-    _taxItem('Take-home pay', fmtDollar(salary - auIncomeTax(salary)))+
-    _taxItem('Into super (employer SG only)', fmtDollar(empSG))+
-    '</div>'+
-    '<div class="su-tax-col with">'+
-    '<div class="su-tax-col-title">With Salary Sacrifice '+fmtDollar(ssAmt)+'/yr</div>'+
-    _taxItem('Taxable income', fmtDollar(salary-ssAmt))+
-    _taxItem('Income tax + Medicare', fmtDollar(auIncomeTax(salary-ssAmt)))+
-    _taxItem('Net take-home reduction', '−'+fmtDollar(Math.round(takeHomeImpact)))+
-    _taxItem('Your SS enters super (after 15%)', fmtDollar(Math.round(ssCPA)))+
-    '</div>'+
-    '</div>'+
-    '<div class="su-tax-saving-banner">'+
-    '<div style="font-size:20px;font-weight:800;color:#047857">'+fmtDollar(grossTaxSaving)+' saved in tax every year</div>'+
-    '<div style="font-size:12px;color:#059669;margin-top:5px">Sacrifice '+fmtDollar(ssAmt)+' — actual pocket cost only '+fmtDollar(Math.round(takeHomeImpact))+' · '+pct(marginal)+' marginal vs 15% super = <strong>'+pct(marginal-0.15)+' advantage per $1</strong></div>'+
-    '</div>'+
-    '</div>'+
-
-    // 5. Chart 2: Annual Cash Flow
-    '<div class="pm-chart-wrap">'+
-    '<div class="pm-chart-title">Annual Money In (Out of Your Pocket)</div>'+
-    '<div style="font-size:12px;color:#64748b;margin-bottom:10px">SS net cost = what actually leaves your wallet after tax saving. ETF = direct monthly investment.</div>'+
-    '<div style="position:relative;height:200px"><canvas id="su_chart_flow"></canvas></div>'+
-    '</div>'+
-
-    // 6. Withdrawal section — ABP, TTR, Lump Sum
-    '<div class="pm-chart-wrap">'+
-    '<div class="pm-chart-title">🏦 Super Withdrawal Options — From Age '+PRES_AGE+'</div>'+
-    '<div class="pm-chart-sub">Tax-free on all withdrawals after age 60 (for taxed super funds) · Salary sacrifice only — employer SGC is additional</div>'+
-
-    // ABP section
-    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">'+
-    _wdOption('🏦 Account-Based Pension (ABP)',
-      'Most common retirement option. Your super stays invested and earns returns. ATO mandates minimum annual drawdown rates.',
-      ['Age 60–64: min 4%/yr = '+fmtDollar(Math.round(superAtPres*0.04/12))+'/mo',
-       'Age 65–74: min 5%/yr = '+fmtDollar(Math.round(superAtPres*0.05/12))+'/mo',
-       'Age 75–79: min 6%/yr = '+fmtDollar(Math.round(superAtPres*0.06/12))+'/mo',
-       'Age 80–84: min 7%/yr = '+fmtDollar(Math.round(superAtPres*0.07/12))+'/mo'],
-      '✅ Investment earnings inside ABP are tax-free · No tax on withdrawals after 60 · Max flexibility — change amounts any time',
-      '#eff6ff','#3b82f6')+
-    _wdOption('⚡ Transition to Retirement (TTR)',
-      'Use while still working. Access super as income stream from preservation age. Useful to reduce hours without reducing income.',
-      ['Draw 4–10% of super balance per year',
-       'At '+fmt$(superAtPres)+': $'+Math.round(superAtPres*0.04/12).toLocaleString()+'–$'+Math.round(superAtPres*0.10/12).toLocaleString()+'/mo',
-       'Earnings taxed at 15% (not 0%)',
-       'Used alongside salary to smooth the transition'],
-      '⚠ Only use TTR if still working · Once fully retired, convert to ABP for better tax outcome',
-      '#fefce8','#ca8a04')+
-    _wdOption('💰 Lump Sum',
-      'Take your super as cash at once or in tranches. Fully tax-free from age 60 for taxed super funds.',
-      ['100% tax-free after age 60',
-       'Full amount: '+fmt$(superAtPres)+' cash at age 60 ('+presCalYr+')',
-       'Or partial: leave rest invested in ABP',
-       'No restrictions — your money, your choice'],
-      'Consider: a lump sum loses compounding. ABP with reinvested returns can significantly outperform.',
-      '#f0fdf4','#059669')+
-    '</div>'+
-
-    // ABP simulation chart
-    '<div class="pm-chart-title" style="font-size:14px;margin-bottom:8px">ABP Balance Over Time — From Age '+PRES_AGE+' ('+presCalYr+')</div>'+
-    '<div style="font-size:12px;color:#64748b;margin-bottom:8px">Super sacrifice balance at preservation age · 4% min drawdown · earnings taxed at 0% inside ABP · assumes '+pct(supRet)+' fund return</div>'+
-    '<div style="position:relative;height:240px"><canvas id="su_chart_abp"></canvas></div>'+
-    '</div>'+
-
-    // 7. Chart 3: Cumulative Invested vs Portfolio Value
-    '<div class="pm-chart-wrap">'+
-    '<div class="pm-chart-title">Cumulative Invested vs Total Portfolio Value</div>'+
-    '<div style="font-size:12px;color:#64748b;margin-bottom:10px">Green area = wealth created beyond what you put in</div>'+
-    '<div style="position:relative;height:220px"><canvas id="su_chart_cum"></canvas></div>'+
-    '</div>'+
-
-    // 7b. Fund Longevity section
-    '<div class="pm-chart-wrap" style="background:linear-gradient(135deg,#0f172a 0%,#1a1035 100%);border-radius:16px;padding:20px 24px;margin-bottom:16px">'+
-    '<div style="font-size:13px;font-weight:800;color:#f8fafc;margin-bottom:4px;letter-spacing:-.4px">⏳ Fund Longevity — How Long Will It Last?</div>'+
-    '<div style="font-size:12px;color:#94a3b8;margin-bottom:16px">From age '+PRES_AGE+' ('+presCalYr+') · Fund stays invested at '+pct(supRet)+' return while you draw down · withdrawal grows '+wdrawInc+'%/yr</div>'+
-    '<div class="pm-tiles" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px">'+
-    _metric('Super Only (SS+SGC)', _yrsStr(fundYrsSuper),
-      'At '+fmt$(wdraw)+'/mo from '+fmt$(Math.round(superAtPres+empSGAtPres))+' · '+pct(abpReturn)+' ABP return', 'blue')+
-    _metric('Total Portfolio', _yrsStr(fundYrsTotal),
-      'At '+fmt$(wdraw)+'/mo from '+fmt$(Math.round(totalAtPres))+' blended pool', 'pur')+
-    _metric('Sustainable Income (4%)', fmt$(Math.round(sustainTotal))+'/mo',
-      'Withdrawal that never depletes total pool at 4% safe rate', 'green')+
-    _metric('Aggressive Draw (7%)', _yrsStr(fundYrsHigh),
-      fmt$(wd7)+'/mo — higher income, shorter run · 7% of pool/yr', 'rose')+
-    '</div>'+
-    '<div style="font-size:12px;color:#94a3b8;margin-bottom:10px">Balance over time from age '+PRES_AGE+' · showing '+fmtDollar(wdraw)+'/mo user withdrawal vs 4% &amp; 7% benchmarks</div>'+
-    '<div style="position:relative;height:280px"><canvas id="su_chart_dep"></canvas></div>'+
-    '<div style="font-size:11px;color:#64748b;margin-top:10px">Super inside ABP: 0% earnings tax · ETF: after ~18.5% CGT · Employer SGC included · Employer SGC + SS voluntary both in super pool</div>'+
-    '</div>'+
-
-    // 8. Projection Table (SS-only, no base super)
-    '<div class="pm-chart-wrap">'+
-    '<div class="pm-chart-title">Year-by-Year Projection</div>'+
-    _projTable(dur, ssCPA, netSupRet, etfMo, etfNetRate, etfDur, takeHomeImpact, etfInf)+
-    '</div>';
-
-  // Init charts (after DOM is updated)
-  setTimeout(function(){
-    suInitCharts(labels, ssVals, ncVals, combSuperVals, etfVals, combVals, flowLabels, ssCostFlow, etfFlow, cumInvData, cumValData, yrsToPreserve, currentAge, presCalYr, superAtPres, empSGVals, grandTotalVals, depLabels, depBalSuper, depBalTotal, depBal4pct, depBal7pct, wdraw, sustainTotal, wd7, wdrawInc);
-  }, 60);
-
-  // Save snapshot
-  if(window.pmSaveSnapshot){
-    window.pmSaveSnapshot('super',{
-      strategy:'Strategy III — AU Super SS',
-      'Total Invested': fmtDollar(Math.round(cumInvested)),
-      'SS in Super': fmt$(ssExtra),
-      'ETF Portfolio': fmt$(etfFV),
-      'Total Nominal Return': fmt$(ssExtra+etfFV),
-      'Annual Tax Saving': fmtDollar(grossTaxSaving)
-    });
-  }
-  } catch(e){ console.error('[Super] calc error:', e); }
-};
-
-function suInitCharts(labels, ssVals, ncVals, combSuperVals, etfVals, combVals, flowLabels, ssCostFlow, etfFlow, cumInvData, cumValData, yrsToPreserve, currentAge, presCalYr, superAtPres, empSGVals, grandTotalVals, depLabels, depBalSuper, depBalTotal, depBal4pct, depBal7pct, wdraw, sustainTotal, wd7, wdrawInc){
-  var presIdx = Math.max(0, yrsToPreserve - 1); // index of preservation age year
-  var chartDefaults = {
-    responsive:true, maintainAspectRatio:false,
-    interaction:{mode:'index',intersect:false},
-    plugins:{
-      legend:{labels:{color:'#475569',font:{size:11},padding:10,boxWidth:12}},
-      tooltip:{backgroundColor:'#0f172a',titleColor:'#f8fafc',bodyColor:'#94a3b8',borderColor:'#e2e8f0',borderWidth:1,padding:10,
-        callbacks:{label:function(c){return ' '+c.dataset.label+': '+fmt$(c.parsed.y);}}}
-    },
-    scales:{
-      x:{ticks:{color:'#64748b',font:{size:9},maxTicksLimit:15},grid:{color:'rgba(0,0,0,.05)'}},
-      y:{ticks:{color:'#64748b',font:{size:10},callback:function(v){return fmt$(v);}},grid:{color:'rgba(0,0,0,.05)'}}
-    }
+function su3Try(fn){
+  return function(){
+    try{ return fn.apply(this, arguments); }
+    catch(err){ su3ShowError(err); return undefined; }
   };
+}
 
-  // Destroy old instances
-  Object.keys(suCharts).forEach(function(k){ if(suCharts[k]) suCharts[k].destroy(); });
+/* ── Chart Utilities ─────────────────────────────────────────────────────── */
+function su3Destroy(key){
+  if(SU3_CHARTS[key]){ SU3_CHARTS[key].destroy(); delete SU3_CHARTS[key]; }
+}
 
-  // Chart Total: Stacked portfolio breakdown (employer SGC + SS super + ETF) with grand-total line
-  var cTotal = document.getElementById('su_chart_total');
-  if(cTotal && empSGVals && grandTotalVals){
-    var presLineTot = {
-      id:'presLineTot',
-      afterDraw: function(chart){
-        if(yrsToPreserve<=0||yrsToPreserve>labels.length) return;
-        var ctx2=chart.ctx, x=chart.scales.x.getPixelForValue(presIdx);
-        ctx2.save(); ctx2.beginPath(); ctx2.strokeStyle='rgba(255,255,255,.6)'; ctx2.lineWidth=2;
-        ctx2.setLineDash([6,4]); ctx2.moveTo(x,chart.chartArea.top); ctx2.lineTo(x,chart.chartArea.bottom); ctx2.stroke();
-        ctx2.setLineDash([]); ctx2.fillStyle='#f8fafc'; ctx2.font='bold 11px Inter,sans-serif';
-        ctx2.textAlign='left'; ctx2.fillText('🔒 Age 60 · unlock super',x+5,chart.chartArea.top+16);
-        ctx2.restore();
-      }
-    };
-    suCharts.total = new Chart(cTotal.getContext('2d'),{
-      type:'bar',
-      data:{labels:labels,datasets:[
-        {label:'Employer SGC (Mandatory)',data:empSGVals,backgroundColor:'rgba(59,130,246,.75)',borderRadius:2,stack:'s'},
-        {label:'Salary Sacrifice (Super)',data:combSuperVals,backgroundColor:'rgba(124,58,237,.75)',borderRadius:2,stack:'s'},
-        {label:'ETF Portfolio',data:etfVals,backgroundColor:'rgba(217,119,6,.75)',borderRadius:2,stack:'s'},
-        {label:'Grand Total',data:grandTotalVals,type:'line',borderColor:'#10b981',backgroundColor:'transparent',borderWidth:2.5,pointRadius:1.5,tension:.35,stack:undefined,order:0}
-      ]},
-      options:{
-        responsive:true,maintainAspectRatio:false,
-        interaction:{mode:'index',intersect:false},
-        plugins:{
-          legend:{labels:{color:'#cbd5e1',font:{size:11},padding:12,boxWidth:12}},
-          tooltip:{backgroundColor:'#0f172a',titleColor:'#f8fafc',bodyColor:'#94a3b8',borderColor:'#334155',borderWidth:1,padding:10,
-            callbacks:{label:function(c){return ' '+c.dataset.label+': '+fmt$(c.parsed.y);}}}
-        },
-        scales:{
-          x:{stacked:true,ticks:{color:'#64748b',font:{size:9},maxTicksLimit:14},grid:{color:'rgba(255,255,255,.04)'}},
-          y:{stacked:true,ticks:{color:'#94a3b8',font:{size:10},callback:function(v){return fmt$(v);}},grid:{color:'rgba(255,255,255,.06)'}}
-        }
+function su3Line(canvasId, key, labels, datasets, yTitle){
+  su3Destroy(key);
+  var ctx = document.getElementById(canvasId);
+  if(!ctx) return;
+  ctx = ctx.getContext('2d');
+  SU3_CHARTS[key] = new Chart(ctx, {
+    type: 'line',
+    data: { labels: labels, datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: {duration: 300},
+      plugins: {
+        legend: {display: true, position: 'bottom', labels: {usePointStyle: true, boxWidth: 6, font: {size: 10}}}
       },
-      plugins:[presLineTot]
-    });
-  }
-
-  // Chart 1: Super Sacrifice Only — pre-tax vs post-tax with preservation age annotation
-  var c1 = document.getElementById('su_chart_main');
-  if(c1){
-    var presLinePlugin = {
-      id:'presLine',
-      afterDraw: function(chart){
-        if(yrsToPreserve<=0||yrsToPreserve>labels.length) return;
-        var ctx2=chart.ctx, x=chart.scales.x.getPixelForValue(presIdx);
-        ctx2.save();
-        ctx2.beginPath(); ctx2.strokeStyle='rgba(109,40,217,.7)'; ctx2.lineWidth=2.5;
-        ctx2.setLineDash([6,4]); ctx2.moveTo(x,chart.chartArea.top); ctx2.lineTo(x,chart.chartArea.bottom); ctx2.stroke();
-        ctx2.setLineDash([]);
-        ctx2.fillStyle='#7c3aed'; ctx2.font='bold 11px Inter,sans-serif';
-        ctx2.textAlign='left'; ctx2.fillText('🔒 Age '+PRES_AGE+' ('+presCalYr+')',x+5,chart.chartArea.top+18);
-        ctx2.restore();
+      scales: {
+        y: {title: {display: !!yTitle, text: yTitle||''}, ticks: {callback: function(v){return fmt$(v);}}},
+        x: {title: {display: true, text: 'Year'}}
       }
-    };
-    suCharts.main = new Chart(c1.getContext('2d'),{
-      type:'line',
-      data:{labels:labels,datasets:[
-        {label:'Pre-Tax SS (Concessional)',data:ssVals,borderColor:'#4f46e5',backgroundColor:'rgba(79,70,229,.09)',borderWidth:2.5,fill:true,tension:.35,pointRadius:1.5},
-        {label:'Post-Tax SS (Non-Conc.)',data:ncVals,borderColor:'#7c3aed',backgroundColor:'rgba(124,58,237,.07)',borderWidth:2,fill:true,tension:.35,pointRadius:1.5},
-        {label:'Combined Super Sacrifice',data:combSuperVals,borderColor:'#059669',backgroundColor:'rgba(5,150,105,.05)',borderWidth:3,fill:false,tension:.35,pointRadius:2}
-      ]},
-      options:Object.assign({},chartDefaults,{plugins:Object.assign({},chartDefaults.plugins,{annotation:{annotations:{}}})}),
-      plugins:[presLinePlugin]
-    });
-  }
-
-  // Chart 2: Annual Cash Flow
-  var c2 = document.getElementById('su_chart_flow');
-  if(c2) suCharts.flow = new Chart(c2.getContext('2d'),{
-    type:'bar',
-    data:{labels:flowLabels,datasets:[
-      {label:'SS Net Cost (pocket)',data:ssCostFlow,backgroundColor:'rgba(124,58,237,.7)',borderRadius:3},
-      {label:'ETF Investment',data:etfFlow,backgroundColor:'rgba(217,119,6,.75)',borderRadius:3}
-    ]},
-    options:Object.assign({},chartDefaults,{
-      plugins:Object.assign({},chartDefaults.plugins,{
-        tooltip:Object.assign({},chartDefaults.plugins.tooltip,{
-          callbacks:{label:function(c){return ' '+c.dataset.label+': '+fmtDollar(c.parsed.y)+'/yr';}}
-        })
-      }),
-      scales:{
-        x:{stacked:true,ticks:{color:'#64748b',font:{size:9},maxTicksLimit:15},grid:{color:'rgba(0,0,0,.05)'}},
-        y:{stacked:true,ticks:{color:'#64748b',font:{size:10},callback:function(v){return fmtDollar(v);}},grid:{color:'rgba(0,0,0,.05)'}}
-      }
-    })
-  });
-
-  // Chart 3: Cumulative
-  var c3 = document.getElementById('su_chart_cum');
-  if(c3) suCharts.cum = new Chart(c3.getContext('2d'),{
-    type:'line',
-    data:{labels:labels,datasets:[
-      {label:'Total Portfolio Value',data:cumValData,borderColor:'#059669',backgroundColor:'rgba(5,150,105,.1)',borderWidth:2.5,fill:true,tension:.35,pointRadius:1.5},
-      {label:'Cumulative Invested (pocket)',data:cumInvData,borderColor:'#1d4ed8',backgroundColor:'rgba(29,78,216,.06)',borderWidth:2,fill:true,tension:.35,pointRadius:1.5,borderDash:[5,4]}
-    ]},
-    options:chartDefaults
-  });
-
-  // Chart Depletion: Fund longevity — balance declines over time
-  var cDep = document.getElementById('su_chart_dep');
-  if(cDep && depLabels && depBalTotal){
-    suCharts.dep = new Chart(cDep.getContext('2d'),{
-      type:'line',
-      data:{labels:depLabels,datasets:[
-        {label:'4% Safe Withdrawal ('+fmt$(Math.round(wd7 ? wd7*4/7 : 0))+'/mo avg)',data:depBal4pct,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.06)',borderWidth:2.5,fill:true,tension:.35,pointRadius:0},
-        {label:'Total Portfolio at '+fmt$(Math.round(wdraw))+'/mo',data:depBalTotal,borderColor:'#818cf8',backgroundColor:'rgba(129,140,248,.06)',borderWidth:2.5,fill:true,tension:.35,pointRadius:0},
-        {label:'Super Pool Only at '+fmt$(Math.round(wdraw))+'/mo',data:depBalSuper,borderColor:'#60a5fa',backgroundColor:'rgba(96,165,250,.04)',borderWidth:2,fill:false,tension:.35,pointRadius:0,borderDash:[5,3]},
-        {label:'7% Aggressive Draw',data:depBal7pct,borderColor:'#f87171',backgroundColor:'rgba(248,113,113,.04)',borderWidth:2,fill:false,tension:.35,pointRadius:0,borderDash:[4,4]}
-      ]},
-      options:{
-        responsive:true,maintainAspectRatio:false,
-        interaction:{mode:'index',intersect:false},
-        plugins:{
-          legend:{labels:{color:'#cbd5e1',font:{size:11},padding:12,boxWidth:12}},
-          tooltip:{backgroundColor:'#0f172a',titleColor:'#f8fafc',bodyColor:'#94a3b8',borderColor:'#334155',borderWidth:1,padding:10,
-            callbacks:{
-              label:function(c){return ' '+c.dataset.label+': '+fmt$(c.parsed.y);},
-              afterBody:function(ctx){
-                var yr=ctx[0].dataIndex;
-                return yr>0 ? ['  Annual withdrawal: '+fmt$(Math.round(wdraw*12*Math.pow(1+(wdrawInc/100),yr)))+'/yr'] : [];
-              }
-            }
-          }
-        },
-        scales:{
-          x:{ticks:{color:'#64748b',font:{size:9},maxTicksLimit:15},grid:{color:'rgba(255,255,255,.04)'}},
-          y:{ticks:{color:'#94a3b8',font:{size:10},callback:function(v){return fmt$(v);}},grid:{color:'rgba(255,255,255,.06)'}}
-        }
-      }
-    });
-  }
-
-  // Chart ABP: Account-Based Pension simulation from preservation age
-  var cAbp = document.getElementById('su_chart_abp');
-  if(cAbp && typeof superAtPres!=='undefined' && superAtPres>0){
-    // Simulate ABP for 35 years (age 60 to 95) at varying min drawdown rates
-    var abpLabels=[], abp4=[], abp5=[], abp6=[];
-    var b4=superAtPres, b5=superAtPres, b6=superAtPres;
-    var abpRet = parseFloat(document.getElementById('su_return').value)/100||0.078;
-    var abpNetRet = abpRet; // inside ABP: earnings at 0% tax (not 15%)
-    for(var ay=0;ay<=35;ay++){
-      var ageNow = PRES_AGE+ay;
-      abpLabels.push(presCalYr+ay+' (age '+(ageNow)+')');
-      abp4.push(Math.round(Math.max(0,b4)));
-      abp5.push(Math.round(Math.max(0,b5)));
-      abp6.push(Math.round(Math.max(0,b6)));
-      // grow then deduct min drawdown
-      b4 = Math.max(0,b4*(1+abpNetRet) - b4*0.04);
-      var minRate5 = ageNow<65?0.04:ageNow<75?0.05:ageNow<80?0.06:ageNow<85?0.07:0.09;
-      b5 = Math.max(0,b5*(1+abpNetRet) - b5*minRate5);
-      var customRate = ageNow<65?0.06:ageNow<75?0.07:ageNow<80?0.09:0.11;
-      b6 = Math.max(0,b6*(1+abpNetRet) - b6*customRate);
     }
-    suCharts.abp = new Chart(cAbp.getContext('2d'),{
-      type:'line',
-      data:{labels:abpLabels,datasets:[
-        {label:'Min Drawdown (4%/yr)',data:abp4,borderColor:'#059669',backgroundColor:'rgba(5,150,105,.08)',borderWidth:2.5,fill:true,tension:.3,pointRadius:1.5},
-        {label:'Stepped Min Rates (ATO)',data:abp5,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.06)',borderWidth:2,fill:false,tension:.3,pointRadius:1.5},
-        {label:'Higher Drawdown (6–11%)',data:abp6,borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.06)',borderWidth:2,fill:false,tension:.3,pointRadius:1.5,borderDash:[4,3]}
-      ]},
-      options:Object.assign({},chartDefaults,{
-        plugins:Object.assign({},chartDefaults.plugins,{
-          legend:{labels:{color:'#475569',font:{size:11},padding:10,boxWidth:12}},
-          tooltip:{backgroundColor:'#0f172a',titleColor:'#f8fafc',bodyColor:'#94a3b8',callbacks:{label:function(c){return ' '+c.dataset.label+': '+fmt$(c.parsed.y);}}}
-        })
-      })
-    });
-  }
-}
-
-function _wdOption(title, desc, bullets, footer, bg, col){
-  return '<div style="background:'+bg+';border:1.5px solid '+col+';border-radius:12px;padding:14px 16px">'+
-    '<div style="font-size:14px;font-weight:800;color:'+col+';margin-bottom:6px">'+title+'</div>'+
-    '<div style="font-size:11px;color:#475569;margin-bottom:8px;line-height:1.5">'+desc+'</div>'+
-    '<ul style="margin:0;padding-left:16px;font-size:11px;color:#0f172a;line-height:1.8">'+
-    bullets.map(function(b){return '<li>'+b+'</li>';}).join('')+
-    '</ul>'+
-    '<div style="font-size:10.5px;color:#64748b;margin-top:8px;border-top:1px solid rgba(0,0,0,.08);padding-top:6px">'+footer+'</div>'+
-    '</div>';
-}
-
-function _metric(lbl, val, sub, cls){
-  return '<div class="pm-tile '+cls+'">' +
-    '<div class="pm-tile-lbl">'+lbl+'</div>'+
-    '<div class="pm-tile-val">'+val+'</div>'+
-    '<div class="pm-tile-sub">'+sub+'</div>'+
-    '</div>';
-}
-function _taxItem(lab, val){
-  return '<div class="su-tax-item"><span class="lab">'+lab+'</span><span class="val">'+val+'</span></div>';
-}
-function _wdRow(source, amount, type){
-  var color = type==='ss' ? '#7c3aed' : '#d97706';
-  var badge = type==='ss' ? 'SALARY SACRIFICE' : 'ETF';
-  var tax   = type==='etf' ? 'CGT applies on gains' : 'Tax-free after age 60';
-  return '<div class="su-wd-row">'+
-    '<div><div class="su-wd-source">'+source+'</div>'+
-    '<div style="font-size:17px;color:#475569;margin-top:2px">'+tax+'</div></div>'+
-    '<div style="text-align:right">'+
-    '<div class="su-wd-amount" style="color:'+color+'">'+fmtDollar(Math.round(amount))+'</div>'+
-    '<span class="su-wd-badge '+type+'">'+badge+'</span>'+
-    '</div></div>';
-}
-function _projTable(dur, ssCPA, netSupRet, etfMo, etfNetRate, etfDur, takeHomeImpact, etfInfPct){
-  var rows='';
-  var showYears=[1,2,3,5,10,15,20,25,30,35,40,45].filter(function(y){return y<=Math.max(dur,etfDur);});
-  if(showYears.indexOf(Math.max(dur,etfDur))===-1) showYears.push(Math.max(dur,etfDur));
-  showYears.sort(function(a,b){return a-b;});
-  showYears.forEach(function(y){
-    var sv = annuityFV(ssCPA, netSupRet, Math.min(y,dur));
-    var ev = annuityFVMonthly(etfMo, etfNetRate, Math.min(y,etfDur));
-    var cumPocket = 0;
-    for(var i=1;i<=y;i++) cumPocket += (i<=dur?takeHomeImpact:0)+(i<=etfDur?etfMo*12:0);
-    var mult = cumPocket>0 ? ((sv+ev)/cumPocket).toFixed(1)+'×' : '—';
-    var isLast = y===Math.max(dur,etfDur);
-    rows+='<tr'+(isLast?' class="highlight"':'')+'>'+
-      '<td>Year '+y+'</td>'+
-      '<td style="color:#a78bfa;font-weight:600">'+fmt$(sv)+'</td>'+
-      '<td style="color:#fbbf24;font-weight:600">'+fmt$(ev)+'</td>'+
-      '<td style="color:#4ade80;font-weight:700">'+fmt$(sv+ev)+'</td>'+
-      '<td>'+fmtDollar(Math.round(cumPocket))+'</td>'+
-      '<td style="color:#60a5fa;font-weight:700">'+mult+'</td>'+
-      '</tr>';
   });
-  return '<div style="overflow-x:auto">'+
-    '<table class="pm-table"><thead><tr>'+
-    '<th>Year</th><th>SS in Super</th><th>ETF</th><th>Combined</th><th>Pocket Cost</th><th>Multiplier</th>'+
-    '</tr></thead><tbody>'+rows+'</tbody></table></div>'+
-    '<div style="font-size:18px;color:#94a3b8;margin-top:10px;padding:8px 0;border-top:1px solid #f1f5f9">SS: after 15% contributions tax &amp; 15% earnings tax · ETF: after ~18.5% effective CGT · Pocket cost = net take-home reduction + ETF investment</div>';
 }
 
-// ── Strategy III entry point ──────────────────────────────────
-window.suOnEnter=(function(){var d=false;return function(){if(!d){d=true;requestAnimationFrame(function(){if(typeof window.suInit==='function')window.suInit();});}else{window.dispatchEvent(new Event('resize'));}};})();
+function su3Bar(canvasId, key, labels, datasets, yTitle){
+  su3Destroy(key);
+  var ctx = document.getElementById(canvasId);
+  if(!ctx) return;
+  ctx = ctx.getContext('2d');
+  SU3_CHARTS[key] = new Chart(ctx, {
+    type: 'bar',
+    data: { labels: labels, datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: {duration: 300},
+      plugins: {
+        legend: {display: true, position: 'bottom', labels: {usePointStyle: true, boxWidth: 6, font: {size: 10}}}
+      },
+      scales: {
+        y: {title: {display: !!yTitle, text: yTitle||''}, ticks: {callback: function(v){return fmt$(v);}}},
+        x: {title: {display: true, text: 'Year'}}
+      }
+    }
+  });
+}
+
+function su3Area(canvasId, key, labels, datasets, yTitle){
+  su3Destroy(key);
+  var ctx = document.getElementById(canvasId);
+  if(!ctx) return;
+  ctx = ctx.getContext('2d');
+  SU3_CHARTS[key] = new Chart(ctx, {
+    type: 'line',
+    data: { labels: labels, datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: {duration: 300},
+      plugins: {
+        legend: {display: true, position: 'bottom', labels: {usePointStyle: true, boxWidth: 6, font: {size: 10}}},
+        filler: {propagate: false}
+      },
+      scales: {
+        y: {stacked: true, title: {display: !!yTitle, text: yTitle||''}, ticks: {callback: function(v){return fmt$(v);}}},
+        x: {title: {display: true, text: 'Year'}}
+      }
+    }
+  });
+}
+
+/* ── Row 1: Default Super (SGC) ──────────────────────────────────────────── */
+window.su3RunSgc = su3Try(function(){
+  var age = gn('su3_age', 35);
+  var salary = gn('su3_salary', 150000);
+  var jobType = gv('su3_job_type');
+  var sgRate = jobType === 'custom' ? gn('su3_sg_rate', 12.0) : parseFloat(jobType) || 12.0;
+  var returnRate = gn('su3_return', 7.8) / 100;
+
+  su3Require(age >= 18 && age <= 70, 'Age must be between 18 and 70', 'Enter your current age.');
+  su3Require(salary >= 50000, 'Salary must be at least $50,000', 'Enter your annual pre-tax salary.');
+  su3Require(returnRate > 0, 'Return rate must be positive', 'Enter your expected super fund return %.');
+
+  var retireAge = gn('su3_work_until', 65);
+  var years = retireAge - age;
+  su3Require(years > 0, 'Current age must be less than work-until age', 'Adjust your ages.');
+
+  var annualSGC = salary * sgRate / 100;
+  var netSGC = annualSGC * (1 - CONTRIB_TAX);
+
+  var balances = [];
+  var bal = 0;
+  for(var yr = 0; yr <= years; yr++){
+    balances.push(Math.round(bal));
+    if(yr < years){
+      bal = bal * (1 + returnRate) + netSGC;
+    }
+  }
+
+  var finalBalance = balances[balances.length - 1];
+  var totalContrib = netSGC * years;
+  var totalEarnings = finalBalance - totalContrib;
+
+  SU3_RESULTS.sgc = {
+    finalBalance: finalBalance,
+    totalContrib: totalContrib,
+    totalEarnings: totalEarnings,
+    years: years
+  };
+
+  // Update header tile
+  var t1a = document.getElementById('su3T1a');
+  if(t1a) t1a.textContent = fmt$(finalBalance);
+
+  // Render output tiles
+  var tiles = [
+    {label: 'EMPLOYER SGC TOTAL', val: fmt$(finalBalance), sub: 'By age '+retireAge, color: '#10b981', border: '#6ee7b7', glow: 'rgba(16,185,129,.15)'},
+    {label: 'NET CONTRIBUTIONS', val: fmt$(totalContrib), sub: years+' years', color: '#0ea5e9', border: '#7dd3fc', glow: 'rgba(14,165,233,.12)'},
+    {label: 'EARNINGS ('+pct(returnRate)+' p.a.)', val: fmt$(totalEarnings), sub: 'Inside super', color: '#8b5cf6', border: '#c4b5fd', glow: 'rgba(139,92,246,.12)'}
+  ];
+
+  var resultEl = document.getElementById('su3_result_1');
+  if(resultEl){
+    resultEl.innerHTML = su3TileHTML(tiles, '#f0fdf4', '#d1fae5') +
+      '<div style="padding:12px 18px;background:#ecfdf5;border-top:1px solid #6ee7b7;font-size:10px;color:#047857;line-height:1.5;">'+
+      '💡 <strong>AU super fund averages (20-yr):</strong> Balanced ≈ 7.8%, Growth ≈ 9.2%, Conservative ≈ 5.5%<br>'+
+      '📊 Your SGC rate: <strong>'+sgRate.toFixed(1)+'%</strong> of salary, taxed at 15% going in.'+
+      '</div>';
+  }
+
+  // Chart
+  var labels = [];
+  for(var i = 0; i <= years; i++) labels.push(age + i);
+  su3Line('su3_chart_sgc', 'sgc', labels, [{
+    label: 'Super Balance',
+    data: balances,
+    borderColor: '#10b981',
+    backgroundColor: 'rgba(16,185,129,.1)',
+    fill: true,
+    tension:.35,
+    pointRadius: 0
+  }], 'Balance');
+});
+
+/* ── Row 2: Pre-Tax Salary Sacrifice (SS) ───────────────────────────────── */
+window.su3RunSS = su3Try(function(){
+  var salary = gn('su3_salary', 150000);
+  var jobType = gv('su3_job_type');
+  var sgRate = jobType === 'custom' ? gn('su3_sg_rate', 12.0) : parseFloat(jobType) || 12.0;
+  var ssAmt = gn('su3_ss_amt', 10000);
+  var ssYrs = gn('su3_ss_yrs', 25);
+  var returnRate = gn('su3_return', 7.8) / 100;
+
+  var annualSGC = salary * sgRate / 100;
+  var maxSS = CONC_CAP - annualSGC;
+
+  su3Require(ssAmt >= 0, 'Salary sacrifice amount cannot be negative', 'Enter $0 or more.');
+  su3Require(ssAmt <= maxSS, 'Pre-tax sacrifice exceeds concessional cap', 'Max: '+fmtDollar(maxSS)+' (cap '+fmtDollar(CONC_CAP)+' minus SGC '+fmtDollar(annualSGC)+').');
+  su3Require(ssYrs > 0 && ssYrs <= 45, 'Years must be between 1 and 45', 'Enter your sacrifice duration.');
+
+  var netContrib = ssAmt * (1 - CONTRIB_TAX);
+  var marginalRate = auMarginalRate(salary);
+  var annualTaxSaving = ssAmt * (marginalRate - CONTRIB_TAX);
+
+  var balances = [];
+  var cumTaxSaved = [];
+  var bal = 0;
+  var cumTax = 0;
+  for(var yr = 0; yr <= ssYrs; yr++){
+    balances.push(Math.round(bal));
+    cumTaxSaved.push(Math.round(cumTax));
+    if(yr < ssYrs){
+      bal = bal * (1 + returnRate) + netContrib;
+      cumTax += annualTaxSaving;
+    }
+  }
+
+  var finalBalance = balances[balances.length - 1];
+  var totalTaxSaved = cumTaxSaved[cumTaxSaved.length - 1];
+
+  SU3_RESULTS.ss = {
+    finalBalance: finalBalance,
+    totalTaxSaved: totalTaxSaved,
+    years: ssYrs
+  };
+
+  // Update header tile
+  var t2a = document.getElementById('su3T2a');
+  if(t2a) t2a.textContent = fmt$(finalBalance);
+
+  // Render output tiles
+  var tiles = [
+    {label: 'PRE-TAX SS TOTAL', val: fmt$(finalBalance), sub: ssYrs+' years', color: '#8b5cf6', border: '#c4b5fd', glow: 'rgba(139,92,246,.15)'},
+    {label: 'ANNUAL TAX SAVING', val: fmt$(annualTaxSaving), sub: 'vs. taking as salary', color: '#10b981', border: '#6ee7b7', glow: 'rgba(16,185,129,.12)'},
+    {label: 'CUMULATIVE TAX SAVED', val: fmt$(totalTaxSaved), sub: ssYrs+' years', color: '#f59e0b', border: '#fcd34d', glow: 'rgba(245,158,11,.12)'}
+  ];
+
+  var resultEl = document.getElementById('su3_result_2');
+  if(resultEl){
+    resultEl.innerHTML = su3TileHTML(tiles, '#faf5ff', '#e9d5ff') +
+      '<div style="padding:12px 18px;background:#f3e8ff;border-top:1px solid #c4b5fd;font-size:10px;color:#7e22ce;line-height:1.5;">'+
+      '💡 <strong>How it works:</strong> Your sacrifice is taxed at 15% (not your marginal '+pct(marginalRate)+'), saving you '+pct(marginalRate - CONTRIB_TAX)+' on every dollar.<br>'+
+      '📊 Room to max cap: <strong>'+fmt$(maxSS - ssAmt)+'</strong> (cap: '+fmt$(CONC_CAP)+', SGC: '+fmt$(annualSGC)+', your SS: '+fmt$(ssAmt)+').'+
+      '</div>';
+  }
+
+  // Chart: stacked area showing SS value + cumulative tax saved
+  var labels = [];
+  for(var i = 0; i <= ssYrs; i++) labels.push(i);
+  su3Area('su3_chart_ss', 'ss', labels, [
+    {
+      label: 'Super Balance',
+      data: balances,
+      borderColor: '#8b5cf6',
+      backgroundColor: 'rgba(139,92,246,.3)',
+      fill: true,
+      tension:.35,
+      pointRadius: 0
+    },
+    {
+      label: 'Cumulative Tax Saved',
+      data: cumTaxSaved,
+      borderColor: '#10b981',
+      backgroundColor: 'rgba(16,185,129,.3)',
+      fill: true,
+      tension:.35,
+      pointRadius: 0
+    }
+  ], 'Value ($)');
+});
+
+/* ── Row 3: Post-Tax (Non-Concessional) Sacrifice ────────────────────────── */
+window.su3RunNC = su3Try(function(){
+  var ncAmt = gn('su3_nc_amt', 0);
+  var ncYrs = gn('su3_nc_yrs', 25);
+  var returnRate = gn('su3_nc_return', 7.8) / 100;
+
+  su3Require(ncAmt >= 0, 'Post-tax sacrifice cannot be negative', 'Enter $0 or more.');
+  su3Require(ncAmt <= NC_CAP, 'Post-tax sacrifice exceeds non-concessional cap', 'Max: '+fmtDollar(NC_CAP)+'/yr (or bring-forward $390K over 3 yrs if TSB < $1.84m).');
+  su3Require(ncYrs > 0 && ncYrs <= 45, 'Years must be between 1 and 45', 'Enter your sacrifice duration.');
+
+  var balances = [];
+  var bal = 0;
+  for(var yr = 0; yr <= ncYrs; yr++){
+    balances.push(Math.round(bal));
+    if(yr < ncYrs){
+      bal = bal * (1 + returnRate) + ncAmt; // no contributions tax
+    }
+  }
+
+  var finalBalance = balances[balances.length - 1];
+  var totalContrib = ncAmt * ncYrs;
+  var totalEarnings = finalBalance - totalContrib;
+
+  SU3_RESULTS.nc = {
+    finalBalance: finalBalance,
+    totalContrib: totalContrib,
+    totalEarnings: totalEarnings,
+    years: ncYrs
+  };
+
+  // Update header tile
+  var t3a = document.getElementById('su3T3a');
+  if(t3a) t3a.textContent = fmt$(finalBalance);
+
+  // Render output tiles
+  var tiles = [
+    {label: 'POST-TAX NC TOTAL', val: fmt$(finalBalance), sub: ncYrs+' years', color: '#f59e0b', border: '#fcd34d', glow: 'rgba(245,158,11,.15)'},
+    {label: 'CONTRIBUTIONS', val: fmt$(totalContrib), sub: 'Already taxed', color: '#0ea5e9', border: '#7dd3fc', glow: 'rgba(14,165,233,.12)'},
+    {label: 'EARNINGS', val: fmt$(totalEarnings), sub: 'Tax-sheltered growth', color: '#10b981', border: '#6ee7b7', glow: 'rgba(16,185,129,.12)'}
+  ];
+
+  var resultEl = document.getElementById('su3_result_3');
+  if(resultEl){
+    resultEl.innerHTML = su3TileHTML(tiles, '#fffbeb', '#fef3c7') +
+      '<div style="padding:12px 18px;background:#fef9c3;border-top:1px solid #fcd34d;font-size:10px;color:#b45309;line-height:1.5;">'+
+      '💡 <strong>No contributions tax:</strong> Your money has already been taxed at your marginal rate, so it goes in at 100%.<br>'+
+      '📊 Earnings inside super are taxed at 15% (vs. your marginal rate outside super).<br>'+
+      '⚡ Bring-forward rule: you can contribute up to <strong>$390,000</strong> over 3 years if your total super balance < $1.84m.'+
+      '</div>';
+  }
+
+  // Chart
+  var labels = [];
+  for(var i = 0; i <= ncYrs; i++) labels.push(i);
+  su3Line('su3_chart_nc', 'nc', labels, [{
+    label: 'Non-Concessional Balance',
+    data: balances,
+    borderColor: '#f59e0b',
+    backgroundColor: 'rgba(245,158,11,.1)',
+    fill: true,
+    tension:.35,
+    pointRadius: 0
+  }], 'Balance');
+});
+
+/* ── Row 4: ETF vs Super Comparison (apples-to-apples post-tax $) ──────── */
+window.su3RunCompare = su3Try(function(){
+  var salary = gn('su3_salary', 150000);
+  var duration = gn('su3_etf_dur', 20);
+  var superReturn = gn('su3_return', 7.8) / 100;
+  var marginalRate = auMarginalRate(salary);
+
+  su3Require(window.SU3_ETF_FUNDS && window.SU3_ETF_FUNDS.length > 0, 'No ETF funds selected', 'Add at least one ETF fund below to compare.');
+  su3Require(duration > 0, 'Duration must be greater than 0', 'Enter investment duration.');
+
+  // Total monthly DCA = the post-tax dollars available to invest
+  var totalDca = 0;
+  window.SU3_ETF_FUNDS.forEach(function(f){ totalDca += (f.dca || 0); });
+  var etfReturn = 0;
+  if(totalDca > 0){
+    window.SU3_ETF_FUNDS.forEach(function(f){ etfReturn += ((f.dca || 0) / totalDca) * (f.ret / 100); });
+  }
+  su3Require(totalDca > 0, 'Total monthly ETF investment is $0', 'Enter a monthly amount for at least one fund.');
+
+  // Same post-tax dollars go into both paths
+  var monthlyInvest = totalDca;
+
+  // SUPER PATH: non-concessional (post-tax in, no 15% contributions tax)
+  // Earnings inside super taxed at 15%, withdrawals tax-free after 60
+  var superNetReturn = superReturn * (1 - CONTRIB_TAX); // earnings taxed at 15%
+  var superMonthlyRate = superNetReturn / 12;
+
+  // ETF PATH: same dollars into brokerage
+  // Earnings taxed annually at marginal rate (simplified), CGT 50% discount on sale
+  var etfNetReturn = etfReturn * (1 - marginalRate * 0.5); // approx: 50% CGT discount
+  var etfMonthlyRate = etfNetReturn / 12;
+
+  var balSuper = [];
+  var balETF = [];
+  var bs = 0, be = 0;
+
+  for(var yr = 0; yr <= duration; yr++){
+    balSuper.push(Math.round(bs));
+    balETF.push(Math.round(be));
+    if(yr < duration){
+      for(var m = 0; m < 12; m++){
+        bs = bs * (1 + superMonthlyRate) + monthlyInvest;
+        be = be * (1 + etfMonthlyRate) + monthlyInvest;
+      }
+    }
+  }
+
+  var finalSuper = balSuper[balSuper.length - 1];
+  var finalETF = balETF[balETF.length - 1];
+  var winner = finalSuper > finalETF ? 'Super' : 'ETF';
+  var delta = Math.abs(finalSuper - finalETF);
+
+  var crossover = null;
+  for(var i = 1; i < balSuper.length; i++){
+    if((balSuper[i-1] <= balETF[i-1] && balSuper[i] > balETF[i]) ||
+       (balSuper[i-1] >= balETF[i-1] && balSuper[i] < balETF[i])){
+      crossover = i;
+      break;
+    }
+  }
+
+  SU3_RESULTS.compare = {
+    finalSuper: finalSuper,
+    finalETF: finalETF,
+    winner: winner,
+    delta: delta,
+    crossover: crossover
+  };
+
+  // Update header tile
+  var t4a = document.getElementById('su3T4a');
+  if(t4a) t4a.textContent = fmt$(finalETF);
+
+  // Render output tiles
+  var tiles = [
+    {label: 'SUPER (NC) PATH', val: fmt$(finalSuper), sub: 'Locked until 60, tax-free out', color: '#8b5cf6', border: '#c4b5fd', glow: 'rgba(139,92,246,.15)'},
+    {label: 'ETF PATH', val: fmt$(finalETF), sub: 'Accessible anytime', color: '#f59e0b', border: '#fcd34d', glow: 'rgba(245,158,11,.15)'},
+    {label: winner.toUpperCase()+' WINS BY', val: fmt$(delta), sub: crossover ? 'Crossover at year '+crossover : 'No crossover', color: winner==='Super'?'#10b981':'#ef4444', border: winner==='Super'?'#6ee7b7':'#fca5a5', glow: winner==='Super'?'rgba(16,185,129,.15)':'rgba(239,68,68,.15)'}
+  ];
+
+  var resultEl = document.getElementById('su3_result_4');
+  if(resultEl){
+    resultEl.innerHTML = su3TileHTML(tiles, '#fefce8', '#fef9c3') +
+      '<div style="padding:12px 18px;background:#fef3c7;border-top:1px solid #fcd34d;font-size:10px;color:#b45309;line-height:1.5;">'+
+      '🔒 <strong>Super (NC):</strong> Same post-tax $ in, no 15% contributions tax. Earnings taxed at 15% inside super. Withdrawals tax-free after 60. Locked until preservation age.<br>'+
+      '📈 <strong>ETF:</strong> Same post-tax $ in. Earnings taxed at marginal rate ('+pct(marginalRate)+'), CGT on sale with 50% discount if held 12+ months.<br>'+
+      '💡 <strong>Same $'+Math.round(monthlyInvest).toLocaleString()+'/mo post-tax</strong> into both paths. Super net return: '+pct(superNetReturn)+' (after 15% earnings tax). ETF net return: '+pct(etfNetReturn)+' (after CGT).'+
+      '</div>';
+  }
+
+  // Chart
+  var labels = [];
+  for(var i = 0; i <= duration; i++) labels.push(i);
+  su3Line('su3_chart_etf_compare', 'etf_compare', labels, [
+    {
+      label: 'Super (Non-Concessional)',
+      data: balSuper,
+      borderColor: '#8b5cf6',
+      backgroundColor: 'rgba(139,92,246,.1)',
+      fill: false,
+      tension:.35,
+      pointRadius: 0
+    },
+    {
+      label: 'ETF (Brokerage)',
+      data: balETF,
+      borderColor: '#f59e0b',
+      backgroundColor: 'rgba(245,158,11,.1)',
+      fill: false,
+      tension:.35,
+      pointRadius: 0
+    }
+  ], 'Balance');
+});
+
+/* ── Row 5: Withdrawal Planning ──────────────────────────────────────────── */
+window.su3RunWithdrawal = su3Try(function(){
+  var startAge = gn('su3_wd_start_age', 60);
+  var monthly = gn('su3_wd_monthly', 8000);
+  var increaseRate = gn('su3_wd_increase', 3.0) / 100;
+  var wdType = gv('su3_wd_type') || 'ABP';
+  var returnRate = gn('su3_return', 7.8) / 100;
+
+  su3Require(startAge >= 55 && startAge <= 70, 'Start age must be between 55 and 70', 'Enter your planned withdrawal start age.');
+  su3Require(monthly >= 0, 'Monthly withdrawal cannot be negative', 'Enter $0 or more.');
+
+  // Calculate total super balance at 60
+  var age = gn('su3_age', 35);
+  var salary = gn('su3_salary', 150000);
+  var jobType = gv('su3_job_type');
+  var sgRate = jobType === 'custom' ? gn('su3_sg_rate', 12.0) : parseFloat(jobType) || 12.0;
+  var ssAmt = gn('su3_ss_amt', 10000);
+  var ssYrs = gn('su3_ss_yrs', 25);
+  var ncAmt = gn('su3_nc_amt', 0);
+  var ncYrs = gn('su3_nc_yrs', 25);
+
+  var workUntil = gn('su3_work_until', 65);
+  var workYrs = Math.max(0, workUntil - age);
+  var yearsToStart = Math.max(0, startAge - age);
+
+  // SGC path: contributions for workYrs, then compound to startAge
+  var annualSGC = salary * sgRate / 100;
+  var netSGC = annualSGC * (1 - CONTRIB_TAX);
+  var sgcBal = 0;
+  for(var i = 0; i < workYrs; i++) sgcBal = sgcBal * (1 + returnRate) + netSGC;
+  for(var i = workYrs; i < yearsToStart; i++) sgcBal = sgcBal * (1 + returnRate);
+
+  // SS path
+  var netSS = ssAmt * (1 - CONTRIB_TAX);
+  var ssBal = 0;
+  var ssRemain = Math.min(ssYrs, workYrs);
+  for(var i = 0; i < ssRemain; i++) ssBal = ssBal * (1 + returnRate) + netSS;
+  for(var i = ssRemain; i < yearsToStart; i++) ssBal = ssBal * (1 + returnRate);
+
+  // NC path
+  var ncBal = 0;
+  var ncRemain = Math.min(ncYrs, workYrs);
+  for(var i = 0; i < ncRemain; i++) ncBal = ncBal * (1 + returnRate) + ncAmt;
+  for(var i = ncRemain; i < yearsToStart; i++) ncBal = ncBal * (1 + returnRate);
+
+  var totalAtStart = sgcBal + ssBal + ncBal;
+
+  // Simulate withdrawal from different start ages
+  var startAges = [Math.max(55, startAge - 5), startAge, Math.min(75, startAge + 5)];
+  var scenarios = [];
+
+  startAges.forEach(function(sa){
+    var yToSa = Math.max(0, sa - age);
+    // Rebuild balance to this scenario's start age
+    var sgcB = 0;
+    for(var i = 0; i < Math.min(workYrs, yToSa); i++) sgcB = sgcB * (1 + returnRate) + netSGC;
+    for(var i = Math.min(workYrs, yToSa); i < yToSa; i++) sgcB = sgcB * (1 + returnRate);
+    var ssB = 0;
+    for(var i = 0; i < Math.min(ssRemain, yToSa); i++) ssB = ssB * (1 + returnRate) + netSS;
+    for(var i = Math.min(ssRemain, yToSa); i < yToSa; i++) ssB = ssB * (1 + returnRate);
+    var ncB = 0;
+    for(var i = 0; i < Math.min(ncRemain, yToSa); i++) ncB = ncB * (1 + returnRate) + ncAmt;
+    for(var i = Math.min(ncRemain, yToSa); i < yToSa; i++) ncB = ncB * (1 + returnRate);
+    var startBal = sgcB + ssB + ncB;
+
+    var balances = [];
+    var netIncomes = [];
+    var bal = startBal;
+    balances.push(Math.round(bal));
+    netIncomes.push(0);
+
+    for(var yr = 1; yr <= 40; yr++){
+      var annualWd = monthly * 12 * Math.pow(1 + increaseRate, yr - 1);
+      var earnings = bal * returnRate;
+
+      // Tax: if under 60, taxed component = (annualWd / bal) * taxableComponent
+      // Simplified: assume all taxed, marginal rate - 15% offset
+      var tax = 0;
+      if((sa + yr - 1) < TAX_FREE_AGE){
+        var grossIncome = annualWd;
+        tax = auIncomeTax(grossIncome) - grossIncome * 0.15; // low rate offset
+        tax = Math.max(0, tax);
+      }
+      var netIncome = annualWd - tax;
+
+      bal = bal + earnings - annualWd;
+      if(bal < 0) bal = 0;
+      balances.push(Math.round(bal));
+      netIncomes.push(Math.round(netIncome / 12)); // monthly net
+    }
+
+    scenarios.push({
+      startAge: sa,
+      balances: balances,
+      netIncomes: netIncomes,
+      depleteYear: balances.findIndex(function(b){ return b === 0; })
+    });
+  });
+
+  SU3_RESULTS.withdrawal = {
+    totalAtStart: totalAtStart,
+    scenarios: scenarios
+  };
+
+  // Update header tiles
+  var t5a = document.getElementById('su3T5a');
+  if(t5a) t5a.textContent = fmt$(totalAtStart);
+  var t6a = document.getElementById('su3T6a');
+  if(t6a){
+    var safeMonthly = Math.round(totalAtStart * SAFE_WD / 12);
+    t6a.textContent = fmt$(safeMonthly)+'/mo';
+  }
+
+  // Render output tiles
+  var chosenScenario = scenarios.find(function(s){ return s.startAge === startAge; }) || scenarios[1];
+  var deplete = chosenScenario.depleteYear > 0 ? chosenScenario.depleteYear : 'Never';
+  var safeMonthlyAmt = Math.round(totalAtStart * SAFE_WD / 12);
+
+  var tiles = [
+    {label: 'TOTAL SUPER AT '+startAge, val: fmt$(totalAtStart), sub: 'SGC: '+fmt$(sgcBal)+' · SS: '+fmt$(ssBal)+' · NC: '+fmt$(ncBal), color: '#10b981', border: '#6ee7b7', glow: 'rgba(16,185,129,.15)'},
+    {label: 'SAFE WITHDRAWAL', val: fmt$(safeMonthlyAmt)+'/mo', sub: '4% rule ('+fmt$(totalAtStart * SAFE_WD)+'/yr)', color: '#8b5cf6', border: '#c4b5fd', glow: 'rgba(139,92,246,.12)'},
+    {label: 'YOUR WITHDRAWAL', val: fmt$(monthly)+'/mo', sub: 'Starting at age '+startAge+(startAge>=60?' (tax-free)':' (taxed)'), color: '#f59e0b', border: '#fcd34d', glow: 'rgba(245,158,11,.12)'},
+    {label: 'DEPLETION', val: deplete === 'Never' ? 'Never' : 'Year '+deplete, sub: increaseRate>0 ? 'With '+pct(increaseRate)+' annual increase' : 'Fixed withdrawal', color: deplete==='Never'?'#10b981':'#ef4444', border: deplete==='Never'?'#6ee7b7':'#fca5a5', glow: deplete==='Never'?'rgba(16,185,129,.12)':'rgba(239,68,68,.12)'}
+  ];
+
+  var resultEl = document.getElementById('su3_result_5');
+  if(resultEl){
+    var minDrawdown = '4% (under 65), 5% (65-74), 6% (75-79), 7% (80-84), 9% (85-89), 11% (90-94), 14% (95+)';
+    resultEl.innerHTML = su3TileHTML(tiles, '#f0fdf4', '#d1fae5') +
+      '<div style="padding:12px 18px;background:#ecfdf5;border-top:1px solid #6ee7b7;font-size:10px;color:#047857;line-height:1.5;">'+
+      '🔓 <strong>Preservation age:</strong> 60 (born after 30 June 1964). Cannot access before unless hardship/terminal.<br>'+
+      '💰 <strong>Tax-free withdrawals:</strong> From age 60 (taxed super fund). Under 60: taxable component taxed at marginal rate - 15% offset (low rate cap $260K lifetime).<br>'+
+      '📊 <strong>ATO minimum drawdown:</strong> '+minDrawdown+'<br>'+
+      '⚡ <strong>TTR (Transition to Retirement):</strong> 4-10% while still working, earnings taxed at 15%. ABP: Account-Based Pension, lump-sum withdrawal anytime.'+
+      '</div>';
+  }
+
+  // Chart 1: Balance depletion curves
+  var labels = [];
+  for(var i = 0; i <= 40; i++) labels.push(i);
+  var datasets = scenarios.map(function(s, idx){
+    var colors = ['#8b5cf6', '#10b981', '#f59e0b'];
+    return {
+      label: 'Start at ' + s.startAge,
+      data: s.balances,
+      borderColor: colors[idx],
+      backgroundColor: colors[idx].replace(')', ',.1)').replace('rgb', 'rgba'),
+      fill: false,
+      tension:.35,
+      pointRadius: 0
+    };
+  });
+  su3Line('su3_chart_withdrawal', 'withdrawal', labels, datasets, 'Balance');
+
+  // Chart 2: Net monthly income over time
+  var incomeDatasets = scenarios.map(function(s, idx){
+    var colors = ['#8b5cf6', '#10b981', '#f59e0b'];
+    return {
+      label: 'Start at ' + s.startAge,
+      data: s.netIncomes,
+      borderColor: colors[idx],
+      backgroundColor: colors[idx].replace(')', ',.1)').replace('rgb', 'rgba'),
+      fill: true,
+      tension:.35,
+      pointRadius: 0
+    };
+  });
+  su3Line('su3_chart_income', 'income', labels, incomeDatasets, 'Net Monthly Income');
+});
+
+/* ── Tile HTML Builder ───────────────────────────────────────────────────── */
+function su3TileHTML(tiles, bgColor, borderColor){
+  var css = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;padding:16px 18px;background:'+bgColor+';border-top:1px solid '+borderColor+';';
+  return '<div style="'+css+'">'+
+    tiles.map(function(t){
+      var glow = 'box-shadow:0 0 18px '+t.glow+',0 2px 6px rgba(0,0,0,.06)';
+      return '<div style="background:#fff;border-radius:13px;padding:14px 12px;text-align:center;border:1.5px solid '+t.border+';'+glow+';">'+
+        '<div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:'+t.color+';margin-bottom:6px;">'+t.label+'</div>'+
+        '<div style="font-size:19px;font-weight:900;color:#0f172a;letter-spacing:-.5px;">'+t.val+'</div>'+
+        (t.sub?'<div style="font-size:10px;color:#64748b;margin-top:3px;font-weight:600;">'+t.sub+'</div>':'')+'</div>';
+    }).join('')+'</div>';
+}
+
+/* ── ETF Fund Picker (Row 4) ─────────────────────────────────────────────── */
+window.su3AddFund = su3Try(function(){
+  if(window.SU3_ETF_FUNDS.length >= 6){
+    throw new Su3InputError('Maximum 6 funds', 'Remove a fund before adding another.');
+  }
+  window.SU3_ETF_FUNDS.push({ticker:'VAS', name:'Vanguard AU Shares', ret:9.5, dca:500});
+  su3RenderFunds();
+});
+
+window.su3RenderFunds = function(){
+  var list = document.getElementById('su3_fundsList');
+  if(!list) return;
+  var addBtn = document.getElementById('su3_add_fund_btn');
+  if(addBtn) addBtn.textContent = '+ Add Fund ('+window.SU3_ETF_FUNDS.length+'/6)';
+  if(window.SU3_ETF_FUNDS.length === 0){
+    list.innerHTML = '<div style="padding:12px;text-align:center;color:#94a3b8;font-size:11px;border:1px dashed #e2e8f0;border-radius:6px;">No funds added yet. Click <strong>+ Add ETF</strong> below.</div>';
+    su3UpdateDcaTotal();
+    return;
+  }
+  list.innerHTML = window.SU3_ETF_FUNDS.map(function(f, i){
+    return '<div style="padding:10px;background:#fff;border:1px solid #e2e8f0;border-left:3px solid #d97706;border-radius:8px;margin-bottom:8px;">'+
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">'+
+        '<div style="flex:1;min-width:0;">'+
+          '<div style="font-size:12px;font-weight:700;color:#0f172a;">'+f.ticker+'</div>'+
+          '<div style="font-size:10px;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+f.name+'</div>'+
+        '</div>'+
+        '<button onclick="su3ChangeFund('+i+')" style="padding:4px 8px;font-size:10px;background:#fffbeb;border:1px solid #fde68a;color:#b45309;border-radius:4px;cursor:pointer;font-weight:600;">Change</button>'+
+        '<button onclick="su3RemoveFund('+i+')" style="padding:4px 8px;font-size:10px;background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;border-radius:4px;cursor:pointer;font-weight:600;">✕</button>'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">'+
+        '<div>'+
+          '<div style="font-size:10px;font-weight:700;color:#64748b;margin-bottom:3px;">Monthly $</div>'+
+          '<input type="number" id="su3_fd_'+i+'" value="'+(f.dca||500)+'" min="0" max="50000" step="100" '+
+            'oninput="su3UpdateFundDca('+i+',this.value)" '+
+            'style="width:100%;padding:5px 8px;border:1px solid #e2e8f0;border-radius:5px;font-size:12px;font-weight:600;">'+
+        '</div>'+
+        '<div>'+
+          '<div style="font-size:10px;font-weight:700;color:#64748b;margin-bottom:3px;">Return %</div>'+
+          '<input type="number" id="su3_fr_'+i+'" value="'+f.ret+'" min="-10" max="60" step="0.1" '+
+            'oninput="su3UpdateFundRet('+i+',this.value)" '+
+            'style="width:100%;padding:5px 8px;border:1px solid #e2e8f0;border-radius:5px;font-size:12px;font-weight:600;">'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+  su3UpdateDcaTotal();
+};
+
+window.su3UpdateFundDca = function(i, val){
+  window.SU3_ETF_FUNDS[i].dca = parseFloat(val) || 0;
+  su3UpdateDcaTotal();
+  su3RunAll();
+};
+
+window.su3UpdateFundRet = function(i, val){
+  window.SU3_ETF_FUNDS[i].ret = parseFloat(val) || 0;
+  su3RunAll();
+};
+
+window.su3UpdateDcaTotal = function(){
+  var el = document.getElementById('su3_dca_total');
+  if(!el) return;
+  var total = 0;
+  window.SU3_ETF_FUNDS.forEach(function(f){ total += (f.dca || 0); });
+  el.textContent = '$' + Math.round(total).toLocaleString() + '/mo';
+};
+
+window.su3ChangeFund = function(index){
+  if(typeof window.openPicker === 'function'){
+    window.openPicker(index, 'su3');
+  } else {
+    alert('Fund picker not available. Please select a fund manually.');
+  }
+};
+
+window.su3RemoveFund = function(index){
+  window.SU3_ETF_FUNDS.splice(index, 1);
+  su3RenderFunds();
+};
+
+/* ── Use Max SS (fill concessional cap) ──────────────────────────────────── */
+window.su3UseMaxSS = su3Try(function(){
+  var salary = gn('su3_salary', 150000);
+  var jobType = gv('su3_job_type');
+  var sgRate = jobType === 'custom' ? gn('su3_sg_rate', 12.0) : parseFloat(jobType) || 12.0;
+  var annualSGC = salary * sgRate / 100;
+  var maxSS = Math.max(0, Math.round(CONC_CAP - annualSGC));
+  var el = document.getElementById('su3_ss_amt');
+  if(el){ el.value = maxSS; el.max = maxSS; }
+});
+
+/* ── Range/Number Sync ───────────────────────────────────────────────────── */
+window.su3SyncRange = function(rangeId, numberId){
+  var r = document.getElementById(rangeId);
+  var n = document.getElementById(numberId);
+  if(r && n) n.value = r.value;
+};
+
+window.su3SyncNumber = function(numberId, rangeId){
+  var n = document.getElementById(numberId);
+  var r = document.getElementById(rangeId);
+  if(n && r) r.value = n.value;
+};
+
+/* ── Per-row Reset ─────────────────────────────────────────────────────── */
+window.su3ResetRow = function(row){
+  var rowDefaults = {
+    1: {su3_age:35, su3_work_until:65, su3_salary:150000, su3_return:7.8, su3_job_type:'12.0', su3_sg_rate:12.0},
+    2: {su3_ss_amt:10000, su3_ss_yrs:25},
+    3: {su3_nc_amt:0, su3_nc_yrs:10, su3_nc_return:7.8},
+    4: {su3_etf_dur:20},
+    5: {su3_wd_start_age:60, su3_wd_monthly:8000, su3_wd_increase:3.0, su3_wd_type:'ABP'}
+  };
+  var defs = rowDefaults[row] || {};
+  Object.keys(defs).forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.value = defs[id];
+  });
+  if(row === 1){
+    var wrap = document.getElementById('su3_custom_sg_wrap');
+    if(wrap) wrap.style.display = 'none';
+  }
+  if(row === 4){
+    window.SU3_ETF_FUNDS = [];
+    su3RenderFunds();
+  }
+  if(row === 5){
+    var wdLabel = document.getElementById('su3_wdraw_age_label');
+    if(wdLabel) wdLabel.textContent = '60 yrs';
+  }
+  // Clear this row's result and chart
+  var resultEl = document.getElementById('su3_result_'+row);
+  if(resultEl) resultEl.innerHTML = '<div style="padding:20px;text-align:center;color:#94a3b8;font-size:11px;">Click <strong>Calculate</strong> to see results.</div>';
+  var chartKeys = {1:'sgc', 2:'ss', 3:'nc', 4:'etf_compare', 5:'withdrawal'};
+  var ck = chartKeys[row];
+  if(ck && SU3_CHARTS[ck]){ SU3_CHARTS[ck].destroy(); delete SU3_CHARTS[ck]; }
+  // Clear header tile
+  var tileIds = {1:'su3T1a', 2:'su3T2a', 3:'su3T3a', 4:'su3T4a', 5:'su3T5a'};
+  var tile = document.getElementById(tileIds[row]);
+  if(tile) tile.textContent = '—';
+  // Clear result state
+  var stateKeys = {1:'sgc', 2:'ss', 3:'nc', 4:'compare', 5:'withdrawal'};
+  SU3_RESULTS[stateKeys[row]] = null;
+};
+
+/* ── Reset All ─────────────────────────────────────────────────────────── */
+window.su3Reset = su3Try(function(){
+  // Reset all inputs to defaults
+  var defaults = {
+    su3_age: 35, su3_age_r: 35,
+    su3_work_until: 65,
+    su3_salary: 150000, su3_salary_r: 150000,
+    su3_job_type: '12.0',
+    su3_sg_rate: 12.0,
+    su3_return: 7.8, su3_return_r: 7.8,
+    su3_ss_amt: 10000, su3_ss_r: 10000,
+    su3_ss_yrs: 25, su3_ss_yrs_r: 25,
+    su3_nc_amt: 0, su3_nc_r: 0,
+    su3_nc_yrs: 25, su3_nc_yrs_r: 25,
+    su3_nc_return: 7.8,
+    su3_wd_start_age: 60, su3_wd_start_age_r: 60,
+    su3_wd_monthly: 8000, su3_wd_monthly_r: 8000,
+    su3_wd_increase: 3.0, su3_wd_increase_r: 3.0,
+    su3_wd_type: 'ABP'
+  };
+  Object.keys(defaults).forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.value = defaults[id];
+  });
+
+  // Reset withdrawal age label
+  var wdLabel = document.getElementById('su3_wdraw_age_label');
+  if(wdLabel) wdLabel.textContent = '60 yrs';
+
+  // Clear global state
+  window.SU3_ETF_FUNDS = [];
+  SU3_RESULTS = {sgc:null, ss:null, nc:null, compare:null, withdrawal:null};
+
+  // Reset header tiles
+  ['su3T1a','su3T2a','su3T3a','su3T4a','su3T5a','su3T6a'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.textContent = '—';
+  });
+
+  // Clear result panels
+  for(var i = 1; i <= 5; i++){
+    var el = document.getElementById('su3_result_'+i);
+    if(el) el.innerHTML = '<div style="padding:20px;text-align:center;color:#94a3b8;font-size:11px;">Click <strong>Calculate</strong> to see results.</div>';
+  }
+
+  // Destroy all charts
+  Object.keys(SU3_CHARTS).forEach(function(k){
+    SU3_CHARTS[k].destroy();
+    delete SU3_CHARTS[k];
+  });
+
+  // Re-render fund list
+  su3RenderFunds();
+});
+
+/* ── Lazy Init (onEnter pattern) ─────────────────────────────────────────── */
+window.su3OnEnter = (function(){
+  var initialized = false;
+  return function(){
+    if(!initialized){
+      initialized = true;
+      if(typeof window.su3Init === 'function') window.su3Init();
+    } else {
+      window.dispatchEvent(new Event('resize'));
+    }
+  };
+})();
+
+window.su3RunAll = function(){
+  try{ su3RunSgc(); }catch(e){}
+  try{ su3RunSS(); }catch(e){}
+  try{ su3RunNC(); }catch(e){}
+  try{ su3RunCompare(); }catch(e){}
+  try{ su3RunWithdrawal(); }catch(e){}
+};
+
+window.su3Init = function(){
+  su3RenderFunds();
+
+  // Wire withdrawal age range label
+  var wdRange = document.getElementById('su3_wd_start_age');
+  var wdLabel = document.getElementById('su3_wdraw_age_label');
+  if(wdRange && wdLabel){
+    wdRange.oninput = function(){ wdLabel.textContent = this.value + ' yrs'; su3RunWithdrawal(); };
+  }
+
+  // Show/hide custom SG rate
+  var jobSel = document.getElementById('su3_job_type');
+  if(jobSel){
+    jobSel.onchange = function(){
+      var wrap = document.getElementById('su3_custom_sg_wrap');
+      if(wrap) wrap.style.display = this.value === 'custom' ? '' : 'none';
+      su3RunAll();
+    };
+  }
+
+  // Live update: wire all inputs to recalculate on change
+  var liveIds = ['su3_age','su3_work_until','su3_salary','su3_sg_rate','su3_return',
+    'su3_ss_amt','su3_ss_yrs','su3_nc_amt','su3_nc_yrs','su3_nc_return','su3_etf_dur',
+    'su3_wd_start_age','su3_wd_monthly','su3_wd_increase'];
+  for(var i = 0; i < liveIds.length; i++){
+    var el = document.getElementById(liveIds[i]);
+    if(el) el.addEventListener('input', su3RunAll);
+  }
+};
 
 })();
 </script>
+
 
 
 <!-- ══════════════════ DCA vs TIMING THE MARKET SECTION ══════════════════ -->
@@ -9430,8 +9548,8 @@ function renderGrowthChart(months,dca){
   dcaCharts.growth=new Chart(c.getContext('2d'),{
     type:'line',
     data:{labels:labels,datasets:[
-      {label:'With Dividends Reinvested (DRIP)',data:dca.portArr,borderColor:'#059669',backgroundColor:'rgba(5,150,105,.10)',borderWidth:2.5,fill:true,tension:.38,pointRadius:0},
-      {label:'Price Only (no dividends)',data:dca.portNdArr,borderColor:'#94a3b8',backgroundColor:'rgba(148,163,184,.04)',borderWidth:1.5,fill:false,tension:.38,pointRadius:0,borderDash:[4,3]},
+      {label:'With Dividends Reinvested (DRIP)',data:dca.portArr,borderColor:'#059669',backgroundColor:'rgba(5,150,105,.10)',borderWidth:2.5,fill:true,tension:.35,pointRadius:0},
+      {label:'Price Only (no dividends)',data:dca.portNdArr,borderColor:'#94a3b8',backgroundColor:'rgba(148,163,184,.04)',borderWidth:1.5,fill:false,tension:.35,pointRadius:0,borderDash:[4,3]},
       {label:'Total Invested',data:dca.invArr,borderColor:'#4f46e5',backgroundColor:'rgba(79,70,229,.06)',borderWidth:2,fill:true,tension:0,pointRadius:0,borderDash:[6,4]}
     ]},
     options:{
@@ -9529,9 +9647,9 @@ function renderComparisonChart(months,dca,dip){
   dcaCharts.comp=new Chart(c.getContext('2d'),{
     type:'line',
     data:{labels:labels,datasets:[
-      {label:'DCA (invest every month)',data:dca.portArr,borderColor:'#059669',backgroundColor:'rgba(52,211,153,.08)',borderWidth:2.5,fill:false,tension:.38,pointRadius:0},
-      {label:'Dip Buyer — total wealth (invested+cash)',data:dip.totalArr,borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.07)',borderWidth:2,fill:false,tension:.38,pointRadius:0,borderDash:[5,3]},
-      {label:'Dip Buyer — invested portion only',data:dip.portArr,borderColor:'#dc2626',backgroundColor:'rgba(248,113,113,.05)',borderWidth:1.5,fill:false,tension:.38,pointRadius:0,borderDash:[2,5]}
+      {label:'DCA (invest every month)',data:dca.portArr,borderColor:'#059669',backgroundColor:'rgba(52,211,153,.08)',borderWidth:2.5,fill:false,tension:.35,pointRadius:0},
+      {label:'Dip Buyer — total wealth (invested+cash)',data:dip.totalArr,borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.07)',borderWidth:2,fill:false,tension:.35,pointRadius:0,borderDash:[5,3]},
+      {label:'Dip Buyer — invested portion only',data:dip.portArr,borderColor:'#dc2626',backgroundColor:'rgba(248,113,113,.05)',borderWidth:1.5,fill:false,tension:.35,pointRadius:0,borderDash:[2,5]}
     ]},
     options:{
       responsive:true,maintainAspectRatio:false,
@@ -10016,10 +10134,10 @@ function vGrowth(s){
   vDest('g');var ctx=document.getElementById('vooGrowthChart');if(!ctx)return;
   var d=s.rows;
   _vC['g']=new Chart(ctx.getContext('2d'),{type:'line',data:{labels:d.map(function(r){return 'Yr '+r.year;}),datasets:[
-    {label:'VOO (AUD)',data:d.map(function(r){return Math.round(r.vooAUD);}),borderColor:'#1d4ed8',backgroundColor:'rgba(29,78,216,.07)',borderWidth:2.5,pointRadius:0,tension:.3,fill:true},
-    {label:'V500 (AUD)',data:d.map(function(r){return Math.round(r.v5AUD);}),borderColor:'#d97706',backgroundColor:'rgba(217,119,6,.07)',borderWidth:2.5,pointRadius:0,tension:.3,fill:true},
+    {label:'VOO (AUD)',data:d.map(function(r){return Math.round(r.vooAUD);}),borderColor:'#1d4ed8',backgroundColor:'rgba(29,78,216,.07)',borderWidth:2.5,pointRadius:0,tension:.35,fill:true},
+    {label:'V500 (AUD)',data:d.map(function(r){return Math.round(r.v5AUD);}),borderColor:'#d97706',backgroundColor:'rgba(217,119,6,.07)',borderWidth:2.5,pointRadius:0,tension:.35,fill:true},
     {label:'Avg Invested (AUD)',data:d.map(function(r){return Math.round((r.vooBasis+r.v5Basis)/2);}),borderColor:'#94a3b8',backgroundColor:'transparent',borderWidth:1.5,borderDash:[5,4],pointRadius:0,tension:.2,fill:false}
-  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,position:'top',labels:{font:{size:11},boxWidth:10,padding:14}},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': $'+c.raw.toLocaleString('en-AU');}}}},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxTicksLimit:16}},y:{ticks:{callback:function(v){return vFK(v);},font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},boxWidth:10,padding:14}},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': $'+c.raw.toLocaleString('en-AU');}}}},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxTicksLimit:16}},y:{ticks:{callback:function(v){return vFK(v);},font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}}}}});
 }
 
 /* ── Fee chart ── */
@@ -10029,7 +10147,7 @@ function vCost(s){
   _vC['c']=new Chart(ctx.getContext('2d'),{type:'bar',data:{labels:d.map(function(r){return 'Yr '+r.year;}),datasets:[
     {label:'VOO Fees (AUD)',data:d.map(function(r){return Math.round(r.vooFees);}),backgroundColor:'rgba(29,78,216,.65)',borderRadius:2},
     {label:'V500 Fees (AUD)',data:d.map(function(r){return Math.round(r.v5Fees);}),backgroundColor:'rgba(217,119,6,.65)',borderRadius:2}
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{font:{size:10},boxWidth:8,padding:10}},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': $'+c.raw.toLocaleString('en-AU');}}}},scales:{x:{grid:{display:false},ticks:{font:{size:9},maxTicksLimit:16}},y:{ticks:{callback:function(v){return vFK(v);},font:{size:9}},grid:{color:'rgba(0,0,0,.04)'}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10},boxWidth:8,padding:10}},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': $'+c.raw.toLocaleString('en-AU');}}}},scales:{x:{grid:{display:false},ticks:{font:{size:9},maxTicksLimit:16}},y:{ticks:{callback:function(v){return vFK(v);},font:{size:9}},grid:{color:'rgba(0,0,0,.04)'}}}}});
 }
 
 /* ── Fee bar ── */
@@ -10073,9 +10191,9 @@ function vWdlChart(ws){
   vDest('w');var ctx=document.getElementById('vooWdlChart');if(!ctx)return;
   var d=ws.rows;
   _vC['w']=new Chart(ctx.getContext('2d'),{type:'line',data:{labels:d.map(function(r){return 'Yr '+r.year;}),datasets:[
-    {label:'VOO Balance (AUD)',data:d.map(function(r){return Math.round(r.vooAUD);}),borderColor:'#1d4ed8',backgroundColor:'rgba(29,78,216,.07)',borderWidth:2.5,pointRadius:0,tension:.3,fill:true},
-    {label:'V500 Balance (AUD)',data:d.map(function(r){return Math.round(r.v5AUD);}),borderColor:'#d97706',backgroundColor:'rgba(217,119,6,.07)',borderWidth:2.5,pointRadius:0,tension:.3,fill:true}
-  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,position:'top',labels:{font:{size:11},boxWidth:10,padding:14}},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': $'+c.raw.toLocaleString('en-AU');}}}},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxTicksLimit:20}},y:{min:0,ticks:{callback:function(v){return vFK(v);},font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}}}}});
+    {label:'VOO Balance (AUD)',data:d.map(function(r){return Math.round(r.vooAUD);}),borderColor:'#1d4ed8',backgroundColor:'rgba(29,78,216,.07)',borderWidth:2.5,pointRadius:0,tension:.35,fill:true},
+    {label:'V500 Balance (AUD)',data:d.map(function(r){return Math.round(r.v5AUD);}),borderColor:'#d97706',backgroundColor:'rgba(217,119,6,.07)',borderWidth:2.5,pointRadius:0,tension:.35,fill:true}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},boxWidth:10,padding:14}},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': $'+c.raw.toLocaleString('en-AU');}}}},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxTicksLimit:20}},y:{min:0,ticks:{callback:function(v){return vFK(v);},font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}}}}});
 }
 
 /* ── Monthly income chart ── */
@@ -10083,9 +10201,9 @@ function vIncomeChart(ws){
   vDest('i');var ctx=document.getElementById('vooIncomeChart');if(!ctx)return;
   var d=ws.rows;
   _vC['i']=new Chart(ctx.getContext('2d'),{type:'line',data:{labels:d.map(function(r){return 'Yr '+r.year;}),datasets:[
-    {label:'VOO Income AUD/mo',data:d.map(function(r){return r.vooGone?0:Math.round(r.wdlMoVoo);}),borderColor:'#1d4ed8',backgroundColor:'rgba(29,78,216,.07)',borderWidth:2,pointRadius:0,tension:.3,fill:true},
-    {label:'V500 Income AUD/mo',data:d.map(function(r){return r.v5Gone?0:Math.round(r.wdlMoV5);}),borderColor:'#d97706',backgroundColor:'rgba(217,119,6,.07)',borderWidth:2,pointRadius:0,tension:.3,fill:true}
-  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,position:'top',labels:{font:{size:11},boxWidth:10,padding:14}},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': $'+c.raw.toLocaleString('en-AU')+'/mo';}}}},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxTicksLimit:20}},y:{min:0,ticks:{callback:function(v){return vFK(v);},font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}}}}});
+    {label:'VOO Income AUD/mo',data:d.map(function(r){return r.vooGone?0:Math.round(r.wdlMoVoo);}),borderColor:'#1d4ed8',backgroundColor:'rgba(29,78,216,.07)',borderWidth:2,pointRadius:0,tension:.35,fill:true},
+    {label:'V500 Income AUD/mo',data:d.map(function(r){return r.v5Gone?0:Math.round(r.wdlMoV5);}),borderColor:'#d97706',backgroundColor:'rgba(217,119,6,.07)',borderWidth:2,pointRadius:0,tension:.35,fill:true}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},boxWidth:10,padding:14}},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': $'+c.raw.toLocaleString('en-AU')+'/mo';}}}},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxTicksLimit:20}},y:{min:0,ticks:{callback:function(v){return vFK(v);},font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}}}}});
 }
 
 /* ── Withdrawal table ── */
@@ -10672,7 +10790,7 @@ window.heRun = function(){
     interaction:{mode:'index',intersect:false},
     plugins:{
       legend:{labels:{color:'#64748b',font:{size:11},boxWidth:11,padding:12}},
-      tooltip:{backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',borderColor:'#e2e8f0',borderWidth:1,padding:9}
+      tooltip:{backgroundColor:'#0f172a',titleColor:'#f8fafc',bodyColor:'#94a3b8',borderColor:'#334155',borderWidth:1,padding:10}
     },
     scales:{
       x:{ticks:{color:'#94a3b8',font:{size:9.5},maxTicksLimit:22},grid:{color:'rgba(0,0,0,.04)'}},
@@ -10695,8 +10813,8 @@ window.heRun = function(){
   if(el1) _heCharts.c1=new Chart(el1.getContext('2d'),{
     type:'line', plugins:[vertLinePlugin('rgba(245,158,11,.55)','#d97706')],
     data:{labels:xLabels,datasets:[
-      {label:'With equity recycling',data:yLoan,borderColor:'#dc2626',backgroundColor:'rgba(220,38,38,.06)',borderWidth:2.5,fill:true,tension:.3,pointRadius:2,pointBackgroundColor:'#dc2626'},
-      {label:'No equity (baseline)',data:yBase,borderColor:'#94a3b8',backgroundColor:'transparent',borderWidth:1.8,fill:false,tension:.3,pointRadius:0,borderDash:[6,3]}
+      {label:'With equity recycling',data:yLoan,borderColor:'#dc2626',backgroundColor:'rgba(220,38,38,.06)',borderWidth:2.5,fill:true,tension:.35,pointRadius:2,pointBackgroundColor:'#dc2626'},
+      {label:'No equity (baseline)',data:yBase,borderColor:'#94a3b8',backgroundColor:'transparent',borderWidth:1.8,fill:false,tension:.35,pointRadius:0,borderDash:[6,3]}
     ]},
     options:makeOpts(kFmt,heFmt$)
   });
@@ -10719,8 +10837,8 @@ window.heRun = function(){
   if(el3) _heCharts.c3=new Chart(el3.getContext('2d'),{
     type:'line', plugins:[vertLinePlugin('rgba(124,58,237,.5)','#7c3aed')],
     data:{labels:xLabels,datasets:[
-      {label:'DCA + Equity Lump Sums',data:yEtf,borderColor:'#059669',backgroundColor:'rgba(5,150,105,.08)',borderWidth:2.5,fill:true,tension:.4,pointRadius:2,pointBackgroundColor:'#059669'},
-      {label:'DCA Only (no equity)',data:yEtfNolump,borderColor:'#0ea5e9',backgroundColor:'rgba(14,165,233,.04)',borderWidth:1.8,fill:false,tension:.4,pointRadius:0,borderDash:[6,3]},
+      {label:'DCA + Equity Lump Sums',data:yEtf,borderColor:'#059669',backgroundColor:'rgba(5,150,105,.08)',borderWidth:2.5,fill:true,tension:.35,pointRadius:2,pointBackgroundColor:'#059669'},
+      {label:'DCA Only (no equity)',data:yEtfNolump,borderColor:'#0ea5e9',backgroundColor:'rgba(14,165,233,.04)',borderWidth:1.8,fill:false,tension:.35,pointRadius:0,borderDash:[6,3]},
       {label:'Total Invested (with equity)',data:yInv,borderColor:'#cbd5e1',backgroundColor:'rgba(203,213,225,.1)',borderWidth:1.2,fill:true,tension:0,pointRadius:0,borderDash:[3,3]},
       {label:'Total Invested (DCA only)',data:yInvNolump,borderColor:'#e2e8f0',backgroundColor:'transparent',borderWidth:1,fill:false,tension:0,pointRadius:0,borderDash:[2,4]}
     ]},
@@ -10753,8 +10871,8 @@ window.heRun = function(){
         plugins:{
           legend:{labels:{color:'#64748b',font:{size:11},boxWidth:11,padding:12}},
           tooltip:{
-            backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',
-            borderColor:'#e2e8f0',borderWidth:1,padding:9,
+            backgroundColor:'#0f172a',titleColor:'#f8fafc',bodyColor:'#94a3b8',
+            borderColor:'#334155',borderWidth:1,padding:10,
             callbacks:{
               label:function(c){return ' '+c.dataset.label+': '+heFmt$(c.parsed.y);},
               afterBody:function(items){
@@ -10809,8 +10927,8 @@ window.heRun = function(){
       plugins:{
         legend:{labels:{color:'#64748b',font:{size:11},boxWidth:11,padding:12}},
         tooltip:{
-          backgroundColor:'#fff',titleColor:'#0f172a',bodyColor:'#475569',
-          borderColor:'#e2e8f0',borderWidth:1,padding:9,
+          backgroundColor:'#0f172a',titleColor:'#f8fafc',bodyColor:'#94a3b8',
+          borderColor:'#334155',borderWidth:1,padding:10,
           callbacks:{
             label:function(c){
               if(c.parsed.y===0) return null;
@@ -11386,7 +11504,7 @@ function meiLine(id,key,labels,datasets,yTitle){
       y:{ticks:{font:{size:9},callback:function(v){return fmt(v);}},grid:{color:'rgba(0,0,0,.05)'},
         title:{display:true,text:yTitle||'$',font:{size:9},color:'#94a3b8'}}}}});
 }
-function ds(label,data,color,fill,dash){ return {label:label,data:data,borderColor:color,backgroundColor:color+'22',fill:!!fill,tension:.4,borderWidth:2,pointRadius:0,borderDash:dash||[]}; }
+function ds(label,data,color,fill,dash){ return {label:label,data:data,borderColor:color,backgroundColor:color+'22',fill:!!fill,tension:.35,borderWidth:2,pointRadius:0,borderDash:dash||[]}; }
 function dsBar(label,data,color){ return {label:label,data:data,backgroundColor:color+'cc',borderRadius:3,stack:'s'}; }
 
 /* ── Blended ETF helper ───────────────────────────────── */
@@ -11482,8 +11600,8 @@ window.meiUpdateBase = function(){
       data:{
         labels:sch.labels,
         datasets:[
-          {label:'Remaining Balance',data:balData,borderColor:'#1d4ed8',backgroundColor:'rgba(29,78,216,0.09)',fill:true,tension:.4,borderWidth:2.5,pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:'#1d4ed8'},
-          {label:'Equity Built',data:eqData,borderColor:'#059669',backgroundColor:'rgba(5,150,105,0.07)',fill:true,tension:.4,borderWidth:2,pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:'#059669'}
+          {label:'Remaining Balance',data:balData,borderColor:'#1d4ed8',backgroundColor:'rgba(29,78,216,0.09)',fill:true,tension:.35,borderWidth:2.5,pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:'#1d4ed8'},
+          {label:'Equity Built',data:eqData,borderColor:'#059669',backgroundColor:'rgba(5,150,105,0.07)',fill:true,tension:.35,borderWidth:2,pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:'#059669'}
         ]
       },
       options:{

@@ -7213,17 +7213,17 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
 #orderSection .ord-hdr-flag{font-size:32px;margin-bottom:6px;}
 /* Profile card */
 #orderSection .ord-profile{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;box-shadow:0 4px 16px rgba(0,0,0,.04);margin-bottom:8px;}
-#orderSection .ord-profile-title{font-size:13px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;}
+#orderSection .ord-profile-title{font-size:15px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;}
 #orderSection .ord-profile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;}
-#orderSection .ord-label{font-size:11px;font-weight:600;color:#64748b;display:block;margin-bottom:3px;}
-#orderSection .ord-input{width:100%;box-sizing:border-box;padding:7px 10px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;font-weight:700;outline:none;transition:border .2s;background:#fff;color:#0f172a;}
+#orderSection .ord-label{font-size:13px;font-weight:600;color:#64748b;display:block;margin-bottom:4px;}
+#orderSection .ord-input{width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:15px;font-weight:700;outline:none;transition:border .2s;background:#fff;color:#0f172a;}
 #orderSection .ord-input:focus{border-color:#1d4ed8;box-shadow:0 0 0 3px rgba(29,78,216,.1);}
-#orderSection .ord-select{width:100%;box-sizing:border-box;padding:7px 10px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;font-weight:700;outline:none;background:#fff;color:#0f172a;}
+#orderSection .ord-select{width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:15px;font-weight:700;outline:none;background:#fff;color:#0f172a;}
 #orderSection .ord-max-btn{display:inline-block;margin-left:6px;padding:2px 7px;border:1px solid #1d4ed8;border-radius:4px;background:#eff6ff;color:#1d4ed8;font-size:9px;font-weight:700;cursor:pointer;vertical-align:middle;transition:background .2s;}
 #orderSection .ord-max-btn:hover{background:#dbeafe;}
 #orderSection .ord-chk-row{display:flex;align-items:center;gap:6px;}
 #orderSection .ord-chk-row input[type=checkbox]{width:15px;height:15px;accent-color:#1d4ed8;}
-#orderSection .ord-chk-row label{font-size:11px;font-weight:600;color:#64748b;margin:0;}
+#orderSection .ord-chk-row label{font-size:13px;font-weight:600;color:#64748b;margin:0;}
 #orderSection .ord-btn{display:inline-block;padding:10px 20px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;transition:background .2s,box-shadow .2s;}
 #orderSection .ord-btn-run{background:#1d4ed8;color:#fff;box-shadow:0 2px 8px rgba(29,78,216,.3);}
 #orderSection .ord-btn-run:hover{background:#1e40af;box-shadow:0 4px 16px rgba(29,78,216,.4);}
@@ -7244,11 +7244,11 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
 #orderSection .ord-node-bar{position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:14px 0 0 14px;}
 #orderSection .ord-node-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 #orderSection .ord-node-num{width:26px;height:26px;line-height:26px;text-align:center;border-radius:50%;color:#fff;font-size:11px;font-weight:800;flex-shrink:0;}
-#orderSection .ord-node-name{font-size:13px;font-weight:700;color:#0f172a;line-height:1.2;}
-#orderSection .ord-node-desc{font-size:10px;color:#64748b;line-height:1.4;margin-bottom:8px;padding-left:0;}
+#orderSection .ord-node-name{font-size:15px;font-weight:700;color:#0f172a;line-height:1.3;}
+#orderSection .ord-node-desc{font-size:12px;color:#64748b;line-height:1.5;margin-bottom:8px;padding-left:0;}
 #orderSection .ord-node-inputs{display:grid;grid-template-columns:1fr;gap:6px;padding-left:0;margin-bottom:8px;}
 #orderSection .ord-node-output{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;margin-top:auto;display:flex;flex-direction:column;gap:5px;}
-#orderSection .ord-node-output .ord-out-item{font-size:10px;color:#475569;}
+#orderSection .ord-node-output .ord-out-item{font-size:12px;color:#475569;}
 #orderSection .ord-node-output .ord-out-item strong{color:#1d4ed8;}
 #orderSection .ord-node-output .ord-out-proj{font-size:13px;font-weight:800;color:#059669;white-space:nowrap;}
 #orderSection .ord-node-inelig-badge{display:inline-block;background:#f1f5f9;color:#94a3b8;font-size:9px;font-weight:700;padding:2px 8px;border-radius:6px;}
@@ -7336,7 +7336,10 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
         <div><label class="ord-label">Age</label><input id="ord_age" class="ord-input" type="number" value="30" min="18" max="80" oninput="orderCalc()"></div>
         <div><label class="ord-label">Annual Salary ($)</label><input id="ord_salary" class="ord-input" type="number" value="150000" min="0" step="5000" oninput="orderCalc()"></div>
         <div><label class="ord-label">Filing Status</label><select id="ord_filing" class="ord-select" oninput="orderCalc()"><option value="single" selected>Single</option><option value="married">Married Filing Jointly</option></select></div>
-        <div><label class="ord-label">Monthly Expenses ($)</label><input id="ord_expenses" class="ord-input" type="number" value="5000" min="0" step="500" oninput="orderCalc()"></div>
+        <div><label class="ord-label">State</label><select id="ord_state" class="ord-select" oninput="orderCalc()"><option value="CA">California</option><option value="TX">Texas</option><option value="FL">Florida</option><option value="NY">New York</option><option value="WA">Washington</option><option value="IL">Illinois</option><option value="PA">Pennsylvania</option><option value="OH">Ohio</option><option value="GA">Georgia</option><option value="NC">North Carolina</option><option value="MI">Michigan</option><option value="NJ">New Jersey</option><option value="VA">Virginia</option><option value="AZ">Arizona</option><option value="MA">Massachusetts</option><option value="TN">Tennessee</option><option value="IN">Indiana</option><option value="MO">Missouri</option><option value="MD">Maryland</option><option value="WI">Wisconsin</option><option value="CO">Colorado</option><option value="MN">Minnesota</option><option value="SC">South Carolina</option><option value="AL">Alabama</option><option value="LA">Louisiana</option><option value="KY">Kentucky</option><option value="OR">Oregon</option><option value="OK">Oklahoma</option><option value="CT">Connecticut</option><option value="UT">Utah</option><option value="IA">Iowa</option><option value="NV">Nevada</option><option value="AR">Arkansas</option><option value="MS">Mississippi</option><option value="KS">Kansas</option><option value="NM">New Mexico</option><option value="NE">Nebraska</option><option value="ID">Idaho</option><option value="WV">West Virginia</option><option value="HI">Hawaii</option><option value="NH">New Hampshire</option><option value="ME">Maine</option><option value="MT">Montana</option><option value="RI">Rhode Island</option><option value="DE">Delaware</option><option value="SD">South Dakota</option><option value="ND">North Dakota</option><option value="AK">Alaska</option><option value="VT">Vermont</option><option value="WY">Wyoming</option><option value="DC">District of Columbia</option></select></div>
+        <div><label class="ord-label">Monthly Expenses (excl. mortgage) ($)</label><input id="ord_expenses" class="ord-input" type="number" value="3500" min="0" step="500" oninput="orderCalc()"></div>
+        <div><label class="ord-label">Monthly Mortgage/Rent ($)</label><input id="ord_mortgage" class="ord-input" type="number" value="0" min="0" step="100" oninput="orderCalc()"></div>
+        <div><label class="ord-label">Current Emergency Fund ($)</label><input id="ord_ef_current" class="ord-input" type="number" value="0" min="0" step="1000" oninput="orderCalc()"></div>
         <div><label class="ord-label">Target Year Horizon</label><input id="ord_target_yr" class="ord-input" type="number" value="30" min="1" max="50" oninput="orderCalc()"></div>
         <div><label class="ord-label">Retirement Age</label><input id="ord_retire_age" class="ord-input" type="number" value="60" min="40" max="75" oninput="orderCalc()"></div>
         <div class="ord-chk-row"><input type="checkbox" id="ord_has401k" checked oninput="orderCalc()"><label for="ord_has401k">Has 401(k)</label></div>
@@ -7344,6 +7347,7 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
         <div class="ord-chk-row"><input type="checkbox" id="ord_hasFSA" oninput="orderCalc()"><label for="ord_hasFSA">Has FSA</label></div>
         <div class="ord-chk-row"><input type="checkbox" id="ord_hasDepCare" oninput="orderCalc()"><label for="ord_hasDepCare">Has Dependent Care FSA</label></div>
         <div class="ord-chk-row"><input type="checkbox" id="ord_has457b" oninput="orderCalc()"><label for="ord_has457b">Has 457(b) (Govt/Nonprofit)</label></div>
+        <div class="ord-chk-row"><input type="checkbox" id="ord_hasTradIRA" oninput="orderCalc()"><label for="ord_hasTradIRA">Traditional IRA (no employer plan)</label></div>
         <div class="ord-chk-row"><input type="checkbox" id="ord_has529" oninput="orderCalc()"><label for="ord_has529">Has 529 Plan (Education)</label></div>
       </div>
       <div style="margin-top:14px;text-align:center;">
@@ -7399,6 +7403,61 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
     }
   }
 
+  // State tax data: rate = effective income tax rate at ~$150K income (single), 529 = annual 529 deduction limit (0=no deduction), notes = state-specific rules
+  const STATE_TAX_DATA={
+    AL:{rate:0.05,married_rate:0.05,s529:5000,notes:'AL taxes 401k/IRA withdrawals as income. 529 contributions deductible up to $5K/yr.'},
+    AK:{rate:0,married_rate:0,s529:0,notes:'No state income tax. No 529 state deduction.'},
+    AZ:{rate:0.025,married_rate:0.025,s529:2000,notes:'Flat 2.5% tax. 529 deduction $2K single/$4K MFJ.'},
+    AR:{rate:0.044,married_rate:0.044,s529:5000,notes:'Top rate 4.4%. 529 deduction $5K/yr per person.'},
+    CA:{rate:0.093,married_rate:0.093,s529:0,notes:'No 529 state deduction. CA taxes capital gains as ordinary income. High earners face 13.3% top rate.'},
+    CO:{rate:0.044,married_rate:0.044,s529:20000,notes:'Flat 4.4%. 529 deduction full amount of contribution (no cap). State also offers CollegeInvest match for low-income.'},
+    CT:{rate:0.055,married_rate:0.055,s529:5000,notes:'529 deduction $5K single/$10K MFJ. CT has 6.99% top rate.'},
+    DE:{rate:0.055,married_rate:0.055,s529:0,notes:'No 529 state deduction. Top rate 6.6%.'},
+    DC:{rate:0.065,married_rate:0.065,s529:4000,notes:'529 deduction $4K/yr per beneficiary. Top rate 10.75% over $1M.'},
+    FL:{rate:0,married_rate:0,s529:0,notes:'No state income tax. No 529 state deduction.'},
+    GA:{rate:0.055,married_rate:0.055,s529:8000,notes:'Top rate 5.49%. 529 deduction $8K per beneficiary.'},
+    HI:{rate:0.076,married_rate:0.076,s529:0,notes:'No 529 state deduction. Top rate 11% over $200K.'},
+    ID:{rate:0.058,married_rate:0.058,s529:6000,notes:'Flat 5.8%. 529 deduction $6K single/$12K MFJ.'},
+    IL:{rate:0.0495,married_rate:0.0495,s529:10000,notes:'Flat 4.95%. 529 deduction $10K single/$20K MFJ. IL does not tax retirement income.'},
+    IN:{rate:0.0305,married_rate:0.0305,s529:5000,notes:'Flat 3.05% (plus local). 529 credit 20% of contributions up to $7,500.'},
+    IA:{rate:0.044,married_rate:0.044,s529:3785,notes:'Flat rate 3.8% (phasing to flat). 529 deduction $3,785 per beneficiary.'},
+    KS:{rate:0.057,married_rate:0.057,s529:6000,notes:'Top rate 5.7%. 529 deduction $6K per beneficiary.'},
+    KY:{rate:0.04,married_rate:0.04,s529:0,notes:'Flat 4%. No 529 state deduction.'},
+    LA:{rate:0.0425,married_rate:0.0425,s529:2400,notes:'Top rate 4.25%. 529 deduction $2,400 per beneficiary.'},
+    ME:{rate:0.0715,married_rate:0.0715,s529:0,notes:'Top rate 7.15%. No 529 state deduction (but no tax on qualified withdrawals).'},
+    MD:{rate:0.0575,married_rate:0.0575,s529:2500,notes:'Top rate 5.75% (plus county 2.25-3.2%). 529 deduction $2,500 per beneficiary.'},
+    MA:{rate:0.05,married_rate:0.05,s529:2000,notes:'Flat 5% (9% surtax on income >$1M). 529 deduction $2K single/$4K MFJ.'},
+    MI:{rate:0.0425,married_rate:0.0425,s529:10000,notes:'Flat 4.25%. 529 deduction $10K single/$20K MFJ.'},
+    MN:{rate:0.0785,married_rate:0.0785,s529:3000,notes:'Top rate 7.85% (9.85% over $193K). 529 subtraction/credit: $3K per beneficiary (income limits apply).'},
+    MS:{rate:0.047,married_rate:0.047,s529:10000,notes:'Top rate 4.7%. 529 deduction $10K single/$20K MFJ.'},
+    MO:{rate:0.048,married_rate:0.048,s529:8000,notes:'Top rate 4.8%. 529 deduction $8K single/$16K MFJ.'},
+    MT:{rate:0.059,married_rate:0.059,s529:3000,notes:'Top rate 5.9%. 529 deduction $3K single/$6K MFJ.'},
+    NE:{rate:0.0564,married_rate:0.0564,s529:10000,notes:'Top rate 5.64%. 529 deduction $10K per taxpayer.'},
+    NV:{rate:0,married_rate:0,s529:0,notes:'No state income tax. No 529 state deduction.'},
+    NH:{rate:0,married_rate:0,s529:0,notes:'No income tax (interest/dividends tax repealed 2025). No 529 deduction.'},
+    NJ:{rate:0.0637,married_rate:0.0637,s529:10000,notes:'Top rate 6.37% (10.75% over $1M). 529 deduction max $10K/yr.'},
+    NM:{rate:0.049,married_rate:0.049,s529:0,notes:'Top rate 4.9% (5.9% over $210K). No 529 deduction but withdrawals are tax-free.'},
+    NY:{rate:0.0685,married_rate:0.0685,s529:5000,notes:'Top rate 6.85% (10.9% over $25M). 529 deduction $5K single/$10K MFJ. NYC adds 3.876%.'},
+    NC:{rate:0.045,married_rate:0.045,s529:0,notes:'Flat 4.5%. No 529 state deduction.'},
+    ND:{rate:0.0195,married_rate:0.0195,s529:5000,notes:'Top rate 1.95%. 529 deduction $5K per person.'},
+    OH:{rate:0.035,married_rate:0.035,s529:4000,notes:'Top rate 3.5%. 529 deduction $4K per beneficiary (unlimited beneficiaries).'},
+    OK:{rate:0.0475,married_rate:0.0475,s529:10000,notes:'Top rate 4.75%. 529 deduction $10K single/$20K MFJ.'},
+    OR:{rate:0.09,married_rate:0.09,s529:0,notes:'Top rate 9.0% (9.9% over $125K). No 529 state deduction, but OR has a 529 tax credit (up to $300).'},
+    PA:{rate:0.0307,married_rate:0.0307,s529:17000,notes:'Flat 3.07%. 529 deduction up to gift tax exclusion ($17K/yr). PA does not tax 401k/IRA/pension withdrawals.'},
+    RI:{rate:0.0599,married_rate:0.0599,s529:1000,notes:'Top rate 5.99%. 529 deduction $1K single/$2K MFJ.'},
+    SC:{rate:0.064,married_rate:0.064,s529:0,notes:'Top rate 6.4%. No 529 deduction (full amount deductible in the year contributed). Actually SC allows full deduction.'},
+    SD:{rate:0,married_rate:0,s529:0,notes:'No state income tax. No 529 state deduction.'},
+    TN:{rate:0,married_rate:0,s529:0,notes:'No state income tax. No 529 state deduction.'},
+    TX:{rate:0,married_rate:0,s529:0,notes:'No state income tax. No 529 state deduction.'},
+    UT:{rate:0.0465,married_rate:0.0465,s529:0,notes:'Flat 4.65%. UT gives a 4.65% tax credit on 529 contributions (effectively a deduction). Max credit on contributions varies.'},
+    VT:{rate:0.066,married_rate:0.066,s529:2500,notes:'Top rate 6.6% (8.75% over $229K). 529 credit 10% of first $2,500 contributed.'},
+    VA:{rate:0.0575,married_rate:0.0575,s529:4000,notes:'Top rate 5.75%. 529 deduction $4K per account (unlimited if 70+).'},
+    WA:{rate:0,married_rate:0,s529:0,notes:'No state income tax. 7% capital gains tax on gains >$262K. No 529 deduction.'},
+    WV:{rate:0.0512,married_rate:0.0512,s529:0,notes:'Top rate 5.12%. No 529 deduction (WV has full deduction for contributions to state plan).'},
+    WI:{rate:0.0627,married_rate:0.0627,s529:3860,notes:'Top rate 6.27% (7.65% over $304K). 529 deduction $3,860 per beneficiary.'},
+    WY:{rate:0,married_rate:0,s529:0,notes:'No state income tax. No 529 state deduction.'}
+  };
+
   function fv(annual,rate,years){return annual*((Math.pow(1+rate,years)-1)/rate)*(1+rate);}
 
   window.orderOnEnter=function(){
@@ -7407,11 +7466,11 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
 
   window.orderReset=function(){
     $('ord_age').value=30; $('ord_salary').value=150000;
-    $('ord_filing').value='single'; $('ord_has401k').checked=true;
+    $('ord_filing').value='single'; $('ord_state').value='CA'; $('ord_has401k').checked=true;
     $('ord_hasHDHP').checked=true; $('ord_hasFSA').checked=false;
     $('ord_hasDepCare').checked=false; $('ord_has457b').checked=false;
-    $('ord_has529').checked=false;
-    $('ord_expenses').value=5000;
+    $('ord_hasTradIRA').checked=false; $('ord_has529').checked=false;
+    $('ord_expenses').value=3500; $('ord_mortgage').value=0; $('ord_ef_current').value=0;
     $('ord_target_yr').value=30; $('ord_retire_age').value=60;
     orderCalc();
   };
@@ -7420,13 +7479,20 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
     const age=+$('ord_age').value||30;
     const salary=+$('ord_salary').value||150000;
     const filing=$('ord_filing').value;
+    const stateCode=$('ord_state').value||'CA';
+    const stateData=STATE_TAX_DATA[stateCode]||{rate:0.05,married_rate:0.05,s529:0,notes:''};
+    const stateTaxRate=filing==='married'?stateData.married_rate:stateData.rate;
     const has401k=$('ord_has401k').checked;
     const hasHDHP=$('ord_hasHDHP').checked;
     const hasFSA=$('ord_hasFSA')?$('ord_hasFSA').checked:false;
     const hasDepCare=$('ord_hasDepCare')?$('ord_hasDepCare').checked:false;
     const has457b=$('ord_has457b')?$('ord_has457b').checked:false;
+    const hasTradIRA=$('ord_hasTradIRA')?$('ord_hasTradIRA').checked:false;
     const has529=$('ord_has529')?$('ord_has529').checked:false;
-    const expenses=+$('ord_expenses').value||5000;
+    const expensesBase=+$('ord_expenses').value||3500;
+    const mortgage=+$('ord_mortgage').value||0;
+    const efCurrent=+$('ord_ef_current').value||0;
+    const expenses=expensesBase+mortgage;
     const targetYr=+$('ord_target_yr').value||30;
     const retireAge=+$('ord_retire_age').value||60;
     const taxRate=getMarginalRate(salary,filing);
@@ -7444,6 +7510,7 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
       contrib_depcare:$('ord_contrib_depcare')?$('ord_contrib_depcare').value:'',
       contrib_457b:$('ord_contrib_457b')?$('ord_contrib_457b').value:'',
       contrib_529:$('ord_contrib_529')?$('ord_contrib_529').value:'',
+      contrib_trad_ira:$('ord_contrib_trad_ira')?$('ord_contrib_trad_ira').value:'',
       taxable_dca:$('ord_taxable_dca')?$('ord_taxable_dca').value:''
     };
 
@@ -7474,6 +7541,15 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
     const contrib457b=has457b?+(prev.contrib_457b||max457b):0;
     const contrib529=has529?+(prev.contrib_529||5000):0;
 
+    // Traditional IRA — deductible only if no employer plan (or under MAGI limits with employer plan)
+    const tradIRAMax=age>=50?8600:7500;
+    // Deductibility: if has401k, phase-out applies (single: $79K-$89K, MFJ: $126K-$146K for 2026)
+    const tradIRADeductible=hasTradIRA?(has401k?(salary<=(filing==='single'?79000:126000)?1.0:salary>=(filing==='single'?89000:146000)?0.0:((filing==='single'?89000:146000)-salary)/((filing==='single'?89000:146000)-(filing==='single'?79000:126000))):1.0):0;
+    const contribTradIRA=hasTradIRA?+(prev.contrib_trad_ira||tradIRAMax):0;
+    const tradIRADeduction=contribTradIRA*tradIRADeductible;
+    const tradIRATaxSave=tradIRADeduction*taxRate;
+    const tradIRAFV=hasTradIRA?fv(contribTradIRA,SP500_CAGR,targetYr):0;
+
     // Projections
     const matchFV=has401k?fv(matchContrib+matchFree,SP500_CAGR,targetYr):0;
     const hsaTaxSave=contribHSA*taxRate;
@@ -7484,10 +7560,10 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
     const fv457b=has457b?fv(contrib457b,SP500_CAGR,targetYr):0;
 
     // Take-home calculation
-    const preTaxDeductions=matchContrib+contrib401k+contribHSA+contribFSA+contribDepCare+contrib457b;
+    const preTaxDeductions=matchContrib+contrib401k+contribHSA+contribFSA+contribDepCare+contrib457b+tradIRADeduction;
     const taxableIncome=Math.max(0,salary-preTaxDeductions-(filing==='single'?14600:29200));
     const fedTax=calcFedTax(taxableIncome,filing);
-    const stateTax=taxableIncome*0.05; // ~avg state tax estimate
+    const stateTax=taxableIncome*stateTaxRate;
     const fica=Math.min(salary,168600)*0.0765;
     const totalTax=fedTax+stateTax+fica;
     const takeHome=salary-totalTax-preTaxDeductions;
@@ -7496,7 +7572,7 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
     const annualAfterExpenses=monthlyAfterExpenses*12;
 
     // Taxable brokerage — default to what's left after expenses or user override
-    const defaultTaxableDCA=Math.max(0,Math.round(monthlyAfterExpenses/100)*100);
+    const defaultTaxableDCA=Math.max(0,Math.round((monthlyAfterExpenses*0.85)/100)*100);
     const taxableDCA=+(prev.taxable_dca||defaultTaxableDCA);
     const taxableAnnual=taxableDCA*12;
     const taxableFV=fv(Math.max(0,taxableAnnual),TAXABLE_RETURN,targetYr);
@@ -7525,40 +7601,43 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
     </div>`;
 
     // --- Node 2: 401(k) to Match ---
-    html+=nodeConnector();
-    html+=`<div class="ord-node${has401k?'':' ineligible'}">
-      <div class="ord-node-bar" style="background:#7c3aed;"></div>
-      <div class="ord-node-header"><div class="ord-node-num" style="background:#7c3aed;">2</div><div class="ord-node-name">401(k) to Employer Match</div></div>
-      ${has401k?'':`<span class="ord-node-inelig-badge">Not Applicable</span>`}
-      <div class="ord-node-desc">Free money. Employer matches dollar-for-dollar up to cap.</div>
-      <div class="ord-node-inputs">
-        <div><label class="ord-label">Employer Match %</label><input id="ord_match_pct" class="ord-input" type="number" value="${matchPct}" min="0" max="10" step="0.5" oninput="orderCalc()"></div>
-        <div><label class="ord-label">Match Cap % of Salary</label><input id="ord_match_cap" class="ord-input" type="number" value="${matchCap}" min="0" max="10" step="0.5" oninput="orderCalc()"></div>
-      </div>
-      <div class="ord-node-output">
-        <span class="ord-out-item">You contribute: <strong>${fmt(matchContrib)}/yr</strong></span>
-        <span class="ord-out-item">Employer gives: <strong>${fmt(matchFree)} FREE</strong></span>
-        <span class="ord-out-item">Withdrawal: 59½ (10% penalty before)</span>
-        <span class="ord-out-proj">At yr ${targetYr} = ${fmt(matchFV)}</span>
-      </div>
-    </div>`;
+    if(has401k){
+      html+=nodeConnector();
+      html+=`<div class="ord-node">
+        <div class="ord-node-bar" style="background:#7c3aed;"></div>
+        <div class="ord-node-header"><div class="ord-node-num" style="background:#7c3aed;">2</div><div class="ord-node-name">401(k) to Employer Match</div></div>
+        <div class="ord-node-desc">Free money. Employer matches dollar-for-dollar up to cap.</div>
+        <div class="ord-node-inputs">
+          <div><label class="ord-label">Employer Match %</label><input id="ord_match_pct" class="ord-input" type="number" value="${matchPct}" min="0" max="10" step="0.5" oninput="orderCalc()"></div>
+          <div><label class="ord-label">Match Cap % of Salary</label><input id="ord_match_cap" class="ord-input" type="number" value="${matchCap}" min="0" max="10" step="0.5" oninput="orderCalc()"></div>
+        </div>
+        <div class="ord-node-output">
+          <span class="ord-out-item">You contribute: <strong>${fmt(matchContrib)}/yr</strong></span>
+          <span class="ord-out-item">Employer gives: <strong>${fmt(matchFree)} FREE</strong></span>
+          <span class="ord-out-item">Withdrawal: 59½ (10% penalty before)</span>
+          <span class="ord-out-proj">At yr ${targetYr} = ${fmt(matchFV)}</span>
+        </div>
+      </div>`;
+    }
 
     // --- Node 3: HSA ---
-    html+=nodeConnector();
-    html+=`<div class="ord-node${hasHDHP?'':' ineligible'}">
-      <div class="ord-node-bar" style="background:#059669;"></div>
-      <div class="ord-node-header"><div class="ord-node-num" style="background:#059669;">3</div><div class="ord-node-name">HSA</div></div>
-      ${hasHDHP?'':`<span class="ord-node-inelig-badge">Not Applicable — No HDHP</span>`}
-      <div class="ord-node-desc">Triple tax-advantaged: pre-tax in, tax-free growth, tax-free medical withdrawals.</div>
+    if(hasHDHP){
+      html+=nodeConnector();
+      html+=`<div class="ord-node">
+        <div class="ord-node-bar" style="background:#059669;"></div>
+        <div class="ord-node-header"><div class="ord-node-num" style="background:#059669;">3</div><div class="ord-node-name">HSA</div></div>
+      <div class="ord-node-desc">Triple tax-advantaged investment account: pre-tax in, tax-free growth (invested in index funds), tax-free medical withdrawals. After 65, works like Traditional IRA for non-medical use.</div>
       <div class="ord-node-inputs">
         <div><label class="ord-label">Your Contribution ($) <button class="ord-max-btn" onclick="document.getElementById('ord_contrib_hsa').value=${hsaMax};orderCalc()">Max ${fmt(hsaMax)}</button></label><input id="ord_contrib_hsa" class="ord-input" type="number" value="${contribHSA}" min="0" max="${hsaMax}" step="100" oninput="orderCalc()"></div>
       </div>
       <div class="ord-node-output">
         <span class="ord-out-item">Annual: <strong>${fmt(contribHSA)}</strong> / ${fmt(hsaMax)} max</span>
         <span class="ord-out-item">Tax savings: <strong>${fmt(hsaTaxSave)}/yr</strong></span>
+        <span class="ord-out-item">Invested at: <strong>${(SP500_CAGR*100).toFixed(1)}% avg return</strong> (S&P 500)</span>
         <span class="ord-out-proj">At yr ${targetYr} = ${fmt(hsaFV)}</span>
       </div>
     </div>`;
+    }
 
     // --- Node 4: Roth IRA ---
     html+=nodeConnector();
@@ -7576,23 +7655,44 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
       </div>
     </div>`;
 
+    // --- Node 4b: Traditional IRA ---
+    if(hasTradIRA){
+      html+=nodeConnector();
+      html+=`<div class="ord-node">
+        <div class="ord-node-bar" style="background:#b45309;"></div>
+        <div class="ord-node-header"><div class="ord-node-num" style="background:#b45309;">4b</div><div class="ord-node-name">Traditional IRA</div></div>
+        <div class="ord-node-desc">Pre-tax deduction (${tradIRADeductible>=1?'fully deductible':tradIRADeductible>0?Math.round(tradIRADeductible*100)+'% deductible (phase-out)':'non-deductible'} at your income). Tax-deferred growth. Taxed as income on withdrawal. RMDs at 73.</div>
+        <div class="ord-node-inputs">
+          <div><label class="ord-label">Contribution ($) <button class="ord-max-btn" onclick="document.getElementById('ord_contrib_trad_ira').value=${tradIRAMax};orderCalc()">Max ${fmt(tradIRAMax)}</button></label><input id="ord_contrib_trad_ira" class="ord-input" type="number" value="${contribTradIRA}" min="0" max="${tradIRAMax}" step="100" oninput="orderCalc()"></div>
+        </div>
+        <div class="ord-node-output">
+          <span class="ord-out-item">Annual: <strong>${fmt(contribTradIRA)}</strong> / ${fmt(tradIRAMax)} max</span>
+          <span class="ord-out-item">Deductible: <strong>${fmt(tradIRADeduction)}</strong></span>
+          <span class="ord-out-item">Tax savings: <strong>${fmt(tradIRATaxSave)}/yr</strong></span>
+          ${tradIRADeductible<1&&has401k?`<span class="ord-out-item" style="color:#d97706;">⚠ Reduced deduction — you have an employer plan</span>`:''}
+          <span class="ord-out-proj">At yr ${targetYr} = ${fmt(tradIRAFV)}</span>
+        </div>
+      </div>`;
+    }
+
     // --- Node 5: Max 401(k) Beyond Match ---
-    const space401k=Math.max(0,max401k-matchContrib);
-    html+=nodeConnector();
-    html+=`<div class="ord-node${has401k?'':' ineligible'}">
-      <div class="ord-node-bar" style="background:#dc2626;"></div>
-      <div class="ord-node-header"><div class="ord-node-num" style="background:#dc2626;">5</div><div class="ord-node-name">Max 401(k) Beyond Match</div></div>
-      ${has401k?'':`<span class="ord-node-inelig-badge">Not Applicable</span>`}
-      <div class="ord-node-desc">Pre-tax: reduces taxable income NOW. 2026 employee limit: ${fmt(max401k)}.</div>
-      <div class="ord-node-inputs">
-        <div><label class="ord-label">Additional ($) <button class="ord-max-btn" onclick="document.getElementById('ord_contrib_401k').value=${space401k};orderCalc()">Max ${fmt(space401k)}</button></label><input id="ord_contrib_401k" class="ord-input" type="number" value="${contrib401k}" min="0" max="${space401k}" step="500" oninput="orderCalc()"></div>
-      </div>
-      <div class="ord-node-output">
-        <span class="ord-out-item">Additional/yr: <strong>${fmt(contrib401k)}</strong> / ${fmt(space401k)} space</span>
-        <span class="ord-out-item">Tax savings: <strong>${fmt(taxSave401k)}/yr</strong></span>
-        <span class="ord-out-proj">At yr ${targetYr} = ${fmt(full401kFV)}</span>
-      </div>
-    </div>`;
+    if(has401k){
+      const space401k=Math.max(0,max401k-matchContrib);
+      html+=nodeConnector();
+      html+=`<div class="ord-node">
+        <div class="ord-node-bar" style="background:#dc2626;"></div>
+        <div class="ord-node-header"><div class="ord-node-num" style="background:#dc2626;">5</div><div class="ord-node-name">Max 401(k) Beyond Match</div></div>
+        <div class="ord-node-desc">Pre-tax: reduces taxable income NOW. 2026 employee limit: ${fmt(max401k)}.</div>
+        <div class="ord-node-inputs">
+          <div><label class="ord-label">Additional ($) <button class="ord-max-btn" onclick="document.getElementById('ord_contrib_401k').value=${space401k};orderCalc()">Max ${fmt(space401k)}</button></label><input id="ord_contrib_401k" class="ord-input" type="number" value="${contrib401k}" min="0" max="${space401k}" step="500" oninput="orderCalc()"></div>
+        </div>
+        <div class="ord-node-output">
+          <span class="ord-out-item">Additional/yr: <strong>${fmt(contrib401k)}</strong> / ${fmt(space401k)} space</span>
+          <span class="ord-out-item">Tax savings: <strong>${fmt(taxSave401k)}/yr</strong></span>
+          <span class="ord-out-proj">At yr ${targetYr} = ${fmt(full401kFV)}</span>
+        </div>
+      </div>`;
+    }
 
     // --- Node 5b: FSA (Healthcare) ---
     if(hasFSA){
@@ -7663,6 +7763,7 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
         <div class="ord-node-output">
           <span class="ord-out-item">Annual: <strong>${fmt(contrib529)}</strong></span>
           <span class="ord-out-item">No federal limit (gift tax applies >$18K/yr)</span>
+          ${stateData.s529>0?`<span class="ord-out-item" style="color:#059669;">✓ ${stateCode} deduction: up to ${fmt(stateData.s529)}/yr (saves ~${fmt(Math.min(contrib529,stateData.s529)*stateTaxRate)})</span>`:`<span class="ord-out-item" style="color:#94a3b8;">No state deduction in ${stateCode}</span>`}
           <span class="ord-out-item" style="color:#0d9488;">✓ Tax-free growth for education</span>
           <span class="ord-out-proj">At yr ${targetYr} = ${fmt(fv529)}</span>
         </div>
@@ -7695,30 +7796,88 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
         <div class="ord-bonus-item"><strong>529 Plan:</strong> Tax-free growth for education. State tax deduction in many states.</div>
         <div class="ord-bonus-item"><strong>Mega Backdoor Roth:</strong> Up to $70K total 415(c) limit if employer allows after-tax 401(k) + in-plan conversion.</div>
         <div class="ord-bonus-item"><strong>ESPP:</strong> 15% discount on company stock. Sell immediately for near-guaranteed return.</div>
-        <div class="ord-bonus-item"><strong>Traditional IRA (deductible):</strong> If no employer plan, full deduction up to $7,500 ($8,600 if 50+).</div>
+        <div class="ord-bonus-item"><strong>Traditional IRA (deductible):</strong> If no employer plan, full deduction up to $7,500 ($8,600 if 50+). Enable above for full calculation.</div>
       </div>`;
+
+    // --- Emergency Fund Analysis ---
+    const efTarget8mo=expenses*8;
+    const efFunded=efCurrent>=efTarget8mo;
+    const efDeficit=Math.max(0,efTarget8mo-efCurrent);
+    const efMonthsToFund=monthlyAfterExpenses>0?Math.ceil(efDeficit/monthlyAfterExpenses):999;
+
+    // --- Post-Tax Investment Recommendations ---
+    // Conservative: 50/30/20 rule says 20% of take-home to savings/investments
+    const recConservative=Math.max(0,Math.round(monthlyTakeHome*0.20));
+    // Recommended: invest everything after expenses + 10% buffer for discretionary
+    const recRecommended=Math.max(0,Math.round(monthlyAfterExpenses*0.85));
+    // Max: every dollar after fixed expenses (no buffer)
+    const recMax=Math.max(0,Math.round(monthlyAfterExpenses));
+    // Roth IRA max monthly (policy limit for post-tax)
+    const rothMonthly=Math.round(rothMax/12);
+    // Total post-tax policy max: Roth IRA + no cap on taxable brokerage
+    const policyMaxMonthly=rothMonthly;
 
     // --- Take-Home Budget Panel ---
     let budgetHtml=`<div class="ord-summary-card" style="margin-top:20px;border-color:#bfdbfe;">
-      <h3 style="color:#1d4ed8;">💵 Take-Home & Budget Analysis</h3>
+      <h3 style="color:#1d4ed8;">Take-Home and Budget Analysis</h3>
       <div class="ord-summary-row"><span class="lbl">Gross Annual Salary</span><span class="val" style="color:#0f172a;">${fmt(salary)}</span></div>
-      <div class="ord-summary-row"><span class="lbl">Pre-Tax Deductions (401k+HSA+FSA+DepCare+457b)</span><span class="val" style="color:#dc2626;">-${fmt(preTaxDeductions)}</span></div>
+      <div class="ord-summary-row"><span class="lbl">Pre-Tax Deductions (401k+HSA+FSA+DepCare+457b${hasTradIRA?'+TradIRA':''})</span><span class="val" style="color:#dc2626;">-${fmt(preTaxDeductions)}</span></div>
       <div class="ord-summary-row"><span class="lbl">Est. Federal Tax</span><span class="val" style="color:#dc2626;">-${fmt(fedTax)}</span></div>
-      <div class="ord-summary-row"><span class="lbl">Est. State Tax (~5%)</span><span class="val" style="color:#dc2626;">-${fmt(stateTax)}</span></div>
+      <div class="ord-summary-row"><span class="lbl">Est. State Tax (${stateCode} ${stateTaxRate===0?'No Income Tax':(stateTaxRate*100).toFixed(1)+'%'})</span><span class="val" style="color:#dc2626;">-${fmt(stateTax)}</span></div>
       <div class="ord-summary-row"><span class="lbl">FICA (SS + Medicare)</span><span class="val" style="color:#dc2626;">-${fmt(fica)}</span></div>
       <div class="ord-summary-row" style="border-top:2px solid #1d4ed8;padding-top:6px;"><span class="lbl" style="font-weight:700;">Annual Take-Home Pay</span><span class="val" style="color:#1d4ed8;font-size:15px;">${fmt(takeHome)}</span></div>
       <div class="ord-summary-row"><span class="lbl">Monthly Take-Home</span><span class="val" style="color:#1d4ed8;">${fmt(monthlyTakeHome)}</span></div>
-      <div class="ord-summary-row"><span class="lbl">Monthly Expenses</span><span class="val" style="color:#dc2626;">-${fmt(expenses)}</span></div>
-      <div class="ord-summary-row total-row"><span class="lbl" style="font-weight:700;">Available to Invest in ETFs/Stocks (monthly)</span><span class="val" style="font-size:16px;color:${monthlyAfterExpenses>=0?'#059669':'#dc2626'};">${fmt(monthlyAfterExpenses)}</span></div>
-      <div class="ord-summary-row"><span class="lbl">Available Annually</span><span class="val" style="color:${annualAfterExpenses>=0?'#059669':'#dc2626'};">${fmt(annualAfterExpenses)}</span></div>
-      ${monthlyAfterExpenses<taxableDCA?`<div style="margin-top:8px;padding:6px 10px;background:#fef2f2;border:1px solid #fecaca;border-radius:6px;font-size:10px;color:#dc2626;">⚠ Your taxable DCA ($${taxableDCA}/mo) exceeds available budget ($${Math.round(monthlyAfterExpenses)}/mo). Adjust expenses or contribution amounts.</div>`:''}
+      <div class="ord-summary-row"><span class="lbl">Monthly Expenses (living)</span><span class="val" style="color:#dc2626;">-${fmt(expensesBase)}</span></div>
+      ${mortgage>0?`<div class="ord-summary-row"><span class="lbl">Monthly Mortgage/Rent</span><span class="val" style="color:#dc2626;">-${fmt(mortgage)}</span></div>`:''}
+      <div class="ord-summary-row"><span class="lbl">Total Monthly Fixed Costs</span><span class="val" style="color:#dc2626;">-${fmt(expenses)}</span></div>
+      <div class="ord-summary-row total-row"><span class="lbl" style="font-weight:700;">Monthly Surplus (available to invest)</span><span class="val" style="font-size:16px;color:${monthlyAfterExpenses>=0?'#059669':'#dc2626'};">${fmt(monthlyAfterExpenses)}</span></div>
+      <div class="ord-summary-row"><span class="lbl">Annual Surplus</span><span class="val" style="color:${annualAfterExpenses>=0?'#059669':'#dc2626'};">${fmt(annualAfterExpenses)}</span></div>
     </div>`;
 
+    // --- Emergency Fund Status ---
+    budgetHtml+=`<div class="ord-summary-card" style="margin-top:14px;border-color:${efFunded?'#bbf7d0':'#fecaca'};">
+      <h3 style="color:${efFunded?'#059669':'#dc2626'};">${efFunded?'✓':'⚠'} Emergency Fund (8-month target)</h3>
+      <div class="ord-summary-row"><span class="lbl">Monthly expenses (incl. mortgage)</span><span class="val">${fmt(expenses)}/mo</span></div>
+      <div class="ord-summary-row"><span class="lbl">8-month target</span><span class="val">${fmt(efTarget8mo)}</span></div>
+      <div class="ord-summary-row"><span class="lbl">Current emergency fund</span><span class="val" style="color:${efFunded?'#059669':'#dc2626'};">${fmt(efCurrent)}</span></div>
+      ${!efFunded?`<div class="ord-summary-row"><span class="lbl">Shortfall</span><span class="val" style="color:#dc2626;">-${fmt(efDeficit)}</span></div>
+      <div class="ord-summary-row"><span class="lbl">Months to fully fund (from surplus)</span><span class="val">${efMonthsToFund===999?'N/A':efMonthsToFund+' months'}</span></div>
+      <div style="margin-top:8px;padding:8px 12px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;font-size:12px;color:#dc2626;line-height:1.5;">
+        <strong>Priority:</strong> Fund your emergency fund BEFORE investing in taxable brokerage. Set aside ${fmt(Math.min(monthlyAfterExpenses,efDeficit)>0?Math.min(Math.round(monthlyAfterExpenses*0.5),efDeficit):0)}/mo toward your emergency fund until you reach ${fmt(efTarget8mo)}.
+      </div>`:`<div style="margin-top:8px;padding:8px 12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;font-size:12px;color:#059669;line-height:1.5;">
+        <strong>Fully funded.</strong> Your emergency fund covers 8 months of expenses. You can invest your full surplus.
+      </div>`}
+    </div>`;
+
+    // --- Post-Tax Investment Recommendations ---
+    const investableMonthly=efFunded?monthlyAfterExpenses:Math.max(0,monthlyAfterExpenses-Math.round(efDeficit/Math.max(6,efMonthsToFund)));
+    budgetHtml+=`<div class="ord-summary-card" style="margin-top:14px;border-color:#c7d2fe;">
+      <h3 style="color:#4338ca;">Post-Tax Investment Recommendation</h3>
+      <div style="font-size:12px;color:#64748b;margin-bottom:10px;">Based on your take-home pay of ${fmt(monthlyTakeHome)}/mo, fixed costs of ${fmt(expenses)}/mo${!efFunded?', and emergency fund shortfall':''}</div>
+      <div class="ord-summary-row"><span class="lbl">Conservative (20% of take-home)</span><span class="val" style="color:#64748b;">${fmt(recConservative)}/mo</span></div>
+      <div class="ord-summary-row" style="background:#eff6ff;border-radius:6px;padding:8px;"><span class="lbl" style="font-weight:700;color:#1d4ed8;">Recommended (85% of surplus)</span><span class="val" style="font-weight:700;color:#1d4ed8;">${fmt(efFunded?recRecommended:Math.round(investableMonthly*0.85))}/mo</span></div>
+      <div class="ord-summary-row"><span class="lbl">Maximum (full surplus)</span><span class="val" style="color:#059669;">${fmt(efFunded?recMax:investableMonthly)}/mo</span></div>
+      <div class="ord-summary-row"><span class="lbl">Roth IRA max contribution (policy limit)</span><span class="val">${fmt(rothMonthly)}/mo (${fmt(rothMax)}/yr)</span></div>
+      <div class="ord-summary-row"><span class="lbl">Taxable brokerage (no policy limit)</span><span class="val">Unlimited</span></div>
+      <div style="margin-top:10px;padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;font-size:12px;color:#374151;line-height:1.6;">
+        <strong>Suggested allocation:</strong><br>
+        1. ${isBackdoor?'Backdoor ':''}Roth IRA: ${fmt(rothMonthly)}/mo (tax-free growth, ${fmt(rothMax)}/yr max)<br>
+        2. Taxable brokerage (VTI/VOO): ${fmt(Math.max(0,(efFunded?recRecommended:Math.round(investableMonthly*0.85))-rothMonthly))}/mo (remainder of recommended amount)<br>
+        ${!efFunded?`3. Emergency fund top-up: ${fmt(Math.round(efDeficit/Math.max(6,efMonthsToFund)))}/mo until ${fmt(efTarget8mo)} reached<br>`:''}
+        <span style="color:#64748b;font-size:11px;">Hold investments 1yr+ for 15% LTCG rate. Tax-loss harvest in taxable account.</span>
+      </div>
+    </div>`;
+    if(monthlyAfterExpenses<0){
+      budgetHtml+=`<div style="margin-top:10px;padding:10px 14px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;font-size:12px;color:#dc2626;line-height:1.5;"><strong>Warning:</strong> Your monthly expenses exceed take-home pay by ${fmt(Math.abs(monthlyAfterExpenses))}. Reduce expenses or pre-tax contributions before investing.</div>`;
+    }
+
     // --- Investment Summary ---
-    const totalPreTax=matchContrib+contrib401k+contribHSA+contribFSA+contribDepCare+contrib457b;
-    const totalAnnual=matchContrib+matchFree+contribHSA+contribRoth+contrib401k+contribFSA+contribDepCare+contrib457b+contrib529+taxableAnnual;
-    const totalTaxSavings=(matchContrib+contrib401k+contribHSA+contribFSA+contribDepCare+contrib457b)*taxRate;
-    const totalProjected=matchFV+hsaFV+rothFV+full401kFV+fv457b+fv529+taxableFV;
+    const totalPreTax=matchContrib+contrib401k+contribHSA+contribFSA+contribDepCare+contrib457b+tradIRADeduction;
+    const totalAnnual=matchContrib+matchFree+contribHSA+contribRoth+contrib401k+contribFSA+contribDepCare+contrib457b+contribTradIRA+contrib529+taxableAnnual;
+    const preTaxFedSave=(matchContrib+contrib401k+contribHSA+contribFSA+contribDepCare+contrib457b+tradIRADeduction)*(taxRate+stateTaxRate);
+    const state529Save=has529&&stateData.s529>0?Math.min(contrib529,stateData.s529)*stateTaxRate:0;
+    const totalTaxSavings=preTaxFedSave+state529Save;
+    const totalProjected=matchFV+hsaFV+rothFV+full401kFV+tradIRAFV+fv457b+fv529+taxableFV;
     const effectiveRateReduction=totalTaxSavings/salary;
 
     let sumHtml=`<div class="ord-summary-card"><h3>📊 Investment Summary</h3>`;
@@ -7736,14 +7895,16 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
       <strong style="font-size:12px;">📝 Important Notes — 2026 Tax Year</strong><br>
       • <strong>401(k) limit:</strong> $24,500 employee ($32,500 if 50+, $35,750 if 60-63). Employer match does NOT count toward this.<br>
       • <strong>Roth IRA:</strong> $7,500 ($8,600 if 50+). Phase-out: Single $153K-$168K, MFJ $242K-$252K. Use Backdoor Roth if above.<br>
-      • <strong>HSA:</strong> $4,400 individual / $8,750 family (+$1,000 catch-up if 55+). Requires HDHP. BEST tax vehicle — triple-tax-free.<br>
+      • <strong>HSA:</strong> $4,400 individual / $8,750 family (+$1,000 catch-up if 55+). Requires HDHP. BEST tax vehicle — triple-tax-free. Invest in index funds for long-term growth (not just a savings account).<br>
+      • <strong>Traditional IRA:</strong> $7,500 ($8,600 if 50+). Fully deductible if no employer plan. With employer plan: deduction phases out (Single $79K-$89K, MFJ $126K-$146K). Non-deductible contributions still get tax-deferred growth.<br>
       • <strong>FSA:</strong> $3,300 healthcare. Use-it-or-lose-it (some plans roll $640). Cannot have both HSA & general FSA (limited-purpose FSA OK).<br>
       • <strong>Dependent Care FSA:</strong> $5,000/yr for childcare/eldercare. Saves FICA (7.65%) + income tax.<br>
       • <strong>457(b):</strong> $23,500 ($31,000 if 50+). Govt/nonprofit ONLY. Stacks with 401(k)! No 10% early withdrawal penalty.<br>
       • <strong>529 Plan:</strong> No federal limit (gift tax exclusion $18K/yr per beneficiary). Tax-free growth + withdrawal for education. Many states offer tax deduction. 2024+ rule: up to $35K lifetime can roll to Roth IRA after 15yrs.<br>
-      • <strong>Order of operations:</strong> Match → HSA → Roth → Max 401(k) → 457(b) → 529 → Taxable Brokerage.<br>
+      • <strong>Order of operations:</strong> Match → HSA → Roth (or Trad IRA if deductible) → Max 401(k) → 457(b) → 529 → Taxable Brokerage.<br>
       • <strong>Taxable brokerage:</strong> No limit. Hold 1yr+ for 15% LTCG rate. Tax-loss harvest to offset gains. Use VTI/VOO for tax efficiency.<br>
-      • <strong>Marginal rate shown:</strong> ${(taxRate*100).toFixed(1)}% (${filing==='single'?'Single':'MFJ'} @ ${fmt(salary)}). State tax varies by state.
+      • <strong>Marginal rate shown:</strong> ${(taxRate*100).toFixed(1)}% federal + ${(stateTaxRate*100).toFixed(1)}% state (${stateCode}) = ${((taxRate+stateTaxRate)*100).toFixed(1)}% combined (${filing==='single'?'Single':'MFJ'} @ ${fmt(salary)}).<br>
+      • <strong>State note (${stateCode}):</strong> ${stateData.notes}
     </div>`;
 
     $('ord_summaryCard').innerHTML=budgetHtml+sumHtml+notesHtml;
@@ -7760,6 +7921,7 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
       {name:'HSA',value:hsaFV,color:'#059669'},
       {name:'Roth IRA',value:rothFV,color:'#1d4ed8'},
     ];
+    if(hasTradIRA) chartBuckets.push({name:'Trad IRA',value:tradIRAFV,color:'#b45309'});
     if(has457b) chartBuckets.push({name:'457(b)',value:fv457b,color:'#4338ca'});
     if(has529) chartBuckets.push({name:'529',value:fv529,color:'#0d9488'});
     chartBuckets.push({name:'Taxable',value:taxableFV,color:'#64748b'});

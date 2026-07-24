@@ -816,6 +816,189 @@ html{scroll-behavior:smooth;}
 }
 .scroll-picker:hover{border-color:var(--acc-mid);box-shadow:inset 0 8px 12px -4px rgba(15,23,42,.08),inset 0 -8px 12px -4px rgba(15,23,42,.08),0 2px 12px rgba(79,70,229,.12);}
 .scroll-picker:active{border-color:var(--acc);}
+/* Wide picker for currency values — enough width to fit $2,500,000 */
+.scroll-picker.wide{width:180px;}
+.scroll-picker.medium{width:110px;}
+.scroll-picker.wide .scroll-picker-item,
+.scroll-picker.medium .scroll-picker-item{font-size:13px;}
+.scroll-picker.wide .scroll-picker-item[data-offset="0"],
+.scroll-picker.medium .scroll-picker-item[data-offset="0"]{font-size:22px;font-weight:800;letter-spacing:-.02em;}
+.scroll-picker.wide .scroll-picker-item[data-offset="1"],
+.scroll-picker.wide .scroll-picker-item[data-offset="-1"],
+.scroll-picker.medium .scroll-picker-item[data-offset="1"],
+.scroll-picker.medium .scroll-picker-item[data-offset="-1"]{font-size:14px;}
+/* Hide internal unit when caller wants it outside */
+.scroll-picker.no-unit .scroll-picker-unit{display:none;}
+/* External-unit label sits beside the picker */
+.scroll-picker-ext-unit{
+  font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;
+  color:var(--tx3);margin-left:2px;
+}
+/* Two side-by-side dial cells */
+.dial-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:end;}
+.dial-cell{display:flex;flex-direction:column;gap:6px;}
+.dial-cell-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--tx2);}
+.dial-cell-row{display:flex;align-items:center;gap:6px;}
+
+/* ── Section tabs (Section 1 / Section 2) ── */
+.etf-tabs{
+  display:grid;grid-template-columns:1fr 1fr;gap:0;
+  background:#fff;border-bottom:1px solid #e2e8f0;
+  border-top:1px solid #e2e8f0;
+  position:sticky;top:53px;z-index:9400;
+  box-shadow:0 2px 8px rgba(15,23,42,.04);
+}
+#etfSection > .etf-tabs{margin-top:0;}
+.etf-tab{
+  display:flex;flex-direction:column;gap:2px;align-items:flex-start;
+  padding:14px 28px;background:transparent;border:none;text-align:left;
+  border-bottom:3px solid transparent;cursor:pointer;
+  transition:background .15s,border-color .15s;
+  font-family:inherit;
+}
+.etf-tab:hover{background:#e2e8f0;}
+.etf-tab.is-active{background:#fff;border-bottom-color:#4f46e5;}
+.etf-tab[data-target="etfTab2"].is-active{border-bottom-color:#0f766e;}
+.etf-tab-num{
+  font-size:16px;font-weight:800;color:#94a3b8;
+  text-transform:uppercase;letter-spacing:.6px;
+}
+.etf-tab.is-active .etf-tab-num{color:#4f46e5;}
+.etf-tab[data-target="etfTab2"].is-active .etf-tab-num{color:#0f766e;}
+.etf-tab-name{
+  font-size:16px;font-weight:800;color:#0f172a;letter-spacing:-.2px;line-height:1.25;
+}
+.etf-tab:not(.is-active) .etf-tab-name{color:#64748b;font-weight:700;}
+
+.etf-tab-pane{display:none;}
+.etf-tab-pane.is-active{display:block;}
+/* ponytail: pane content sits at y=0 but .etf-tabs is sticky top:53 height:75 — push panes down so tiles/main don't hide behind the tabs bar */
+.etf-tab-pane{padding-top:75px;}
+#etfSection > .etf-tabs{margin-bottom:-75px;}
+
+@media(max-width:640px){
+  .etf-tab{padding:10px 14px;}
+  .etf-tab-name{font-size:12px;}
+  .etf-tab-num{font-size:10px;}
+}
+
+/* Resizer between sidebar and main */
+#etfLayout{grid-template-columns:var(--etf-sidebar-w,300px) 6px 1fr;}
+#etfResizer{
+  background:linear-gradient(90deg,transparent,#e2e8f0,transparent);
+  cursor:col-resize;position:sticky;top:0;height:100vh;
+  transition:background .15s;opacity:.5;
+}
+#etfResizer:hover,body.is-resizing-etf #etfResizer{
+  background:linear-gradient(90deg,transparent,#4f46e5,transparent);opacity:1;
+}
+body.is-resizing-etf{cursor:col-resize;user-select:none;}
+body.is-resizing-etf *{user-select:none !important;}
+@media(max-width:860px){
+  #etfLayout{grid-template-columns:1fr !important;}
+  #etfResizer{display:none;}
+}
+
+/* ── Section 2: Goal-Based Investment Planner (sidebar + main layout) ── */
+#goalSection{background:#fafafa;min-height:calc(100vh - 130px);}
+#goalSection > .sidebar#gbSidebar{padding:14px;overflow-y:auto;}
+#goalSection > main#gbMain{padding:24px 28px 40px;overflow-y:auto;}
+#goalSection #gbResizer{
+  background:linear-gradient(90deg,transparent,#e2e8f0,transparent);
+  cursor:col-resize;transition:background .15s;opacity:.5;height:100%;
+}
+#goalSection #gbResizer:hover,body.is-resizing-gb #gbResizer{
+  background:linear-gradient(90deg,transparent,#0f766e,transparent);opacity:1;
+}
+body.is-resizing-gb{cursor:col-resize;user-select:none;}
+body.is-resizing-gb *{user-select:none !important;}
+@media(max-width:860px){
+  #goalSection{grid-template-columns:1fr !important;}
+  #goalSection #gbResizer{display:none;}
+}
+/* Fit wide currency picker inside 300px sidebar */
+#gbSidebar .scroll-picker.wide{width:160px;height:88px;}
+#gbSidebar .scroll-picker.medium{width:90px;height:88px;}
+#gbSidebar .scroll-picker-wrap{gap:6px;}
+#gbSidebar .scroll-picker-ext-unit{font-size:10px;}
+#gbSidebar .ctrl-row{align-items:center;}
+#gbSidebar .gb-fund-row{grid-template-columns:auto 1fr auto;gap:6px;padding:6px 8px;}
+#gbSidebar .gb-fund-info{min-width:0;}
+#gbSidebar .gb-fund-info .gb-fund-name{max-width:100%;}
+#gbSidebar .gb-fund-rate{grid-column:2;grid-row:2;margin-top:2px;}
+#gbSidebar .gb-fund-rate-in{width:52px;}
+#gbSidebar .gb-fund-remove{grid-column:3;grid-row:1;}
+.gb-hint{font-size:12px;color:#64748b;line-height:1.5;margin-bottom:14px;}
+.gb-panels{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:16px;}
+@media(max-width:1100px){.gb-panels{grid-template-columns:1fr;}}
+.gb-panel{
+  background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:18px 20px;
+  box-shadow:0 2px 8px rgba(15,23,42,.04);
+}
+.gb-panel-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-bottom:10px;margin-bottom:14px;border-bottom:1px solid #eef2f7;
+}
+.gb-panel-title{font-size:14px;font-weight:800;color:#0f172a;letter-spacing:-.1px;}
+.gb-panel-sub{font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.6px;}
+
+/* Goal ETF chips list */
+.gb-funds{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
+.gb-fund-row{
+  display:grid;grid-template-columns:auto 1fr auto auto;gap:8px;align-items:center;
+  background:#f8faff;border:1px solid #e2e8f0;border-radius:10px;padding:8px 10px;
+}
+.gb-fund-badge{width:22px;height:22px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;flex-shrink:0;}
+.gb-fund-info .gb-fund-sym{font-weight:800;font-family:'JetBrains Mono',monospace;font-size:13px;color:#0f172a;}
+.gb-fund-info .gb-fund-name{font-size:11px;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
+.gb-fund-rate{display:flex;align-items:center;gap:4px;}
+.gb-fund-rate-in{
+  width:56px;padding:4px 6px;border:1px solid #d1d5db;border-radius:6px;font-weight:700;
+  font-family:'JetBrains Mono',monospace;font-size:12px;text-align:right;background:#fff;
+}
+.gb-fund-rate-lbl{font-size:11px;color:#94a3b8;font-weight:600;}
+.gb-fund-remove{
+  background:#fef2f2;border:1px solid #fecaca;color:#dc2626;border-radius:6px;
+  padding:3px 8px;font-weight:700;font-size:14px;cursor:pointer;line-height:1;
+}
+.gb-fund-remove:disabled{opacity:.35;cursor:not-allowed;}
+.gb-add-fund{
+  width:100%;padding:8px;border-radius:8px;border:1px dashed #c7d2fe;
+  background:#eef2ff;color:#4f46e5;font-weight:700;cursor:pointer;margin-top:2px;
+}
+.gb-add-fund:hover:not(:disabled){background:#e0e7ff;}
+
+/* Output tiles inline */
+.gb-output{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:41px;
+}
+@media(max-width:1200px){.gb-output{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:640px){.gb-output{grid-template-columns:repeat(2,1fr);}}
+.gb-tile{
+  background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px 14px;
+  border-top:3px solid #0f766e;
+}
+.gb-tile[data-role="withdraw"]{border-top-color:#be185d;}
+.gb-tile[data-role="end"]{border-top-color:#7c3aed;}
+.gb-tile[data-role="div"]{border-top-color:#059669;}
+.gb-tile[data-role="split"]{border-top-color:#0284c7;}
+.gb-tile-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#94a3b8;margin-bottom:4px;}
+.gb-tile-val{font-size:20px;font-weight:800;color:#0f172a;letter-spacing:-.5px;line-height:1.15;font-family:'JetBrains Mono',monospace;}
+.gb-tile-sub{font-size:11px;color:#64748b;margin-top:2px;line-height:1.3;}
+
+.gb-split-list{margin-top:4px;display:flex;flex-direction:column;gap:2px;}
+.gb-split-row{display:flex;align-items:center;gap:6px;font-size:11px;color:#334155;}
+.gb-split-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* Chart panels */
+.gb-charts{display:grid;grid-template-columns:1fr;gap:20px;margin-top:20px;}
+.gb-chart-wrap{
+  background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px 18px;
+  box-shadow:0 2px 8px rgba(15,23,42,.04);
+}
+.gb-chart-title{font-size:13px;font-weight:800;color:#0f172a;margin-bottom:2px;}
+.gb-chart-sub{font-size:11px;color:#94a3b8;margin-bottom:10px;}
+.gb-chart-canvas-wrap{position:relative;height:280px;}
 </style>
 
 <!-- ══════════════════ LANDING + STRATEGY STYLES ══════════════════ -->
@@ -1686,6 +1869,44 @@ html{scroll-behavior:smooth;}
     <span id="upBannerSalary" style="font-weight:700;"></span>
     <span id="upBannerExpenses" style="font-weight:700;color:#dc2626;"></span>
     <button onclick="showProfileFromStrategy()" style="margin-left:auto;font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;border:1px solid #93c5fd;background:#fff;color:#2563eb;cursor:pointer;">Edit Profile</button>
+  </div>
+</div>
+
+<!-- Return Assumption Picker (shown inside every strategy) -->
+<div id="returnAssumptionBar" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:12px 16px;margin:10px 16px 0;font-size:12.5px;color:#1e293b;font-family:'Inter',system-ui,sans-serif;box-shadow:0 1px 2px rgba(15,23,42,.04);">
+  <div style="display:flex;align-items:center;flex-wrap:wrap;gap:12px;">
+    <span style="font-weight:800;color:#4f46e5;font-size:11px;text-transform:uppercase;letter-spacing:.5px;">Return Assumption:</span>
+    <label style="display:flex;align-items:center;gap:4px;font-weight:600;">
+      <input type="radio" name="ra_mode" value="pct" checked onchange="window.raSetMode('pct')"> Fixed %
+    </label>
+    <label style="display:flex;align-items:center;gap:4px;font-weight:600;">
+      <input type="radio" name="ra_mode" value="etf" onchange="window.raSetMode('etf')"> ETF
+    </label>
+    <span id="ra_pct_wrap" style="display:inline-flex;align-items:center;gap:6px;">
+      <input id="ra_pct" type="number" step="0.1" value="8.0" style="width:70px;padding:4px 6px;border:1px solid #cbd5e1;border-radius:6px;font-weight:700;text-align:right;">
+      <span style="font-weight:700;">% p.a.</span>
+    </span>
+    <span id="ra_etf_wrap" style="display:none;align-items:center;gap:6px;">
+      <select id="ra_etf" style="padding:4px 8px;border:1px solid #cbd5e1;border-radius:6px;font-weight:600;min-width:220px;">
+        <optgroup label="US ETFs">
+          <option value="10.5">VOO — S&P 500 (~10.5%)</option>
+          <option value="10.0">VTI — Total US Market (~10.0%)</option>
+          <option value="15.0">QQQ — Nasdaq 100 (~15.0%)</option>
+          <option value="11.0">SCHD — Dividend (~11.0%)</option>
+          <option value="5.5">VXUS — Ex-US (~5.5%)</option>
+          <option value="1.5">BND — US Bonds (~1.5%)</option>
+          <option value="7.5">GLD — Gold (~7.5%)</option>
+        </optgroup>
+        <optgroup label="AU ETFs">
+          <option value="10.5">VGS.AX — MSCI World (~10.5%)</option>
+          <option value="12.0">IVV.AX — S&P 500 AU (~12.0%)</option>
+          <option value="8.5">A200.AX — ASX 200 (~8.5%)</option>
+          <option value="8.0">VDHG.AX — Diversified High Growth (~8.0%)</option>
+          <option value="9.5">VAS.AX — ASX 300 (~9.5%)</option>
+        </optgroup>
+      </select>
+    </span>
+    <span style="margin-left:auto;color:#64748b;font-size:11px;">Historical CAGR — editable; not a forecast.</span>
   </div>
 </div>
 
@@ -2611,6 +2832,7 @@ function hideAllSections(){
     if(el){ el.style.display='none'; }
   });
   [window.s1Guide,window.s2Guide,window.s3Guide,window.s4Guide,window.s5Guide,window.s6Guide,window.s7Guide,window.s8Guide].forEach(function(g){if(g)g.dismiss();});
+  var raBar = document.getElementById('returnAssumptionBar'); if(raBar) raBar.style.display='none';
 }
 
 function setStratBar(name, badge, show){
@@ -2784,8 +3006,46 @@ window.enterApp = function(strategyKey){
   // Show universal profile banner
   updateProfileBanner();
 
+  // Show shared return-assumption picker
+  var raBar = document.getElementById('returnAssumptionBar');
+  if(raBar) raBar.style.display = 'block';
+
+  // Mount shared Fixed/ETF cards inside every strategy's Funds panel
+  setTimeout(function(){
+    if(window.raMountAll) window.raMountAll();
+    if(window.raWireStrategy) window.raWireStrategy(strategyKey);
+  }, 30);
+
   // Sync universal inputs into strategy-specific fields
   syncUniversalToStrategy(strategyKey);
+};
+
+window.raSetMode = function(mode){
+  var pctWrap = document.getElementById('ra_pct_wrap');
+  var etfWrap = document.getElementById('ra_etf_wrap');
+  if(!pctWrap || !etfWrap) return;
+  if(mode === 'etf'){
+    pctWrap.style.display = 'none';
+    etfWrap.style.display = 'inline-flex';
+    var sel = document.getElementById('ra_etf');
+    var pct = document.getElementById('ra_pct');
+    if(sel && pct){ pct.value = sel.value; }
+  } else {
+    pctWrap.style.display = 'inline-flex';
+    etfWrap.style.display = 'none';
+  }
+};
+document.addEventListener('change', function(e){
+  if(e.target && e.target.id === 'ra_etf'){
+    var pct = document.getElementById('ra_pct');
+    if(pct) pct.value = e.target.value;
+  }
+});
+
+// Global getter — return assumption in % (any strategy calc can call)
+window.getReturnAssumption = function(){
+  var el = document.getElementById('ra_pct');
+  return el ? parseFloat(el.value) || 0 : 0;
 };
 
 window.syncUniversalToStrategy = function(key){
@@ -2875,16 +3135,21 @@ window.saveResults = function(){
  ═══════════════════════════════════════════════════════ -->
 <div id="etfSection" style="display:none;">
 
-  <!-- Strategy I Header -->
-  <div class="pm-hdr" style="border-top:3px solid #4f46e5;background:linear-gradient(135deg,#fafbff 0%,#f1f0ff 100%);">
-    <div class="pm-hdr-badge" style="background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe;">Strategy I</div>
-    <div>
-      <div class="pm-hdr-title" style="color:#4f46e5;">Invest in ETFs</div>
-      <div class="pm-hdr-sub">50-year DCA wealth simulation — pick any of 150 US ETFs, lump-sum events, coast FIRE, withdrawal phase</div>
-    </div>
+  <!-- Section Tabs — Section 1 / Section 2 -->
+  <div class="etf-tabs" role="tablist">
+    <button class="etf-tab is-active" role="tab" aria-selected="true" data-target="etfTab1" onclick="switchEtfTab('etfTab1')">
+      <div class="etf-tab-num">Section 1</div>
+      <div class="etf-tab-name">Investment in ETFs, Coast for a few years, and then Enjoy Withdrawal</div>
+    </button>
+    <button class="etf-tab" role="tab" aria-selected="false" data-target="etfTab2" onclick="switchEtfTab('etfTab2')">
+      <div class="etf-tab-num">Section 2</div>
+      <div class="etf-tab-name">Goal-Based Investment Planner — reverse calculator with withdrawal plan</div>
+    </button>
   </div>
 
-<div class="layout">
+  <!-- Section 1 pane -->
+  <div id="etfTab1" class="etf-tab-pane is-active">
+<div class="layout" id="etfLayout" style="grid-template-columns:var(--etf-sidebar-w,300px) 6px 1fr;">
 <aside class="sidebar">
  <div class="sidebar-header">
  <h2>Path To Financial Freedom</h2>
@@ -2894,16 +3159,10 @@ window.saveResults = function(){
  <!-- Fund Selection -->
  <div class="ctrl-group">
  <div class="ctrl-group-title" style="color:#d97706">Funds &amp; Returns <span id="fundCountLabel" style="color:var(--tx3);font-weight:400;font-size:9px;text-transform:none;letter-spacing:0"></span></div>
- <div class="risk-chips" id="etfRiskChips">
-   <span style="font-size:10px;font-weight:700;color:#6b7280;align-self:center;">Risk:</span>
-   <span class="risk-chip all active" onclick="filterEtfRisk(this,'all')">All</span>
-   <span class="risk-chip conservative" onclick="filterEtfRisk(this,'conservative')">Conservative</span>
-   <span class="risk-chip balanced" onclick="filterEtfRisk(this,'balanced')">Balanced</span>
-   <span class="risk-chip growth" onclick="filterEtfRisk(this,'growth')">Growth</span>
-   <span class="risk-chip aggressive" onclick="filterEtfRisk(this,'aggressive')">Aggressive</span>
- </div>
- <div class="funds-list" id="fundsList"></div>
- <button class="add-fund-btn" id="addFundBtn">＋ Add Fund (2/6)</button>
+
+ <div data-ra-mount="etf" data-ra-key="s1"></div>
+ <div data-ra-list="s1"><div class="funds-list" id="fundsList"></div>
+ <button class="add-fund-btn" id="addFundBtn">＋ Add Fund (2/6)</button></div>
  </div>
 
  <!-- Phase 1 — DCA + Coast side by side -->
@@ -3006,15 +3265,9 @@ window.saveResults = function(){
  <div class="disc">Past performance ≠ future results. Not financial advice. Returns compound monthly. DCA &amp; withdrawals split equally across all active funds.</div>
 </aside>
 
-<main class="main">
+<div id="etfResizer" title="Drag to resize sidebar" aria-hidden="true"></div>
 
- <div class="app-header">
- <div style="flex:1">
- <div class="app-title">Investment in ETF's, Coast for a few years and then Enjoy Withdrawal</div>
- <div class="app-sub" id="appSub">50-year wealth simulation</div>
- </div>
- <span class="pill">Build → Coast → Withdraw</span>
- </div>
+<main class="main">
 
  <div>
  <div class="section-label">Timeline — <span id="totalYrsLabel"></span> years total</div>
@@ -3100,10 +3353,119 @@ window.saveResults = function(){
  </div><!-- /output-zone -->
 
 </main>
-</div>
+</div><!-- /.layout -->
+</div><!-- /#etfTab1 -->
 
+<!-- Section 2 pane -->
+<div id="etfTab2" class="etf-tab-pane">
+<div id="goalSection" class="layout" style="grid-template-columns:var(--gb-sidebar-w,320px) 6px 1fr;">
+  <!-- Sidebar: all Goal-Based inputs -->
+  <aside class="sidebar" id="gbSidebar">
+    <div class="sidebar-header">
+      <h2>Goal-Based Planner</h2>
+      <p>Set target &amp; horizon — we compute what to invest.</p>
+    </div>
 
-</div>
+    <!-- Accumulation plan -->
+    <div class="ctrl-group">
+      <div class="ctrl-group-title" style="color:#0f766e">Accumulation plan</div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div class="ctrl-item" style="flex:1;min-width:0;">
+          <div class="ctrl-label">Target portfolio value</div>
+          <div class="ctrl-row" id="gb_target_dial_mount">
+            <input type="hidden" id="gb_target" min="500000" max="10000000" step="50000" value="1000000">
+          </div>
+        </div>
+        <div class="ctrl-item" style="flex:1;min-width:0;">
+          <div class="ctrl-label">Years to achieve</div>
+          <div class="ctrl-row" id="gb_yrs_dial_mount">
+            <input type="hidden" id="gb_yrs" min="10" max="60" step="1" value="20">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Withdrawal plan -->
+    <div class="ctrl-group">
+      <div class="ctrl-group-title" style="color:#be185d">Withdrawal plan</div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div class="ctrl-item" style="flex:1;min-width:0;">
+          <div class="ctrl-label">Withdrawal duration</div>
+          <div class="ctrl-row" id="gb_wdur_dial_mount">
+            <input type="hidden" id="gb_wdur" min="5" max="50" step="1" value="25">
+          </div>
+        </div>
+        <div class="ctrl-item" style="flex:1;min-width:0;">
+          <div class="ctrl-label">Desired end balance</div>
+          <div class="ctrl-row" id="gb_endbal_dial_mount">
+            <input type="hidden" id="gb_endbal" min="0" max="10000000" step="50000" value="500000">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ETF picker -->
+    <div class="ctrl-group">
+      <div class="ctrl-group-title" style="color:#4f46e5">Select ETFs <span id="gb_fund_count" style="color:var(--tx3);font-weight:400;font-size:9px;text-transform:none;letter-spacing:0"></span></div>
+      <div class="gb-funds" id="gb_funds_list"></div>
+      <button class="gb-add-fund" id="gb_add_fund_btn">＋ Add ETF</button>
+    </div>
+
+    <div class="disc">Inflation fixed at 3%. Dividends are included in each fund's return %. Total monthly contribution is split equally across selected ETFs; each fund grows at its own rate to the shared target.</div>
+  </aside>
+
+  <div id="gbResizer" class="etf-resizer-clone" title="Drag to resize sidebar" aria-hidden="true"></div>
+
+  <main class="main" id="gbMain">
+  <!-- Output tiles inline -->
+  <div class="gb-output">
+    <div class="gb-tile" data-role="monthly">
+      <div class="gb-tile-lbl">Required monthly</div>
+      <div class="gb-tile-val" id="gb_out_monthly">—</div>
+      <div class="gb-tile-sub" id="gb_out_monthly_sub">Total to invest across funds</div>
+    </div>
+    <div class="gb-tile" data-role="split">
+      <div class="gb-tile-lbl">Per-fund split</div>
+      <div class="gb-tile-val" style="font-size:12px;font-family:inherit;">
+        <div class="gb-split-list" id="gb_out_split"></div>
+      </div>
+      <div class="gb-tile-sub" id="gb_out_blended">Blended rate</div>
+    </div>
+    <div class="gb-tile" data-role="div">
+      <div class="gb-tile-lbl">Dividends included</div>
+      <div class="gb-tile-val" id="gb_out_div">—</div>
+      <div class="gb-tile-sub" id="gb_out_div_sub">Reinvested contribution to target</div>
+    </div>
+    <div class="gb-tile" data-role="withdraw">
+      <div class="gb-tile-lbl">Max monthly withdrawal</div>
+      <div class="gb-tile-val" id="gb_out_maxwd">—</div>
+      <div class="gb-tile-sub" id="gb_out_maxwd_sub">Withdrawal duration</div>
+    </div>
+    <div class="gb-tile" data-role="end">
+      <div class="gb-tile-lbl">End balance</div>
+      <div class="gb-tile-val" id="gb_out_endbal">—</div>
+      <div class="gb-tile-sub" id="gb_out_endbal_sub">At end of withdrawal period</div>
+    </div>
+  </div>
+
+  <!-- Interactive graphs -->
+  <div class="gb-charts">
+    <div class="gb-chart-wrap">
+      <div class="gb-chart-title">Accumulation — Portfolio Growth to Target</div>
+      <div class="gb-chart-sub">Month-by-month simulated growth with required contribution</div>
+      <div class="gb-chart-canvas-wrap"><canvas id="gb_chart_accum"></canvas></div>
+    </div>
+    <div class="gb-chart-wrap">
+      <div class="gb-chart-title">Withdrawal — Systematic Drawdown</div>
+      <div class="gb-chart-sub">Balance over withdrawal years at max sustainable rate</div>
+      <div class="gb-chart-canvas-wrap"><canvas id="gb_chart_wd"></canvas></div>
+    </div>
+  </div>
+  </main>
+</div><!-- /#goalSection -->
+</div><!-- /#etfTab2 -->
+
+</div><!-- /#etfSection -->
 
 <script>
 // ═══════════════════════════════════════
@@ -3272,6 +3634,7 @@ const DEFAULT_FUNDS = [
 ];
 
 let funds = DEFAULT_FUNDS.map(f=>({...f}));
+window.funds = funds;
 let lumpSums = DEFAULT_LUMPS.map(l=>({...l}));
 let rows = [];
 let tableFilter = 'all';
@@ -3819,6 +4182,9 @@ async function selectETF(sym){
  } else if(mode==='mei2p'){
    // Strategy II — Sc2 Post-Payoff Investment
    if(window.MEI_FUNDS_SC2P){const p=(window.MEI_FUNDS_SC2P[fi]||{}).dca||1000;window.MEI_FUNDS_SC2P[fi]={...etf,rate:etf.cagr,dca:p};if(window.meiRenderFundsSc2P)window.meiRenderFundsSc2P();}
+ } else if(mode==='gb'){
+   // Section 2 — Goal-Based Investment Planner
+   if(typeof window.gbAcceptPick === 'function') window.gbAcceptPick(etf);
  }
 }
 
@@ -3920,8 +4286,8 @@ function render(){
    }
  }
 
- // header
- g('appSub').textContent=`${funds.map(f=>f.sym).join(' · ')} · ${TOTAL}-year simulation`;
+ // header (removed; tab bar now names the section)
+ var _appSub = g('appSub'); if(_appSub) _appSub.textContent=`${funds.map(f=>f.sym).join(' · ')} · ${TOTAL}-year simulation`;
 
  // phase bar
  g('totalYrsLabel').textContent=TOTAL;
@@ -4620,7 +4986,397 @@ window.s8Guide=new StrategyGuide(STEPS_S8);
     } catch(e){ console.error('ETF init error:', e); }
     // Auto-show guide for new users
     setTimeout(function(){ if(window.s1Guide){ s1Guide.reset(); s1Guide.check(); } }, 400);
+    // Kick off goal planner
+    try{ if(window.gbInit) window.gbInit(); } catch(e){ console.error('gb init', e); }
   };
+})();
+
+// ═══════════════════════════════════════
+// Resizable ETF sidebar
+// ═══════════════════════════════════════
+(function(){
+  var MIN=220, MAX=520;
+  var stored = parseInt(localStorage.getItem('etfSidebarW'), 10);
+  if(stored && stored >= MIN && stored <= MAX){
+    document.documentElement.style.setProperty('--etf-sidebar-w', stored+'px');
+  }
+  document.addEventListener('mousedown', function(e){
+    var r = document.getElementById('etfResizer');
+    if(!r || e.target !== r) return;
+    e.preventDefault();
+    document.body.classList.add('is-resizing-etf');
+    function onMove(ev){
+      var layout = document.getElementById('etfLayout');
+      if(!layout) return;
+      var rect = layout.getBoundingClientRect();
+      var w = Math.max(MIN, Math.min(MAX, ev.clientX - rect.left));
+      document.documentElement.style.setProperty('--etf-sidebar-w', w+'px');
+    }
+    function onUp(){
+      document.body.classList.remove('is-resizing-etf');
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      var cur = getComputedStyle(document.documentElement).getPropertyValue('--etf-sidebar-w').trim();
+      localStorage.setItem('etfSidebarW', parseInt(cur, 10));
+    }
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
+})();
+
+// ═══════════════════════════════════════
+// Section 2 sidebar resizer
+// ═══════════════════════════════════════
+(function(){
+  var MIN=240, MAX=520;
+  var stored = parseInt(localStorage.getItem('gbSidebarW'), 10);
+  if(stored && stored >= MIN && stored <= MAX){
+    document.documentElement.style.setProperty('--gb-sidebar-w', stored+'px');
+  }
+  document.addEventListener('mousedown', function(e){
+    var r = document.getElementById('gbResizer');
+    if(!r || e.target !== r) return;
+    e.preventDefault();
+    document.body.classList.add('is-resizing-gb');
+    function onMove(ev){
+      var layout = document.getElementById('goalSection');
+      if(!layout) return;
+      var rect = layout.getBoundingClientRect();
+      var w = Math.max(MIN, Math.min(MAX, ev.clientX - rect.left));
+      document.documentElement.style.setProperty('--gb-sidebar-w', w+'px');
+    }
+    function onUp(){
+      document.body.classList.remove('is-resizing-gb');
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      var cur = getComputedStyle(document.documentElement).getPropertyValue('--gb-sidebar-w').trim();
+      localStorage.setItem('gbSidebarW', parseInt(cur, 10));
+    }
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
+})();
+
+// ═══════════════════════════════════════
+// ETF section tabs
+// ═══════════════════════════════════════
+window.switchEtfTab = function(target){
+  var tabs = document.querySelectorAll('.etf-tab');
+  var panes = document.querySelectorAll('.etf-tab-pane');
+  tabs.forEach(function(t){
+    var on = t.dataset.target === target;
+    t.classList.toggle('is-active', on);
+    t.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+  panes.forEach(function(p){ p.classList.toggle('is-active', p.id === target); });
+  // Chart.js sometimes needs a resize when a hidden pane becomes visible
+  if(target === 'etfTab2'){
+    setTimeout(function(){
+      try{ if(window.chartAccum && chartAccum.resize) chartAccum.resize(); }catch(e){}
+      try{ if(window.chartWd && chartWd.resize) chartWd.resize(); }catch(e){}
+      // Force gb recompute so charts render fresh inside the visible pane
+      try{ if(window.gbRefresh) window.gbRefresh(); else if(window.gbInit) window.gbInit(); }catch(e){}
+    }, 50);
+  }
+};
+
+// ═══════════════════════════════════════
+// SECTION 2 · Goal-Based Investment Planner
+// ═══════════════════════════════════════
+(function(){
+'use strict';
+var INFL = 0.03;            // fixed 3% inflation
+var MIN_GB_FUNDS = 1;
+var MAX_GB_FUNDS = 6;
+var GB_COLORS = ['#0f766e','#4f46e5','#f59e0b','#dc2626','#7c3aed','#0284c7'];
+var GB_LETTERS = ['A','B','C','D','E','F'];
+
+var gbFunds = [];
+var chartAccum = null, chartWd = null;
+
+function fmtMoney(v){ if(!isFinite(v)) return '—'; return '$'+Math.round(v).toLocaleString(); }
+function fmtMoneyCompact(v){
+  if(!isFinite(v) || v===0) return '$0';
+  var a = Math.abs(v);
+  if(a >= 1e6) return '$'+(v/1e6).toFixed(v>=1e7?1:2)+'M';
+  if(a >= 1e3) return '$'+(v/1e3).toFixed(0)+'k';
+  return '$'+Math.round(v);
+}
+
+function initGbFunds(){
+  // Inherit currently-selected Strategy I funds so the two sections stay in sync
+  if(typeof funds !== 'undefined' && Array.isArray(funds) && funds.length){
+    gbFunds = funds.map(function(f){ return {sym:f.sym, name:f.name, cat:f.cat, cagr:f.cagr, div:f.div||0, rate:f.rate}; });
+  } else if(typeof DEFAULT_FUNDS !== 'undefined'){
+    gbFunds = DEFAULT_FUNDS.map(function(f){ return {sym:f.sym, name:f.name, cat:f.cat, cagr:f.cagr, div:f.div||0, rate:f.rate}; });
+  }
+}
+
+function renderGbFunds(){
+  var list = document.getElementById('gb_funds_list');
+  var cnt  = document.getElementById('gb_fund_count');
+  if(!list) return;
+  cnt.textContent = gbFunds.length + ' fund' + (gbFunds.length===1?'':'s');
+  list.innerHTML = gbFunds.map(function(f,i){
+    var col = GB_COLORS[i % GB_COLORS.length];
+    var ltr = GB_LETTERS[i % GB_LETTERS.length];
+    return ''
+      + '<div class="gb-fund-row">'
+      +   '<div class="gb-fund-badge" style="background:'+col+'">'+ltr+'</div>'
+      +   '<div class="gb-fund-info"><div class="gb-fund-sym">'+f.sym+'</div><div class="gb-fund-name" title="'+f.name+'">'+f.name+'</div></div>'
+      +   '<div class="gb-fund-rate">'
+      +     '<input class="gb-fund-rate-in" type="number" data-idx="'+i+'" value="'+f.rate+'" min="-10" max="60" step="0.1">'
+      +     '<span class="gb-fund-rate-lbl">% return</span>'
+      +   '</div>'
+      +   '<button class="gb-fund-remove" data-idx="'+i+'" '+(gbFunds.length<=MIN_GB_FUNDS?'disabled':'')+' title="Remove">×</button>'
+      + '</div>';
+  }).join('');
+  // wire inputs
+  list.querySelectorAll('.gb-fund-rate-in').forEach(function(inp){
+    inp.addEventListener('input', function(){
+      var i = +this.dataset.idx;
+      var v = parseFloat(this.value);
+      if(isFinite(v)) gbFunds[i].rate = v;
+      recompute();
+    });
+  });
+  list.querySelectorAll('.gb-fund-remove').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(gbFunds.length <= MIN_GB_FUNDS) return;
+      gbFunds.splice(+this.dataset.idx, 1);
+      renderGbFunds(); recompute();
+    });
+  });
+  var addBtn = document.getElementById('gb_add_fund_btn');
+  if(addBtn){
+    addBtn.disabled = gbFunds.length >= MAX_GB_FUNDS;
+    addBtn.textContent = '＋ Add ETF ('+gbFunds.length+'/'+MAX_GB_FUNDS+')';
+  }
+}
+
+function openGbPicker(){
+  // Piggyback on the shared picker used by Strategy I: pass a callback via a small hook
+  window.__gbPickerActive = true;
+  // Use existing openPicker(fi, mode) with mode='gb' and route the choice in gbAcceptPick
+  if(typeof openPicker === 'function'){
+    openPicker(gbFunds.length, 'gb');
+  } else {
+    alert('ETF picker unavailable.');
+  }
+}
+
+window.gbAcceptPick = function(etf){
+  if(!etf) return;
+  if(gbFunds.some(function(f){ return f.sym === etf.sym; })){
+    return; // no duplicates
+  }
+  gbFunds.push({sym:etf.sym, name:etf.name, cat:etf.cat, cagr:etf.cagr, div:etf.div||0, rate:etf.cagr});
+  renderGbFunds(); recompute();
+};
+
+// ─── math ───
+// Forward DCA: monthly contribution across funds equal-split at their own rates.
+// Include dividends: rate is treated as total return (cagr already includes dividend reinvestment).
+// Blended monthly rate = average of monthly rates weighted equally.
+function blendedMonthlyRate(){
+  if(!gbFunds.length) return 0;
+  var sum = 0;
+  gbFunds.forEach(function(f){ sum += (parseFloat(f.rate)||0)/100/12; });
+  return sum / gbFunds.length;
+}
+function annualDividendYield(){
+  if(!gbFunds.length) return 0;
+  var s = 0; gbFunds.forEach(function(f){ s += (parseFloat(f.div)||0)/100; });
+  return s / gbFunds.length;
+}
+// Solve for per-fund monthly, equal-split across funds.
+// target = perFund * Σ_i [((1+r_i)^n − 1)/r_i]     (r_i = monthly rate of fund i)
+// requiredMonthly = perFund * N
+function requiredMonthly(target, yrs){
+  var n = yrs * 12;
+  if(!n || !gbFunds.length) return 0;
+  var sum = 0;
+  gbFunds.forEach(function(f){
+    var r = (parseFloat(f.rate)||0)/100/12;
+    if(Math.abs(r) < 1e-9) sum += n;
+    else sum += (Math.pow(1+r, n) - 1) / r;
+  });
+  if(sum <= 0) return 0;
+  var perFund = target / sum;
+  return perFund * gbFunds.length;
+}
+function requiredPerFund(target, yrs){
+  var n = yrs * 12;
+  if(!n || !gbFunds.length) return 0;
+  var sum = 0;
+  gbFunds.forEach(function(f){
+    var r = (parseFloat(f.rate)||0)/100/12;
+    if(Math.abs(r) < 1e-9) sum += n;
+    else sum += (Math.pow(1+r, n) - 1) / r;
+  });
+  return sum > 0 ? target / sum : 0;
+}
+// Systematic withdrawal: given start balance B, monthly rate r, months n, desired end E:
+// solve PMT s.t. balance ends at E: E = B(1+r)^n - PMT*((1+r)^n-1)/r
+// → PMT = (B(1+r)^n - E) * r / ((1+r)^n - 1)
+function maxWithdrawal(start, endBal, rMonthly, months){
+  if(months <= 0) return 0;
+  if(Math.abs(rMonthly) < 1e-9) return (start - endBal) / months;
+  var g = Math.pow(1+rMonthly, months);
+  return (start*g - endBal) * rMonthly / (g - 1);
+}
+// Simulate accumulation month-by-month per-fund and sum for the chart.
+// Each fund receives perFund $/mo at its own rate.
+function simulateAccum(perFund, yrs){
+  var n = yrs*12;
+  var series = new Array(yrs+1); series[0] = 0;
+  var balances = gbFunds.map(function(){ return 0; });
+  var rates = gbFunds.map(function(f){ return (parseFloat(f.rate)||0)/100/12; });
+  for(var m=1; m<=n; m++){
+    for(var i=0; i<balances.length; i++){
+      balances[i] = balances[i]*(1+rates[i]) + perFund;
+    }
+    if(m % 12 === 0){
+      var s = 0; for(var j=0;j<balances.length;j++) s += balances[j];
+      series[m/12] = s;
+    }
+  }
+  return series;
+}
+// Simulate withdrawal month-by-month
+function simulateWithdraw(startBal, monthlyWD, yrs){
+  var r = blendedMonthlyRate();
+  var n = yrs*12;
+  var series = new Array(yrs+1); series[0] = startBal;
+  var bal = startBal;
+  for(var m=1; m<=n; m++){
+    bal = bal*(1+r) - monthlyWD;
+    if(bal < 0) bal = 0;
+    if(m % 12 === 0) series[m/12] = bal;
+  }
+  return series;
+}
+
+function getInput(id){ return document.getElementById(id); }
+
+function recompute(){
+  var target = +getInput('gb_target').value || 0;
+  var yrs    = +getInput('gb_yrs').value || 0;
+  var wdur   = +getInput('gb_wdur').value || 0;
+  var endBal = +getInput('gb_endbal').value || 0;
+
+  var perFund = requiredPerFund(target, yrs);
+  var monthly = perFund * gbFunds.length;
+  var blended = gbFunds.length ? (gbFunds.reduce(function(s,f){return s+(+f.rate||0);},0)/gbFunds.length) : 0;
+  var divYield = annualDividendYield();
+
+  // Simulate per-fund accumulation (each fund gets perFund $/mo at its own rate)
+  var accum = simulateAccum(perFund, yrs);
+  var divContribution = 0;
+  for(var y=1; y<=yrs; y++){
+    var avgBal = (accum[y-1] + accum[y]) / 2;
+    divContribution += avgBal * divYield;
+  }
+
+  var rMonthly = blendedMonthlyRate();
+  var maxWD = maxWithdrawal(target, endBal, rMonthly, wdur*12);
+  var wdSeries = simulateWithdraw(target, maxWD, wdur);
+
+  // Update tiles
+  getInput('gb_out_monthly').textContent = fmtMoney(monthly)+'/mo';
+  getInput('gb_out_monthly_sub').textContent = 'Total across '+gbFunds.length+' fund'+(gbFunds.length===1?'':'s')+' · '+yrs+'yr horizon';
+
+  var splitEl = getInput('gb_out_split');
+  if(gbFunds.length === 1){
+    splitEl.innerHTML = '<div class="gb-split-row"><span class="gb-split-dot" style="background:'+GB_COLORS[0]+'"></span><b>'+gbFunds[0].sym+'</b><span style="flex:1"></span><b>'+fmtMoney(monthly)+'/mo</b></div>';
+  } else {
+    splitEl.innerHTML = gbFunds.map(function(f,i){
+      return '<div class="gb-split-row"><span class="gb-split-dot" style="background:'+GB_COLORS[i%GB_COLORS.length]+'"></span><b>'+f.sym+'</b><span style="flex:1"></span><b>'+fmtMoney(perFund)+'</b></div>';
+    }).join('');
+  }
+  getInput('gb_out_blended').textContent = 'Blended rate '+blended.toFixed(2)+'% · Inflation 3%';
+
+  getInput('gb_out_div').textContent = fmtMoney(divContribution);
+  getInput('gb_out_div_sub').textContent = 'Avg dividend yield '+(divYield*100).toFixed(2)+'% (reinvested)';
+
+  getInput('gb_out_maxwd').textContent = fmtMoney(maxWD)+'/mo';
+  getInput('gb_out_maxwd_sub').textContent = 'Withdraw for '+wdur+' yr · leaves '+fmtMoneyCompact(endBal);
+
+  getInput('gb_out_endbal').textContent = fmtMoney(endBal);
+  getInput('gb_out_endbal_sub').textContent = 'Real value ≈ '+fmtMoneyCompact(endBal/Math.pow(1+INFL, yrs+wdur));
+
+  drawCharts(accum, wdSeries, target, yrs, wdur, endBal);
+}
+
+function drawCharts(accum, wdSeries, target, yrs, wdur, endBal){
+  if(typeof Chart === 'undefined') return;
+  var accumLabels = []; for(var i=0;i<=yrs;i++) accumLabels.push('Y'+i);
+  var wdLabels = []; for(var j=0;j<=wdur;j++) wdLabels.push('Y'+j);
+  var targetLine = new Array(yrs+1).fill(target);
+  var endLine = new Array(wdur+1).fill(endBal);
+
+  var accCanvas = document.getElementById('gb_chart_accum');
+  var wdCanvas = document.getElementById('gb_chart_wd');
+  if(!accCanvas || !wdCanvas) return;
+
+  if(chartAccum) chartAccum.destroy();
+  chartAccum = new Chart(accCanvas.getContext('2d'), {
+    type:'line',
+    data:{labels:accumLabels, datasets:[
+      {label:'Portfolio', data:accum, borderColor:'#0f766e', backgroundColor:'rgba(15,118,110,.1)', fill:true, tension:.3, pointRadius:2},
+      {label:'Target', data:targetLine, borderColor:'#dc2626', borderDash:[6,6], borderWidth:1.5, fill:false, pointRadius:0}
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false, animation:{duration:400},
+      plugins:{legend:{position:'bottom', labels:{boxWidth:12,font:{size:11}}}, tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+fmtMoney(c.parsed.y);}}}},
+      scales:{
+        x:{grid:{display:false}, ticks:{font:{size:10}}},
+        y:{ticks:{callback:function(v){return fmtMoneyCompact(v);},font:{size:10}}, grid:{color:'rgba(0,0,0,.05)'}}
+      }
+    }
+  });
+
+  if(chartWd) chartWd.destroy();
+  chartWd = new Chart(wdCanvas.getContext('2d'), {
+    type:'line',
+    data:{labels:wdLabels, datasets:[
+      {label:'Balance', data:wdSeries, borderColor:'#be185d', backgroundColor:'rgba(190,24,93,.1)', fill:true, tension:.3, pointRadius:2},
+      {label:'Desired end', data:endLine, borderColor:'#7c3aed', borderDash:[6,6], borderWidth:1.5, fill:false, pointRadius:0}
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false, animation:{duration:400},
+      plugins:{legend:{position:'bottom', labels:{boxWidth:12,font:{size:11}}}, tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+fmtMoney(c.parsed.y);}}}},
+      scales:{
+        x:{grid:{display:false}, ticks:{font:{size:10}}},
+        y:{ticks:{callback:function(v){return fmtMoneyCompact(v);},font:{size:10}}, grid:{color:'rgba(0,0,0,.05)'}}
+      }
+    }
+  });
+}
+
+// Wire the input listeners (dials dispatch 'input' on the hidden field)
+function wireDials(){
+  ['gb_target','gb_yrs','gb_wdur','gb_endbal'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', recompute);
+    el.addEventListener('change', recompute);
+  });
+  var addBtn = document.getElementById('gb_add_fund_btn');
+  if(addBtn) addBtn.addEventListener('click', openGbPicker);
+}
+
+window.gbInit = function(){
+  if(window.__gbInited) { recompute(); return; }
+  window.__gbInited = true;
+  initGbFunds();
+  renderGbFunds();
+  wireDials();
+  // dials are attached by upgradePickers separately — retry until ready then compute
+  setTimeout(recompute, 100);
+  setTimeout(recompute, 500);
+};
+window.gbRefresh = recompute;
 })();
 </script>
 
@@ -6495,8 +7251,11 @@ document.addEventListener('DOMContentLoaded', function(){
       <!-- Funds & Returns -->
       <div class="ctrl-group">
         <div class="ctrl-group-title" style="color:#d97706">Funds &amp; Returns <span id="mi_fundCountLabel" style="color:var(--tx3);font-weight:400;font-size:9px;text-transform:none;letter-spacing:0"></span></div>
-        <div class="funds-list" id="mi_fundsList"></div>
-        <button class="add-fund-btn" id="mi_addFundBtn" onclick="miAddFund()">＋ Add Fund (1/6)</button>
+        <div data-ra-mount="etf" data-ra-key="mi"></div>
+        <div data-ra-list="mi">
+          <div class="funds-list" id="mi_fundsList"></div>
+          <button class="add-fund-btn" id="mi_addFundBtn" onclick="miAddFund()">＋ Add Fund (1/6)</button>
+        </div>
       </div>
 
       <!-- Phase 1 — Build -->
@@ -8125,8 +8884,8 @@ window.pmOnEnter=(function(){var d=false;return function(){if(!d){d=true;request
 .ord-connector::after{content:'▸';position:absolute;right:-8px;top:-7px;font-size:14px;color:#1d4ed8;animation:ordGlowPulse 2.5s ease-in-out infinite alternate;}
 @keyframes ordGlowPulse{0%{opacity:.6;}100%{opacity:1;}}
 /* Flow node cards — USA themed light */
-#orderSection .ord-node{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.04);position:relative;min-width:220px;flex:1;display:flex;flex-direction:column;transition:box-shadow .3s,border-color .3s,transform .3s;}
-#orderSection .ord-node:hover{box-shadow:0 4px 24px rgba(29,78,216,.1);border-color:#bfdbfe;transform:translateY(-2px);}
+#orderSection .ord-node{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.04);position:relative;min-width:220px;flex:1;display:flex;flex-direction:column;transition:box-shadow .2s,border-color .2s;}
+#orderSection .ord-node:hover{box-shadow:0 4px 24px rgba(29,78,216,.1);border-color:#bfdbfe;}
 #orderSection .ord-node.ineligible{opacity:.5;pointer-events:none;}
 #orderSection .ord-node.ineligible .ord-node-inputs{display:none;}
 #orderSection .ord-node-bar{position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:14px 0 0 14px;}
@@ -9317,8 +10076,11 @@ window.memeOnEnter = (function(){
           <span style="font-size:10px;font-weight:800;color:#d97706;" id="su3_dca_total">$0/mo</span>
         </div>
         <div style="font-size:9px;color:#92400e;margin-bottom:5px;background:#fffbeb;padding:4px 8px;border-radius:4px;">Amount per fund = your total sacrifice (Row 2 + Row 3) split equally across funds</div>
-        <div id="su3_fundsList" class="funds-list" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px;"></div>
-        <button onclick="su3AddFund()" id="su3_add_fund_btn" style="padding:5px 10px;border:1.5px dashed #fbbf24;border-radius:7px;background:transparent;color:#b45309;font-size:10px;font-weight:700;cursor:pointer;width:100%;">+ Add Fund (0/6)</button>
+        <div data-ra-mount="etf" data-ra-key="su3"></div>
+        <div data-ra-list="su3">
+          <div id="su3_fundsList" class="funds-list" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px;"></div>
+          <button onclick="su3AddFund()" id="su3_add_fund_btn" style="padding:5px 10px;border:1.5px dashed #fbbf24;border-radius:7px;background:transparent;color:#b45309;font-size:10px;font-weight:700;cursor:pointer;width:100%;">+ Add Fund (0/6)</button>
+        </div>
       </div>
       <button onclick="su3RunCompare()" class="su3-apply-btn" style="background:linear-gradient(135deg,#b45309,#d97706);">Compare Super vs ETF</button>
       <button onclick="su3ResetRow(4)" class="su3-reset-btn">Reset</button>
@@ -11800,8 +12562,11 @@ window.voo500OnEnter=(function(){var d=false;return function(){if(!d){d=true;win
       <!-- ETF Funds -->
       <div class="ctrl-group">
         <div class="ctrl-group-title" style="color:#d97706">Funds &amp; Returns <span id="he_fundCountLabel" style="color:var(--tx3);font-weight:400;font-size:9px;text-transform:none;letter-spacing:0"></span></div>
-        <div class="funds-list" id="heFundsList"></div>
-        <button class="add-fund-btn" id="he_addFundBtn" onclick="heAddFund()">＋ Add Fund (1/5)</button>
+        <div data-ra-mount="etf" data-ra-key="he"></div>
+        <div data-ra-list="he">
+          <div class="funds-list" id="heFundsList"></div>
+          <button class="add-fund-btn" id="he_addFundBtn" onclick="heAddFund()">＋ Add Fund (1/5)</button>
+        </div>
         <!-- DCA Phase 1 duration + summary -->
         <div class="ctrl-item" style="margin-top:8px;">
           <div class="ctrl-label" style="color:#059669;font-weight:700;">Phase 1 — DCA Duration</div>
@@ -12488,8 +13253,11 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
             <span class="mei-input-label" style="margin-bottom:0;">ETF Funds</span>
             <span style="font-size:10px;font-weight:800;color:#7c3aed;" id="meiDcaTotalSc2P">$0/mo</span>
           </div>
-          <div id="meiFundsSc2PList" class="funds-list" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px;"></div>
-          <button id="mei_addFundBtnSc2P" onclick="meiAddFundSc2P()" style="padding:5px 10px;border:1.5px dashed #c4b5fd;border-radius:7px;background:transparent;color:#7c3aed;font-size:10px;font-weight:700;cursor:pointer;width:100%;">+ Add Fund</button>
+          <div data-ra-mount="etf" data-ra-key="mei2p"></div>
+          <div data-ra-list="mei2p">
+            <div id="meiFundsSc2PList" class="funds-list" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px;"></div>
+            <button id="mei_addFundBtnSc2P" onclick="meiAddFundSc2P()" style="padding:5px 10px;border:1.5px dashed #c4b5fd;border-radius:7px;background:transparent;color:#7c3aed;font-size:10px;font-weight:700;cursor:pointer;width:100%;">+ Add Fund</button>
+          </div>
         </div>
         <button onclick="meiRunSc2PostPayoff()" class="mei-apply-btn" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);">Run Post-Payoff</button>
         <button onclick="meiResetSc2P()" class="mei-reset-btn">Reset</button>
@@ -12529,8 +13297,11 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
             <span class="mei-input-label" style="margin-bottom:0;">ETF Funds</span>
             <span style="font-size:10px;font-weight:800;color:#7c3aed;" id="meiDcaTotalSc6">$0/mo</span>
           </div>
-          <div id="meiFundsSc6List" class="funds-list" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px;"></div>
-          <button id="mei_addFundBtnSc6" onclick="meiAddFundSc6()" style="padding:5px 10px;border:1.5px dashed #c4b5fd;border-radius:7px;background:transparent;color:#7c3aed;font-size:10px;font-weight:700;cursor:pointer;width:100%;">+ Add Fund (0/6)</button>
+          <div data-ra-mount="etf" data-ra-key="mei6"></div>
+          <div data-ra-list="mei6">
+            <div id="meiFundsSc6List" class="funds-list" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px;"></div>
+            <button id="mei_addFundBtnSc6" onclick="meiAddFundSc6()" style="padding:5px 10px;border:1.5px dashed #c4b5fd;border-radius:7px;background:transparent;color:#7c3aed;font-size:10px;font-weight:700;cursor:pointer;width:100%;">+ Add Fund (0/6)</button>
+          </div>
         </div>
         <button onclick="meiRunSc6()" class="mei-apply-btn" style="background:linear-gradient(135deg,#7c3aed,#8b5cf6);">Run Scenario 3</button>
         <button onclick="meiResetSc6()" class="mei-reset-btn">Reset Sc3</button>
@@ -12566,8 +13337,11 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
             <span class="mei-input-label" style="margin-bottom:0;">ETF Funds (up to 6)</span>
             <span style="font-size:10px;font-weight:800;color:#d97706;" id="meiDcaTotal">$0/mo</span>
           </div>
-          <div id="meiFundsList" class="funds-list" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px;"></div>
-          <button id="mei_addFundBtn" onclick="meiAddFund()" style="padding:5px 10px;border:1.5px dashed #fcd34d;border-radius:7px;background:transparent;color:#b45309;font-size:10px;font-weight:700;cursor:pointer;width:100%;">+ Add Fund (0/6)</button>
+          <div data-ra-mount="etf" data-ra-key="mei3"></div>
+          <div data-ra-list="mei3">
+            <div id="meiFundsList" class="funds-list" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px;"></div>
+            <button id="mei_addFundBtn" onclick="meiAddFund()" style="padding:5px 10px;border:1.5px dashed #fcd34d;border-radius:7px;background:transparent;color:#b45309;font-size:10px;font-weight:700;cursor:pointer;width:100%;">+ Add Fund (0/6)</button>
+          </div>
         </div>
         <button onclick="meiRunSc3()" class="mei-apply-btn" style="background:linear-gradient(135deg,#d97706,#f59e0b);">Run Scenario 4</button>
         <button onclick="meiResetSc3()" class="mei-reset-btn">Reset Sc4</button>
@@ -12598,8 +13372,11 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
             <span class="mei-input-label" style="margin-bottom:0;">ETF Funds</span>
             <span style="font-size:10px;font-weight:800;color:#0284c7;" id="meiDcaTotalSc4">$0/mo</span>
           </div>
-          <div id="meiFundsSc4List" class="funds-list" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px;"></div>
-          <button id="mei_addFundBtnSc4" onclick="meiAddFundSc4()" style="padding:5px 10px;border:1.5px dashed #7dd3fc;border-radius:7px;background:transparent;color:#0284c7;font-size:10px;font-weight:700;cursor:pointer;width:100%;">+ Add Fund (0/6)</button>
+          <div data-ra-mount="etf" data-ra-key="mei4"></div>
+          <div data-ra-list="mei4">
+            <div id="meiFundsSc4List" class="funds-list" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px;"></div>
+            <button id="mei_addFundBtnSc4" onclick="meiAddFundSc4()" style="padding:5px 10px;border:1.5px dashed #7dd3fc;border-radius:7px;background:transparent;color:#0284c7;font-size:10px;font-weight:700;cursor:pointer;width:100%;">+ Add Fund (0/6)</button>
+          </div>
         </div>
         <button onclick="meiRunSc4()" class="mei-apply-btn" style="background:linear-gradient(135deg,#0284c7,#0ea5e9);">Run Scenario 5</button>
         <button onclick="meiResetSc4()" class="mei-reset-btn">Reset Sc5</button>
@@ -12638,8 +13415,11 @@ window.heInit=function(){ window.heRenderFunds(); window.heRun(); };
             <span class="mei-input-label" style="margin-bottom:0;">ETF Funds</span>
             <span style="font-size:10px;font-weight:800;color:#dc2626;" id="meiDcaTotalSc5">$0/mo</span>
           </div>
-          <div id="meiFundsSc5List" class="funds-list" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px;"></div>
-          <button id="mei_addFundBtnSc5" onclick="meiAddFundSc5()" style="padding:5px 10px;border:1.5px dashed #fca5a5;border-radius:7px;background:transparent;color:#dc2626;font-size:10px;font-weight:700;cursor:pointer;width:100%;">+ Add Fund (0/6)</button>
+          <div data-ra-mount="etf" data-ra-key="mei5"></div>
+          <div data-ra-list="mei5">
+            <div id="meiFundsSc5List" class="funds-list" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px;"></div>
+            <button id="mei_addFundBtnSc5" onclick="meiAddFundSc5()" style="padding:5px 10px;border:1.5px dashed #fca5a5;border-radius:7px;background:transparent;color:#dc2626;font-size:10px;font-weight:700;cursor:pointer;width:100%;">+ Add Fund (0/6)</button>
+          </div>
         </div>
         <button onclick="meiRunSc5()" class="mei-apply-btn" style="background:linear-gradient(135deg,#dc2626,#ef4444);">Run Scenario 6</button>
         <button onclick="meiResetSc5()" class="mei-reset-btn">Reset Sc6</button>
@@ -14049,6 +14829,176 @@ function renderCompareTable(){
 })();
 </script>
 
+<style>
+.ra-card{border:1px solid #e2e8f0;border-radius:10px;background:#fff;margin:6px 0;overflow:hidden;font-family:'Inter',system-ui,sans-serif;}
+.ra-card.ra-active{border-color:#4f46e5;box-shadow:0 0 0 2px rgba(79,70,229,.12);}
+.ra-card.ra-inactive{opacity:.55;}
+.ra-head{display:flex;align-items:center;gap:8px;padding:9px 12px;cursor:pointer;user-select:none;background:#f8fafc;font-size:11.5px;font-weight:700;color:#334155;}
+.ra-card.ra-active .ra-head{background:#eef2ff;color:#3730a3;}
+.ra-head .ra-radio{width:14px;height:14px;border-radius:50%;border:2px solid #94a3b8;flex:0 0 14px;position:relative;}
+.ra-card.ra-active .ra-radio{border-color:#4f46e5;}
+.ra-card.ra-active .ra-radio::after{content:'';position:absolute;inset:2px;border-radius:50%;background:#4f46e5;}
+.ra-head .ra-chev{margin-left:auto;font-size:10px;color:#64748b;transition:transform .15s;}
+.ra-card.ra-open .ra-chev{transform:rotate(90deg);}
+.ra-body{padding:10px 12px;display:none;}
+.ra-card.ra-open .ra-body{display:block;}
+</style>
+<script>
+(function(){
+'use strict';
+// Shared "Fixed Return" vs "ETF Picker" component.
+// Mounts on any <div data-ra-mount="etf" data-ra-key="..."> — wraps the
+// immediate-next sibling (the strategy's funds list container) into the
+// ETF card so mutual-exclusion visually disables it when Fixed is active.
+window.RA_STATE = window.RA_STATE || {};
+
+function makeCard(title, subtitle, key, half){
+  var card = document.createElement('div');
+  card.className = 'ra-card';
+  card.dataset.raHalf = half;
+  card.dataset.raKey = key;
+  card.innerHTML =
+    '<div class="ra-head"><span class="ra-radio"></span>'+
+    '<div><div>'+title+'</div><div style="font-weight:500;font-size:10.5px;color:#64748b;margin-top:1px;">'+subtitle+'</div></div>'+
+    '<span class="ra-chev">▸</span></div>'+
+    '<div class="ra-body"></div>';
+  card.querySelector('.ra-head').addEventListener('click', function(){
+    window.raActivate(key, half);
+  });
+  return card;
+}
+
+function fixedBodyHTML(key){
+  var vId = 'ra_min_'+key, rId = 'ra_min_r_'+key, vR = 'ra_rate_'+key, rR = 'ra_rate_r_'+key;
+  return ''+
+   '<div style="display:flex;gap:12px;align-items:flex-start;">'+
+     '<div class="ctrl-item" style="flex:1;">'+
+       '<div class="ctrl-label">Min monthly invested</div>'+
+       '<div class="ctrl-row">'+
+         '<div class="num-wrap"><span class="num-prefix">$</span><input class="num-in" type="number" id="'+vId+'" value="500" min="500" max="50000" step="100"></div>'+
+         '<input class="range-in" type="range" id="'+rId+'" min="500" max="50000" step="100" value="500">'+
+       '</div>'+
+     '</div>'+
+     '<div class="ctrl-item" style="flex:1;">'+
+       '<div class="ctrl-label">Avg annual return</div>'+
+       '<div class="ctrl-row">'+
+         '<div class="num-wrap"><input class="num-in" type="number" id="'+vR+'" value="10" min="5" max="40" step="0.25"><span class="num-suffix">%</span></div>'+
+         '<input class="range-in" type="range" id="'+rR+'" min="5" max="40" step="0.25" value="10">'+
+       '</div>'+
+     '</div>'+
+   '</div>';
+}
+
+window.raActivate = function(key, half){
+  var st = window.RA_STATE[key] = window.RA_STATE[key] || {};
+  st.mode = half;
+  var host = document.querySelector('[data-ra-host="1"][data-ra-key="'+key+'"]');
+  if(host){
+    host.querySelectorAll(':scope > .ra-card').forEach(function(c){
+      var isThis = c.dataset.raHalf === half;
+      c.classList.toggle('ra-active', isThis);
+      c.classList.toggle('ra-inactive', !isThis);
+      c.classList.toggle('ra-open', isThis);
+    });
+  }
+  var display = (half==='etf') ? '' : 'none';
+  document.querySelectorAll('[data-ra-list="'+key+'"]').forEach(function(el){
+    el.style.display = display;
+  });
+  if(typeof st.onChange === 'function') st.onChange(half);
+};
+
+window.raMountAll = function(){
+  document.querySelectorAll('[data-ra-mount="etf"]:not([data-ra-ready])').forEach(function(mount){
+    var key = mount.dataset.raKey || ('k'+Math.random().toString(36).slice(2,7));
+    mount.dataset.raReady = '1';
+    mount.dataset.raHost = '1';
+
+    var fixedCard = makeCard('Choose Fixed Monthly Investment &amp; Avg Return',
+      'One blended rate + a flat DCA — cleanest projection', key, 'fixed');
+    fixedCard.querySelector('.ra-body').innerHTML = fixedBodyHTML(key);
+    mount.appendChild(fixedCard);
+
+    // Upgrade the RA inputs to DCA-style scroll wheels
+    if(window.upgradeScrollPicker){
+      window.upgradeScrollPicker('ra_min_'+key,  'ra_min_r_'+key,  {color:'#0ea5e9', unit:'$/mo'});
+      window.upgradeScrollPicker('ra_rate_'+key, 'ra_rate_r_'+key, {color:'#d97706', unit:'%'});
+    }
+
+    var etfCard = makeCard('Pick Specific ETFs',
+      'Per-fund CAGR and DCA — realistic mix modelling', key, 'etf');
+    // Placeholder in card body — actual list stays in-page (tagged data-ra-list)
+    etfCard.querySelector('.ra-body').innerHTML =
+      '<div style="font-size:11px;color:#64748b;">Edit each fund\'s ETF, monthly amount, and return below.</div>';
+    mount.appendChild(etfCard);
+
+    window.raActivate(key, 'fixed');
+  });
+};
+
+// Snap helper
+window.raSnap = function(n, step, min){ return Math.max(min, Math.round((n-min)/step)*step + min); };
+
+// Per-strategy binding: which RA keys map to which fund arrays + re-render hooks
+window.RA_BINDINGS = {
+  s1:      [{key:'s1',    get:function(){return window.funds;},              render:function(){window.renderFunds&&window.renderFunds();window.render&&window.render();}, rateField:'rate', dcaField:'dca'}],
+  mei:     [{key:'mi',    get:function(){return window.MI_FUNDS;},           render:function(){window.miRenderFunds&&window.miRenderFunds();window.miRender&&window.miRender();}, rateField:'rate', dcaField:'dca'},
+            {key:'mei2p', get:function(){return window.MEI_FUNDS_SC2P;},     render:function(){window.meiRenderFundsSc2P&&window.meiRenderFundsSc2P();}, rateField:'rate', dcaField:'dca'},
+            {key:'mei3',  get:function(){return window.MEI_FUNDS;},          render:function(){window.meiRenderFunds&&window.meiRenderFunds();}, rateField:'rate', dcaField:'dca'},
+            {key:'mei4',  get:function(){return window.MEI_FUNDS_SC4;},      render:function(){window.meiRenderFundsSc4&&window.meiRenderFundsSc4();}, rateField:'rate', dcaField:'dca'},
+            {key:'mei5',  get:function(){return window.MEI_FUNDS_SC5;},      render:function(){window.meiRenderFundsSc5&&window.meiRenderFundsSc5();}, rateField:'rate', dcaField:'dca'},
+            {key:'mei6',  get:function(){return window.MEI_FUNDS_SC6;},      render:function(){window.meiRenderFundsSc6&&window.meiRenderFundsSc6();}, rateField:'rate', dcaField:'dca'}],
+  super:   [{key:'su3',   get:function(){return window.SU3_ETF_FUNDS;},      render:function(){window.su3RenderFunds&&window.su3RenderFunds();}, rateField:'ret',  dcaField:'dca'}]
+};
+
+window.raWireStrategy = function(strategyKey){
+  var binds = window.RA_BINDINGS[strategyKey];
+  if(!binds) return;
+  binds.forEach(function(b){
+    var arr = b.get(); if(!arr) return;
+    var avg = arr.length ? arr.reduce(function(s,f){return s+(+f[b.rateField]||0);},0)/arr.length : 10;
+    avg = Math.min(40, Math.max(5, window.raSnap(avg, 0.25, 5)));
+    var seed = arr.length && b.dcaField ? (arr.reduce(function(s,f){return s+(+f[b.dcaField]||0);},0)/arr.length) : 500;
+    seed = Math.min(50000, Math.max(500, window.raSnap(seed||500, 100, 500)));
+    var vMin=document.getElementById('ra_min_'+b.key), rMin=document.getElementById('ra_min_r_'+b.key);
+    var vRate=document.getElementById('ra_rate_'+b.key), rRate=document.getElementById('ra_rate_r_'+b.key);
+    if(vMin&&rMin){ vMin.value=rMin.value=seed; vMin.dispatchEvent(new Event('change')); }
+    if(vRate&&rRate){ vRate.value=rRate.value=avg.toFixed(2); vRate.dispatchEvent(new Event('change')); }
+    window.raWireFixed(b.key, function(dca, rate){
+      var arr2 = b.get(); if(!arr2) return;
+      arr2.forEach(function(f){
+        f[b.rateField] = rate;
+        if(b.dcaField && b.dcaField in f) f[b.dcaField] = dca;
+        else if(b.dcaField) f[b.dcaField] = dca;
+      });
+      b.render();
+    });
+  });
+};
+
+// Wire the fixed-card inputs for a given key to a callback (dca, rate)
+window.raWireFixed = function(key, cb){
+  var vId='ra_min_'+key, rId='ra_min_r_'+key, vR='ra_rate_'+key, rR='ra_rate_r_'+key;
+  var vMin=document.getElementById(vId), rMin=document.getElementById(rId);
+  var vRate=document.getElementById(vR), rRate=document.getElementById(rR);
+  if(!vMin||!rMin||!vRate||!rRate) return;
+  window.RA_STATE[key] = window.RA_STATE[key] || {};
+  window.RA_STATE[key].cb = cb;
+  if(window.RA_STATE[key].wired) return;
+  window.RA_STATE[key].wired = true;
+  function push(){
+    var f = (window.RA_STATE[key]||{}).cb;
+    if(f) f(parseInt(vMin.value,10)||500, parseFloat(vRate.value)||10);
+  }
+  vMin.addEventListener('input', function(){ rMin.value=vMin.value; push(); });
+  rMin.addEventListener('input', function(){ vMin.value=rMin.value; push(); });
+  vRate.addEventListener('input', function(){ rRate.value=vRate.value; push(); });
+  rRate.addEventListener('input', function(){ vRate.value=rRate.value; push(); });
+  window.RA_STATE[key].push = push;
+};
+})();
+</script>
+
 <!-- ══════════════════ ETF RISK FILTER JS ══════════════════ -->
 <script>
 (function(){
@@ -14669,6 +15619,9 @@ window.strategyResetToZero = function(sectionId){
 
     var picker = document.createElement('div');
     picker.className = 'scroll-picker';
+    if(opts.width === 'wide') picker.classList.add('wide');
+    else if(opts.width === 'medium') picker.classList.add('medium');
+    if(opts.externalUnit) picker.classList.add('no-unit');
     picker.title = 'Scroll or drag to adjust';
 
     var highlight = document.createElement('div');
@@ -14685,6 +15638,12 @@ window.strategyResetToZero = function(sectionId){
     picker.appendChild(unitEl);
 
     wrap.appendChild(picker);
+    if(opts.externalUnit){
+      var extUnit = document.createElement('span');
+      extUnit.className = 'scroll-picker-ext-unit';
+      extUnit.textContent = opts.externalUnit;
+      wrap.appendChild(extUnit);
+    }
 
     var ITEM_H = 24;
     var VISIBLE = 7;
@@ -14712,7 +15671,9 @@ window.strategyResetToZero = function(sectionId){
         var offset = i - idx;
         var displayVal = '';
         if(i >= 0 && i < values.length){
-          displayVal = labels ? labels[i] : Math.round(values[i]);
+          if(labels) displayVal = labels[i];
+          else if(typeof opts.formatValue === 'function') displayVal = opts.formatValue(values[i]);
+          else displayVal = Math.round(values[i]);
         }
         html += '<div class="scroll-picker-item" data-offset="'+offset+'">'+displayVal+'</div>';
       }
@@ -14800,6 +15761,26 @@ window.strategyResetToZero = function(sectionId){
     return wrap;
   }
 
+  // Expose for late/runtime-created inputs (e.g. the shared RA cards)
+  window.upgradeScrollPicker = function(inputId, rangeId, opts){
+    var input = document.getElementById(inputId);
+    if(!input || input.dataset.spReady) return;
+    var rangeEl = rangeId ? document.getElementById(rangeId) : null;
+    var picker = createScrollPicker(input, rangeEl, opts||{});
+    input.dataset.spReady = '1';
+    var ctrlRow = input.closest('.ctrl-row');
+    if(ctrlRow){
+      var numWrap = ctrlRow.querySelector('.num-wrap');
+      var rangeIn = ctrlRow.querySelector('.range-in');
+      if(numWrap) numWrap.style.display = 'none';
+      if(rangeIn) rangeIn.style.display = 'none';
+      ctrlRow.appendChild(picker);
+    } else {
+      input.style.display = 'none';
+      input.parentElement.insertBefore(picker, input.nextSibling);
+    }
+  };
+
   // Duration inputs to upgrade: [inputId, rangeId, options]
   var DIAL_TARGETS = [
     // Strategy I
@@ -14845,6 +15826,13 @@ window.strategyResetToZero = function(sectionId){
     ['mei_sc3_dur', null, {color:'#d97706', unit:'yr'}],
     ['mei_postPayoffYrs', null, {color:'#0284c7', unit:'yr'}],
     ['mei_sc5_dur', null, {color:'#dc2626', unit:'yr'}],
+    // Section 2 · Goal-Based
+    ['gb_target', null, {color:'#0f766e', unit:'$', width:'wide', externalUnit:'USD',
+      formatValue:function(v){ return '$'+Math.round(v).toLocaleString(); }}],
+    ['gb_yrs',    null, {color:'#0f766e', unit:'yr', width:'medium', externalUnit:'yr'}],
+    ['gb_wdur',   null, {color:'#be185d', unit:'yr', width:'medium', externalUnit:'yr'}],
+    ['gb_endbal', null, {color:'#7c3aed', unit:'$', width:'wide',  externalUnit:'USD',
+      formatValue:function(v){ return '$'+Math.round(v).toLocaleString(); }}],
   ];
 
   function upgradePickers(){

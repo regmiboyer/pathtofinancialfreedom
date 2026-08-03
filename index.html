@@ -1857,6 +1857,7 @@ body.is-resizing-gb *{user-select:none !important;}
   <div class="sb-left">
     <button class="sb-hamburger" id="sidebarToggle" onclick="window.toggleMobileSidebar&&window.toggleMobileSidebar()" aria-label="Open settings panel">☰</button>
     <button class="sb-back" onclick="backToStrategies()">← Strategy Menu</button>
+    <button class="sb-back" id="sbBackToRec" onclick="backToRecommendations()" style="display:none;">← Recommendations</button>
     <span class="sb-name" id="strategyBarName">Strategy I — Invest in ETFs</span>
     <span class="sb-badge" id="strategyBarBadge">ETFs</span>
   </div>
@@ -2119,7 +2120,7 @@ body.is-resizing-gb *{user-select:none !important;}
       <h2 class="goal-heading">Tell us about yourself</h2>
       <div class="goal-sentence">
         My name is
-        <span class="goal-inline"><input type="text" id="goal_name" maxlength="50" placeholder="Your name" style="width:180px;text-align:left;" oninput="window._goalName=this.value;"></span>.
+        <span class="goal-inline"><input type="text" id="goal_name" data-no-slider maxlength="50" placeholder="Your name" style="width:180px;text-align:left;" oninput="window._goalName=this.value;"></span>.
         I am a
         <span class="goal-inline"><input type="number" id="goal_age" data-no-slider min="18" max="80" value="30" style="width:60px;"></span>
         year old
@@ -2146,6 +2147,14 @@ body.is-resizing-gb *{user-select:none !important;}
         and my family makes
         <span class="goal-inline"><input type="number" id="goal_income" data-no-slider min="0" step="5000" value="100000" style="width:110px;"></span>
         per year in total.
+      </div>
+      <div style="margin-top:24px;">
+        <div class="goal-desc" style="margin-bottom:12px;">Home ownership status:</div>
+        <div class="goal-choice-row" id="goalHomeOwnership">
+          <div class="goal-chip" data-val="owned_outright" onclick="goalSelect(this,'goalHomeOwnership')">I own my place, it is fully paid</div>
+          <div class="goal-chip" data-val="mortgage" onclick="goalSelect(this,'goalHomeOwnership')">I pay <span class="goal-inline"><input type="number" id="goal_mortgage" data-no-slider min="0" step="100" value="2000" style="width:100px;text-align:left;" onclick="event.stopPropagation();goalSelect(this.parentElement.parentElement,'goalHomeOwnership');"></span> /mo as mortgage on it</div>
+          <div class="goal-chip" data-val="no_property" onclick="goalSelect(this,'goalHomeOwnership')">I am not into property investment</div>
+        </div>
       </div>
     </div>
   </section>
@@ -2285,11 +2294,37 @@ window.goalCountryChange = function(){
   } else {
     fv.innerHTML = '<div class="goal-chip selected" data-val="401k" onclick="goalSelect(this,\'goalForcedVehicle\')">401(k)</div>';
   }
+  if(window._goalRecommendedKeys){ window._goalRecsStale = true; showGoalRerunBtn(); }
 };
 
 window.goalStateChange = function(){
   // County removed from UI
+  if(window._goalRecommendedKeys) { window._goalRecsStale = true; showGoalRerunBtn(); }
 };
+
+// Flag recommendations stale when About You inputs change
+['goal_age','goal_income','goal_mortgage'].forEach(function(id){
+  var el = document.getElementById(id);
+  if(el) el.addEventListener('input', function(){ if(window._goalRecommendedKeys){ window._goalRecsStale = true; showGoalRerunBtn(); } });
+});
+
+function showGoalRerunBtn(){
+  var existing = document.getElementById('goalRerunBtn');
+  if(existing){ existing.style.display = 'block'; return; }
+  var btn = document.createElement('button');
+  btn.id = 'goalRerunBtn';
+  btn.textContent = '⟳ Rerun Recommendation';
+  btn.style.cssText = 'position:sticky;bottom:24px;margin:16px auto 0;display:block;padding:12px 24px;background:#4f46e5;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(79,70,229,.4);transition:transform .15s;';
+  btn.onmouseenter = function(){ btn.style.transform='scale(1.05)'; };
+  btn.onmouseleave = function(){ btn.style.transform='scale(1)'; };
+  btn.onclick = function(){
+    buildRecommendations();
+    window._goalRecsStale = false;
+    btn.style.display = 'none';
+  };
+  var canvas = document.querySelector('#goalOverlay .goal-canvas');
+  (canvas || document.body).appendChild(btn);
+}
 
 window.goalSelect = function(el, groupId){
   var siblings = document.getElementById(groupId).querySelectorAll('.goal-chip');
@@ -2311,6 +2346,9 @@ window.goalSelect = function(el, groupId){
       if(c) window.goalCountryChange();
     }
   }
+  // Flag that inputs changed after recommendations were generated
+  if(window._goalRecommendedKeys) window._goalRecsStale = true;
+  if(window._goalRecsStale) showGoalRerunBtn();
 };
 
 function getGoalAnswers(){
@@ -2320,7 +2358,8 @@ function getGoalAnswers(){
   var ffn = getSelectedVal('goalFFN');
   var budget = getSelectedVal('goalBudget');
   var awareness = getSelectedVal('goalAwareness');
-  return {country:country, investor:investor, aware:aware, ffn:ffn, budget:budget, awareness:awareness};
+  var home = getSelectedVal('goalHomeOwnership');
+  return {country:country, investor:investor, aware:aware, ffn:ffn, budget:budget, awareness:awareness, home:home};
 }
 
 function getSelectedVal(groupId){
@@ -2370,8 +2409,18 @@ function buildRecommendations(){
   // FFN unknown → show ETF strategy
   if(a.ffn === 'dontknow' && recs.indexOf('s1') === -1) recs.push('s1');
 
-  // Mortgage interest → mei
-  if(recs.indexOf('mei') === -1 && (a.aware === 'realestate' || a.aware === 'both')) recs.push('mei');
+  // Home ownership drives Mortgage & ETF recommendation
+  if(a.home === 'mortgage'){
+    if(recs.indexOf('mei') === -1) recs.push('mei');
+  } else if(a.home === 'owned_outright'){
+    if(recs.indexOf('s1') === -1) recs.push('s1');
+    recs = recs.filter(function(r){ return r !== 'mei'; });
+  } else if(a.home === 'no_property'){
+    if(recs.indexOf('s1') === -1) recs.push('s1');
+    recs = recs.filter(function(r){ return r !== 'mei' && r !== 'compare'; });
+  }
+  // Legacy fallback: aware investor in real estate still gets mei
+  if(!a.home && recs.indexOf('mei') === -1 && (a.aware === 'realestate' || a.aware === 'both')) recs.push('mei');
 
   // AU users get VOO vs V500 comparison
   if(a.country === 'AU' && recs.indexOf('voo500') === -1) recs.push('voo500');
@@ -2422,6 +2471,8 @@ function buildRecommendations(){
   window.UNIVERSAL_PROFILE.state = goalState;
   window.UNIVERSAL_PROFILE.age = parseInt(goalAge) || 0;
   window.UNIVERSAL_PROFILE.salary = parseInt(goalIncome) || 0;
+  window.UNIVERSAL_PROFILE.home = getSelectedVal('goalHomeOwnership');
+  window.UNIVERSAL_PROFILE.mortgage = parseInt(document.getElementById('goal_mortgage').value) || 0;
   var userName = (document.getElementById('goal_name').value || '').trim();
   window.UNIVERSAL_PROFILE.name = userName;
 
@@ -2573,6 +2624,10 @@ window.showGoalPage = function(){
   void goalEl.offsetWidth; // reflow to restart animation
   goalEl.classList.add('slide-up');
   updateGoalDots(1);
+  window._goalRecommendedKeys = null;
+  window._goalRecsStale = false;
+  var rb = document.getElementById('goalRerunBtn');
+  if(rb) rb.style.display = 'none';
 };
 
 })();
@@ -2688,6 +2743,10 @@ window.showGoalPage = function(){
         <div class="up-tot-val" id="upTotalMonthly">$0</div>
         <div class="up-tot-yr" id="upTotalYearly">($0/yr)</div>
       </div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px;">
+      <button onclick="upExportCSV()" style="padding:8px 16px;font-size:12px;font-weight:700;border:1px solid #d1d5db;border-radius:6px;background:#fff;color:#1e293b;cursor:pointer;">Export CSV</button>
+      <button onclick="upExportPDF()" style="padding:8px 16px;font-size:12px;font-weight:700;border:1px solid #d1d5db;border-radius:6px;background:#fff;color:#1e293b;cursor:pointer;">Export PDF</button>
     </div>
   </div>
 
@@ -2973,8 +3032,84 @@ window.upCalcTotal = function(){
     age: parseInt(document.getElementById('up_age').value)||0,
     salary: parseInt(document.getElementById('up_salary').value)||0,
     monthlyExpenses: Math.round(total),
-    yearlyExpenses: Math.round(total*12)
+    yearlyExpenses: Math.round(total*12),
+    name: window._goalName || ''
   };
+};
+
+window.upGetBudgetData = function(){
+  var grid = document.getElementById('upBudgetGrid');
+  if(!grid) return [];
+  var data = [];
+  grid.querySelectorAll('.up-cat').forEach(function(cat){
+    var catName = cat.querySelector('.up-cat-title') ? cat.querySelector('.up-cat-title').textContent.trim() : '';
+    var items = [];
+    cat.querySelectorAll('.up-cat-row').forEach(function(row){
+      var label = row.querySelector('label') ? row.querySelector('label').textContent.trim() : '';
+      var inp = row.querySelector('input[type="range"]');
+      var val = inp ? parseFloat(inp.value) || 0 : 0;
+      items.push({label:label, val:val});
+    });
+    data.push({cat:catName, items:items});
+  });
+  return data;
+};
+
+window.upExportCSV = function(){
+  var data = window.upGetBudgetData();
+  if(!data.length) return;
+  var rows = [['Category','Item','Monthly ($)','Yearly ($)']];
+  data.forEach(function(d){
+    d.items.forEach(function(it){
+      rows.push([d.cat, it.label, it.val.toFixed(0), (it.val*12).toFixed(0)]);
+    });
+  });
+  var total = window.UNIVERSAL_PROFILE ? window.UNIVERSAL_PROFILE.monthlyExpenses : 0;
+  rows.push(['','TOTAL', total.toString(), (total*12).toString()]);
+  var csv = rows.map(function(r){ return r.map(function(c){ return '"'+c.replace(/"/g,'""')+'"'; }).join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'monthly_expenses_budget.csv';
+  a.click();
+};
+
+window.upExportPDF = function(){
+  var data = window.upGetBudgetData();
+  if(!data.length) return;
+  var name = (window.UNIVERSAL_PROFILE && window.UNIVERSAL_PROFILE.name) || '';
+  var total = window.UNIVERSAL_PROFILE ? window.UNIVERSAL_PROFILE.monthlyExpenses : 0;
+
+  var w = window.open('','_blank');
+  var html = '<!DOCTYPE html><html><head><title>Monthly Expenses Budget</title><style>';
+  html += '*{box-sizing:border-box;}';
+  html += 'body{font-family:-apple-system,system-ui,sans-serif;margin:0;padding:20px 24px;font-size:10px;color:#1e293b;}';
+  html += 'h1{font-size:15px;margin:0 0 2px;color:#4f46e5;}';
+  html += '.meta{font-size:9px;color:#64748b;margin-bottom:10px;}';
+  html += 'table{width:100%;border-collapse:collapse;}';
+  html += 'th{text-align:left;font-size:8px;text-transform:uppercase;letter-spacing:.4px;color:#64748b;border-bottom:2px solid #e2e8f0;padding:3px 4px;}';
+  html += 'td{padding:2px 4px;border-bottom:1px solid #f1f5f9;}';
+  html += '.cat-row td{font-weight:700;background:#f8fafc;padding-top:5px;font-size:10px;}';
+  html += '.total-row td{font-weight:900;border-top:2px solid #4f46e5;font-size:11px;padding-top:5px;}';
+  html += '.right{text-align:right;}';
+  html += '@media print{@page{size:A4 portrait;margin:12mm 10mm;}body{padding:0;}}';
+  html += '</style></head><body>';
+  html += '<h1>' + (name ? name + "'s " : '') + 'Monthly Expenses Budget</h1>';
+  html += '<div class="meta">Generated ' + new Date().toLocaleDateString() + '</div>';
+  html += '<table><thead><tr><th>Category / Item</th><th class="right">Monthly</th><th class="right">Yearly</th></tr></thead><tbody>';
+  data.forEach(function(d){
+    var catTotal = d.items.reduce(function(s,it){ return s+it.val; }, 0);
+    if(catTotal === 0) return;
+    html += '<tr class="cat-row"><td>' + d.cat + '</td><td class="right">$' + Math.round(catTotal).toLocaleString() + '</td><td class="right">$' + Math.round(catTotal*12).toLocaleString() + '</td></tr>';
+    d.items.forEach(function(it){
+      if(it.val > 0) html += '<tr><td style="padding-left:14px;">' + it.label + '</td><td class="right">$' + Math.round(it.val).toLocaleString() + '</td><td class="right">$' + Math.round(it.val*12).toLocaleString() + '</td></tr>';
+    });
+  });
+  html += '<tr class="total-row"><td>TOTAL</td><td class="right">$' + total.toLocaleString() + '/mo</td><td class="right">$' + (total*12).toLocaleString() + '/yr</td></tr>';
+  html += '</tbody></table></body></html>';
+  w.document.write(html);
+  w.document.close();
+  setTimeout(function(){ w.print(); }, 300);
 };
 
 window._goalRecommendedKeys = [];
@@ -3481,6 +3616,18 @@ window.backToStrategies = function(){
   window.filterStrategyCards();
 };
 
+window.backToRecommendations = function(){
+  window.closeMobileSidebar && window.closeMobileSidebar();
+  hideAllSections();
+  setStratBar('','',false);
+  var banner = document.getElementById('universalProfileBanner');
+  if(banner) banner.style.display = 'none';
+  window.updateMobileBottomNav && window.updateMobileBottomNav(null);
+  document.getElementById('goalOverlay').classList.remove('hidden');
+  var sec5 = document.getElementById('goalSec5');
+  if(sec5) sec5.scrollIntoView({behavior:'smooth', block:'start'});
+};
+
 // ══════════════════════════════════════════════════
 // DEVICE DETECTION — re-evaluated on resize
 // ══════════════════════════════════════════════════
@@ -3571,6 +3718,8 @@ window.enterApp = function(strategyKey){
 
   // Update the top strategy bar
   setStratBar(meta.name, meta.badge, true);
+  var recBtn = document.getElementById('sbBackToRec');
+  if(recBtn) recBtn.style.display = window._goalRecommendedKeys && window._goalRecommendedKeys.length ? '' : 'none';
 
   // Trigger section initialisation if available
   var initFns = {
@@ -3679,6 +3828,23 @@ window.syncUniversalToStrategy = function(key){
   }
   if(key === 'mei'){
     if(p.age){ setVal('mi_currentAge', p.age); var r=document.getElementById('mi_currentAge_r'); if(r){r.value=p.age;} }
+    if(p.mortgage && p.home === 'mortgage'){
+      // Derive balance from monthly payment: balance = pmt * ((1-(1+r)^-n)/r)
+      var rateEl=document.getElementById('mi_rate'), yrsEl=document.getElementById('mi_years');
+      var annRate=parseFloat(rateEl?rateEl.value:5.5)/100, mo=parseFloat(yrsEl?yrsEl.value:30)*12;
+      var mr=annRate/12;
+      if(mr>0){
+        var bal=Math.round(p.mortgage*((1-Math.pow(1+mr,-mo))/mr));
+        setVal('mi_balance',bal); var br=document.getElementById('mi_balance_r'); if(br){br.value=bal;}
+        // Also sync newer MEI section
+        setVal('mei_principal',bal);
+        var lv=document.getElementById('mei_principal_lv'); if(lv) lv.textContent='$'+bal.toLocaleString();
+      }
+    }
+  }
+  if(key === 'order' && p.mortgage && p.home === 'mortgage'){
+    setVal('ord_mortgage', p.mortgage);
+    var lv=document.getElementById('ord_mortgage_lv'); if(lv) lv.textContent='$'+parseInt(p.mortgage).toLocaleString();
   }
 };
 

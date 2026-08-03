@@ -3979,24 +3979,23 @@ window.saveResults = function(){
  <div class="ctrl-group-title" style="color:#be185d">Phase 2 — Withdrawal</div>
 
  <!-- Region selection for withdrawal tax (long-term CGT) -->
- <div class="ctrl-item" id="wdRegionBlock" style="background:#fff1f2;border:1px solid #fecaca;border-radius:8px;padding:8px 10px;margin-bottom:10px;">
-   <div class="ctrl-label" style="color:#be123c;font-weight:700;">Tax region <span style="font-weight:400;color:#64748b;font-size:10px;">(for CGT on withdrawal)</span></div>
-   <div id="wdRegionSummary" style="font-size:11px;color:#475569;margin-top:2px;line-height:1.4;">Select country to enable withdrawal tax.</div>
-   <div style="display:flex;gap:6px;margin-top:6px;">
-     <label style="font-size:10px;color:#475569;align-self:center;min-width:45px;">Country</label>
-     <select id="wdCountry" onchange="window.setWithdrawTaxRegion &amp;&amp; window.setWithdrawTaxRegion('country', this.value)" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;">
-       <option value="">Choose</option>
+ <div class="ctrl-item" id="wdRegionBlock" style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:14px 16px;margin-bottom:12px;">
+   <div style="font-family:'Plus Jakarta Sans','Inter',system-ui,sans-serif;font-size:13px;font-weight:700;color:#1e293b;margin-bottom:2px;">Tax region <span style="font-weight:400;color:#64748b;font-size:11px;">(for CGT on withdrawal)</span></div>
+   <div id="wdRegionSummary" style="font-family:'Plus Jakarta Sans','Inter',system-ui,sans-serif;font-size:12px;color:#475569;margin-top:2px;line-height:1.5;">Auto-filled from your profile. Override below if needed.</div>
+   <div id="wdCountryRow" style="display:flex;align-items:center;gap:10px;margin-top:10px;">
+     <label style="font-family:'Plus Jakarta Sans','Inter',system-ui,sans-serif;font-size:12px;font-weight:600;color:#334155;min-width:50px;">Country</label>
+     <select id="wdCountry" data-no-slider onchange="window.setWithdrawTaxRegion &amp;&amp; window.setWithdrawTaxRegion('country', this.value)" style="flex:1;font-family:'Plus Jakarta Sans','Inter',system-ui,sans-serif;font-size:13px;padding:8px 12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e293b;font-weight:500;">
+       <option value="">Choose country</option>
        <option value="AU">Australia</option>
        <option value="US">USA</option>
      </select>
    </div>
-   <div id="wdStateRow" style="display:none;gap:6px;margin-top:6px;">
-     <label style="font-size:10px;color:#475569;align-self:center;min-width:45px;">State</label>
-     <select id="wdState" onchange="window.setWithdrawTaxRegion &amp;&amp; window.setWithdrawTaxRegion('state', this.value)" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;"></select>
+   <div id="wdStateRow" style="display:flex;align-items:center;gap:10px;margin-top:10px;">
+     <label style="font-family:'Plus Jakarta Sans','Inter',system-ui,sans-serif;font-size:12px;font-weight:600;color:#334155;min-width:50px;">State</label>
+     <select id="wdState" data-no-slider onchange="window.setWithdrawTaxRegion &amp;&amp; window.setWithdrawTaxRegion('state', this.value)" style="flex:1;font-family:'Plus Jakarta Sans','Inter',system-ui,sans-serif;font-size:13px;padding:8px 12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e293b;font-weight:500;"></select>
    </div>
-   <div id="wdCountyRow" style="display:none;gap:6px;margin-top:6px;">
-     <label style="font-size:10px;color:#475569;align-self:center;min-width:45px;">County</label>
-     <select id="wdCounty" onchange="window.setWithdrawTaxRegion &amp;&amp; window.setWithdrawTaxRegion('county', this.value)" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;"></select>
+   <div id="wdCountyRow" style="display:none;">
+     <select id="wdCounty" data-no-slider onchange="window.setWithdrawTaxRegion &amp;&amp; window.setWithdrawTaxRegion('county', this.value)"></select>
    </div>
  </div>
 
@@ -5006,24 +5005,17 @@ window.refreshGbRegionPicker = function(){
       stateSel.dataset.filled = '1';
     }
     if(stateSel && stateSel.value !== state) stateSel.value = state;
-    if(state){
-      countyRow.style.display = 'flex';
-      if(countySel){
-        var list = window.getCounties ? window.getCounties(state) : [{name:'(State Average)'}];
-        countySel.innerHTML = ['<option value="">Choose county</option>'].concat(list.map(function(c){ return '<option value="'+c.name+'">'+c.name+'</option>';})).join('');
-        countySel.value = county || '';
-      }
-    } else { countyRow.style.display = 'none'; }
-  } else { stateRow.style.display='none'; countyRow.style.display='none'; }
-  var complete = !!country && (country!=='US' || (state && county));
-  var fromProfile = complete && !(ov.country||ov.state||ov.county);
+  } else { stateRow.style.display='none'; }
+  if(countyRow) countyRow.style.display = 'none';
+  var complete = !!country && (country!=='US' || !!state);
+  var fromProfile = complete && !(ov.country||ov.state);
   if(sumEl){
     if(!country) sumEl.innerHTML = '<span style="color:#dc2626;font-weight:600;">Country required</span>';
     else if(country==='US' && !state) sumEl.innerHTML = '<span style="color:#dc2626;font-weight:600;">State required</span> (US)';
     else sumEl.innerHTML = (country==='AU' ? 'Australia · CGT (50% discount, long-term)' : ('USA · '+state)) + (fromProfile ? ' · <span style="color:#94a3b8;">from Profile</span>' : '');
   }
   if(block){
-    [countryRow, stateRow, countyRow].forEach(function(el){ if(el) el.style.display = fromProfile ? 'none' : (el===countryRow?'flex':(el===stateRow?(country==='US'?'flex':'none'):(country==='US'&&state?'flex':'none'))); });
+    [countryRow, stateRow].forEach(function(el){ if(el) el.style.display = fromProfile ? 'none' : (el===countryRow?'flex':(country==='US'?'flex':'none')); });
     block.style.background = fromProfile ? '#f0fdf4' : '#fff1f2';
     block.style.borderColor = fromProfile ? '#a7f3d0' : '#fecaca';
   }
@@ -5037,13 +5029,18 @@ window.refreshWdRegionPicker = function(){
   var stateRow = document.getElementById('wdStateRow');
   var countyRow = document.getElementById('wdCountyRow');
   var sumEl = document.getElementById('wdRegionSummary');
+  var block = document.getElementById('wdRegionBlock');
+  var countryRow = document.getElementById('wdCountryRow');
   if(!cSel) return;
   var ov = window.WITHDRAW_TAX_OVERRIDE || {};
   var prof = window.UNIVERSAL_PROFILE || {};
   var country = ov.country || prof.country || '';
   var state = ov.state || prof.state || '';
-  var county = ov.county || prof.county || '';
+  // Set country select value
   if(cSel.value !== country) cSel.value = country;
+  // Show/hide country dropdown: hide if profile has country, show as dropdown if not
+  var hasProfileCountry = !!prof.country;
+  if(countryRow) countryRow.style.display = hasProfileCountry ? 'none' : 'flex';
   if(country==='US'){
     stateRow.style.display = 'flex';
     if(stateSel && !stateSel.dataset.filled){
@@ -5054,34 +5051,24 @@ window.refreshWdRegionPicker = function(){
       stateSel.dataset.filled = '1';
     }
     if(stateSel && stateSel.value !== state) stateSel.value = state;
-    if(state){
-      countyRow.style.display = 'flex';
-      if(countySel){
-        var list = window.getCounties ? window.getCounties(state) : [{name:'(State Average)'}];
-        countySel.innerHTML = ['<option value="">Choose county</option>'].concat(list.map(function(c){ return '<option value="'+c.name+'">'+c.name+'</option>';})).join('');
-        countySel.value = county || '';
-      }
-    } else {
-      countyRow.style.display = 'none';
-    }
   } else {
     stateRow.style.display = 'none';
-    countyRow.style.display = 'none';
   }
+  // Summary text
   if(sumEl){
-    if(!country) sumEl.innerHTML = '<span style="color:#dc2626;font-weight:600;">Country required</span> · AU applies 50% CGT discount; US applies Federal LTCG + state + county.';
-    else if(country==='US' && !state) sumEl.innerHTML = '<span style="color:#dc2626;font-weight:600;">State required</span> (US)';
-    else sumEl.innerHTML = (country==='AU' ? 'Australia · CGT (50% discount, long-term)' : ('USA · ' + state)) + ' · <span style="color:#94a3b8;">from Profile</span>';
+    var fromProfile = !!(prof.country && prof.state) && !(ov.country||ov.state);
+    if(!country) sumEl.textContent = 'Select your country below to enable tax calculations.';
+    else if(country==='AU') sumEl.innerHTML = 'Australia · CGT (50% discount, long-term)' + (hasProfileCountry ? ' · <span style="color:#10b981;font-weight:600;">from Profile</span>' : '');
+    else if(country==='US' && state && fromProfile) sumEl.innerHTML = 'USA · ' + state + ' · <span style="color:#10b981;font-weight:600;">from Profile</span>';
+    else if(country==='US' && state) sumEl.innerHTML = 'USA · ' + state;
+    else sumEl.textContent = 'Select your state below for accurate tax calculations.';
   }
-  // If everything comes from profile (nothing overridden) and complete, collapse the picker rows
-  var block = document.getElementById('wdRegionBlock');
-  var complete = !!country && (country!=='US' || (state && county));
-  var fromProfile = complete && !(window.WITHDRAW_TAX_OVERRIDE && (window.WITHDRAW_TAX_OVERRIDE.country || window.WITHDRAW_TAX_OVERRIDE.state || window.WITHDRAW_TAX_OVERRIDE.county));
+  // Visual state: green if from profile, neutral otherwise
   if(block){
-    var pickers = block.querySelectorAll('select');
-    pickers.forEach(function(el){ el.parentElement.style.display = fromProfile ? 'none' : 'flex'; });
-    if(fromProfile){ block.style.background='#f0fdf4'; block.style.borderColor='#a7f3d0'; }
-    else { block.style.background='#fff1f2'; block.style.borderColor='#fecaca'; }
+    var complete = !!country && (country!=='US' || !!state);
+    var fromProf = complete && !(ov.country||ov.state);
+    if(fromProf){ block.style.background='#f0fdf4'; block.style.borderColor='#a7f3d0'; }
+    else { block.style.background='#f8fafc'; block.style.borderColor='#e2e8f0'; }
   }
 };
 

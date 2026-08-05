@@ -355,7 +355,7 @@ tr{transition:background .12s;}
 tr:hover td{background:#f8fafc;}
 
 /* ══ ETF PICKER MODAL ══ */
-.etf-overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(2px);z-index:999;display:none;align-items:center;justify-content:center;padding:16px;animation:etfFadeIn .15s ease-out;}
+.etf-overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(2px);z-index:9900;display:none;align-items:center;justify-content:center;padding:16px;animation:etfFadeIn .15s ease-out;}
 .etf-overlay.open{display:flex;}
 @keyframes etfFadeIn{from{opacity:0;}to{opacity:1;}}
 @keyframes etfPopIn{from{opacity:0;transform:translateY(6px) scale(.98);}to{opacity:1;transform:translateY(0) scale(1);}}
@@ -2152,7 +2152,7 @@ body.is-resizing-gb *{user-select:none !important;}
         <div class="goal-desc" style="margin-bottom:12px;">Home ownership status:</div>
         <div class="goal-choice-row" id="goalHomeOwnership">
           <div class="goal-chip" data-val="owned_outright" onclick="goalSelect(this,'goalHomeOwnership')">I own my place, it is fully paid</div>
-          <div class="goal-chip" data-val="mortgage" onclick="goalSelect(this,'goalHomeOwnership')">I pay <span class="goal-inline"><input type="number" id="goal_mortgage" data-no-slider min="0" step="100" value="2000" style="width:100px;text-align:left;" onclick="event.stopPropagation();goalSelect(this.parentElement.parentElement,'goalHomeOwnership');"></span> /mo as mortgage on it</div>
+          <div class="goal-chip" data-val="mortgage" onclick="goalSelect(this,'goalHomeOwnership')">I pay <span class="goal-inline"><input type="number" id="goal_mortgage" data-no-slider min="0" step="100" placeholder="0" style="width:100px;text-align:left;" onclick="event.stopPropagation();goalSelect(this.parentElement.parentElement,'goalHomeOwnership');"></span> /mo as mortgage on it</div>
           <div class="goal-chip" data-val="no_property" onclick="goalSelect(this,'goalHomeOwnership')">I am not into property investment</div>
         </div>
       </div>
@@ -2448,7 +2448,7 @@ function buildRecommendations(){
     if(!s) return;
     var li = document.createElement('li');
     li.innerHTML = '<span class="goal-rec-dot" style="background:'+s.color+';"></span>'+s.name;
-    li.onclick = function(){ enterApp(key); document.getElementById('goalOverlay').classList.add('hidden'); };
+    li.onclick = function(){ if(key === 's1') window._s1FromOnboarding = true; enterApp(key); document.getElementById('goalOverlay').classList.add('hidden'); };
     if(s.type === 'comparison') compList.appendChild(li);
     else stratList.appendChild(li);
   });
@@ -2566,9 +2566,31 @@ function fireConfetti(){
 }
 
 window.goalNext = function(){
+  // Validate required fields before generating recommendations
+  var country = document.getElementById('goal_country').value;
+  var investor = getSelectedVal('goalInvestorType');
+  var home = getSelectedVal('goalHomeOwnership');
+  var missing = [];
+  if(!country) missing.push('Country');
+  if(!investor) missing.push('Investor type');
+  if(!home) missing.push('Home ownership status');
+  if(missing.length){
+    var errEl = document.getElementById('goalValidationErr');
+    if(!errEl){
+      errEl = document.createElement('div');
+      errEl.id = 'goalValidationErr';
+      errEl.style.cssText = 'background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:12px 16px;margin:12px 0;font-size:13px;color:#dc2626;line-height:1.5;text-align:center;';
+      var btn = document.getElementById('goalNextBtn');
+      btn.parentElement.insertBefore(errEl, btn);
+    }
+    errEl.innerHTML = '<strong>Please complete:</strong> ' + missing.join(', ') + ' before getting recommendations.';
+    return;
+  }
+  var errEl = document.getElementById('goalValidationErr');
+  if(errEl) errEl.remove();
+
   // Check if user is savvy (grip + aware + knows FFN)
   var awareness = getSelectedVal('goalAwareness');
-  var investor = getSelectedVal('goalInvestorType');
   var ffn = getSelectedVal('goalFFN');
   if(awareness === 'grip' && investor === 'aware' && ffn === 'know'){
     document.getElementById('goalConfetti').style.display = 'block';
@@ -3912,7 +3934,7 @@ window.saveResults = function(){
 <!-- ═══════════════════════════════════════════════════════
  STRATEGY I — ETF INVESTMENT SECTION
  ═══════════════════════════════════════════════════════ -->
-<div id="etfSection" style="display:none;">
+<div id="etfSection" style="display:none;position:relative;">
 
   <!-- Section Tabs — Section 1 / Section 2 -->
   <div class="etf-tabs" role="tablist">
@@ -3975,7 +3997,7 @@ window.saveResults = function(){
  </div>
 
  <!-- Phase 3 -->
- <div class="ctrl-group">
+ <div class="ctrl-group" id="s1WithdrawalGroup">
  <div class="ctrl-group-title" style="color:#be185d">Phase 2 — Withdrawal</div>
 
  <!-- Region selection for withdrawal tax (long-term CGT) -->
@@ -4295,6 +4317,89 @@ window.saveResults = function(){
   </main>
 </div><!-- /#goalSection -->
 </div><!-- /#etfTab2 -->
+
+<!-- Guided Onboarding Wizard (shown only for users from onboarding recommendation) -->
+<div id="s1Wizard" style="display:none;position:absolute;inset:0;z-index:9500;background:#fff;overflow-y:auto;font-family:'Plus Jakarta Sans','Inter',system-ui,sans-serif;min-height:100vh;">
+  <div style="max-width:640px;margin:0 auto;padding:40px 24px 60px;">
+    <div id="s1wProgress" style="display:flex;gap:4px;margin-bottom:32px;">
+      <div class="s1w-dot active"></div><div class="s1w-dot"></div><div class="s1w-dot"></div>
+    </div>
+
+    <!-- Step 1: Monthly amount only -->
+    <div class="s1w-step" id="s1w_step1" style="display:block;">
+      <h2 style="font-size:22px;font-weight:800;color:#1e293b;margin:0 0 8px;">Let's start simple</h2>
+      <p style="font-size:15px;color:#475569;line-height:1.6;margin:0 0 28px;">How much can you set aside for investing every month? This is the amount that will go to work for you, growing over time through compound returns.</p>
+      <div>
+        <label style="font-size:13px;font-weight:600;color:#334155;display:block;margin-bottom:6px;">Monthly investment amount</label>
+        <div style="position:relative;"><span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#64748b;font-weight:600;">$</span>
+        <input type="number" id="s1w_monthly" value="800" min="50" step="50" data-no-slider style="width:100%;padding:14px 14px 14px 28px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:16px;font-weight:600;color:#1e293b;"></div>
+        <div id="s1w_recommend" style="font-size:12px;color:#059669;margin-top:8px;padding:10px 14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;"></div>
+      </div>
+      <div id="s1w_congrats" style="margin-top:24px;padding:14px 18px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;text-align:center;display:none;">
+        <div style="font-size:15px;font-weight:700;color:#065f46;">Great start! You've committed to building wealth.</div>
+        <div style="font-size:13px;color:#047857;margin-top:4px;">Now let's pick the right funds for your money.</div>
+      </div>
+      <button onclick="window.s1wNext(2)" style="margin-top:16px;width:100%;padding:16px;background:#3b82f6;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;">Let's choose where to invest</button>
+    </div>
+
+    <!-- Step 2: Fund selection + allocation + timeline (merged) -->
+    <div class="s1w-step" id="s1w_step2" style="display:none;">
+      <h2 style="font-size:22px;font-weight:800;color:#1e293b;margin:0 0 8px;">Where should your money go?</h2>
+      <p style="font-size:15px;color:#475569;line-height:1.6;margin:0 0 6px;">Your <strong id="s1w_monthlyEcho">$800</strong>/month will be invested in these funds. Add, change, or remove as you like.</p>
+      <p style="font-size:13px;color:#94a3b8;margin:0 0 20px;">We distribute evenly by default. Adjust per-fund amounts below.</p>
+
+      <div id="s1w_fundList" style="display:flex;flex-direction:column;gap:10px;"></div>
+      <div style="margin-top:12px;text-align:center;">
+        <button onclick="window.s1wBrowseLiveETFs()" id="s1w_liveBtn" style="padding:10px 20px;background:#eef2ff;border:1.5px solid #c7d2fe;border-radius:8px;font-size:13px;font-weight:600;color:#4338ca;cursor:pointer;">+ Choose more ETFs from US market</button>
+      </div>
+
+      <div id="s1w_allocList" style="display:none;"></div>
+      <div id="s1w_allocTotal" style="margin-top:10px;font-size:13px;font-weight:600;color:#64748b;text-align:right;"></div>
+
+      <!-- DCA + Coast -->
+      <div style="margin-top:24px;padding-top:20px;border-top:1.5px solid #e2e8f0;">
+        <div style="font-size:14px;font-weight:700;color:#334155;margin-bottom:12px;">Investment timeline</div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:140px;">
+            <label style="font-size:12px;font-weight:600;color:#334155;display:block;margin-bottom:4px;">DCA duration (years)</label>
+            <input type="number" id="s1w_dcaYrs" value="10" min="1" max="50" step="1" data-no-slider style="width:100%;padding:12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:15px;font-weight:600;color:#1e293b;">
+            <div style="font-size:11px;color:#94a3b8;margin-top:3px;">How many years you invest monthly</div>
+          </div>
+          <div style="flex:1;min-width:140px;">
+            <label style="font-size:12px;font-weight:600;color:#334155;display:block;margin-bottom:4px;">Coast duration (years)</label>
+            <input type="number" id="s1w_coast" value="5" min="0" max="15" step="1" data-no-slider style="width:100%;padding:12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:15px;font-weight:600;color:#1e293b;">
+            <div style="font-size:11px;color:#94a3b8;margin-top:3px;">Let it compound without adding more</div>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="window.s1wNext(3)" id="s1w_toStep3" style="margin-top:28px;width:100%;padding:16px;background:#3b82f6;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;">Run my portfolio simulation</button>
+      <button onclick="window.s1wBack(1)" style="margin-top:10px;width:100%;padding:12px;background:none;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;font-weight:600;color:#64748b;cursor:pointer;">Back</button>
+    </div>
+
+    <!-- Step 3: Done — transition to real calculator -->
+    <div class="s1w-step" id="s1w_step3" style="display:none;">
+      <div style="text-align:center;padding:20px 0;">
+        <h2 style="font-size:22px;font-weight:800;color:#1e293b;margin:0 0 8px;">You're all set!</h2>
+        <p style="font-size:15px;color:#475569;line-height:1.6;margin:0 0 24px;">We've configured your investment plan. Now let's show you the full projections with charts and detailed breakdowns.</p>
+        <div id="s1w_summary" style="text-align:left;padding:20px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;margin-bottom:28px;">
+        </div>
+        <button onclick="window.s1wFinish()" style="width:100%;padding:16px;background:#059669;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;">View full projections &amp; charts</button>
+        <button onclick="window.s1wBack(2)" style="margin-top:10px;width:100%;padding:12px;background:none;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;font-weight:600;color:#64748b;cursor:pointer;">Back</button>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+#s1Wizard .s1w-dot{width:100%;height:4px;border-radius:4px;background:#e2e8f0;transition:background .2s;}
+#s1Wizard .s1w-dot.active{background:#3b82f6;}
+#s1Wizard .s1w-dot.done{background:#059669;}
+#s1Wizard .s1w-fund-card{padding:14px 16px;border:1.5px solid #e2e8f0;border-radius:10px;cursor:pointer;transition:border-color .15s,background .15s;display:flex;align-items:center;gap:12px;}
+#s1Wizard .s1w-fund-card:hover{border-color:#93c5fd;background:#f0f9ff;}
+#s1Wizard .s1w-fund-card.selected{border-color:#3b82f6;background:#eff6ff;}
+#s1Wizard .s1w-fund-check{width:20px;height:20px;border-radius:50%;border:2px solid #cbd5e1;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;transition:all .15s;flex-shrink:0;}
+#s1Wizard .s1w-fund-card.selected .s1w-fund-check{background:#3b82f6;border-color:#3b82f6;}
+</style>
 
 </div><!-- /#etfSection -->
 
@@ -5293,7 +5398,15 @@ function saveApiKeyFromInput(){
 window.saveApiKeyFromInput = saveApiKeyFromInput;
 
 async function selectETF(sym){
- let etf=(liveMode?LIVE_ETF_DB:ETF_DB)?.find(e=>e.sym===sym); if(!etf||activePicker===null) return;
+ let etf=(liveMode?LIVE_ETF_DB:ETF_DB)?.find(e=>e.sym===sym); if(!etf) return;
+ // Wizard mode: add to wizard's selected funds and return
+ if(window._s1wPickerActive){
+   window._s1wPickerActive = false;
+   closePicker();
+   if(window._s1wAddFromPicker) window._s1wAddFromPicker(etf);
+   return;
+ }
+ if(activePicker===null) return;
  const fi=activePicker, mode=activePickerMode;
  const wasLive = liveMode;
  closePicker();
@@ -5557,6 +5670,7 @@ function render(){
  buildTable(tableFilter);
  renderDcaBreakdown(sim);
  if(window.s1Guide) s1Guide.check();
+ if(window._s1InvestOnlyMode && window.s1wApplyInvestOnlyView) window.s1wApplyInvestOnlyView();
 }
 
 // ═══════════════════════════════════════
@@ -6169,10 +6283,804 @@ window.s8Guide=new StrategyGuide(STEPS_S8);
       renderLumps();
       render();
     } catch(e){ console.error('ETF init error:', e); }
-    // Auto-show guide for new users
-    setTimeout(function(){ if(window.s1Guide){ s1Guide.reset(); s1Guide.check(); } }, 400);
+    // Show guided wizard for onboarding users, normal guide for others
+    if(window._s1FromOnboarding){
+      window._s1FromOnboarding = false;
+      setTimeout(function(){ window.s1wStart && window.s1wStart(); }, 200);
+    } else {
+      setTimeout(function(){ if(window.s1Guide){ s1Guide.reset(); s1Guide.check(); } }, 400);
+    }
     // Kick off goal planner
     try{ if(window.gbInit) window.gbInit(); } catch(e){ console.error('gb init', e); }
+  };
+})();
+
+// ═══════════════════════════════════════
+// GUIDED ONBOARDING WIZARD for Strategy I
+// Only shown to users who came via onboarding recommendation
+// ═══════════════════════════════════════
+;(function(){
+  var wizard = null;
+  var selectedFunds = [];
+  var ETF_OPTIONS = [
+    {sym:'VOO', name:'Vanguard S&P 500 ETF', desc:'Tracks the 500 largest US companies', cagr:13.8, divYield:1.4},
+    {sym:'QQQM', name:'Invesco Nasdaq-100 ETF', desc:'Top 100 tech-heavy US companies', cagr:18.5, divYield:0.6},
+    {sym:'VTI', name:'Vanguard Total Stock Market', desc:'Entire US stock market (3,700+ stocks)', cagr:12.5, divYield:1.5},
+    {sym:'SCHD', name:'Schwab US Dividend Equity', desc:'High-dividend US companies', cagr:12.9, divYield:3.4},
+    {sym:'VGT', name:'Vanguard Info Technology ETF', desc:'US technology sector focused', cagr:19.2, divYield:0.7},
+    {sym:'VWO', name:'Vanguard Emerging Markets', desc:'Developing economies (China, India, Brazil)', cagr:5.8, divYield:3.2}
+  ];
+
+  function fmt$(v){ return '$' + Math.round(v).toLocaleString(); }
+
+  function calcProjection(){
+    var monthly = parseFloat(document.getElementById('s1w_monthly').value) || 0;
+    var rate = (parseFloat(document.getElementById('s1w_return').value) || 0) / 100;
+    var years = parseInt(document.getElementById('s1w_years').value) || 0;
+    var mr = rate / 12;
+    var months = years * 12;
+    var bal = 0;
+    for(var i = 0; i < months; i++) bal = (bal + monthly) * (1 + mr);
+    var invested = monthly * months;
+    document.getElementById('s1w_previewVal').textContent = fmt$(bal);
+    document.getElementById('s1w_previewSub').textContent = 'You invest ' + fmt$(invested) + ' total, growth adds ' + fmt$(bal - invested);
+  }
+
+  function renderFundList(){
+    var list = document.getElementById('s1w_fundList');
+    list.innerHTML = '';
+
+    // Selected funds at top with Change/Remove actions
+    if(selectedFunds.length > 0){
+      var selLabel = document.createElement('div');
+      selLabel.style.cssText = 'font-size:12px;font-weight:700;color:#059669;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;';
+      selLabel.textContent = 'Your selected funds (' + selectedFunds.length + ')';
+      list.appendChild(selLabel);
+
+      var monthly = parseFloat(document.getElementById('s1w_monthly').value) || 800;
+      var perFund = Math.round(monthly / selectedFunds.length);
+
+      selectedFunds.forEach(function(sym, idx){
+        var f = ETF_OPTIONS.find(function(e){ return e.sym === sym; }) || {sym:sym, name:'', desc:'', cagr:0};
+        var card = document.createElement('div');
+        card.className = 's1w-fund-card selected';
+        card.style.cssText += 'flex-wrap:wrap;';
+        card.innerHTML = '<div class="s1w-fund-check">✓</div>' +
+          '<div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:700;color:#1e293b;">' + f.sym + ' <span style="font-weight:400;color:#64748b;font-size:13px;">' + f.name + '</span></div>' +
+          '<div style="font-size:12px;color:#94a3b8;margin-top:2px;">' + f.desc + (f.cagr ? ' · ~' + f.cagr + '%' : '') + '</div></div>' +
+          '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">' +
+            '<div style="position:relative;width:90px;"><span style="position:absolute;left:8px;top:50%;transform:translateY(-50%);color:#64748b;font-size:12px;font-weight:600;">$</span>' +
+            '<input type="number" class="s1w-alloc-input" data-idx="' + idx + '" value="' + perFund + '" min="0" step="50" data-no-slider style="width:100%;padding:8px 8px 8px 22px;border:1.5px solid #e2e8f0;border-radius:6px;font-size:13px;font-weight:600;color:#1e293b;text-align:right;"></div>' +
+            '<span style="font-size:11px;color:#64748b;">/mo</span>' +
+            '<button class="s1w-card-btn" data-action="change" data-idx="' + idx + '" style="padding:4px 8px;border:1px solid #c7d2fe;border-radius:6px;background:#eef2ff;color:#4338ca;font-size:11px;font-weight:600;cursor:pointer;">Change</button>' +
+            '<button class="s1w-card-btn" data-action="remove" data-idx="' + idx + '" style="padding:4px 6px;border:1px solid #fecaca;border-radius:6px;background:#fef2f2;color:#dc2626;font-size:11px;font-weight:600;cursor:pointer;">×</button>' +
+          '</div>';
+        card.querySelector('[data-action="change"]').onclick = function(e){
+          e.stopPropagation();
+          window._s1wChangeIdx = idx;
+          window.s1wBrowseLiveETFs();
+        };
+        card.querySelector('[data-action="remove"]').onclick = function(e){
+          e.stopPropagation();
+          selectedFunds.splice(idx, 1);
+          renderFundList();
+        };
+        list.appendChild(card);
+      });
+    }
+
+    // Unselected funds below to add
+    var unselected = ETF_OPTIONS.filter(function(f){ return selectedFunds.indexOf(f.sym) < 0; });
+    if(unselected.length > 0){
+      var addLabel = document.createElement('div');
+      addLabel.style.cssText = 'font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-top:16px;margin-bottom:4px;';
+      addLabel.textContent = 'Add a fund';
+      list.appendChild(addLabel);
+
+      unselected.forEach(function(f){
+        var card = document.createElement('div');
+        card.className = 's1w-fund-card';
+        card.innerHTML = '<div class="s1w-fund-check"></div>' +
+          '<div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#1e293b;">' + f.sym + ' <span style="font-weight:400;color:#64748b;font-size:13px;">' + f.name + '</span></div>' +
+          '<div style="font-size:12px;color:#94a3b8;margin-top:2px;">' + f.desc + ' · ~' + f.cagr + '% avg return</div></div>';
+        card.onclick = function(){
+          selectedFunds.push(f.sym);
+          renderFundList();
+        };
+        list.appendChild(card);
+      });
+    }
+
+    var btn = document.getElementById('s1w_toStep3');
+    if(btn) btn.disabled = selectedFunds.length === 0;
+  }
+
+  function renderAllocList(){
+    var monthly = parseFloat(document.getElementById('s1w_monthly').value) || 800;
+    var list = document.getElementById('s1w_allocList');
+    list.innerHTML = '';
+    var perFund = Math.round(monthly / selectedFunds.length);
+    selectedFunds.forEach(function(sym, i){
+      var etf = ETF_OPTIONS.find(function(e){ return e.sym === sym; });
+      var div = document.createElement('div');
+      div.style.cssText = 'display:flex;align-items:center;gap:12px;padding:12px 14px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;';
+      div.innerHTML = '<div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#1e293b;">' + sym + '</div>' +
+        '<div style="font-size:11px;color:#64748b;">' + (etf ? etf.name : '') + '</div></div>' +
+        '<div style="position:relative;width:120px;"><span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#64748b;font-size:13px;font-weight:600;">$</span>' +
+        '<input type="number" class="s1w-alloc-input" data-idx="' + i + '" value="' + perFund + '" min="0" step="50" data-no-slider style="width:100%;padding:10px 10px 10px 24px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;font-weight:600;color:#1e293b;text-align:right;"></div>';
+      list.appendChild(div);
+    });
+    updateAllocTotal();
+    list.addEventListener('input', updateAllocTotal);
+  }
+
+  function updateAllocTotal(){
+    var inputs = document.querySelectorAll('.s1w-alloc-input');
+    var total = 0;
+    inputs.forEach(function(inp){ total += parseFloat(inp.value) || 0; });
+    var el = document.getElementById('s1w_allocTotal');
+    if(el) el.textContent = 'Total: ' + fmt$(total) + '/month';
+  }
+
+  function getSelectedFundData(){
+    return selectedFunds.map(function(sym){
+      return ETF_OPTIONS.find(function(e){ return e.sym === sym; });
+    }).filter(Boolean);
+  }
+
+  function showStep(n){
+    for(var i = 1; i <= 3; i++){
+      var el = document.getElementById('s1w_step' + i);
+      if(el) el.style.display = i === n ? 'block' : 'none';
+    }
+    var dots = document.querySelectorAll('#s1wProgress .s1w-dot');
+    dots.forEach(function(d, i){
+      d.className = 's1w-dot' + (i < n - 1 ? ' done' : i === n - 1 ? ' active' : '');
+    });
+  }
+
+  function updateRecommendation(){
+    var salary = window.UNIVERSAL_PROFILE ? window.UNIVERSAL_PROFILE.salary : 0;
+    var rec = document.getElementById('s1w_recommend');
+    if(!rec) return;
+    if(salary > 0){
+      var monthly = Math.round(salary / 12);
+      var twentyPct = Math.round(monthly * 0.2);
+      rec.innerHTML = 'A good starting point is <strong>20% of your monthly take-home</strong>. Based on your income, that\'s around <strong>$' + twentyPct.toLocaleString() + '/month</strong>.';
+    } else {
+      rec.innerHTML = 'A good starting point is <strong>20% of your monthly take-home pay</strong>. Start with what you can afford consistently.';
+    }
+  }
+
+  window.s1wStart = function(){
+    wizard = document.getElementById('s1Wizard');
+    if(!wizard) return;
+    wizard.style.display = 'block';
+    selectedFunds = ['VOO', 'QQQM'];
+    showStep(1);
+    updateRecommendation();
+    var monthlyInput = document.getElementById('s1w_monthly');
+    if(monthlyInput) monthlyInput.addEventListener('input', function(){
+      var c = document.getElementById('s1w_congrats');
+      if(c && parseFloat(this.value) > 0) c.style.display = 'block';
+    });
+    // Show congrats if default value is already set
+    var c = document.getElementById('s1w_congrats');
+    if(c && parseFloat(monthlyInput.value) > 0) c.style.display = 'block';
+  };
+
+  window.s1wBrowseLiveETFs = function(){
+    // Open the existing ETF picker modal in a special wizard mode
+    window._s1wPickerActive = true;
+    activePicker = 0;
+    activePickerMode = null;
+    var titleEl = document.getElementById('modalTitle');
+    if(titleEl) titleEl.textContent = 'Browse Live US ETFs';
+    var searchEl = document.getElementById('etfSearch');
+    if(searchEl){ searchEl.value = ''; searchEl.style.display = ''; }
+    currentCat = 'All';
+    liveMode = false;
+    var lb = document.getElementById('liveToggleBtn');
+    if(lb){ lb.style.background='#eef2ff'; lb.style.color='#4338ca'; lb.style.borderColor='#c7d2fe'; lb.textContent='🌐 Browse all US ETFs (live)'; lb.disabled=false; }
+    var sp = document.getElementById('apiKeyPanel'); if(sp) sp.style.display='none';
+    var cc0 = document.getElementById('catChips'); if(cc0) cc0.style.display='';
+    renderCatChips(); renderETFList();
+    document.getElementById('etfOverlay').classList.add('open');
+    if(searchEl) setTimeout(function(){ searchEl.style.display = ''; searchEl.focus(); }, 80);
+    if(getApiKey() && !liveMode && !liveListLoading) setTimeout(toggleLiveMode, 100);
+  };
+
+  window._s1wAddFromPicker = function(etf){
+    // Ensure ETF is in options list
+    var exists = ETF_OPTIONS.find(function(e){ return e.sym === etf.sym; });
+    if(!exists){
+      ETF_OPTIONS.push({sym: etf.sym, name: etf.name, desc: etf.cat || 'Live ETF', cagr: etf.cagr || 10, divYield: etf.divYield || 0});
+    }
+
+    // Change mode: replace the fund at the specified index
+    if(typeof window._s1wChangeIdx === 'number'){
+      var idx = window._s1wChangeIdx;
+      window._s1wChangeIdx = undefined;
+      if(idx >= 0 && idx < selectedFunds.length){
+        selectedFunds[idx] = etf.sym;
+      }
+    } else {
+      // Add mode: add if not already there
+      if(selectedFunds.indexOf(etf.sym) < 0){
+        selectedFunds.push(etf.sym);
+      }
+    }
+    renderFundList();
+  };
+
+  window.s1wNext = function(step){
+    var monthly = parseFloat(document.getElementById('s1w_monthly').value) || 800;
+    if(step === 2){
+      document.getElementById('s1w_monthlyEcho').textContent = fmt$(monthly);
+      renderFundList();
+    }
+    if(step === 3){
+      if(selectedFunds.length === 0) return;
+      var dcaYrs = parseInt(document.getElementById('s1w_dcaYrs').value) || 10;
+      var coastYrs = parseInt(document.getElementById('s1w_coast').value) || 0;
+      var summary = document.getElementById('s1w_summary');
+      var inputs = document.querySelectorAll('.s1w-alloc-input');
+      var lines = [];
+      selectedFunds.forEach(function(sym, i){
+        var amt = inputs[i] ? (parseFloat(inputs[i].value) || 0) : 0;
+        lines.push('<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #e2e8f0;"><span style="font-weight:600;color:#1e293b;">' + sym + '</span><span style="color:#3b82f6;font-weight:700;">' + fmt$(amt) + '/mo</span></div>');
+      });
+      summary.innerHTML = '<div style="font-size:13px;font-weight:700;color:#334155;margin-bottom:10px;">Your plan</div>' +
+        lines.join('') +
+        '<div style="margin-top:12px;display:flex;gap:16px;font-size:13px;color:#475569;">' +
+        '<div>DCA: <strong>' + dcaYrs + ' yr</strong></div>' +
+        '<div>Coast: <strong>' + coastYrs + ' yr</strong></div>' +
+        '<div>Total: <strong>' + (dcaYrs + coastYrs) + ' yr</strong></div></div>';
+    }
+    showStep(step);
+  };
+
+  window.s1wBack = function(step){ showStep(step); };
+
+  window.s1wFinish = function(){
+    // Apply wizard values to the real calculator
+    var monthly = parseFloat(document.getElementById('s1w_monthly').value) || 800;
+    var dcaYrs = parseInt(document.getElementById('s1w_dcaYrs').value) || 10;
+    var coastYrs = parseInt(document.getElementById('s1w_coast').value) || 0;
+    var inputs = document.querySelectorAll('.s1w-alloc-input');
+
+    // Build fund array from wizard selections
+    var newFunds = [];
+    selectedFunds.forEach(function(sym, i){
+      var etf = ETF_OPTIONS.find(function(e){ return e.sym === sym; });
+      if(!etf) return;
+      var amt = inputs[i] ? (parseFloat(inputs[i].value) || 0) : Math.round(monthly / selectedFunds.length);
+      newFunds.push({sym: etf.sym, name: etf.name, cat:'', cagr: etf.cagr, yr: 2020, rate: etf.cagr, dca: amt, divYield: etf.divYield});
+    });
+
+    // Replace funds in the Strategy I engine
+    if(newFunds.length > 0){
+      funds.length = 0;
+      newFunds.forEach(function(f){ funds.push(f); });
+      window.funds = funds;
+    }
+
+    // Set DCA + Coast sliders
+    var dcaEl = document.getElementById('v_dcaYrs');
+    var dcaR = document.getElementById('r_dcaYrs');
+    var dcaLbl = document.getElementById('lbl_v_dcaYrs');
+    if(dcaEl){ dcaEl.value = dcaYrs; }
+    if(dcaR){ dcaR.value = dcaYrs; }
+    if(dcaLbl){ dcaLbl.textContent = dcaYrs + ' yr'; }
+
+    var coastEl = document.getElementById('v_coast');
+    var coastR = document.getElementById('r_coast');
+    var coastLbl = document.getElementById('lbl_v_coast');
+    if(coastEl){ coastEl.value = coastYrs; }
+    if(coastR){ coastR.value = coastYrs; }
+    if(coastLbl){ coastLbl.textContent = coastYrs + ' yr'; }
+
+    // Keep withdrawal at zero (investment only for now)
+    var wdEl = document.getElementById('v_wdraw'); if(wdEl) wdEl.value = 0;
+    var wdR = document.getElementById('r_wdraw'); if(wdR) wdR.value = 0;
+    var wdLbl = document.getElementById('lbl_v_wdraw'); if(wdLbl) wdLbl.textContent = '$0';
+    var wYrsEl = document.getElementById('v_wYrs'); if(wYrsEl) wYrsEl.value = 0;
+    var wYrsR = document.getElementById('r_wYrs'); if(wYrsR) wYrsR.value = 0;
+    var wYrsLbl = document.getElementById('lbl_v_wYrs'); if(wYrsLbl) wYrsLbl.textContent = '0 yr';
+
+    // Wake up the output zone (normally requires sidebar interaction)
+    _etfUserInteracted = true;
+    var oz = document.getElementById('etf_outputZone');
+    if(oz){ oz.classList.remove('dormant'); oz.classList.add('awakened'); }
+
+    // Activate ETF mode and hide the Fixed card (user already chose specific funds)
+    if(window.raActivate) window.raActivate('s1', 'etf');
+    var fixedCard = document.querySelector('[data-ra-half="fixed"][data-ra-key="s1"]');
+    if(fixedCard) fixedCard.style.display = 'none';
+
+    // Enter invest-only mode: hide withdrawal inputs and outputs
+    window._s1InvestOnlyMode = true;
+    var wdGroup = document.getElementById('s1WithdrawalGroup');
+    if(wdGroup) wdGroup.style.display = 'none';
+    // Hide lump-sum events too (advanced feature)
+    var lumpGroup = document.getElementById('lumpBody');
+    if(lumpGroup && lumpGroup.parentElement) lumpGroup.parentElement.style.display = 'none';
+
+    // Hide wizard, re-render
+    wizard.style.display = 'none';
+    renderFunds();
+    render();
+
+    // After render, hide withdrawal outputs and add guidance CTA
+    setTimeout(function(){
+      window.s1wApplyInvestOnlyView();
+    }, 100);
+  };
+
+  window.s1wApplyInvestOnlyView = function(){
+    if(!window._s1InvestOnlyMode) return;
+
+    // Hide withdrawal phase in phase bar
+    var pb3 = document.getElementById('pb3');
+    if(pb3) pb3.style.display = 'none';
+
+    // Hide withdrawal-related tiles (4th onward: Monthly Wd, Total Withdrawn, Tax, Longevity)
+    var cardsRow = document.querySelector('#cards .cards-row-one');
+    if(cardsRow){
+      var cards = cardsRow.children;
+      for(var i = 3; i < cards.length; i++){
+        cards[i].style.display = 'none';
+      }
+    }
+
+    // Hide "Cumulative Invested vs Withdrawn" chart and "Portfolio Sustainability"
+    var cumChart = document.getElementById('cumChart');
+    if(cumChart && cumChart.parentElement) cumChart.parentElement.style.display = 'none';
+    var susContent = document.getElementById('susContent');
+    if(susContent && susContent.parentElement) susContent.parentElement.style.display = 'none';
+
+    // Hide "Withdraw" filter button in table
+    var wdBtn = document.querySelector('#fbRow [data-f="3"]');
+    if(wdBtn) wdBtn.style.display = 'none';
+
+    // Add floating "Plan my withdrawals" button at viewport bottom
+    var existingCta = document.getElementById('s1wWithdrawalCta');
+    if(!existingCta){
+      var cta = document.createElement('div');
+      cta.id = 's1wWithdrawalCta';
+      cta.style.cssText = 'position:sticky;bottom:0;left:0;right:0;z-index:9000;padding:14px 24px;background:rgba(255,255,255,0.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid rgba(190,24,93,0.15);text-align:center;';
+      cta.innerHTML =
+        '<button onclick="window.s1wStartWithdrawalWizard()" style="padding:12px 28px;background:rgba(190,24,93,0.9);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(190,24,93,0.2);">🏖️ Plan my withdrawals →</button>' +
+        '<span style="margin-left:12px;font-size:12px;color:#64748b;">After building wealth, plan how you\'ll draw income</span>';
+      var mainEl = document.querySelector('#etfTab1 .main');
+      if(mainEl) mainEl.appendChild(cta);
+    }
+
+    // Show tile hints (once)
+    if(!window._s1TileGuideShown){
+      window._s1TileGuideShown = true;
+      setTimeout(function(){ window.s1wShowTileGuide(); }, 400);
+    }
+
+  };
+
+  window.s1wShowTileGuide = function(){
+    var guides = [
+      {selector: '.card-big', desc: 'Your total cash contributions across all funds over the DCA period.'},
+      {selector: '#cards .cards-row-one > :nth-child(1)', desc: 'Portfolio worth at end of build + coast. Contributions plus compound growth.'},
+      {selector: '#cards .cards-row-one > :nth-child(2)', desc: 'Final portfolio value after full timeline. Real figure = today\'s purchasing power.'},
+      {selector: '#cards .cards-row-one > :nth-child(3)', desc: 'Dividends automatically reinvested (DRIP), compounding on top of contributions.'}
+    ];
+
+    guides.forEach(function(g){
+      var el = document.querySelector(g.selector);
+      if(!el || el.querySelector('.s1w-tile-tooltip')) return;
+      el.style.position = 'relative';
+      var tip = document.createElement('div');
+      tip.className = 's1w-tile-tooltip';
+      tip.style.cssText = 'position:absolute;bottom:-4px;left:0;right:0;padding:6px 10px;background:rgba(15,23,42,0.75);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#f1f5f9;font-size:11px;line-height:1.4;border-radius:0 0 8px 8px;z-index:10;transition:opacity .2s;';
+      tip.innerHTML = '<span>' + g.desc + '</span><button class="s1w-tip-close" onclick="this.parentElement.style.display=\'none\';event.stopPropagation();" style="position:absolute;top:2px;right:6px;border:none;background:none;color:#94a3b8;font-size:12px;cursor:pointer;">▾</button>';
+      el.appendChild(tip);
+    });
+  };
+
+  window.s1wStartSec2Guide = function(){
+    // Switch to Section 2 and show step-by-step wizard overlay
+    if(window.switchEtfTab) window.switchEtfTab('etfTab2');
+    setTimeout(function(){
+      if(window.gbInit) window.gbInit();
+      window.scrollTo(0, document.getElementById('etfSection').offsetTop);
+      // Show the backward approach wizard
+      var existing = document.getElementById('s2Wizard');
+      if(existing){ existing.style.display = 'block'; return; }
+
+      var age = (window.UNIVERSAL_PROFILE && window.UNIVERSAL_PROFILE.age) || 30;
+      var expenses = (window.UNIVERSAL_PROFILE && window.UNIVERSAL_PROFILE.monthlyExpenses) || 0;
+
+      var wiz = document.createElement('div');
+      wiz.id = 's2Wizard';
+      wiz.style.cssText = 'position:absolute;inset:0;z-index:9500;background:#fff;overflow-y:auto;min-height:100vh;font-family:"Plus Jakarta Sans","Inter",system-ui,sans-serif;';
+      wiz.innerHTML =
+        '<div style="max-width:640px;margin:0 auto;padding:40px 24px 60px;">' +
+          '<div id="s2wProgress" style="display:flex;gap:4px;margin-bottom:32px;">' +
+            '<div class="s1w-dot active"></div><div class="s1w-dot"></div><div class="s1w-dot"></div>' +
+          '</div>' +
+
+          // Step 1: Corpus target
+          '<div class="s2w-step" id="s2w_step1" style="display:block;">' +
+            '<h2 style="font-size:22px;font-weight:800;color:#1e293b;margin:0 0 8px;">The Backward Approach</h2>' +
+            '<p style="font-size:15px;color:#475569;line-height:1.6;margin:0 0 24px;">How much money (corpus) do you want before you\'re financially free? This is your target nest egg.</p>' +
+
+            '<div style="margin-bottom:20px;">' +
+              '<label style="font-size:13px;font-weight:600;color:#334155;display:block;margin-bottom:4px;">Your current age</label>' +
+              '<input type="number" id="s2w_age" value="' + age + '" min="18" max="80" data-no-slider style="width:100%;padding:12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:15px;font-weight:600;color:#1e293b;">' +
+            '</div>' +
+
+            '<div style="margin-bottom:20px;">' +
+              '<label style="font-size:13px;font-weight:600;color:#334155;display:block;margin-bottom:4px;">Target corpus (your freedom number)</label>' +
+              '<div style="position:relative;"><span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#64748b;font-weight:600;">$</span>' +
+              '<input type="number" id="s2w_corpus" value="" min="100000" step="50000" data-no-slider style="width:100%;padding:12px 12px 12px 26px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:15px;font-weight:600;color:#1e293b;" placeholder="e.g. 2,000,000"></div>' +
+            '</div>' +
+
+            '<div style="padding:16px;background:#fefce8;border:1.5px solid #fde68a;border-radius:10px;margin-bottom:20px;">' +
+              '<div style="font-size:13px;font-weight:700;color:#92400e;margin-bottom:8px;">Need help calculating?</div>' +
+              '<p style="font-size:12px;color:#78350f;line-height:1.5;margin:0 0 10px;">Your corpus should cover your annual expenses for ~30 years with 5% annual inflation. ' +
+                (expenses > 0
+                  ? 'Based on your profile, your monthly expenses are <strong>$' + expenses.toLocaleString() + '</strong>.'
+                  : 'You haven\'t set your monthly expenses yet.') +
+              '</p>' +
+              (expenses > 0
+                ? '<button onclick="window.s2wCalcCorpus()" style="padding:8px 14px;background:#d97706;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;">Calculate from my expenses ($' + expenses.toLocaleString() + '/mo)</button>'
+                : '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">' +
+                    '<input type="number" id="s2w_expenseInput" placeholder="Monthly expenses" min="0" step="100" data-no-slider style="padding:8px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:12px;width:150px;">' +
+                    '<button onclick="window.s2wCalcCorpus()" style="padding:8px 14px;background:#d97706;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;">Calculate</button>' +
+                    '<button onclick="window.s2wGoToExpenseTool()" style="padding:8px 14px;background:#eef2ff;border:1px solid #c7d2fe;border-radius:6px;font-size:12px;font-weight:600;color:#4338ca;cursor:pointer;">Use Expense Tool</button>' +
+                  '</div>') +
+              '<div id="s2w_corpusCalcResult" style="margin-top:10px;font-size:12px;color:#065f46;display:none;"></div>' +
+            '</div>' +
+
+            '<div id="s2w_step1Err" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 14px;font-size:12px;color:#dc2626;margin-bottom:16px;"></div>' +
+            '<button onclick="window.s2wNext(2)" style="width:100%;padding:14px;background:#0284c7;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;">Set my investment window</button>' +
+          '</div>' +
+
+          // Step 2: DCA window
+          '<div class="s2w-step" id="s2w_step2" style="display:none;">' +
+            '<h2 style="font-size:22px;font-weight:800;color:#1e293b;margin:0 0 8px;">Your investment window</h2>' +
+            '<p style="font-size:15px;color:#475569;line-height:1.6;margin:0 0 24px;">How many years do you have before you want to be financially free?</p>' +
+            '<div style="margin-bottom:20px;">' +
+              '<label style="font-size:13px;font-weight:600;color:#334155;display:block;margin-bottom:4px;">Years until financial freedom</label>' +
+              '<input type="number" id="s2w_dcaYrs" value="15" min="3" max="40" step="1" data-no-slider style="width:100%;padding:12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:15px;font-weight:600;color:#1e293b;">' +
+              '<div id="s2w_freeAge" style="font-size:12px;color:#059669;margin-top:6px;"></div>' +
+            '</div>' +
+            '<div style="margin-bottom:20px;">' +
+              '<label style="font-size:13px;font-weight:600;color:#334155;display:block;margin-bottom:4px;">Expected annual return (%)</label>' +
+              '<input type="number" id="s2w_return" value="12" min="3" max="25" step="0.5" data-no-slider style="width:100%;padding:12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:15px;font-weight:600;color:#1e293b;">' +
+            '</div>' +
+            '<div id="s2w_monthlyNeeded" style="padding:16px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;margin-bottom:20px;text-align:center;">' +
+              '<div style="font-size:12px;color:#065f46;font-weight:600;">Monthly investment needed</div>' +
+              '<div id="s2w_monthlyVal" style="font-size:24px;font-weight:800;color:#059669;margin-top:4px;">—</div>' +
+            '</div>' +
+            '<button onclick="window.s2wNext(3)" style="width:100%;padding:14px;background:#0284c7;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;">Plan my withdrawals</button>' +
+            '<button onclick="window.s2wShowStep(1)" style="margin-top:10px;width:100%;padding:12px;background:none;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;font-weight:600;color:#64748b;cursor:pointer;">Back</button>' +
+          '</div>' +
+
+          // Step 3: Withdrawal plan
+          '<div class="s2w-step" id="s2w_step3" style="display:none;">' +
+            '<h2 style="font-size:22px;font-weight:800;color:#1e293b;margin:0 0 8px;">Withdrawal plan</h2>' +
+            '<p style="font-size:15px;color:#475569;line-height:1.6;margin:0 0 20px;">Once you reach your corpus, how will you draw income from it?</p>' +
+            '<div style="margin-bottom:16px;">' +
+              '<label style="font-size:13px;font-weight:600;color:#334155;display:block;margin-bottom:4px;">Monthly withdrawal amount</label>' +
+              '<div style="display:flex;gap:8px;margin-bottom:8px;">' +
+                '<button id="s2w_wdAutoBtn" onclick="window.s2wSetAutoWd()" style="padding:6px 12px;border:1.5px solid #059669;border-radius:6px;background:#f0fdf4;color:#065f46;font-size:12px;font-weight:600;cursor:pointer;">Use my calculated expenses</button>' +
+                '<button id="s2w_wdCustomBtn" onclick="document.getElementById(\'s2w_wdCustom\').focus()" style="padding:6px 12px;border:1.5px solid #e2e8f0;border-radius:6px;background:#fff;color:#64748b;font-size:12px;font-weight:600;cursor:pointer;">Custom amount</button>' +
+              '</div>' +
+              '<div style="position:relative;"><span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#64748b;font-weight:600;">$</span>' +
+              '<input type="number" id="s2w_wdCustom" value="" min="500" step="500" data-no-slider style="width:100%;padding:12px 12px 12px 26px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:15px;font-weight:600;color:#1e293b;" placeholder="Monthly withdrawal"></div>' +
+            '</div>' +
+            '<div style="margin-bottom:16px;">' +
+              '<label style="font-size:13px;font-weight:600;color:#334155;display:block;margin-bottom:4px;">Withdrawal duration (years)</label>' +
+              '<input type="number" id="s2w_wdYrs" value="25" min="5" max="50" step="1" data-no-slider style="width:100%;padding:12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:15px;font-weight:600;color:#1e293b;">' +
+            '</div>' +
+            '<div style="margin-bottom:16px;">' +
+              '<label style="font-size:13px;font-weight:600;color:#334155;display:block;margin-bottom:4px;">Legacy — how much to leave behind at age <span id="s2w_legacyAge"></span>?</label>' +
+              '<div style="position:relative;"><span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#64748b;font-weight:600;">$</span>' +
+              '<input type="number" id="s2w_legacy" value="0" min="0" step="10000" data-no-slider style="width:100%;padding:12px 12px 12px 26px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:15px;font-weight:600;color:#1e293b;" placeholder="0 = spend it all"></div>' +
+              '<div style="font-size:11px;color:#94a3b8;margin-top:3px;">Amount remaining in portfolio at the end of withdrawal</div>' +
+            '</div>' +
+            '<div id="s2w_step3Err" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 14px;font-size:12px;color:#dc2626;margin-bottom:16px;"></div>' +
+            '<button onclick="window.s2wFinish()" style="width:100%;padding:14px;background:#059669;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;">Run my goal-based simulation</button>' +
+            '<button onclick="window.s2wShowStep(2)" style="margin-top:10px;width:100%;padding:12px;background:none;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;font-weight:600;color:#64748b;cursor:pointer;">Back</button>' +
+          '</div>' +
+        '</div>';
+      document.getElementById('etfSection').appendChild(wiz);
+
+      // Wire up DCA year input to show free age
+      var dcaInput = document.getElementById('s2w_dcaYrs');
+      var retInput = document.getElementById('s2w_return');
+      function updateS2Preview(){
+        var a = parseInt(document.getElementById('s2w_age').value) || 30;
+        var yrs = parseInt(dcaInput.value) || 15;
+        var el = document.getElementById('s2w_freeAge');
+        if(el) el.textContent = 'You\'ll be financially free at age ' + (a + yrs);
+        // Calculate monthly needed
+        var corpus = parseFloat(document.getElementById('s2w_corpus').value) || 0;
+        var r = (parseFloat(retInput.value) || 12) / 100 / 12;
+        var months = yrs * 12;
+        var monthlyNeeded = 0;
+        if(corpus > 0 && r > 0 && months > 0){
+          monthlyNeeded = (corpus * r) / (Math.pow(1 + r, months) - 1);
+        }
+        var valEl = document.getElementById('s2w_monthlyVal');
+        if(valEl) valEl.textContent = monthlyNeeded > 0 ? '$' + Math.round(monthlyNeeded).toLocaleString() + '/mo' : '—';
+      }
+      if(dcaInput) dcaInput.addEventListener('input', updateS2Preview);
+      if(retInput) retInput.addEventListener('input', updateS2Preview);
+    }, 200);
+  };
+
+  window.s2wShowStep = function(n){
+    for(var i = 1; i <= 3; i++){
+      var el = document.getElementById('s2w_step' + i);
+      if(el) el.style.display = i === n ? 'block' : 'none';
+    }
+    var dots = document.querySelectorAll('#s2wProgress .s1w-dot');
+    dots.forEach(function(d, i){
+      d.className = 's1w-dot' + (i < n - 1 ? ' done' : i === n - 1 ? ' active' : '');
+    });
+  };
+
+  window.s2wCalcCorpus = function(){
+    var expenses = (window.UNIVERSAL_PROFILE && window.UNIVERSAL_PROFILE.monthlyExpenses) || 0;
+    var manualExp = document.getElementById('s2w_expenseInput');
+    if(!expenses && manualExp) expenses = parseFloat(manualExp.value) || 0;
+    if(!expenses){ alert('Please enter your monthly expenses first.'); return; }
+    // SWP formula: 10% annual growth, 5% annual escalation, 30 years
+    var r_annual = 0.10;
+    var g_annual = 0.05;
+    var r_monthly = Math.pow(1 + r_annual, 1/12) - 1;
+    var retYears = 30;
+    var monthlyDiscountSum = 0;
+    for(var m = 1; m <= 12; m++) monthlyDiscountSum += 1 / Math.pow(1 + r_monthly, m);
+    var corpus = 0;
+    for(var t = 1; t <= retYears; t++){
+      corpus += expenses * (Math.pow(1 + g_annual, t-1) / Math.pow(1 + r_annual, t-1)) * monthlyDiscountSum;
+    }
+    corpus = Math.round(corpus);
+    // Also calculate raw total for explanation
+    var rawTotal = 0;
+    for(var y = 0; y < retYears; y++) rawTotal += expenses * 12 * Math.pow(1.05, y);
+    rawTotal = Math.round(rawTotal);
+
+    document.getElementById('s2w_corpus').value = corpus;
+    var resEl = document.getElementById('s2w_corpusCalcResult');
+    if(resEl){
+      resEl.style.display = 'block';
+      resEl.innerHTML = '<strong>$' + corpus.toLocaleString() + '</strong> corpus needed.<br>' +
+        '<span style="font-size:11px;color:#475569;">Without investing, you\'d need $' + rawTotal.toLocaleString() + ' cash over 30 years. But at 10% annual growth, only $' + corpus.toLocaleString() + ' is needed on Day 1 — the market generates the rest.</span>';
+    }
+  };
+
+  window.s2wGoToExpenseTool = function(){
+    // Store return flag
+    window._s2wReturnAfterExpense = true;
+    var wiz = document.getElementById('s2Wizard');
+    if(wiz) wiz.style.display = 'none';
+    document.getElementById('goalOverlay').classList.add('hidden');
+    window.showProfileSetup();
+    setTimeout(function(){ window.upToggleExpenses && window.upToggleExpenses(); }, 300);
+    // Add a return button to the profile page
+    setTimeout(function(){
+      if(document.getElementById('s2wReturnBtn')) return;
+      var btn = document.createElement('button');
+      btn.id = 's2wReturnBtn';
+      btn.style.cssText = 'position:fixed;bottom:20px;right:20px;z-index:9999;padding:12px 20px;background:#0284c7;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(2,132,199,0.3);';
+      btn.textContent = '← Back to Goal Planner';
+      btn.onclick = function(){
+        btn.remove();
+        window.enterApp('s1');
+        setTimeout(function(){
+          window.switchEtfTab('etfTab2');
+          setTimeout(function(){
+            var wiz = document.getElementById('s2Wizard');
+            if(wiz) wiz.style.display = 'block';
+            window.scrollTo(0, document.getElementById('etfSection').offsetTop);
+            // Update expenses from profile
+            var exp = (window.UNIVERSAL_PROFILE && window.UNIVERSAL_PROFILE.monthlyExpenses) || 0;
+            if(exp > 0){
+              var expInput = document.getElementById('s2w_expenseInput');
+              if(expInput) expInput.value = exp;
+            }
+          }, 200);
+        }, 100);
+      };
+      document.body.appendChild(btn);
+    }, 500);
+  };
+
+  window.s2wSetAutoWd = function(){
+    var expenses = (window.UNIVERSAL_PROFILE && window.UNIVERSAL_PROFILE.monthlyExpenses) || 0;
+    var manualExp = document.getElementById('s2w_expenseInput');
+    if(!expenses && manualExp) expenses = parseFloat(manualExp.value) || 0;
+    // Add 5% for inflation at point of withdrawal
+    var wdAmt = Math.round(expenses * 1.05);
+    if(wdAmt > 0) document.getElementById('s2w_wdCustom').value = wdAmt;
+  };
+
+  window.s2wNext = function(step){
+    if(step === 2){
+      var age = parseInt(document.getElementById('s2w_age').value) || 0;
+      var corpus = parseFloat(document.getElementById('s2w_corpus').value) || 0;
+      var errEl = document.getElementById('s2w_step1Err');
+      var missing = [];
+      if(!age || age < 18) missing.push('age');
+      if(!corpus || corpus < 10000) missing.push('target corpus (min $10,000)');
+      if(missing.length){
+        errEl.style.display = 'block';
+        errEl.textContent = 'Please fill in: ' + missing.join(', ');
+        return;
+      }
+      errEl.style.display = 'none';
+      // Update age display in step 2
+      var freeEl = document.getElementById('s2w_freeAge');
+      var yrs = parseInt(document.getElementById('s2w_dcaYrs').value) || 15;
+      if(freeEl) freeEl.textContent = 'You\'ll be financially free at age ' + (age + yrs);
+      // Calc monthly needed
+      var r = (parseFloat(document.getElementById('s2w_return').value) || 12) / 100 / 12;
+      var months = yrs * 12;
+      var monthlyNeeded = (corpus * r) / (Math.pow(1 + r, months) - 1);
+      var valEl = document.getElementById('s2w_monthlyVal');
+      if(valEl) valEl.textContent = '$' + Math.round(monthlyNeeded).toLocaleString() + '/mo';
+    }
+    if(step === 3){
+      var age = parseInt(document.getElementById('s2w_age').value) || 30;
+      var yrs = parseInt(document.getElementById('s2w_dcaYrs').value) || 15;
+      var wdYrs = parseInt(document.getElementById('s2w_wdYrs').value) || 25;
+      var legacyAge = age + yrs + wdYrs;
+      var lbl = document.getElementById('s2w_legacyAge');
+      if(lbl) lbl.textContent = legacyAge;
+    }
+    window.s2wShowStep(step);
+  };
+
+  window.s2wFinish = function(){
+    var corpus = parseFloat(document.getElementById('s2w_corpus').value) || 0;
+    var dcaYrs = parseInt(document.getElementById('s2w_dcaYrs').value) || 15;
+    var ret = parseFloat(document.getElementById('s2w_return').value) || 12;
+    var wdAmt = parseFloat(document.getElementById('s2w_wdCustom').value) || 0;
+    var wdYrs = parseInt(document.getElementById('s2w_wdYrs').value) || 25;
+    var legacy = parseFloat(document.getElementById('s2w_legacy').value) || 0;
+
+    var errEl = document.getElementById('s2w_step3Err');
+    if(!wdAmt || wdAmt < 100){
+      errEl.style.display = 'block';
+      errEl.textContent = 'Please enter a monthly withdrawal amount.';
+      return;
+    }
+    errEl.style.display = 'none';
+
+    // Apply to Section 2 (Goal-Based Planner) inputs
+    var gbTarget = document.getElementById('gb_target');
+    if(gbTarget){ gbTarget.value = corpus; gbTarget.dispatchEvent(new Event('input', {bubbles:true})); }
+    var gbYrs = document.getElementById('gb_years');
+    if(gbYrs){ gbYrs.value = dcaYrs; gbYrs.dispatchEvent(new Event('input', {bubbles:true})); }
+    var gbReturn = document.getElementById('gb_return');
+    if(gbReturn){ gbReturn.value = ret; gbReturn.dispatchEvent(new Event('input', {bubbles:true})); }
+    var gbWdraw = document.getElementById('gb_wdraw');
+    if(gbWdraw){ gbWdraw.value = wdAmt; gbWdraw.dispatchEvent(new Event('input', {bubbles:true})); }
+    var gbWdYrs = document.getElementById('gb_wdYrs');
+    if(gbWdYrs){ gbWdYrs.value = wdYrs; gbWdYrs.dispatchEvent(new Event('input', {bubbles:true})); }
+
+    // Hide wizard, show Section 2 results
+    document.getElementById('s2Wizard').style.display = 'none';
+    if(window.gbRefresh) window.gbRefresh();
+    window.scrollTo(0, document.getElementById('etfSection').offsetTop);
+  };
+
+  window.s1wStartWithdrawalWizard = function(){
+    // Show a simple withdrawal wizard overlay
+    var existing = document.getElementById('s1wWdWizard');
+    if(existing){ existing.style.display = 'block'; window.scrollTo(0, document.getElementById('etfSection').offsetTop); return; }
+
+    var wiz = document.createElement('div');
+    wiz.id = 's1wWdWizard';
+    wiz.style.cssText = 'position:absolute;inset:0;z-index:9500;background:#fff;overflow-y:auto;min-height:100vh;font-family:"Plus Jakarta Sans","Inter",system-ui,sans-serif;';
+    wiz.innerHTML =
+      '<div style="max-width:640px;margin:0 auto;padding:40px 24px 60px;">' +
+        '<div style="display:flex;gap:4px;margin-bottom:32px;">' +
+          '<div class="s1w-dot done" style="width:100%;height:4px;border-radius:4px;background:#059669;"></div>' +
+          '<div class="s1w-dot active" style="width:100%;height:4px;border-radius:4px;background:#be185d;"></div>' +
+        '</div>' +
+        '<h2 style="font-size:22px;font-weight:800;color:#1e293b;margin:0 0 8px;">Plan your withdrawals</h2>' +
+        '<p style="font-size:15px;color:#475569;line-height:1.6;margin:0 0 28px;">Now let\'s plan how you\'ll draw from your portfolio to live financially free. This is the income your investments generate for you.</p>' +
+        '<div style="display:flex;flex-direction:column;gap:18px;">' +
+          '<div>' +
+            '<label style="font-size:13px;font-weight:600;color:#334155;display:block;margin-bottom:6px;">Monthly withdrawal amount</label>' +
+            '<div style="position:relative;"><span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#64748b;font-weight:600;">$</span>' +
+            '<input type="number" id="s1wWd_monthly" value="5000" min="500" step="500" data-no-slider style="width:100%;padding:14px 14px 14px 28px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:16px;font-weight:600;color:#1e293b;"></div>' +
+          '</div>' +
+          '<div>' +
+            '<label style="font-size:13px;font-weight:600;color:#334155;display:block;margin-bottom:6px;">Annual increase in withdrawal (%)</label>' +
+            '<input type="number" id="s1wWd_increase" value="3" min="0" max="10" step="0.5" data-no-slider style="width:100%;padding:14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:16px;font-weight:600;color:#1e293b;">' +
+            '<div style="font-size:11px;color:#94a3b8;margin-top:4px;">To keep up with inflation, 2-4% is typical</div>' +
+          '</div>' +
+          '<div>' +
+            '<label style="font-size:13px;font-weight:600;color:#334155;display:block;margin-bottom:6px;">Withdrawal duration (years)</label>' +
+            '<input type="number" id="s1wWd_years" value="20" min="5" max="50" step="1" data-no-slider style="width:100%;padding:14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:16px;font-weight:600;color:#1e293b;">' +
+            '<div style="font-size:11px;color:#94a3b8;margin-top:4px;">How long you plan to draw income from your portfolio</div>' +
+          '</div>' +
+        '</div>' +
+        '<button onclick="window.s1wFinishWithdrawal()" style="margin-top:28px;width:100%;padding:16px;background:#be185d;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;">Show full projections with withdrawals</button>' +
+        '<button onclick="document.getElementById(\'s1wWdWizard\').style.display=\'none\'" style="margin-top:10px;width:100%;padding:12px;background:none;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;font-weight:600;color:#64748b;cursor:pointer;">Back to investment view</button>' +
+      '</div>';
+    document.getElementById('etfSection').appendChild(wiz);
+    window.scrollTo(0, document.getElementById('etfSection').offsetTop);
+  };
+
+  window.s1wFinishWithdrawal = function(){
+    var wdAmt = parseFloat(document.getElementById('s1wWd_monthly').value) || 5000;
+    var wdInc = parseFloat(document.getElementById('s1wWd_increase').value) || 3;
+    var wdYrs = parseInt(document.getElementById('s1wWd_years').value) || 20;
+
+    // Apply withdrawal values
+    var wdEl = document.getElementById('v_wdraw'); if(wdEl) wdEl.value = wdAmt;
+    var wdR = document.getElementById('r_wdraw'); if(wdR) wdR.value = wdAmt;
+    var wdLbl = document.getElementById('lbl_v_wdraw'); if(wdLbl) wdLbl.textContent = '$' + wdAmt.toLocaleString();
+    var wincEl = document.getElementById('v_winc'); if(wincEl) wincEl.value = wdInc;
+    var wincR = document.getElementById('r_winc'); if(wincR) wincR.value = wdInc;
+    var wincLbl = document.getElementById('lbl_v_winc'); if(wincLbl) wincLbl.textContent = wdInc.toFixed(1) + '%';
+    var wYrsEl = document.getElementById('v_wYrs'); if(wYrsEl) wYrsEl.value = wdYrs;
+    var wYrsR = document.getElementById('r_wYrs'); if(wYrsR) wYrsR.value = wdYrs;
+    var wYrsLbl = document.getElementById('lbl_v_wYrs'); if(wYrsLbl) wYrsLbl.textContent = wdYrs + ' yr';
+
+    // Exit invest-only mode: show everything
+    window._s1InvestOnlyMode = false;
+
+    // Restore hidden elements
+    var wdGroup = document.getElementById('s1WithdrawalGroup');
+    if(wdGroup) wdGroup.style.display = '';
+    var lumpBody = document.getElementById('lumpBody');
+    if(lumpBody && lumpBody.parentElement) lumpBody.parentElement.style.display = '';
+    var pb3 = document.getElementById('pb3');
+    if(pb3) pb3.style.display = '';
+    var cumChart = document.getElementById('cumChart');
+    if(cumChart && cumChart.parentElement) cumChart.parentElement.style.display = '';
+    var susContent = document.getElementById('susContent');
+    if(susContent && susContent.parentElement) susContent.parentElement.style.display = '';
+    var wdBtn = document.querySelector('#fbRow [data-f="3"]');
+    if(wdBtn) wdBtn.style.display = '';
+    var cardsRow = document.querySelector('#cards .cards-row-one');
+    if(cardsRow){ for(var i = 0; i < cardsRow.children.length; i++) cardsRow.children[i].style.display = ''; }
+
+    // Remove CTA
+    var cta = document.getElementById('s1wWithdrawalCta');
+    if(cta) cta.remove();
+
+    // Hide withdrawal wizard
+    var wdWiz = document.getElementById('s1wWdWizard');
+    if(wdWiz) wdWiz.style.display = 'none';
+
+    // Also show the Fixed card option back (full mode)
+    var fixedCard = document.querySelector('[data-ra-half="fixed"][data-ra-key="s1"]');
+    if(fixedCard) fixedCard.style.display = '';
+
+    // Re-render with full data
+    render();
+
+    // Add Section 2 radio button sticky at bottom
+    setTimeout(function(){
+      if(document.getElementById('s1wSec2Radio')) return;
+      var mainEl = document.querySelector('#etfTab1 .main');
+      if(!mainEl) return;
+      var radio = document.createElement('div');
+      radio.id = 's1wSec2Radio';
+      radio.style.cssText = 'position:sticky;bottom:0;left:0;right:0;z-index:8999;padding:12px 20px;background:rgba(240,249,255,0.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid rgba(2,132,199,0.15);display:flex;align-items:center;gap:14px;cursor:pointer;';
+      radio.innerHTML =
+        '<div style="width:20px;height:20px;border-radius:50%;border:2px solid #0284c7;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:9px;height:9px;border-radius:50%;background:#0284c7;"></div></div>' +
+        '<div style="font-size:13px;font-weight:700;color:#0c4a6e;">Try the backward approach</div>' +
+        '<div style="font-size:11px;color:#0369a1;margin-left:auto;">Goal-Based Planner →</div>';
+      radio.onclick = function(){ window.s1wStartSec2Guide(); };
+      mainEl.appendChild(radio);
+    }, 200);
   };
 })();
 

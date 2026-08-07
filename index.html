@@ -1858,7 +1858,7 @@ body.is-resizing-gb *{user-select:none !important;}
     <button class="sb-hamburger" id="sidebarToggle" onclick="window.toggleMobileSidebar&&window.toggleMobileSidebar()" aria-label="Open settings panel">☰</button>
     <button class="sb-back" onclick="backToStrategies()">← Strategy Menu</button>
     <button class="sb-back" id="sbBackToRec" onclick="backToRecommendations()" style="display:none;">← Recommendations</button>
-    <span class="sb-name" id="strategyBarName">Strategy I — Invest in ETFs</span>
+    <span class="sb-name" id="strategyBarName">Strategy I — Invest & Grow</span>
     <span class="sb-badge" id="strategyBarBadge">ETFs</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px;">
@@ -2037,20 +2037,26 @@ body.is-resizing-gb *{user-select:none !important;}
 </div>
 
 <!-- ══════════════════ PAGE 1.25: GOAL QUESTIONNAIRE ══════════════════ -->
-<div id="goalOverlay" class="lo-screen hidden" style="overflow-y:auto;">
+<div id="goalOverlay" class="lo-screen hidden" style="overflow:hidden;">
 <style>
 #goalOverlay{background:#fff;font-family:'Plus Jakarta Sans','Inter',system-ui,sans-serif;padding:0;min-height:100vh;}
 #goalOverlay.slide-up .goal-canvas{animation:goalBounceUp 1.6s both;}
 @keyframes goalBounceUp{0%{opacity:0;transform:translateY(100vh);}40%{opacity:1;transform:translateY(-30px);}55%{transform:translateY(12px);}70%{transform:translateY(-6px);}85%{transform:translateY(3px);}100%{transform:translateY(0);}}
 #goalOverlay *{box-sizing:border-box;}
-.goal-header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #e2e8f0;height:56px;display:flex;align-items:center;padding:0 32px;}
+.goal-header{position:fixed;top:0;left:0;right:0;z-index:50;background:#fff;border-bottom:1px solid #e2e8f0;height:56px;display:flex;align-items:center;padding:0 32px;}
 .goal-header-logo{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800;}
 .goal-header-title{font-size:15px;font-weight:600;color:#0f172a;margin-left:12px;}
-.goal-dots{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:8px;}
-.goal-dot{width:8px;height:8px;border-radius:50%;background:#e2e8f0;transition:background .3s;}
+.goal-dots{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:0;}
+.goal-dot{width:10px;height:10px;border-radius:50%;background:#e2e8f0;transition:background .3s,transform .2s;cursor:pointer;flex-shrink:0;}
+.goal-dot:hover{transform:scale(1.3);}
 .goal-dot.active{background:#4f46e5;}
-.goal-canvas{max-width:720px;margin:0 auto;padding:32px 32px 80px;}
-.goal-section{position:relative;margin-bottom:64px;}
+.goal-dot.completed{background:#4f46e5;}
+.goal-dot-line{width:24px;height:2px;background:#e2e8f0;transition:background .3s;}
+.goal-dot-line.filled{background:#4f46e5;}
+.goal-canvas{max-width:720px;margin:0 auto;padding:72px 32px 80px;display:flex;flex-direction:column;justify-content:center;min-height:100vh;}
+.goal-section{position:relative;margin-bottom:64px;display:none;}
+.goal-section.goal-active{display:block;animation:goalStepIn .6s cubic-bezier(.16,1,.3,1) both;}
+@keyframes goalStepIn{from{opacity:0;transform:translateY(40px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
 .goal-chapter-num{position:absolute;left:-16px;top:-32px;font-size:140px;font-weight:800;color:rgba(79,70,229,.04);pointer-events:none;user-select:none;}
 .goal-section-inner{position:relative;z-index:1;}
 .goal-label{color:#4f46e5;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:12px;}
@@ -2072,7 +2078,7 @@ body.is-resizing-gb *{user-select:none !important;}
 }
 .goal-chip:hover{border-color:#a5b4fc;background:#eef2ff;}
 .goal-chip.selected{border-color:#4f46e5;background:#eef2ff;color:#4338ca;}
-.goal-divider{border:none;border-top:1px solid #e2e8f0;margin:0 0 64px;}
+.goal-divider{display:none;}
 .goal-btn-row{display:flex;justify-content:center;gap:16px;margin-top:40px;}
 .goal-btn{padding:14px 32px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;border:none;transition:transform .1s;}
 .goal-btn:hover{transform:scale(1.02);}
@@ -2102,11 +2108,17 @@ body.is-resizing-gb *{user-select:none !important;}
   <div class="goal-header-logo">P</div>
   <span class="goal-header-title">Path to Financial Freedom</span>
   <div class="goal-dots">
-    <div class="goal-dot active" id="goalDot1"></div>
-    <div class="goal-dot" id="goalDot2"></div>
-    <div class="goal-dot" id="goalDot3"></div>
-    <div class="goal-dot" id="goalDot4"></div>
-    <div class="goal-dot" id="goalDot5"></div>
+    <div class="goal-dot active" id="goalDot1" onclick="goalGoToStep(1)"></div>
+    <div class="goal-dot-line" id="goalLine1"></div>
+    <div class="goal-dot" id="goalDot2" onclick="goalGoToStep(2)"></div>
+    <div class="goal-dot-line" id="goalLine2"></div>
+    <div class="goal-dot" id="goalDot3" onclick="goalGoToStep(3)"></div>
+    <div class="goal-dot-line" id="goalLine3"></div>
+    <div class="goal-dot" id="goalDot4" onclick="goalGoToStep(4)"></div>
+    <div class="goal-dot-line" id="goalLine4"></div>
+    <div class="goal-dot" id="goalDot5" onclick="goalGoToStep(5)"></div>
+    <div class="goal-dot-line" id="goalLine5"></div>
+    <div class="goal-dot" id="goalDot6" onclick="goalGoToStep(6)"></div>
   </div>
 </div>
 
@@ -2147,6 +2159,9 @@ body.is-resizing-gb *{user-select:none !important;}
         and my family makes
         <span class="goal-inline"><input type="number" id="goal_income" data-no-slider min="0" step="5000" value="100000" style="width:110px;"></span>
         per year in total.
+        My total family size is
+        <span class="goal-inline"><input type="number" id="goal_family_size" data-no-slider min="1" max="20" value="2" style="width:55px;"></span>
+        members.
       </div>
       <div style="margin-top:24px;">
         <div class="goal-desc" style="margin-bottom:12px;">Home ownership status:</div>
@@ -2230,6 +2245,19 @@ body.is-resizing-gb *{user-select:none !important;}
 
   <hr class="goal-divider">
 
+  <!-- Section 5: Summary before recommendations -->
+  <section class="goal-section" id="goalSec5Summary">
+    <div class="goal-chapter-num">05</div>
+    <div class="goal-section-inner">
+      <div class="goal-label">Review your answers</div>
+      <h2 class="goal-heading">Your summary</h2>
+      <div class="goal-desc">Review your inputs below. Click any section to edit.</div>
+      <div id="goalSummaryContent" style="display:flex;flex-direction:column;gap:12px;margin-top:20px;"></div>
+    </div>
+  </section>
+
+  <hr class="goal-divider">
+
   <!-- Confetti celebration for savvy users -->
   <section class="goal-section" id="goalConfetti" style="display:none;">
     <div class="goal-section-inner" style="text-align:center;padding:40px 0;">
@@ -2303,7 +2331,7 @@ window.goalStateChange = function(){
 };
 
 // Flag recommendations stale when About You inputs change
-['goal_age','goal_income','goal_mortgage'].forEach(function(id){
+['goal_age','goal_income','goal_mortgage','goal_family_size'].forEach(function(id){
   var el = document.getElementById(id);
   if(el) el.addEventListener('input', function(){ if(window._goalRecommendedKeys){ window._goalRecsStale = true; showGoalRerunBtn(); } });
 });
@@ -2371,7 +2399,7 @@ function buildRecommendations(){
   var a = getGoalAnswers();
   var recs = [];
   var STRATS = {
-    s1:      {name:'Invest in ETFs', color:'#3b82f6', type:'strategy'},
+    s1:      {name:'Invest & Grow', color:'#3b82f6', type:'strategy'},
     mei:     {name:'Mortgage & ETF Investment', color:'#0d9488', type:'strategy'},
     super:   {name:'Super Salary Sacrifice', color:'#10b981', type:'strategy'},
     order:   {name:'US Investment Strategy', color:'#059669', type:'strategy'},
@@ -2473,6 +2501,7 @@ function buildRecommendations(){
   window.UNIVERSAL_PROFILE.salary = parseInt(goalIncome) || 0;
   window.UNIVERSAL_PROFILE.home = getSelectedVal('goalHomeOwnership');
   window.UNIVERSAL_PROFILE.mortgage = parseInt(document.getElementById('goal_mortgage').value) || 0;
+  window.UNIVERSAL_PROFILE.familySize = parseInt(document.getElementById('goal_family_size').value) || 1;
   var userName = (document.getElementById('goal_name').value || '').trim();
   window.UNIVERSAL_PROFILE.name = userName;
 
@@ -2493,16 +2522,28 @@ function buildRecommendations(){
   sec5.classList.remove('goal-animate');
   void sec5.offsetWidth;
   sec5.classList.add('goal-animate');
-  updateGoalDots(5);
-  setTimeout(function(){ sec5.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);
+  updateGoalDots(6);
 }
 
 function updateGoalDots(active){
-  for(var i = 1; i <= 5; i++){
+  for(var i = 1; i <= 6; i++){
     var dot = document.getElementById('goalDot'+i);
-    if(dot) dot.classList.toggle('active', i <= active);
+    if(dot){
+      dot.classList.toggle('active', i === active);
+      dot.classList.toggle('completed', i < active);
+    }
+  }
+  for(var i = 1; i <= 5; i++){
+    var line = document.getElementById('goalLine'+i);
+    if(line) line.classList.toggle('filled', i < active);
   }
 }
+
+window.goalGoToStep = function(n){
+  // Allow clicking dots to go back to any previous step (not forward past recommendations)
+  if(n >= 6 && window._goalStep < 6) return;
+  if(n <= 5) goalShowStep(n);
+};
 
 window.goalGoToStrategies = function(){
   var age = document.getElementById('goal_age').value;
@@ -2566,86 +2607,185 @@ function fireConfetti(){
 }
 
 window.goalNext = function(){
-  // Validate required fields before generating recommendations
-  var country = document.getElementById('goal_country').value;
-  var investor = getSelectedVal('goalInvestorType');
-  var home = getSelectedVal('goalHomeOwnership');
-  var missing = [];
-  if(!country) missing.push('Country');
-  if(!investor) missing.push('Investor type');
-  if(!home) missing.push('Home ownership status');
-  if(missing.length){
-    var errEl = document.getElementById('goalValidationErr');
-    if(!errEl){
-      errEl = document.createElement('div');
-      errEl.id = 'goalValidationErr';
-      errEl.style.cssText = 'background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:12px 16px;margin:12px 0;font-size:13px;color:#dc2626;line-height:1.5;text-align:center;';
-      var btn = document.getElementById('goalNextBtn');
-      btn.parentElement.insertBefore(errEl, btn);
-    }
-    errEl.innerHTML = '<strong>Please complete:</strong> ' + missing.join(', ') + ' before getting recommendations.';
-    return;
-  }
-  var errEl = document.getElementById('goalValidationErr');
-  if(errEl) errEl.remove();
+  var step = window._goalStep || 1;
 
-  // Check if user is savvy (grip + aware + knows FFN)
-  var awareness = getSelectedVal('goalAwareness');
-  var ffn = getSelectedVal('goalFFN');
-  if(awareness === 'grip' && investor === 'aware' && ffn === 'know'){
-    document.getElementById('goalConfetti').style.display = 'block';
-    document.getElementById('goalSec5').style.display = 'none';
-    document.getElementById('goalNextBtn').style.display = 'none';
-    fireConfetti();
-    updateGoalDots(5);
-    return;
-  }
-
-  buildRecommendations();
-  document.getElementById('goalConfetti').style.display = 'none';
-  document.getElementById('goalNextBtn').textContent = 'Go to Full Profile & Strategies →';
-  document.getElementById('goalNextBtn').onclick = function(){
-    // Sync goal answers into universal profile inputs
-    var age = document.getElementById('goal_age').value;
-    var income = document.getElementById('goal_income').value;
+  // Step 1 → 2: validate About You basics
+  if(step === 1){
     var country = document.getElementById('goal_country').value;
-    if(age) document.getElementById('up_age').value = age;
-    if(income) document.getElementById('up_salary').value = income;
-    if(country){
-      document.getElementById('up_country').value = country;
-      window.upCountryChange && window.upCountryChange();
-      var st = document.getElementById('goal_state').value;
-      if(st) setTimeout(function(){
-        document.getElementById('up_state').value = st;
-        window.upStateChange && window.upStateChange();
-      }, 50);
+    var home = getSelectedVal('goalHomeOwnership');
+    if(!country || !home){
+      goalShowError('Please select your Country and Home ownership status.');
+      return;
     }
-    // Update chips
-    var ageChip = document.getElementById('up_age_chip');
-    if(ageChip) ageChip.textContent = age + ' yrs';
-    var salChip = document.getElementById('up_salary_chip');
-    if(salChip) salChip.textContent = '$' + parseInt(income).toLocaleString();
-    // Ensure universal profile syncs to all strategies
-    setTimeout(function(){ window.upSyncProfile && window.upSyncProfile(); }, 200);
+    goalClearError();
+    goalShowStep(2);
+    return;
+  }
 
-    document.getElementById('goalOverlay').classList.add('hidden');
-    window.showProfileSetup();
-  };
+  // Step 2 → 3: no validation needed
+  if(step === 2){ goalClearError(); goalShowStep(3); return; }
+
+  // Step 3 → 4: validate investor type
+  if(step === 3){
+    var investor = getSelectedVal('goalInvestorType');
+    if(!investor){ goalShowError('Please select your investor type.'); return; }
+    goalClearError();
+    goalShowStep(4);
+    return;
+  }
+
+  // Step 4 → 5: show summary
+  if(step === 4){
+    goalClearError();
+    goalShowStep(5);
+    return;
+  }
+
+  // Step 5 → 6: generate recommendations
+  if(step === 5){
+    goalClearError();
+    var awareness = getSelectedVal('goalAwareness');
+    var investor = getSelectedVal('goalInvestorType');
+    var ffn = getSelectedVal('goalFFN');
+
+    if(awareness === 'grip' && investor === 'aware' && ffn === 'know'){
+      GOAL_SECTIONS.forEach(function(id){ var el = document.getElementById(id); if(el) el.classList.remove('goal-active'); });
+      document.getElementById('goalConfetti').style.display = 'block';
+      document.getElementById('goalConfetti').classList.add('goal-active');
+      document.getElementById('goalNextBtn').style.display = 'none';
+      fireConfetti();
+      updateGoalDots(6);
+      return;
+    }
+
+    buildRecommendations();
+    goalShowStep(6);
+    document.getElementById('goalNextBtn').textContent = 'Go to Full Profile & Strategies →';
+    document.getElementById('goalNextBtn').onclick = function(){
+      var age = document.getElementById('goal_age').value;
+      var income = document.getElementById('goal_income').value;
+      var country = document.getElementById('goal_country').value;
+      if(age) document.getElementById('up_age').value = age;
+      if(income) document.getElementById('up_salary').value = income;
+      if(country){
+        document.getElementById('up_country').value = country;
+        window.upCountryChange && window.upCountryChange();
+        var st = document.getElementById('goal_state').value;
+        if(st) setTimeout(function(){
+          document.getElementById('up_state').value = st;
+          window.upStateChange && window.upStateChange();
+        }, 50);
+      }
+      var ageChip = document.getElementById('up_age_chip');
+      if(ageChip) ageChip.textContent = age + ' yrs';
+      var salChip = document.getElementById('up_salary_chip');
+      if(salChip) salChip.textContent = '$' + parseInt(income).toLocaleString();
+      setTimeout(function(){ window.upSyncProfile && window.upSyncProfile(); }, 200);
+      document.getElementById('goalOverlay').classList.add('hidden');
+      window.showProfileSetup();
+    };
+    return;
+  }
 };
+
+function buildGoalSummary(){
+  var container = document.getElementById('goalSummaryContent');
+  var country = document.getElementById('goal_country').value;
+  var countryName = country === 'AU' ? 'Australia' : country === 'US' ? 'USA' : country;
+  var state = document.getElementById('goal_state').value;
+  var age = document.getElementById('goal_age').value;
+  var income = document.getElementById('goal_income').value;
+  var familySize = document.getElementById('goal_family_size').value;
+  var status = document.getElementById('goal_status').value;
+  var home = getSelectedVal('goalHomeOwnership');
+  var homeTxt = home === 'owned_outright' ? 'Own (fully paid)' : home === 'mortgage' ? 'Mortgage ($' + (document.getElementById('goal_mortgage').value || 0) + '/mo)' : 'No property';
+  var awareness = getSelectedVal('goalAwareness');
+  var awarenessTxt = awareness === 'grip' ? 'Know my income & expenses' : 'Know income, unsure about expenses';
+  var investor = getSelectedVal('goalInvestorType');
+  var investorTxt = investor === 'aware' ? 'Active investor' : investor === 'forced' ? 'Employer retirement only' : 'New to investing';
+  var ffn = getSelectedVal('goalFFN');
+  var ffnTxt = ffn === 'know' ? 'I know my number' : 'Need help finding it';
+
+  var rows = [
+    {label:'About You', step:1, items:['Age: ' + age + ' · ' + (status === 'married' ? 'Married' : 'Single') + ' · Family: ' + familySize, 'Location: ' + countryName + (state ? ', ' + state : ''), 'Income: $' + parseInt(income).toLocaleString() + '/yr', 'Home: ' + homeTxt]},
+    {label:'Financial Awareness', step:2, items:[awarenessTxt]},
+    {label:'Investing', step:3, items:[investorTxt]},
+    {label:'Freedom Number', step:4, items:[ffnTxt]}
+  ];
+
+  container.innerHTML = rows.map(function(row){
+    return '<div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:16px 20px;display:flex;justify-content:space-between;align-items:flex-start;">' +
+      '<div><div style="font-size:11px;font-weight:700;color:#4f46e5;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">' + row.label + '</div>' +
+      row.items.map(function(it){ return '<div style="font-size:14px;color:#1e293b;line-height:1.6;">' + it + '</div>'; }).join('') +
+      '</div>' +
+      '<button onclick="goalGoToStep(' + row.step + ');goalShowStep(' + row.step + ')" style="padding:6px 14px;background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;font-size:12px;font-weight:600;color:#4338ca;cursor:pointer;flex-shrink:0;">Edit</button>' +
+    '</div>';
+  }).join('');
+}
+
+function goalShowError(msg){
+  var errEl = document.getElementById('goalValidationErr');
+  if(!errEl){
+    errEl = document.createElement('div');
+    errEl.id = 'goalValidationErr';
+    errEl.style.cssText = 'background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:12px 16px;margin:12px 0;font-size:13px;color:#dc2626;line-height:1.5;text-align:center;';
+    var btn = document.getElementById('goalNextBtn');
+    btn.parentElement.insertBefore(errEl, btn);
+  }
+  errEl.textContent = msg;
+}
+function goalClearError(){ var e = document.getElementById('goalValidationErr'); if(e) e.remove(); }
 
 window.goalBack = function(){
-  document.getElementById('goalOverlay').classList.add('hidden');
-  document.getElementById('landingOverlay').classList.remove('hidden');
+  var step = window._goalStep || 1;
+  if(step <= 1){
+    document.getElementById('goalOverlay').classList.add('hidden');
+    document.getElementById('landingOverlay').classList.remove('hidden');
+  } else {
+    goalShowStep(step - 1);
+  }
 };
+
+window._goalStep = 1;
+var GOAL_SECTIONS = ['goalSec1','goalSec2','goalSec3','goalSec4','goalSec5Summary','goalSec5'];
+
+function goalShowStep(n){
+  window._goalStep = n;
+  GOAL_SECTIONS.forEach(function(id, i){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.classList.remove('goal-active');
+    if(i === n - 1){
+      el.classList.add('goal-active');
+    }
+  });
+  // Also handle confetti section
+  var confetti = document.getElementById('goalConfetti');
+  if(confetti && n !== 99) confetti.style.display = 'none';
+
+  updateGoalDots(n);
+  // Update button text
+  var btn = document.getElementById('goalNextBtn');
+  if(btn){
+    btn.style.display = '';
+    if(n === 5){ btn.textContent = 'Run Recommendation →'; buildGoalSummary(); }
+    else if(n === 4) btn.textContent = 'Review Summary →';
+    else btn.textContent = 'Continue →';
+    btn.onclick = window.goalNext;
+  }
+  // Hide back on step 1
+  var backBtn = document.querySelector('.goal-btn-secondary');
+  if(backBtn) backBtn.style.display = n === 1 ? 'none' : '';
+}
 
 window.showGoalPage = function(){
   document.getElementById('landingOverlay').classList.add('hidden');
   var goalEl = document.getElementById('goalOverlay');
   goalEl.classList.remove('hidden','slide-up');
   goalEl.scrollTop = 0;
-  void goalEl.offsetWidth; // reflow to restart animation
+  void goalEl.offsetWidth;
   goalEl.classList.add('slide-up');
-  updateGoalDots(1);
+  goalShowStep(1);
   window._goalRecommendedKeys = null;
   window._goalRecsStale = false;
   var rb = document.getElementById('goalRerunBtn');
@@ -2989,6 +3129,14 @@ document.addEventListener('change', function(e){
   if(e.target && e.target.id === 'up_county' && window.upSyncProfile) window.upSyncProfile();
 });
 
+// Re-render budget when family size changes (scales state averages)
+var fSizeEl = document.getElementById('goal_family_size');
+if(fSizeEl) fSizeEl.addEventListener('input', function(){
+  window.UNIVERSAL_PROFILE = window.UNIVERSAL_PROFILE || {};
+  window.UNIVERSAL_PROFILE.familySize = parseInt(this.value) || 1;
+  if(expenseMode === 'average' && document.getElementById('upBudgetGrid').children.length) upRenderBudget();
+});
+
 function upRenderBudget(){
   var country = upGetCountry();
   var grid = document.getElementById('upBudgetGrid');
@@ -3001,13 +3149,38 @@ function upRenderBudget(){
     });
   }
 
+  var prof = window.UNIVERSAL_PROFILE || {};
+  var isHomeowner = (prof.home === 'owned_outright' || prof.home === 'mortgage');
+  var familySize = prof.familySize || parseInt((document.getElementById('goal_family_size')||{}).value) || 1;
+  var hasChildren = familySize > 2;
+
+  // ponytail: base values assume 2-person household; scale per-person categories by family size
+  var FIXED_CATS = {'Internet & Media':1,'Insurance':1,'Rent & Board':1,'Property Costs':1};
+  var familyMult = familySize <= 1 ? 0.6 : (familySize === 2 ? 1.0 : 1.0 + (familySize - 2) * 0.3);
+
+  // Remove rent section for homeowners
+  if(isHomeowner) delete cats['Rent & Board'];
+  // Remove childcare if no children
+  if(!hasChildren) delete cats['Childcare'];
+  // In USA, health/dental/vision insurance are pre-tax salary deductions — remove from budget
+  if(country === 'US'){
+    var salaryDeductionIds = ['health_ins_med', 'health_ins', 'dental_ins', 'vision_ins'];
+    if(cats['Medical & Health']){
+      cats['Medical & Health'].items = cats['Medical & Health'].items.filter(function(i){ return salaryDeductionIds.indexOf(i.id) === -1; });
+    }
+    if(cats['Insurance']){
+      cats['Insurance'].items = cats['Insurance'].items.filter(function(i){ return salaryDeductionIds.indexOf(i.id) === -1; });
+    }
+  }
+
   Object.keys(cats).forEach(function(catName){
     var cat = cats[catName];
     var div = document.createElement('div');
     div.className = 'up-cat';
     var html = '<div class="up-cat-title">'+catName+'</div>';
     cat.items.forEach(function(item){
-      var val = expenseMode === 'scratch' ? 0 : (country === 'AU' ? item.au : item.us);
+      var baseVal = country === 'AU' ? item.au : item.us;
+      var val = expenseMode === 'scratch' ? 0 : Math.round((FIXED_CATS[catName] ? baseVal : baseVal * familyMult) / 10) * 10;
       var maxVal = Math.max(val * 4, 2000);
       html += '<div class="up-cat-row"><label title="'+item.label+'">'+item.label+'</label>'
         + '<div class="up-slider-col">'
@@ -3055,7 +3228,9 @@ window.upCalcTotal = function(){
     salary: parseInt(document.getElementById('up_salary').value)||0,
     monthlyExpenses: Math.round(total),
     yearlyExpenses: Math.round(total*12),
-    name: window._goalName || ''
+    name: window._goalName || '',
+    home: (function(){ var el = document.querySelector('#goalHomeOwnership .goal-chip.selected'); return el ? el.dataset.val : ''; })() || (window.UNIVERSAL_PROFILE && window.UNIVERSAL_PROFILE.home) || '',
+    familySize: (window.UNIVERSAL_PROFILE && window.UNIVERSAL_PROFILE.familySize) || parseInt((document.getElementById('goal_family_size')||{}).value) || 1
   };
 };
 
@@ -3346,14 +3521,14 @@ window.showPage1FromProfile = function(){
   <!-- Strategy Grid -->
   <div id="hf-grid">
 
-    <!-- I: Invest in ETFs -->
+    <!-- I: Invest & Grow -->
     <div class="hf-card" data-region="all" onclick="enterApp('s1')">
       <div class="hf-card-stripe" style="background:#3b82f6;color:#3b82f6;"></div>
       <div class="hf-card-top">
         <svg class="hf-card-icon" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5"><path d="M3 17l6-6 4 4 8-8M14 7h7v7"/></svg>
         <div class="hf-card-head">
           <span class="hf-card-roman" style="color:#3b82f6;">I</span>
-          <span class="hf-card-title">Invest in ETFs</span>
+          <span class="hf-card-title">Invest & Grow</span>
         </div>
         <div class="hf-card-desc">Multi-fund DCA into 130+ diversified index funds with coast periods and lump-sum injections.</div>
         <div class="hf-metrics">
@@ -3548,7 +3723,7 @@ window.showPage1FromProfile = function(){
 'use strict';
 
 var STRATEGY_META = {
-  s1:       { name:'Strategy I — Invest in ETFs',                     badge:'I · ETFs',       section:'etfSection'       },
+  s1:       { name:'Strategy I — Invest & Grow',                     badge:'I · ETFs',       section:'etfSection'       },
   mei:      { name:'Strategy II — Mortgage & ETF Investment',         badge:'II · Hybrid',    section:'meiSection'       },
   super:    { name:'Strategy III — Super Salary Sacrifice (Australia Only)', badge:'III · Super',    section:'superSection'     },
   order:    { name:'Strategy IV — US Investment Strategy Calculator', badge:'IV · US Tax',    section:'orderSection'     },
@@ -4559,6 +4734,26 @@ const CATS = ['All','Broad Market','Large Cap Growth','Large Cap Value','Mid Cap
  'Utilities','Real Estate','Intl Developed','Emerging Mkts','Dividend','Factor',
  'Bond','Commodity','Leveraged','Thematic'];
 
+window.getETFUrl = function(sym, name){
+  var s = sym.toUpperCase();
+  var n = (name||'').toLowerCase();
+  if(n.startsWith('vanguard')) return 'https://investor.vanguard.com/investment-products/etfs/profile/'+s.toLowerCase();
+  if(n.startsWith('ishares') || n.startsWith('iShares')) return 'https://www.ishares.com/us/products/etf-investments#/?productView=etf&fac=43511%7C43512&fc='+s;
+  if(n.startsWith('spdr') || n.indexOf('select sector spdr')!==-1 || n.indexOf('sector spdr')!==-1) return 'https://www.ssga.com/us/en/intermediary/etfs/funds/'+s.toLowerCase();
+  if(n.startsWith('invesco')) return 'https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Investor&ticker='+s;
+  if(n.startsWith('schwab')) return 'https://www.schwab.com/research/etfs/quotes/summary/'+s;
+  if(n.startsWith('proshares')) return 'https://www.proshares.com/our-etfs/leveraged-and-inverse/'+s.toLowerCase();
+  if(n.startsWith('direxion')) return 'https://www.direxion.com/product/'+s.toLowerCase();
+  if(n.startsWith('ark')) return 'https://ark-funds.com/funds/'+s.toLowerCase();
+  if(n.startsWith('global x')) return 'https://www.globalxetfs.com/funds/'+s.toLowerCase();
+  if(n.startsWith('first trust')) return 'https://www.ftportfolios.com/Retail/Etf/EtfSummary.aspx?Ticker='+s;
+  if(n.startsWith('vaneck')) return 'https://www.vaneck.com/us/en/investments/'+s.toLowerCase();
+  if(n.startsWith('wisdomtree')) return 'https://www.wisdomtree.com/investments/etfs/equity/'+s.toLowerCase();
+  if(n.startsWith('fidelity')) return 'https://fundresearch.fidelity.com/mutual-funds/summary/'+s;
+  if(n.startsWith('alerian')) return 'https://www.ssga.com/us/en/intermediary/etfs/funds/'+s.toLowerCase();
+  return 'https://www.google.com/finance/quote/'+s+':NYSEARCA';
+};
+
 const FUND_COLORS = ['#4f46e5','#d97706','#059669','#be185d','#7c3aed','#0891b2'];
 
 // ═══════════════════════════════════════════════════════════════
@@ -4614,6 +4809,7 @@ window.renderFundsShared = function(cfg){
           '<div class="fund-sym">'+f.sym+'</div>'+
           '<div class="fund-name">'+(f.name||'')+'</div>'+
           '<div class="fund-cat">'+(f.cat||'ETF')+note+'</div>'+
+          '<a href="'+window.getETFUrl(f.sym, f.name)+'" target="_blank" rel="noopener" style="font-size:11px;color:#4f46e5;text-decoration:none;margin-top:2px;display:inline-block;">Read more ↗</a>'+
         '</div>'+
         '<div class="fund-btns">'+
           '<button class="change-btn" onclick="openPicker('+fi+(pickMode?(",'"+pickMode+"'"):"")+')">Change ETF</button>'+
@@ -5509,6 +5705,7 @@ function renderETFList(){
  <div class="ei-info">
  <div class="ei-name">${etf.name}${hist}</div>
  <div class="ei-cat">${etf.cat}${etf.cat==='Leveraged'?' ':''}</div>
+ <a href="${window.getETFUrl(etf.sym, etf.name)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="font-size:10px;color:#4f46e5;text-decoration:none;">Read more ↗</a>
  </div>
  <div class="ei-cagr" style="color:${cc}">${etf.cagr}%</div>
  </div>`;
@@ -6310,12 +6507,12 @@ window.s8Guide=new StrategyGuide(STEPS_S8);
   var wizard = null;
   var selectedFunds = [];
   var ETF_OPTIONS = [
-    {sym:'VOO', name:'Vanguard S&P 500 ETF', desc:'Tracks the 500 largest US companies', cagr:13.8, divYield:1.4},
-    {sym:'QQQM', name:'Invesco Nasdaq-100 ETF', desc:'Top 100 tech-heavy US companies', cagr:18.5, divYield:0.6},
-    {sym:'VTI', name:'Vanguard Total Stock Market', desc:'Entire US stock market (3,700+ stocks)', cagr:12.5, divYield:1.5},
-    {sym:'SCHD', name:'Schwab US Dividend Equity', desc:'High-dividend US companies', cagr:12.9, divYield:3.4},
-    {sym:'VGT', name:'Vanguard Info Technology ETF', desc:'US technology sector focused', cagr:19.2, divYield:0.7},
-    {sym:'VWO', name:'Vanguard Emerging Markets', desc:'Developing economies (China, India, Brazil)', cagr:5.8, divYield:3.2}
+    {sym:'VOO', name:'Vanguard S&P 500 ETF', desc:'Tracks the 500 largest US companies', cagr:13.8, divYield:1.4, url:'https://investor.vanguard.com/investment-products/etfs/profile/voo'},
+    {sym:'QQQM', name:'Invesco Nasdaq-100 ETF', desc:'Top 100 tech-heavy US companies', cagr:18.5, divYield:0.6, url:'https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Investor&ticker=QQQM'},
+    {sym:'VTI', name:'Vanguard Total Stock Market', desc:'Entire US stock market (3,700+ stocks)', cagr:12.5, divYield:1.5, url:'https://investor.vanguard.com/investment-products/etfs/profile/vti'},
+    {sym:'SCHD', name:'Schwab US Dividend Equity', desc:'High-dividend US companies', cagr:12.9, divYield:3.4, url:'https://www.schwabassetmanagement.com/products/schd'},
+    {sym:'VGT', name:'Vanguard Info Technology ETF', desc:'US technology sector focused', cagr:19.2, divYield:0.7, url:'https://investor.vanguard.com/investment-products/etfs/profile/vgt'},
+    {sym:'VWO', name:'Vanguard Emerging Markets', desc:'Developing economies (China, India, Brazil)', cagr:5.8, divYield:3.2, url:'https://investor.vanguard.com/investment-products/etfs/profile/vwo'}
   ];
 
   function fmt$(v){ return '$' + Math.round(v).toLocaleString(); }
@@ -6354,7 +6551,8 @@ window.s8Guide=new StrategyGuide(STEPS_S8);
         card.style.cssText += 'flex-wrap:wrap;';
         card.innerHTML = '<div class="s1w-fund-check">✓</div>' +
           '<div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:700;color:#1e293b;">' + f.sym + ' <span style="font-weight:400;color:#64748b;font-size:13px;">' + f.name + '</span></div>' +
-          '<div style="font-size:12px;color:#94a3b8;margin-top:2px;">' + f.desc + (f.cagr ? ' · ~' + f.cagr + '%' : '') + '</div></div>' +
+          '<div style="font-size:12px;color:#94a3b8;margin-top:2px;">' + f.desc + (f.cagr ? ' · ~' + f.cagr + '%' : '') + '</div>' +
+          '<a href="' + (f.url || 'https://www.google.com/finance/quote/' + f.sym + ':NYSEARCA') + '" target="_blank" rel="noopener" style="font-size:11px;color:#4f46e5;text-decoration:none;margin-top:3px;display:inline-block;">Read more →</a></div>' +
           '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">' +
             '<div style="position:relative;width:90px;"><span style="position:absolute;left:8px;top:50%;transform:translateY(-50%);color:#64748b;font-size:12px;font-weight:600;">$</span>' +
             '<input type="number" class="s1w-alloc-input" data-idx="' + idx + '" value="' + perFund + '" min="0" step="50" data-no-slider style="width:100%;padding:8px 8px 8px 22px;border:1.5px solid #e2e8f0;border-radius:6px;font-size:13px;font-weight:600;color:#1e293b;text-align:right;"></div>' +
@@ -6490,11 +6688,23 @@ window.s8Guide=new StrategyGuide(STEPS_S8);
     var monthlyInput = document.getElementById('s1w_monthly');
     if(monthlyInput) monthlyInput.addEventListener('input', function(){
       var c = document.getElementById('s1w_congrats');
-      if(c && parseFloat(this.value) > 0) c.style.display = 'block';
+      if(c && parseFloat(this.value) > 0){ c.style.display = 'block'; }
+      // Auto-scroll to reveal the next button below
+      var btn = this.closest('.s1w-step').querySelector('button[onclick*="s1wNext"]');
+      if(btn) setTimeout(function(){ btn.scrollIntoView({behavior:'smooth', block:'end'}); }, 300);
     });
     // Show congrats if default value is already set
     var c = document.getElementById('s1w_congrats');
     if(c && parseFloat(monthlyInput.value) > 0) c.style.display = 'block';
+
+    // Auto-scroll in step 2 when user interacts with timeline inputs
+    ['s1w_dcaYrs','s1w_coast'].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.addEventListener('input', function(){
+        var btn = document.getElementById('s1w_toStep3');
+        if(btn) setTimeout(function(){ btn.scrollIntoView({behavior:'smooth', block:'end'}); }, 300);
+      });
+    });
   };
 
   window.s1wBrowseLiveETFs = function(){
@@ -6633,6 +6843,9 @@ window.s8Guide=new StrategyGuide(STEPS_S8);
     // Hide lump-sum events too (advanced feature)
     var lumpGroup = document.getElementById('lumpBody');
     if(lumpGroup && lumpGroup.parentElement) lumpGroup.parentElement.style.display = 'none';
+    // Hide Section 2 tab until withdrawal is completed and goal-based is clicked
+    var s2Tab = document.querySelector('.etf-tab[data-target="etfTab2"]');
+    if(s2Tab) s2Tab.style.display = 'none';
 
     // Hide wizard, re-render
     wizard.style.display = 'none';
@@ -6643,6 +6856,9 @@ window.s8Guide=new StrategyGuide(STEPS_S8);
     setTimeout(function(){
       window.s1wApplyInvestOnlyView();
     }, 100);
+
+    // Show guided tour prompt after charts load
+    if(!window._s1TourCompleted) setTimeout(function(){ window.showChartTourPrompt('s1'); }, 3000);
   };
 
   window.s1wApplyInvestOnlyView = function(){
@@ -6712,6 +6928,9 @@ window.s8Guide=new StrategyGuide(STEPS_S8);
   };
 
   window.s1wStartSec2Guide = function(){
+    // Reveal Section 2 tab now that user explicitly opted in
+    var s2Tab = document.querySelector('.etf-tab[data-target="etfTab2"]');
+    if(s2Tab) s2Tab.style.display = '';
     // Switch to Section 2 and show step-by-step wizard overlay
     if(window.switchEtfTab) window.switchEtfTab('etfTab2');
     setTimeout(function(){
@@ -6827,7 +7046,17 @@ window.s8Guide=new StrategyGuide(STEPS_S8);
 
       ['s2w_corpus','s2w_wdCustom','s2w_wdYrs','s2w_legacy'].forEach(function(id){
         var el = document.getElementById(id);
-        if(el) el.addEventListener('input', revealNext);
+        if(el) el.addEventListener('input', function(){
+          revealNext();
+          // Auto-scroll to the next revealed section
+          setTimeout(function(){
+            var revealed = wiz.querySelectorAll('.revealed');
+            if(revealed.length){
+              var last = revealed[revealed.length - 1];
+              last.scrollIntoView({behavior:'smooth', block:'end'});
+            }
+          }, 200);
+        });
       });
     }, 200);
   };
@@ -6951,6 +7180,12 @@ window.s8Guide=new StrategyGuide(STEPS_S8);
     document.getElementById('s2Wizard').style.display = 'none';
     if(window.gbRefresh) window.gbRefresh();
     window.scrollTo(0, document.getElementById('etfSection').offsetTop);
+
+    // Show guided tour prompt after charts load
+    setTimeout(function(){
+      if(window._tourCompleted) window.startTourDirect('s2');
+      else window.showChartTourPrompt('s2');
+    }, 3000);
   };
 
   window.s1wStartWithdrawalWizard = function(){
@@ -6991,6 +7226,14 @@ window.s8Guide=new StrategyGuide(STEPS_S8);
       '</div>';
     document.getElementById('etfSection').appendChild(wiz);
     window.scrollTo(0, document.getElementById('etfSection').offsetTop);
+
+    // Auto-scroll to reveal submit button when user inputs data
+    wiz.addEventListener('input', function(e){
+      if(e.target.tagName === 'INPUT'){
+        var btn = wiz.querySelector('button[onclick*="Finish"]') || wiz.querySelector('button[onclick*="finish"]');
+        if(btn) setTimeout(function(){ btn.scrollIntoView({behavior:'smooth', block:'end'}); }, 300);
+      }
+    });
   };
 
   window.s1wFinishWithdrawal = function(){
@@ -7043,6 +7286,11 @@ window.s8Guide=new StrategyGuide(STEPS_S8);
     // Re-render with full data
     render();
 
+    // Start withdrawal tour directly for users who did the ETF tour
+    if(window._s1TourCompleted){
+      setTimeout(function(){ window.startTourDirect('wd'); }, 3000);
+    }
+
     // Add Section 2 radio button sticky at bottom
     setTimeout(function(){
       if(document.getElementById('s1wSec2Radio')) return;
@@ -7058,6 +7306,193 @@ window.s8Guide=new StrategyGuide(STEPS_S8);
     }, 200);
   };
 })();
+
+// ═══════════════════════════════════════
+// Guided Tour — shows after charts load
+// ═══════════════════════════════════════
+;(function(){
+var TOUR_STEPS_S1 = [
+  {selector:'#etfLayout .sidebar .ctrl-group', text:'These are the funds you selected. You can change allocations, swap funds, or add new ones here. Any change instantly updates all projections on the right.'},
+  {selector:'#etfLayout .sidebar .ctrl-group:nth-child(3)', text:'DCA duration: how many years you invest monthly. This is where compounding works its magic. Even small amounts grow exponentially over time because your returns earn returns.'},
+  {selector:'.phase-bar', text:'Your timeline in three phases. Purple = Build (actively investing monthly). Green = Coast (stop contributing, let compound growth do the work). Pink = Withdraw (take income).'},
+  {selector:'#cards', text:'Your key numbers: total portfolio value, real (inflation-adjusted) worth, and dividends reinvested on top of your contributions.'},
+  {selector:'#mainChart', text:'Your portfolio growing year by year. Watch how the curve steepens over time. That acceleration is compounding in action.'},
+  {selector:'#flowChart', text:'Cash flows each year. Purple bars = your contributions during Build. Green = growth in Coast. Pink = money you take out during Withdrawal.'},
+  {selector:'#tbody', text:'Every year broken down into exact numbers. Use the tabs above to filter by Build, Coast, or Withdraw phase.'}
+];
+var TOUR_STEPS_WD = [
+  {selector:'#s1WithdrawalGroup', text:'Your withdrawal settings: this is the monthly income you want from your portfolio. The base amount increases each year by the percentage you set, for the duration you chose.'},
+  {selector:'#pb3', text:'This new pink section is your Withdraw phase. It shows how many years you\'ll be drawing income from your built-up portfolio.'},
+  {selector:'#cumChart', text:'Cumulative Invested vs Withdrawn. The indigo line is what you put in over the years. The pink line is what you took out. When pink overtakes indigo, your investments paid for themselves and more.'},
+  {selector:'#susContent', text:'Portfolio Sustainability: will your money last? Green means your withdrawal rate is safe. Red means you risk running out early.'}
+];
+var TOUR_STEPS_S2 = [
+  {selector:'#gbSidebar', text:'Your inputs: Target Portfolio Value is how much you want to accumulate. Years to Achieve sets your timeline. A higher target or shorter timeline means you need to invest more each month.'},
+  {selector:'.gb-output', text:'Your results: Required Monthly is what you need to invest. Per-fund Split breaks it across your funds. Max Monthly Withdrawal is the income your corpus can sustain.'},
+  {selector:'#gb_chart_accum', text:'Your money growing toward the target. The teal line climbs as monthly contributions compound. Steeper curve = compounding accelerating over time.'},
+  {selector:'#gb_chart_wd', text:'The withdrawal phase: your corpus draws down as you take monthly income. The line shows how many years it lasts before depleting.'}
+];
+
+window.showChartTourPrompt = function(mode){
+  var existing = document.getElementById('chartTourPrompt');
+  if(existing) existing.remove();
+
+  var overlay = document.createElement('div');
+  overlay.id = 'chartTourPrompt';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:99990;background:rgba(15,23,42,0.35);display:flex;align-items:center;justify-content:center;padding:24px;animation:tourFadeIn .4s ease;';
+  overlay.innerHTML =
+    '<div class="tour-prompt-box">' +
+      '<div style="font-size:18px;font-weight:800;color:#1e293b;margin-bottom:8px;">Feeling overwhelmed?</div>' +
+      '<p style="font-size:14px;color:#475569;line-height:1.6;margin:0 0 24px;">Lots of numbers and charts just appeared. Want a quick guided walkthrough of what each section means?</p>' +
+      '<div style="display:flex;gap:12px;justify-content:center;">' +
+        '<button id="tourYes" style="padding:12px 28px;background:#4f46e5;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;">Yes, show me</button>' +
+        '<button id="tourNo" style="padding:12px 28px;background:rgba(241,245,249,0.8);color:#475569;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;">No thanks</button>' +
+      '</div>' +
+    '</div>';
+
+  document.body.appendChild(overlay);
+  document.getElementById('tourNo').onclick = function(){ overlay.remove(); };
+  document.getElementById('tourYes').onclick = function(){
+    overlay.remove();
+    var steps = mode === 's2' ? TOUR_STEPS_S2 : mode === 'wd' ? TOUR_STEPS_WD : TOUR_STEPS_S1;
+    startChartTour(steps, mode);
+  };
+};
+
+window.startTourDirect = function(mode){
+  var steps = mode === 's2' ? TOUR_STEPS_S2 : mode === 'wd' ? TOUR_STEPS_WD : TOUR_STEPS_S1;
+  startChartTour(steps, mode);
+};
+
+
+function startChartTour(steps, mode){
+  var idx = 0;
+  var totalSteps = steps.length;
+  var MS_PER_STEP = 10000;
+
+  function showStep(){
+    var old = document.getElementById('chartTourOverlay');
+    if(old) old.remove();
+
+    if(idx >= totalSteps) return;
+
+    var step = steps[idx];
+    var target = document.querySelector(step.selector);
+    // Scroll target to vertical center of screen
+    if(target){
+      var elRect = target.getBoundingClientRect();
+      var elH = Math.min(elRect.height, window.innerHeight * 0.6);
+      var elCenter = elRect.top + elH / 2;
+      var viewCenter = window.innerHeight / 2;
+      var scrollBy = elCenter - viewCenter;
+      if(Math.abs(scrollBy) > 30) window.scrollBy({top: scrollBy, behavior: 'smooth'});
+    }
+
+    // Glow highlight on the target
+    if(target){
+      target.classList.add('tour-glow');
+    }
+
+    var overlay = document.createElement('div');
+    overlay.id = 'chartTourOverlay';
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:99991;pointer-events:none;';
+
+    var box = document.createElement('div');
+    box.className = 'tour-step-box';
+    box.style.opacity = '0';
+    box.style.animation = 'none';
+
+    // Wait for scroll to settle, then position box near the section
+    setTimeout(function(){
+      if(!target){
+        box.style.left = '50%'; box.style.transform = 'translateX(-50%)';
+        box.style.bottom = '20px'; box.style.top = 'auto';
+        return showBox();
+      }
+      var rect = target.getBoundingClientRect();
+      var boxH = box.offsetHeight || 160;
+      var isLeftSide = rect.left < window.innerWidth * 0.4 && rect.right < window.innerWidth * 0.5;
+
+      if(isLeftSide){
+        // Sidebar element: place box to the right, vertically aligned with target
+        box.style.left = Math.min(rect.right + 20, window.innerWidth - 480) + 'px';
+        box.style.transform = 'none';
+        box.style.top = Math.max(16, Math.min(rect.top, window.innerHeight - boxH - 16)) + 'px';
+        box.style.bottom = 'auto';
+      } else {
+        // Main content: center horizontally, place below section
+        box.style.left = '50%';
+        box.style.transform = 'translateX(-50%)';
+        var boxTop = rect.bottom + 16;
+        if(boxTop + boxH > window.innerHeight - 10){
+          boxTop = window.innerHeight - boxH - 16;
+        }
+        box.style.top = Math.max(16, boxTop) + 'px';
+        box.style.bottom = 'auto';
+      }
+      showBox();
+    }, 800);
+
+    function showBox(){
+      box.style.opacity = '';
+      box.style.animation = 'tourFadeIn .4s ease forwards, tourBobBox 3.5s ease-in-out .5s infinite';
+    }
+
+    box.innerHTML =
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
+        '<span style="font-size:11px;font-weight:700;color:#a5b4fc;text-transform:uppercase;letter-spacing:0.5px;">Step ' + (idx+1) + ' of ' + totalSteps + '</span>' +
+        '<button id="tourSkip" style="pointer-events:auto;background:none;border:none;color:#94a3b8;font-size:12px;font-weight:600;cursor:pointer;padding:4px 8px;">Skip tour ✕</button>' +
+      '</div>' +
+      '<p style="font-size:14px;line-height:1.7;margin:0;color:#e2e8f0;">' + step.text + '</p>' +
+      '<div style="margin-top:14px;display:flex;gap:8px;justify-content:flex-end;">' +
+        (idx > 0 ? '<button id="tourPrev" style="pointer-events:auto;padding:8px 16px;background:rgba(255,255,255,0.1);color:#e2e8f0;border:1px solid rgba(255,255,255,0.2);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;">← Back</button>' : '') +
+        '<button id="tourNext" style="pointer-events:auto;padding:8px 16px;background:#6366f1;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;">' + (idx < totalSteps - 1 ? 'Next →' : 'Done ✓') + '</button>' +
+      '</div>' +
+      '<div style="margin-top:10px;height:3px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;">' +
+        '<div id="tourProgress" style="height:100%;background:#6366f1;border-radius:3px;width:0%;transition:width ' + (MS_PER_STEP/1000) + 's linear;"></div>' +
+      '</div>';
+
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+
+    // Start progress bar after box appears
+    setTimeout(function(){
+      var prog = document.getElementById('tourProgress');
+      requestAnimationFrame(function(){ if(prog) prog.style.width = '100%'; });
+    }, 900);
+
+    var timer = setTimeout(function(){
+      clearHighlight(target);
+      idx++;
+      if(idx < totalSteps) showStep();
+      else { markDone(); var o = document.getElementById('chartTourOverlay'); if(o) o.remove(); }
+    }, MS_PER_STEP);
+
+    document.getElementById('tourSkip').onclick = function(){ clearTimeout(timer); clearHighlight(target); markDone(); var o = document.getElementById('chartTourOverlay'); if(o) o.remove(); };
+    document.getElementById('tourNext').onclick = function(){ clearTimeout(timer); clearHighlight(target); idx++; if(idx < totalSteps) showStep(); else { markDone(); var o = document.getElementById('chartTourOverlay'); if(o) o.remove(); } };
+    var prevBtn = document.getElementById('tourPrev');
+    if(prevBtn) prevBtn.onclick = function(){ clearTimeout(timer); clearHighlight(target); idx--; showStep(); };
+  }
+
+  function clearHighlight(el){ if(el) el.classList.remove('tour-glow'); }
+  function markDone(){ window._tourCompleted = true; if(mode === 's1') window._s1TourCompleted = true; }
+
+  showStep();
+}
+})();
+
+// Tour styles
+var tourStyle = document.createElement('style');
+tourStyle.textContent = '' +
+  '@keyframes tourFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}' +
+  '@keyframes tourSlideUp{0%{opacity:0;transform:translateX(-50%) translateY(30px) scale(0.92)}100%{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}' +
+  '@keyframes tourBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}' +
+  '@keyframes tourBobBox{0%,100%{margin-top:0}50%{margin-top:-5px}}' +
+  '@keyframes tourGlow{0%,100%{box-shadow:0 0 10px 3px rgba(245,158,11,0.35)}50%{box-shadow:0 0 24px 8px rgba(245,158,11,0.55)}}' +
+  '.tour-prompt-box{background:rgba(255,255,255,0.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:16px;padding:32px 28px;max-width:400px;width:90%;text-align:center;box-shadow:0 12px 48px rgba(79,70,229,0.15),0 4px 16px rgba(0,0,0,0.1);border:1.5px solid rgba(79,70,229,0.25);animation:tourBob 3s ease-in-out infinite;}' +
+  '.tour-step-box{position:fixed;pointer-events:auto;background:rgba(15,23,42,0.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(99,102,241,0.3);border-radius:14px;padding:18px 22px;max-width:460px;width:88%;box-shadow:0 12px 40px rgba(0,0,0,0.25),0 0 20px rgba(99,102,241,0.1);}' +
+  '.tour-glow{outline:2.5px solid rgba(245,158,11,0.7)!important;outline-offset:6px!important;border-radius:8px!important;animation:tourGlow 1.5s ease-in-out infinite!important;position:relative;z-index:2;}';
+document.head.appendChild(tourStyle);
 
 // ═══════════════════════════════════════
 // Resizable ETF sidebar
